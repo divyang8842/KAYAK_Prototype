@@ -47,9 +47,9 @@
 3. SQL Caching
 4. Mongo/Mysql
 5. Validations 
-..* Username Redundancy
-..* Valid US State
-..* Valid Zip Codes
+  * Username Redundancy
+  * Valid US State
+  * Valid Zip Codes
 
 
 
