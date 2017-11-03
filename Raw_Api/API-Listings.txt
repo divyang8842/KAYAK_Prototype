@@ -1,0 +1,63 @@
+API:
+
+HOTELS:
+
+1)getHotels(hotelJSON)
+Input: hotelJSON
+hotelJSON will contain: Place, dates(Check-in/out), Number of rooms, Number of guests
+Response: JSON object containing hotel details matching with the input criteria
+Description: This API will fetch hotel details based on the input provided by the user
+
+2)sortHotelsByPrice(hotelJSON)
+input: hotelJSON
+hotelJSON will contain: Place, dates(Check-in/out), Number of rooms, Number of guests, sortPrice(ASC/DESC)
+Response: JSON object containing hotel details matching with the input criteria
+Description: This API will fetch hotel details sorted based on the input provided by the user
+
+3)sortHotelsByRatings(hotelJSON)
+input: hotelJSON
+hotelJSON will contain: Place, dates(Check-in/out), Number of rooms, Number of guests, sortRatings(ASC/DESC)
+Response: JSON object containing hotel details matching with the input criteria
+Description: This API will fetch hotel details sorted based on the input provided by the user
+
+
+FLIGHTS
+
+1)getFlights(flightJSON)
+Input: flightJSON
+flightJSON will contain: Source, Destination, dates(depart/return), Number of passengers, Flight Class
+Response: JSON object containing flight details matching with the input criteria
+Description: This API will fetch flight details based on the input provided by the user
+
+2)sortFlightsByPrice(flightsJSON)
+input: flightJSON
+flightJSON will contain: Source, Destination, dates(depart/return), Number of passengers, Flight Class, sortPrice(ASC/DESC)
+Response: JSON object containing flight details matching with the input criteria
+Description: This API will fetch flight details sorted based on the input provided by the user
+
+3)sortFlightsByDuration(flightsJSON)
+input: flightJSON
+flightJSON will contain: Source, Destination, dates(depart/return), Number of passengers, Flight Class, sortDuration(ASC/DESC)
+Response: JSON object containing flight details matching with the input criteria
+Description: This API will fetch flight details sorted based on the input provided by the user
+
+
+CARS
+
+1)getCars(carJSON)
+Input: carJSON
+carJSON will contain: Place, dates(pick-up/drop-off)
+Response: JSON object containing car details matching with the input criteria
+Description: This API will fetch car details based on the input provided by the user
+
+2)getCarsByPrice(carJSON)
+Input: carJSON
+carJSON will contain: Place, dates(pick-up/drop-off), sortPrice(ASC/DESC)
+Response: JSON object containing car details matching with the input criteria
+Description: This API will fetch car details sorted based on the input provided by the user
+
+3)getCarsByDistance(carJSON)
+Input: carJSON
+carJSON will contain: Place, dates(pick-up/drop-off), sortDistance(ASC/DESC)
+Response: JSON object containing car details matching with the input criteria
+Description: This API will fetch car details based on the input provided by the user
