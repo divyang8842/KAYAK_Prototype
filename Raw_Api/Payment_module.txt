@@ -1,0 +1,12 @@
+API :
+
+1) getBillingInfo(rentalObject, numberOfDays)
+Inputs : Rental Object, it will contain the object of car/hotel/flight with price per days
+numberOfDays : Number Of Days for which the entity is going to be rented
+Returns : BillingJSON showing price per day and number of days to rent, total payable amount, information of rentalObject, current date and receipr number
+Desc: used to display receipt for the booking
+
+2) savePayment(paymentAmount, rentalObject)
+Inputs : Payment amount is the amount paid by user, rentalObject cccontains booked entity 
+Returns : PaymentId
+Desc : This api will be used to do a dummy payment and also to mark the rented object as booked for those days

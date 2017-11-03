@@ -2,7 +2,7 @@ API:
 
 1) saveHotel(hotelJSON) :
 Inputs : hotelJSON
-hotelJSON will contain: hotelId,HotelName, Address, NumberOfRooms , HotelDescription, Ameneties  
+hotelJSON will contain: hotelId,HotelName, Address, NumberOfRooms , HotelDescription, Ameneties , City, State 
 Returns : hotelId
 Desc: This API will create/update the hotel. If hitelid>0, it will update the existing record, else it will add new record.
 
@@ -14,7 +14,7 @@ Desc: This API will create/update the Rooms. If roomid>0, it will update the exi
 
 3) saveFlight(flightJSON) :
 Inputs : flightJSON
-flightJSON will contain : flightid,airlineName, RouteId,numberOfSeats, pricePerSeat, durationOfJourney, flightTime
+flightJSON will contain : flightid,airlineName, RouteId,numberOfSeats, pricePerSeat, durationOfJourney, flightTime, tickets per class, destination, 
 Returns : Flight Id
 Desc: This API will create/update the flight. If flightid>0, it will update the existing record, else it will add new record.
 
