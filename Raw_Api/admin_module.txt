@@ -1,0 +1,64 @@
+API:
+
+1) saveHotel(hotelJSON) :
+Inputs : hotelJSON
+hotelJSON will contain: hotelId,HotelName, Address, NumberOfRooms , HotelDescription, Ameneties  
+Returns : hotelId
+Desc: This API will create/update the hotel. If hitelid>0, it will update the existing record, else it will add new record.
+
+2) saveRooms(hotelId,roomJson)
+Inputs :  hotelId (Id of hotel already created)
+roomJson will contain : roomid,roomSize, guestAllowed, peicePerDay, roomType, Ameneties, numberOfRooms
+Returns : roomId
+Desc: This API will create/update the Rooms. If roomid>0, it will update the existing record, else it will add new record.
+
+3) saveFlight(flightJSON) :
+Inputs : flightJSON
+flightJSON will contain : flightid,airlineName, RouteId,numberOfSeats, pricePerSeat, durationOfJourney, flightTime
+Returns : Flight Id
+Desc: This API will create/update the flight. If flightid>0, it will update the existing record, else it will add new record.
+
+4) saveCar(carJSON) :
+Inouts : carJSON
+carJSON will include : carId,carBrand, carName, carColor, carPricePerDay, carSize, numberOfPasangers, rentalAgencyId
+Returns : carId
+Desc: This API will create/update the car. If carId>0, it will update the existing record, else it will add new record.
+
+5) listHotels(searchJSON)
+Inputs : searchJSON
+searchJSON includes : HotelName, pincode, NumberOfRooms ,price  
+Output : JSONArray (list of hotels)
+
+6) listCars(searchJSON)
+Inputs : searchJSON
+searchJSON includes : carBrand, carName, carColor, carPricePerDay, carSize, numberOfPasangers, rentalAgencyId
+Output : JSONArray (list of cars)
+
+7) listFlights(searchJSON)
+Inputs : searchJSON
+searchJSON includes : airlineName, RouteId,numberOfSeats, pricePerSeat, durationOfJourney, flightTime 
+Output : JSONArray (list of flights)
+
+8) getUserAcounts(searchJSON)
+Inputs : searchJSON
+searchJSON include : userId, zipcode, firstname, lastname, email etc
+Returns : JSONArray (list of users)
+
+9) getUserAccount(userId)
+Inputs : userId 
+Returns : User Account JSON (userId, firstname, lastname, emailaddress, city, addres, state, zipcode, creditcard details, phone number)
+
+10) updateUserAccount(userJSON)
+Inputs : userJSON
+userJSON includes : userId, firstname, lastname, emailaddress, city, addres, state, zipcode, creditcard details, phone number
+
+11) getBills (fromdate,todate) / getBills(fromMonth,toMonth)
+Inputs : from date and to date for bills  / fromMonth or To Month for bills
+returns : Bill JsonArray (billId, bill date, bill amount, bill payor, payment info, order/booking info)
+
+12) getBillInfo(billid)
+inputs : billid 
+returns : Bill JSON (billId, bill date, bill amount, bill payor, payment info, order/booking info)
+
+
+
