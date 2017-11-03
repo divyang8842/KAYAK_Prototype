@@ -1,0 +1,27 @@
+API:
+
+1) getTop10CarRentalAgency(year,city)
+Inputs : year to get values, city to get city agencies
+return : RentalAgency array (RentalAgency name, RentalAgency ID, RentalAgency revenue,number of car sales)
+
+2) getTop10AirLines(year,city)
+Inputs : year to get values, city to get city agencies
+return : AirLines array (AirLines name, AirLines ID, AirLines revenue,number of flight tickets sold)
+
+3) getTop10Hotels(year,city)
+Inputs : year to get values, city to get city agencies
+return : Hotels array (Hotels name, Hotels ID, Hotels revenue,number of rooms booked)
+
+4) getClickAnalysys()
+Inputs : N/A
+returns : returns some number of modules with highest clicks with click count
+
+5) getLessSeenModules()
+Inputs : N/A
+returns : returns Less visited modules of the website with number of visitors
+
+6) getUserTracking(userids)
+Input : array of userids (one or many)
+return : return user array (user name, user id, zipcoe, city, number of bookings etc)
+
+

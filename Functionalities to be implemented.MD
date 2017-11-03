@@ -43,7 +43,7 @@
 
 **Others**
 1. Kafka
-2. Connectio Pooling
+2. Connection Pooling
 3. SQL Caching
 4. Mongo/Mysql
 5. Validations 
