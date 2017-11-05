@@ -1,0 +1,1 @@
+######public will contain all the images, svg files, css files
