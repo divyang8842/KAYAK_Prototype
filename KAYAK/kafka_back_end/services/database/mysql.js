@@ -10,7 +10,11 @@ var pool = mysql.createPool({
 	debug : false
 });
 
-// use this method to fetch data
+//
+//var closeConnection = function(connection) {
+//	connection.release();
+//};
+
 var fetchData = function(callback, sqlQuery,data) {
 	pool.getConnection(function(err, connection) {
 		connection.query(sqlQuery,data, function(err, rows) {
@@ -25,8 +29,6 @@ var fetchData = function(callback, sqlQuery,data) {
 	});
 };
 
-// Use this method to Insert/Update data
-// To delete data, it will be update query to set deleteflag = 1
 var setData = function(callback, sqlQuery,data) {
 	pool.getConnection(function(err, connection) {
 		connection.query(sqlQuery,data, function(err, rows) {
