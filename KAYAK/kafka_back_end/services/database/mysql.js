@@ -15,7 +15,7 @@ var pool = mysql.createPool({
 //	connection.release();
 //};
 
-var fetchData = function(callback, sqlQuery,data) {
+var fetchData = function(sqlQuery,data,callback) {
 	pool.getConnection(function(err, connection) {
 		connection.query(sqlQuery,data, function(err, rows) {
 
@@ -29,7 +29,7 @@ var fetchData = function(callback, sqlQuery,data) {
 	});
 };
 
-var setData = function(callback, sqlQuery,data) {
+var setData = function( sqlQuery,data,callback) {
 	pool.getConnection(function(err, connection) {
 		connection.query(sqlQuery,data, function(err, rows) {
 			try {
