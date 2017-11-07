@@ -1,48 +1,19 @@
 {
-  "name": "Kayak",
+  "name": "front-end",
   "version": "0.1.0",
-  "description": "Kayak",
   "private": true,
-  "main": "index.js",
-  "author": "Brian Lusina",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BrianLusina/dropbox-react"
-  },
-  "devDependencies": {
-    "gh-pages": "^0.12.0",
-    "jQuery": "^1.7.4",
-    "jquery": "^3.1.1",
-    "material-ui": "^0.17.1",
-    "react-scripts": "0.8.4",
-    "react-tap-event-plugin": "^2.0.1",
-    "kafka-node": "^2.2.3"
-  },
   "dependencies": {
-    "axios": "0.16.2",
-    "bootstrap": "^3.3.7",
-    "fs": "0.0.2",
-    "glob": "^7.1.2",
-    "isomorphic-style-loader": "1.0.0",
-    "jquery": "^3.1.1",
-    "material-ui": "^0.17.1",
-    "prop-types": "^15.5.10",
-    "react": "^15.6.2",
-    "react-addons-css-transition-group": "^15.6.2",
-    "react-bootstrap": "*",
-    "react-dom": "^15.6.2",
-    "react-file-download": "0.3.5",
-    "react-files": "^2.4.3",
-    "react-image": "^1.0.1",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "1.0.13",
-    "react-simple-modal": "^1.1.5"
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-scripts": "1.0.17",
+    "react-redux":"*",
+    "redux":"*",
+    "react-router-dom":"*"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "deploy": "npm run build&&gh-pages -d build"
+    "eject": "react-scripts eject"
   }
 }
