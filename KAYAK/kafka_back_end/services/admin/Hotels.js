@@ -18,12 +18,12 @@ var saveHotel = function (data,callback) {
     })
 };
 
-var saveRoom = function (data,callback) {
+var saveRoom = function (hotel_id,data,callback) {
     var query = "";
     if(data.id && data.id>0){
         query = "UPDATE room set room_type=?,room_size=?,guestAllowed=?,room_price=? WHERE room_id = ?";
     }else{
-        query = "INSERT INTO room (room_type,room_size,guestAllowed,room_price) VALUES(?,?,?,?)";
+        query = "INSERT INTO room (hotel_id,room_type,room_size,guestAllowed,room_price) VALUES(?,?,?,?)";
     }
     var dataArry =  [];
     if(data instanceof Array == false){
@@ -56,10 +56,20 @@ var saveRoom = function (data,callback) {
 };
 
 var deleteHotel = function(data,callback){
-    
-}
+    var query = "UPDATE hotel SET deleteflag = 1 WHERE hotel_id = ?";
+    mysql.setData(query,[data.hotel_id],function(err,results){
+       callback(err,results);
+    });
+};
 
+var deleteRoom = function(data,callback){
+    var query = "UPDATE room SET deleteflag = 1 WHERE hotel_id = ?";
+    mysql.setData(query,[data.room_id],function(err,results){
+        callback(err,results);
+    });
+};
 
-
+exports.deleteHotel = deleteHotel;
 exports.saveHotel = saveHotel;
 exports.saveRoom = saveRoom;
+exports.deleteRoom = deleteRoom;
