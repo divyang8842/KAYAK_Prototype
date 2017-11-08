@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import { Route, Link,Switch } from 'react-router-dom';
 import Login from './Login';
 import Search from './Search';
-<<<<<<< HEAD
+
 import Flights from './Flights/FlightsHome';
-=======
+
 import HotelsHome from './Hotels/HotelsHome'
->>>>>>> 713ae1e3b50c979dec3ea5cddfc4a526f3dcaadc
+
 import '../public/css/animate.css';
 import '../public/css/bootstrap.css';
 import '../public/css/magnific-popup.css';
@@ -52,11 +52,11 @@ class Home extends Component {
           <Switch>
           <Route exact path="/" component={Search}/>
           <Route exact path="/login" component={() => <Login/>}/>
-<<<<<<< HEAD
+
               <Route exact path="/flights" component={() => <Flights/>}/>
-=======
+
           <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
->>>>>>> 713ae1e3b50c979dec3ea5cddfc4a526f3dcaadc
+
           </Switch>
 
           </div>
