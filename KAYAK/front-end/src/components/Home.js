@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Route, Link,Switch } from 'react-router-dom';
 import Login from './Login';
 import Search from './Search';
+import Flights from './Flights/FlightsHome';
 import '../public/css/animate.css';
 import '../public/css/bootstrap.css';
 import '../public/css/magnific-popup.css';
@@ -47,6 +48,7 @@ class Home extends Component {
           <Switch>
           <Route exact path="/" component={Search}/>
           <Route exact path="/login" component={() => <Login/>}/>
+              <Route exact path="/flights" component={() => <Flights/>}/>
           </Switch>
 
           </div>
