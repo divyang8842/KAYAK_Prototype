@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import { Route, Link,Switch } from 'react-router-dom';
 import Login from './Login';
 import Search from './Search';
-import Hotel from './Hotel';
 import '../public/css/animate.css';
 import '../public/css/bootstrap.css';
 import '../public/css/magnific-popup.css';
@@ -35,7 +34,7 @@ class Home extends Component {
                     <li className="active"><Link to='/'>Home</Link></li>
                     <li><Link to='/login'>Flight</Link></li>
                     <li><Link to='/login'>Car</Link></li>
-                    <li><Link to='/hotel'>Hotel</Link></li>
+                    <li><Link to='/login'>Hotel</Link></li>
                   {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
                   : (<li><Link to='/login'>Logout</Link></li>)}
       						</ul>
@@ -48,7 +47,6 @@ class Home extends Component {
           <Switch>
           <Route exact path="/" component={Search}/>
           <Route exact path="/login" component={() => <Login/>}/>
-              <Route exact path="/hotel" component={() => <Hotel/>}/>
           </Switch>
 
           </div>

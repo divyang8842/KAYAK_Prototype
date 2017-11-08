@@ -1,4 +1,4 @@
-var ejs = require('ejs');
+//var ejs = require('ejs');
 var mysql = require('mysql');
 var pool = mysql.createPool({
 	connectionLimit : 100,
@@ -40,7 +40,7 @@ var setData = function( sqlQuery,data,callback) {
 
 			} finally {
 				connection.release();
-			}		
+			}
 		});
 	});
 

@@ -9,26 +9,29 @@ class Login extends Component {
     firstname:'',
     lastname:'',
     email:'',
-    password:'',
+    pass:'',
+    phone:'',
+    zip:'',
     user:'',
     messageLogin:'',
     messageSignup:'',
-    loginemail:'',
-    loginpswd:''
+    username:'',
+    password:''
   };
 
      handleLogin = (input) => {
           console.log(input.loginemail);
-            /*API.login(input)
+            API.login(input)
                 .then((output) => {
                     if (output === 0) {
+                      console.log("OUPUT= "+output);
                       this.setState({islogged: 'false', message:"Invalid credentials. Login again." });
                         console.log("Wrong login: "+this.state.islogged);
                     } else {
                       this.setState({islogged: 'true', user: output});
-                        console.log("Success login= "+this.state.user.firstName);
+                        console.log("Success login= "+output.uid);
                     }
-                });*/
+                });
         };
 
         handleSignup = (user) => {
@@ -48,8 +51,10 @@ class Login extends Component {
                     }
                 });
         };
-      //  <button type="button" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleSignup(this.state)}>Submit</button>
-//<button type="button" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleLogin(this.state)}>Submit</button>
+      /*<input type="submit" className="btn btn-primary btn-block" value="Submit" />
+      <input type="submit" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleSignup(this.state)}/>
+      <button type="button" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleSignup(this.state)}>Submit</button>
+//<button type="button" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleLogin(this.state)}>Submit</button>*/
         componentWillMount(){
                 this.setState({username:'',password:'',message:''});
               };
@@ -99,12 +104,25 @@ class Login extends Component {
               <div className="input-field">
                 <label>Password:</label>
                 <input type="password" ref="pwd" className="w3-input" onChange={(event)=>{
-                                              this.setState({password: event.target.value});}}/>
+                                              this.setState({pass: event.target.value});}}/>
+              </div>
+            </div>
+            <div className="col-xxs-12 col-xs-6 mt">
+              <div className="input-field">
+                <label>Phone:</label>
+                <input type="text" ref="em" className="form-control" onChange={(event)=>{
+                                             this.setState({phone: event.target.value});}}/>
+              </div>
+            </div>
+            <div className="col-xxs-12 col-xs-6 mt">
+              <div className="input-field">
+                <label>Zip:</label>
+                <input type="text" ref="em" className="form-control" onChange={(event)=>{
+                                             this.setState({zip: event.target.value});}}/>
               </div>
             </div>
             <div className="col-xs-12">
-
-              <input type="submit" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleSignup(this.state)}/>
+<input type="submit" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleSignup(this.state)}/>
             </div>
           </div>
           </form>
@@ -125,18 +143,19 @@ class Login extends Component {
 
                       <label>Email:</label>
                       <input type="text" className="form-control" onChange={(event)=>{
-                                                   this.setState({loginemail: event.target.value});}}/>
+                                                   this.setState({username: event.target.value});}}/>
                     </div>
                   </div>
                   <div className="col-xxs-12 col-xs-6 mt">
                     <div className="input-field">
                       <label>Password:</label>
                       <input type="password" className="form-control" onChange={(event)=>{
-                                                    this.setState({loginpswd: event.target.value});}}/>
+                                                    this.setState({password: event.target.value});}}/>
                     </div>
                   </div>
                   <div className="col-xs-12">
-                  <input type="submit" className="btn btn-primary btn-block" value="Submit" />
+
+                  <button type="button" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleLogin(this.state)}>Submit</button>
                   </div>
                 </div>
                 </form>

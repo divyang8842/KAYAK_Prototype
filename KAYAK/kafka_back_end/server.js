@@ -13,31 +13,33 @@ var producer = connection.getProducer();
 
 consumer_login.on('message', function (message) {
     console.log('message received in login');
-    //console.log(JSON.stringify(message.value));
+    console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
 
     login.handle_request(data.data, function(err,res){
-        //console.log('after handle'+ JSON.stringify(res) );
+        console.log('after handle---'+res.value[0].user_id );
         var payloads = [
             { topic: data.replyTo,
                 messages:JSON.stringify({
                     correlationId:data.correlationId,
-                    data : res
+                    data : res.value[0].user_id
                 }),
                 partition : 0
             }
         ];
+
         producer.send(payloads, function(err, data){
-            //console.log(data);
+            console.log("PRODUCER CHECK:---");
         });
         return;
     });
 });
 
 
+
 consumer_signup.on('message', function (message) {
     console.log('message received in signup');
-   // console.log(JSON.stringify(message.value));
+    console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
 
     signup.afterSignUp(data.data, function(err,res){
@@ -52,8 +54,9 @@ consumer_signup.on('message', function (message) {
             }
         ];
         producer.send(payloads, function(err, data){
-           // console.log(data);
+           console.log("Producer:-- ");
         });
         return;
     });
 });
+;

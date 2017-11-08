@@ -4,9 +4,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+require('./routes/passport')(passport);
 var cors = require('cors');
 
 var adminHotel = require('./routes/admin/hotel');
+var signup = require('./routes/signup');
 
 
 var mongoSessionURL = "mongodb://localhost:27017/sessions";
@@ -48,7 +50,7 @@ app.use(passport.initialize());
 
 /*app.use('/', routes);
 app.use('/users', users);*/
-
+app.use('/signup', signup.signup);
 app.post('/setHotelData',adminHotel.setHotelData);
 
 app.post('/logout', function(req,res) {
@@ -61,17 +63,15 @@ app.post('/logout', function(req,res) {
 
 app.post('/login', function(req, res) {
     passport.authenticate('login', function(err, user) {
-        if(err) {
-            res.status(500).send();
-        }
         if(!user) {
-            res.status(401).send();
-        }else{
-            req.session.user = user;
-            console.log(req.session.user);
-            console.log("session initilized");
-            return res.status(201).send({username:user.username,userid:user.userid,root:user.root,status:'201'});
+        	console.log("CHECK: "+ user);
+        	res.status(201).json({output:0});
         }
+        else{
+        req.session.user = user;
+        //console.log("Session initialised: "+req.session.user);
+        //req.session.save();
+        res.status(201).send({output:user});}
 
     })(req, res);
 });
