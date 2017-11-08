@@ -6,6 +6,9 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var cors = require('cors');
 
+var adminHotel = require('./routes/admin/hotel');
+
+
 var mongoSessionURL = "mongodb://localhost:27017/sessions";
 var expressSessions = require("express-session");
 var mongoStore = require("connect-mongo/es5")(expressSessions);
@@ -45,6 +48,8 @@ app.use(passport.initialize());
 
 /*app.use('/', routes);
 app.use('/users', users);*/
+
+app.post('/setHotelData',adminHotel.setHotelData);
 
 app.post('/logout', function(req,res) {
     console.log(req.session.user);
