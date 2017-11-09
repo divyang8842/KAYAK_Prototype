@@ -137,5 +137,8 @@ CREATE TABLE `user` (
 ALTER TABLE `kayak_18`.`user` 
 ADD COLUMN `password` VARCHAR(100) NOT NULL AFTER `deleteflag`;
 
+/* Altered user table to add user_type column*/
+ALTER TABLE `kayak_18`.`user` 
+ADD COLUMN `user_type` INT NULL AFTER `password`;
 
 
