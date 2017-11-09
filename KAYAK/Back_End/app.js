@@ -8,6 +8,8 @@ require('./routes/passport')(passport);
 var cors = require('cors');
 
 var adminHotel = require('./routes/admin/hotel');
+var getFlights = require('./routes/Flights/GetFlights');
+
 var signup = require('./routes/signup');
 
 
@@ -52,6 +54,7 @@ app.use(passport.initialize());
 app.use('/users', users);*/
 app.use('/signup', signup.signup);
 app.post('/setHotelData',adminHotel.setHotelData);
+app.post('/getflights',getFlights.getFLights);
 
 app.post('/logout', function(req,res) {
     console.log(req.session.user);

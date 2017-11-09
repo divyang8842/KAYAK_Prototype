@@ -21,112 +21,112 @@ USE `kayak_18`;
 DROP TABLE IF EXISTS `car`;
 
 CREATE TABLE `car` (
-  `car_id` int(11) NOT NULL AUTO_INCREMENT,
-  `car_type` varchar(30) NOT NULL,
-  `car_color` varchar(30) DEFAULT NULL,
-  `car_model` varchar(30) DEFAULT NULL,
-  `year` varchar(30) DEFAULT NULL,
-  `car_rent` decimal(10,0) NOT NULL,
-  `deleteflag` int(11) DEFAULT '0',
+  `car_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `car_type` VARCHAR(30) NOT NULL,
+  `car_color` VARCHAR(30) DEFAULT NULL,
+  `car_model` VARCHAR(30) DEFAULT NULL,
+  `year` VARCHAR(30) DEFAULT NULL,
+  `car_rent` DECIMAL(10,0) NOT NULL,
+  `deleteflag` INT(11) DEFAULT '0',
   PRIMARY KEY (`car_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `flight` */
 
 DROP TABLE IF EXISTS `flight`;
 
 CREATE TABLE `flight` (
-  `flight_id` int(11) NOT NULL AUTO_INCREMENT,
-  `airline_name` varchar(30) NOT NULL,
-  `flight_origin` varchar(30) DEFAULT NULL,
-  `flight_destination` varchar(30) NOT NULL,
-  `flight_departure` time DEFAULT NULL,
-  `flight_arrival` time DEFAULT NULL,
-  `flight_duration` int(11) NOT NULL,
-  `flight_ticketPrice` int(11) NOT NULL,
-  `flight_class` varchar(30) DEFAULT NULL,
-  `route_id` int(11) DEFAULT NULL,
-  `deleteflag` int(11) DEFAULT '0',
+  `flight_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `airline_name` VARCHAR(30) NOT NULL,
+  `flight_origin` VARCHAR(30) DEFAULT NULL,
+  `flight_destination` VARCHAR(30) NOT NULL,
+  `flight_departure` TIME DEFAULT NULL,
+  `flight_arrival` TIME DEFAULT NULL,
+  `flight_duration` INT(11) NOT NULL,
+  `flight_ticketPrice` INT(11) NOT NULL,
+  `flight_class` VARCHAR(30) DEFAULT NULL,
+  `route_id` INT(11) DEFAULT NULL,
+  `deleteflag` INT(11) DEFAULT '0',
   PRIMARY KEY (`flight_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `hotel` */
 
 DROP TABLE IF EXISTS `hotel`;
 
 CREATE TABLE `hotel` (
-  `hotel_id` int(11) NOT NULL AUTO_INCREMENT,
-  `hotel_name` varchar(50) NOT NULL,
-  `hotel_address` varchar(50) DEFAULT NULL,
-  `hotel_city` varchar(50) NOT NULL,
-  `hotel_state` varchar(50) DEFAULT NULL,
-  `hotel_zipcode` varchar(10) NOT NULL,
-  `hotel_description` varchar(80) DEFAULT NULL,
-  `hotel_ameneties` varchar(40) NOT NULL,
-  `deleteflag` int(11) DEFAULT '0',
+  `hotel_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `hotel_name` VARCHAR(50) NOT NULL,
+  `hotel_address` VARCHAR(50) DEFAULT NULL,
+  `hotel_city` VARCHAR(50) NOT NULL,
+  `hotel_state` VARCHAR(50) DEFAULT NULL,
+  `hotel_zipcode` VARCHAR(10) NOT NULL,
+  `hotel_description` VARCHAR(80) DEFAULT NULL,
+  `hotel_ameneties` VARCHAR(40) NOT NULL,
+  `deleteflag` INT(11) DEFAULT '0',
   PRIMARY KEY (`hotel_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `payment` */
 
 DROP TABLE IF EXISTS `payment`;
 
 CREATE TABLE `payment` (
-  `payment_id` int(10) NOT NULL AUTO_INCREMENT,
-  `receipt_id` int(10) NOT NULL,
-  `payment_amount` decimal(10,2) NOT NULL,
-  `deleteflag` tinyint(1) NOT NULL DEFAULT '0',
+  `payment_id` INT(10) NOT NULL AUTO_INCREMENT,
+  `receipt_id` INT(10) NOT NULL,
+  `payment_amount` DECIMAL(10,2) NOT NULL,
+  `deleteflag` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`payment_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `receipt` */
 
 DROP TABLE IF EXISTS `receipt`;
 
 CREATE TABLE `receipt` (
-  `receipt_id` int(10) NOT NULL AUTO_INCREMENT,
-  `user_id` int(15) NOT NULL,
-  `payment_amount` decimal(10,2) NOT NULL,
-  `booking_id` int(10) NOT NULL,
-  `booking_type` int(1) NOT NULL COMMENT '1=Hotel,2=Flight,3=Car',
-  `number_of_days` int(10) NOT NULL,
-  `deleteflag` tinyint(1) NOT NULL DEFAULT '0',
+  `receipt_id` INT(10) NOT NULL AUTO_INCREMENT,
+  `user_id` INT(15) NOT NULL,
+  `payment_amount` DECIMAL(10,2) NOT NULL,
+  `booking_id` INT(10) NOT NULL,
+  `booking_type` INT(1) NOT NULL COMMENT '1=Hotel,2=Flight,3=Car',
+  `number_of_days` INT(10) NOT NULL,
+  `deleteflag` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`receipt_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `room` */
 
 DROP TABLE IF EXISTS `room`;
 
 CREATE TABLE `room` (
-  `room_id` int(11) NOT NULL AUTO_INCREMENT,
-  `room_type` varchar(30) DEFAULT NULL,
-  `room_size` varchar(30) NOT NULL,
-  `guestAllowed` int(11) NOT NULL,
-  `room_price` int(11) NOT NULL,
-  `deleteflag` int(11) DEFAULT '0',
+  `room_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `room_type` VARCHAR(30) DEFAULT NULL,
+  `room_size` VARCHAR(30) NOT NULL,
+  `guestAllowed` INT(11) NOT NULL,
+  `room_price` INT(11) NOT NULL,
+  `deleteflag` INT(11) DEFAULT '0',
   PRIMARY KEY (`room_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 /*Table structure for table `user` */
 
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `fname` varchar(50) NOT NULL,
-  `lname` varchar(50) NOT NULL,
-  `address` varchar(100) DEFAULT NULL,
-  `city` varchar(20) DEFAULT NULL,
-  `state` varchar(20) DEFAULT NULL,
-  `zip_code` varchar(15) NOT NULL,
-  `phoneno` int(10) NOT NULL,
-  `emailid` varchar(50) NOT NULL,
-  `profile_img_path` varchar(200) DEFAULT NULL,
-  `credit_card` int(16) DEFAULT NULL,
-  `deleteflag` tinyint(1) DEFAULT '0',
+  `user_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `fname` VARCHAR(50) NOT NULL,
+  `lname` VARCHAR(50) NOT NULL,
+  `address` VARCHAR(100) DEFAULT NULL,
+  `city` VARCHAR(20) DEFAULT NULL,
+  `state` VARCHAR(20) DEFAULT NULL,
+  `zip_code` VARCHAR(15) NOT NULL,
+  `phoneno` INT(10) NOT NULL,
+  `emailid` VARCHAR(50) NOT NULL,
+  `profile_img_path` VARCHAR(200) DEFAULT NULL,
+  `credit_card` INT(16) DEFAULT NULL,
+  `deleteflag` TINYINT(1) DEFAULT '0',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -137,5 +137,31 @@ CREATE TABLE `user` (
 ALTER TABLE `kayak_18`.`user` 
 ADD COLUMN `password` VARCHAR(100) NOT NULL AFTER `deleteflag`;
 
+/* DROP Flights Tables*/
 
+DROP TABLE flight; 
+
+CREATE TABLE `flight` (
+  `flight_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `airline_name` VARCHAR(30) NOT NULL,
+  `stops` VARCHAR(100),
+  `deleteflag` INT(11) DEFAULT '0',
+  PRIMARY KEY (`flight_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+  
+  CREATE TABLE `flight_mapping` (
+  `flight_id` INT(11),
+  `airline_name` VARCHAR(30) NOT NULL,
+  `station_name` VARCHAR(30) DEFAULT NULL,
+  `flight_departure` TIME DEFAULT NULL,
+  `flight_arrival` TIME DEFAULT NULL,
+  `flight_duration` INT(11) NOT NULL,
+  `economy_class` VARCHAR(30) DEFAULT NULL,
+  `first_class` VARCHAR(30) DEFAULT NULL,
+  `business_class` VARCHAR(30) DEFAULT NULL,
+  `premiumeconomy_class` VARCHAR(30) DEFAULT NULL,
+  `deleteflag` INT(11) DEFAULT '0'
+  
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
