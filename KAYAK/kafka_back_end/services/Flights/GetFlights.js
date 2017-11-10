@@ -7,7 +7,7 @@ function handle_request(msg, callback){
     console.log("In Get Files handle request:"+ JSON.stringify(msg));
 
     var fetchQuery="select * from flight where stops like ? and stops like ?";
-    var mappingquery=" select * from flight_mapping where flight_id in (?,?) and station_name in (?,?)";
+    var mappingquery;
     var dataArry = [];
     var source = "sjc";
     var des = "dubai";
@@ -19,6 +19,10 @@ function handle_request(msg, callback){
     var indexofdes;
     var resultforflights =[]; // array will be passed to the second query
     var finalresult = [];
+    var finalresultobject ={};
+    var source_price = 0;
+    var destination_price = 0;
+    var noofarguments = '?';
 
     console.log("DATA: "+dataArry);
 
@@ -45,21 +49,80 @@ function handle_request(msg, callback){
             }
         }
 
+      console.log("resultforflights.length:"+resultforflights.length);
+       if(resultforflights.length>0){
+       if( resultforflights.length ===1)
+       {
+
+       }
+       else{
+            console.log("else");
+        for(var res1=0;res1<resultforflights.length-1;res1++)
+        {
+            noofarguments = noofarguments+',?';
+            console.log("noofarguments :" + noofarguments)
+        }
+       }
         resultforflights.push(source);
         resultforflights.push(des);
         console.log(resultforflights);
 
         // Second Query to fetch data based on the flight ids
 
+        mappingquery=" select * from flight_mapping where flight_id in ("+ noofarguments+") and station_name in (?,?)";
+        console.log("mappingquery : "+ mappingquery)
+
         mysql.fetchData(mappingquery,resultforflights,function (err,results1) {
 
             console.log("inside mapping"+results1);
+
+            for(var i=0;i<results1.length;i++)
+            {
+                if(i%2 === 0 || i===0)
+                {
+                    finalresultobject.origin_station = results1[i].station_name;
+                    finalresultobject.flight_departure = results1[i].flight_departure;
+                    finalresultobject.airline_name = results1[i].airline_name;
+                    source_price = results1[i].economy_class;
+                }
+                else if (i%2 ===1)
+                {
+                    finalresultobject.destination_station = results1[i].station_name;
+                    finalresultobject.flight_arrival = results1[i].flight_arrival;
+                    destination_price = results1[i].economy_class;
+                    finalresultobject.totalprice = destination_price-source_price;
+
+                    finalresult.push(finalresultobject);
+                    finalresultobject ={};
+                    destination_price =0;
+                    source_price =0;
+                }
+            }
+
+           for(var k = 0; k<finalresult.length;k++)
+           {
+                console.log("final Array : "+finalresult[k].origin_station);
+                console.log("final Array : "+finalresult[k].destination_station);
+                console.log("final Array : "+finalresult[k].flight_departure);
+                console.log("final Array : "+finalresult[k].flight_arrival);
+                console.log("final Array : "+finalresult[k].totalprice);
+           }
+
             res.code = "200";
             console.log("Success---"+res);
-            callback(null, res);
+            callback(null, finalresult);
 
 
                  });
+        }
+
+        else
+            {
+                var response =[]
+                response.code = "200";
+           console.log("Success--- but no result"+response);
+           callback(null, response);
+       }
     });
 
 

@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import { Route, Link,Switch } from 'react-router-dom';
 import * as FlightsAPI from '../api/FlightsAPI';
 import * as HotelsAPI from '../api/HotelsAPI';
+import {connect} from 'react-redux';
+import {getFlights} from '../actions/Flights/Flights'
 
 class Search extends Component {
 
@@ -35,9 +37,10 @@ class Search extends Component {
   handleFlightSearch(){
       FlightsAPI.getFlights()
           .then((output) => {
-
+              this.props.getFlights(output);
+              this.props.history.push("/Flights");
           });
-    this.props.history.push("/Flights");
+
   }
 
   render() {
@@ -286,4 +289,12 @@ class Search extends Component {
       }
   }
 
-export default Search;
+function mapDispatchToProps(dispatch) {
+    return {
+        getFlights : (data) => dispatch(getFlights(data))
+    };
+}
+
+//export default Search;
+
+export default connect(null, mapDispatchToProps)(Search);

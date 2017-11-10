@@ -22,13 +22,10 @@ exports.getFLights= function(req,res) {
         }
         else
         {
-            if(results.code == 200){
-                console.log("IN PASSPORT: "+results.value);
-                res.status(201).json({output:1});
-            }
-            else {
-                res.status(201).json({output:0});
-            }
+
+                console.log("IN Get Flights: "+results);
+                res.status(201).json({results});
+
         }
     });
 
