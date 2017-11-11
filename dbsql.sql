@@ -171,3 +171,5 @@ CREATE TABLE `flight` (
   
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
+/* ALTER datatype of credit_card column in user table*/
+ALTER TABLE `kayak_18`.`user`  CHANGE COLUMN `credit_card` `credit_card` BIGINT(8) NULL DEFAULT NULL ;
