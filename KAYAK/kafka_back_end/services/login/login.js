@@ -1,6 +1,6 @@
 var security = require('../utils/security');
 var mysql=require('./../database/mysql');
-//var errorHandler = require('./../utils/errorLogging');
+var errorHandler = require('./../utils/errorLogging');
 
 function handle_request(msg, callback){
   console.log("In handle request:"+ JSON.stringify(msg));
@@ -8,21 +8,21 @@ function handle_request(msg, callback){
   var password=msg.password;
   var encrypwd=security.encrypt(password);
 
-  var fetchQuery="SELECT user_id,emailid,password FROM user WHERE emailid=?";
+  var fetchQuery="SELECT user_id,emailid,password,fname FROM user WHERE emailid=?";
   var dataArry =  [];
   dataArry.push(msg.username);
   //dataArry.push(encrypwd);
 
   console.log("DATA: "+dataArry);
   mysql.fetchData(fetchQuery,dataArry,function (err,results){
-    /*if(err){
-        errorHandler.logError("Hotel.js","saveRoom",err);
-    }else{
-        callback(err,results);
-    }*/
-    console.log("CHECK RES: "+results[0].password);
+    if(err){
+        errorHandler.logError("login.js","handle_request",err);
+    }
+    else{
+
+    if(results.length>0){
     var compare=security.compareEncrypted(msg.password,results[0].password);
-    if (results && compare){
+    if (compare){
         res.code = "200";
           res.value=results;
           console.log("Success---"+res);
@@ -30,12 +30,22 @@ function handle_request(msg, callback){
     }
     else{
       res.code = "401";
-      res.value = "Failed Login";
-      console.log("Failed Login---");
+      res.value = 0;
+      console.log("Failed Login: Password wrong");
       //errorHandler.logError("Signup.js","saveRoom",err);
       callback(null, res);
 //throw err;
     }
+  }
+  else{
+    res.code = "401";
+    res.value = 0;
+    console.log("Failed Login: USER NOT FOUND");
+    //errorHandler.logError("Signup.js","saveRoom",err);
+    callback(null, res);
+//throw err;
+  }
+}
 });
 
 };

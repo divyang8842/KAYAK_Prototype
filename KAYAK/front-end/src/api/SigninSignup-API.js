@@ -39,3 +39,53 @@ fetch(`${api}/login`, {
   console.log("This is login error");
   return error;
 });
+
+//logout
+export const logout = () =>
+    fetch(`${api}/logout`, {
+      method: 'POST',
+      headers: {
+          ...headers,
+          'Content-Type': 'application/json'
+      },
+            }).then(res => {
+                return res.status;
+            }).catch(error => {
+                    console.log("This is error");
+                    return error;
+                });
+
+
+export const details = (payload) =>
+fetch(`${api}/account/account`, {
+  method: 'POST',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(payload)
+}).then(res=>res.json())
+.then(res => {
+  return res.output;
+})
+.catch(error => {
+  console.log("This is login error");
+  return error;
+});
+
+export const update = (payload) =>
+fetch(`${api}/update`, {
+  method: 'POST',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(payload)
+}).then(res=>res.json())
+.then(res => {
+  return res.output;
+})
+.catch(error => {
+  console.log("This is update error");
+  return error;
+});

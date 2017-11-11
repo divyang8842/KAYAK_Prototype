@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import { Route, Link,Switch } from 'react-router-dom';
 import * as API from '../api/SigninSignup-API';
 import ReactDOM from 'react-dom';
+import Search from './Home';
 
 class Login extends Component {
 
@@ -10,14 +10,14 @@ class Login extends Component {
     lastname:'',
     email:'',
     pass:'',
-    phone:'',
-    zip:'',
+
     user:'',
-    messageLogin:'',
-    messageSignup:'',
+    messageLogin:'false',
+    message:'',
     username:'',
     password:''
   };
+
 
      handleLogin = (input) => {
           console.log(input.loginemail);
@@ -28,8 +28,10 @@ class Login extends Component {
                       this.setState({islogged: 'false', message:"Invalid credentials. Login again." });
                         console.log("Wrong login: "+this.state.islogged);
                     } else {
-                      this.setState({islogged: 'true', user: output});
+                      this.setState({messageLogin: 'true', user: output, message:"Login Failed."});
+
                         console.log("Success login= "+output.uid);
+                        this.props.handleLogged(output.uid);
                     }
                 });
         };
@@ -40,14 +42,8 @@ class Login extends Component {
                 .then((output) => {
                     if (output === 0) {
                         console.log("Failed signup");
-                        this.setState({status: "Sign up failed."});
                     } else {
                         console.log("Success signup");
-                        ReactDOM.findDOMNode(this.refs.fn).value = "";
-                        ReactDOM.findDOMNode(this.refs.ln).value = "";
-                        ReactDOM.findDOMNode(this.refs.em).value = "";
-                        ReactDOM.findDOMNode(this.refs.pwd).value = "";
-                        this.setState({status: "Sign up successful."});
                     }
                 });
         };
@@ -62,6 +58,7 @@ class Login extends Component {
     render() {
         return (
           <div>
+            {this.state.messageLogin==='false' ? (
 <div id="fh5co-wrapper">
 <div id="fh5co-page">
 
@@ -107,25 +104,13 @@ class Login extends Component {
                                               this.setState({pass: event.target.value});}}/>
               </div>
             </div>
-            <div className="col-xxs-12 col-xs-6 mt">
-              <div className="input-field">
-                <label>Phone:</label>
-                <input type="text" ref="em" className="form-control" onChange={(event)=>{
-                                             this.setState({phone: event.target.value});}}/>
-              </div>
-            </div>
-            <div className="col-xxs-12 col-xs-6 mt">
-              <div className="input-field">
-                <label>Zip:</label>
-                <input type="text" ref="em" className="form-control" onChange={(event)=>{
-                                             this.setState({zip: event.target.value});}}/>
-              </div>
-            </div>
+
             <div className="col-xs-12">
 <input type="submit" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleSignup(this.state)}/>
             </div>
           </div>
           </form>
+
         </div>
       </div>
     </div>
@@ -152,13 +137,13 @@ class Login extends Component {
                       <input type="password" className="form-control" onChange={(event)=>{
                                                     this.setState({password: event.target.value});}}/>
                     </div>
-                  </div>
+                  </div><font color="red">{this.state.message}</font>
                   <div className="col-xs-12">
-
                   <button type="button" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleLogin(this.state)}>Submit</button>
                   </div>
                 </div>
                 </form>
+
                 </div>
               </div>
               </div>
@@ -172,7 +157,7 @@ class Login extends Component {
 </div>
 
 </div>
-</div>
+</div>) :(<Search/>)}
 </div>
         );
     }
