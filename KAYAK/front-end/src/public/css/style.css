@@ -11,6 +11,11 @@
 *	Edit this section
 *
 * ======================================================= */
+/* Modified: Tejas Panchal */
+#hotelsearch{
+  background: rgb(235, 234, 255);
+}
+
 body {
   font-family: "Open Sans", Arial, sans-serif;
   line-height: 1.6;
@@ -262,7 +267,8 @@ figure {
 }
 
 .sf-menu a {
-  color: rgba(0, 0, 0, 0.5);
+  /* color: rgb(0, 0, 0); Modified: Tejas Panchal*/
+  color: rgb(255, 255, 255);
   padding: 0.75em 1em !important;
   font-weight: normal;
   border-left: none;
@@ -356,8 +362,10 @@ figure {
   position: relative;
   left: 0;
   width: 100%;
+  height: 50px;
   z-index: 1022;
-  background: #fff;
+  /* background: #fff; Modified: Tejas Panchal*/
+  background: #000000
 }
 
 .nav-header {
@@ -371,7 +379,8 @@ figure {
   z-index: 2;
   font-size: 28px;
   text-transform: uppercase;
-  margin-top: 35px;
+  /* margin-top: 35px; Modified: Tejas Panchal*/
+  margin-top: 15px;
   font-weight: 700;
   float: left;
   padding-left: 40px;
@@ -401,7 +410,8 @@ figure {
   z-index: 2;
   display: block;
   float: right;
-  margin-top: 15px;
+  /* margin-top: 15px; Modified: Tejas Panchal*/
+  margin-top: 0px;
 }
 #fh5co-menu-wrap .sf-menu a {
   padding: 1em .75em;

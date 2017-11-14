@@ -3,6 +3,8 @@ import { Route, Link,Switch } from 'react-router-dom';
 import Login from './Login';
 import Search from './Search';
 import Account from './Account';
+import HotelsHome from './Hotels/HotelsHome';
+import FlightsHome from './Flights/FlightsHome';
 import * as API from '../api/SigninSignup-API';
 import '../public/css/animate.css';
 import '../public/css/bootstrap.css';
@@ -71,6 +73,8 @@ class Home extends Component {
 
           <Switch>
           <Route exact path="/" component={Search}/>
+          <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
+          <Route exact path="/flights" component={() => <FlightsHome/>}/>
           <Route exact path="/login" component={() => <Login handleLogged={this.logged}/>}/>
           <Route exact path="/account" component={() => <Account id={this.state.uid}/>}/>
           </Switch>

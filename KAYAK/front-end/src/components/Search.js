@@ -31,6 +31,11 @@ class Search extends Component {
   }
 
   handleHotelSearch(){
+    var city = this.state.Hotels.City;
+    var Checkin = this.state.Hotels.Checkin;
+    var Checkout = this.state.Hotels.Checkout;
+    var Rooms = this.state.Hotels.Rooms;
+    var Guests = this.state.Hotels.Guests;
     this.props.history.push("/Hotels");
   }
 
@@ -86,13 +91,13 @@ class Search extends Component {
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
-                                  <label>Check In:</label>
+                                  <label>Depart:</label>
                                   <input type="text" className="form-control" id="date-start" placeholder="mm/dd/yyyy"/>
                                 </div>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
-                                  <label>Check Out:</label>
+                                  <label>Return:</label>
                                   <input type="text" className="form-control" id="date-end" placeholder="mm/dd/yyyy"/>
                                 </div>
                               </div>
@@ -143,55 +148,72 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-12 mt">
                                 <div className="input-field">
                                   <label>City:</label>
-                                  <input type="text" className="form-control" id="from-place" placeholder="Los Angeles, USA"/>
+                                  <input type="text" className="form-control" id="from-place" placeholder="Los Angeles, USA"
+                                    onChange={(event) => {
+                                        this.setState({
+                                            Hotels: {
+                                                ...this.state.Hotels,
+                                                City: event.target.value
+                                            }
+                                        });}
+                                        }/>
                                 </div>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
-                                  <label>Return:</label>
-                                  <input type="text" className="form-control" id="date-start" placeholder="mm/dd/yyyy"/>
+                                  <label>Check In:</label>
+                                  <input type="text" className="form-control" id="date-start" placeholder="mm/dd/yyyy"
+                                    onChange={(event) => {
+                                        this.setState({
+                                            Hotels: {
+                                                ...this.state.Hotels,
+                                                Checkin: event.target.value
+                                            }
+                                        });}
+                                        }/>
                                 </div>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Check Out:</label>
-                                  <input type="text" className="form-control" id="date-end" placeholder="mm/dd/yyyy"/>
+                                  <input type="text" className="form-control" id="date-end" placeholder="mm/dd/yyyy"
+                                    onChange={(event) => {
+                                        this.setState({
+                                            Hotels: {
+                                                ...this.state.Hotels,
+                                                Checkout: event.target.value
+                                            }
+                                        });}
+                                        }/>
                                 </div>
                               </div>
-                              <div className="col-sm-12 mt">
-                                <section>
+                              <div className="col-sm-6 mt">
+                                <div className="input-field">
                                   <label>Rooms:</label>
-                                  <select className="cs-select cs-skin-border">
-                                    <option value="" disabled selected>1</option>
-                                    <option value="economy">1</option>
-                                    <option value="first">2</option>
-                                    <option value="business">3</option>
-                                  </select>
-                                </section>
+                                  <input type="text" className="form-control" id="rooms" placeholder="Number of Rooms"
+                                    onChange={(event) => {
+                                        this.setState({
+                                            Hotels: {
+                                                ...this.state.Hotels,
+                                                Rooms: event.target.value
+                                            }
+                                        });}
+                                        }/>
+                                </div>
                               </div>
-                              <div className="col-xxs-12 col-xs-6 mt">
-                                <section>
-                                  <label>Adult:</label>
-                                  <select className="cs-select cs-skin-border">
-                                    <option value="" disabled selected>1</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                  </select>
-                                </section>
-                              </div>
-                              <div className="col-xxs-12 col-xs-6 mt">
-                                <section>
-                                  <label>Children:</label>
-                                  <select className="cs-select cs-skin-border">
-                                    <option value="" disabled selected>1</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                  </select>
-                                </section>
+                              <div className="col-xxs-6 col-xs-6 mt">
+                                <div className="input-field">
+                                <label>Guests:</label>
+                                <input type="text" className="form-control" id="guests" placeholder="Number of Guests"
+                                  onChange={(event) => {
+                                      this.setState({
+                                          Hotels: {
+                                              ...this.state.Hotels,
+                                              Guests: event.target.value
+                                          }
+                                      });}
+                                      }/>
+                                </div>
                               </div>
                               <div className="col-xs-12">
                                 <button className="btn btn-primary btn-block"
