@@ -30,7 +30,7 @@ var handle_update = function(msg,callback){
   var res = '';
   console.log("In handle request:"+ JSON.stringify(msg));
 
-  var insertQuery="UPDATE user SET fname=?,lname=?,address=?,city=?,state=?,zip_code=?,phoneno=?,credit_card=? WHERE user_id="+msg.uid;
+  var insertQuery="UPDATE user SET fname=?,lname=?,address=?,city=?,state=?,zip_code=?,phoneno=?,credit_card=?,emailid=? WHERE user_id="+msg.uid;
   var dataArry =  [];
   dataArry.push(msg.firstname);
   dataArry.push(msg.lastname);
@@ -40,6 +40,7 @@ var handle_update = function(msg,callback){
   dataArry.push(msg.zip);
   dataArry.push(msg.phone);
   dataArry.push(msg.card);
+  dataArry.push(msg.email);
   console.log("DATA: "+dataArry);
   mysql.setData(insertQuery,dataArry,function (err,results){
     console.log("CHECK RES: "+results);

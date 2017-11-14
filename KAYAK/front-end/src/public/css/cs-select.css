@@ -24,6 +24,17 @@ div.cs-select:focus {
 	display: none;
 }
 
+.datecss{
+background: rgba(0, 0, 0, 0.05);
+box-shadow: none;
+	color:#F78536;
+	border:none;
+	font-weight:bold;
+	font-size:14px;
+	width:185px;
+	padding: 10px 10px;
+}
+
 .cs-select span {
 	display: block;
 	position: relative;

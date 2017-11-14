@@ -77,7 +77,7 @@ app.post('/login', function(req, res) {
         req.session.user = user.uid.user_id;
         req.session.firstname = user.uid.fname;
         console.log("Session initialised: "+req.session.user+req.session.firstname);
-        //req.session.save();
+        req.session.save();
         res.status(201).send({output:user});}
 
     })(req, res);
