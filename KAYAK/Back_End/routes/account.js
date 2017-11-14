@@ -29,8 +29,9 @@ exports.update= function(req,res) {
       var phone=req.param("phone");
       var card=req.param("card");
       var uid=req.param("uid");
+      var em=req.param("email");
       console.log("USERID STATE: "+state);
-      kafka.make_request('login_topic',{"uid":uid,"firstname":fname,"lastname":lname,"add":add,"city":city,"state":state,"phone":phone,"card":card,"zip":zip,"action":4}, function(err,results){
+      kafka.make_request('login_topic',{"uid":uid,"firstname":fname,"lastname":lname,"add":add,"city":city,"state":state,"phone":phone,"card":card,"zip":zip,"email":em,"action":4}, function(err,results){
             console.log('in result');
             console.log(results);
             if(err){

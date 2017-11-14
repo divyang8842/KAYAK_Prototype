@@ -3,7 +3,10 @@ import { Route, Link,Switch } from 'react-router-dom';
 import * as FlightsAPI from '../api/FlightsAPI';
 import * as HotelsAPI from '../api/HotelsAPI';
 import {connect} from 'react-redux';
-import {getFlights} from '../actions/Flights/Flights'
+import {getFlights} from '../actions/Flights/Flights';
+import '../public/css/bootstrap-datepicker.min.css';
+import '../public/css/cs-select.css';
+import '../public/css/cs-skin-border.css';
 
 class Search extends Component {
 
@@ -87,19 +90,19 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Check In:</label>
-                                  <input type="text" className="form-control" id="date-start" placeholder="mm/dd/yyyy"/>
+                                  <input type="date" className="datecss" id="date-start" placeholder="mm/dd/yyyy"/>
                                 </div>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Check Out:</label>
-                                  <input type="text" className="form-control" id="date-end" placeholder="mm/dd/yyyy"/>
+                                  <input type="date" className="datecss" id="date-end" placeholder="mm/dd/yyyy"/>
                                 </div>
                               </div>
                               <div className="col-sm-12 mt">
                                 <section>
                                   <label>Class:</label>
-                                  <select className="cs-select cs-skin-border" style={{color:"#F78536",fontWeight:"bold",fontSize:"13px"}}>
+                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
                                     <option value="" disabled selected>Economy</option>
                                     <option value="economy">Economy</option>
                                     <option value="first">First</option>
@@ -110,19 +113,20 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <section>
                                   <label>Adult:</label>
-                                  <select className="cs-select cs-skin-border">
+                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
                                     <option value="" disabled selected>1</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                     <option value="4">4</option>
                                   </select>
+
                                 </section>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <section>
                                   <label>Children:</label>
-                                  <select className="cs-select cs-skin-border">
+                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
                                     <option value="" disabled selected>1</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -132,7 +136,7 @@ class Search extends Component {
                                 </section>
                               </div>
                               <div className="col-xs-12">
-                                <button className="btn btn-primary btn-block" 
+                                <button className="btn btn-primary btn-block"
                                   onClick={() => this.handleFlightSearch()}>Search Flights</button>
                               </div>
                             </div>
@@ -149,19 +153,19 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Return:</label>
-                                  <input type="text" className="form-control" id="date-start" placeholder="mm/dd/yyyy"/>
+                                  <input type="date" className="datecss" id="date-start" placeholder="mm/dd/yyyy"/>
                                 </div>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Check Out:</label>
-                                  <input type="text" className="form-control" id="date-end" placeholder="mm/dd/yyyy"/>
+                                  <input type="date" className="datecss" id="date-end" placeholder="mm/dd/yyyy"/>
                                 </div>
                               </div>
                               <div className="col-sm-12 mt">
                                 <section>
                                   <label>Rooms:</label>
-                                  <select className="cs-select cs-skin-border">
+                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
                                     <option value="" disabled selected>1</option>
                                     <option value="economy">1</option>
                                     <option value="first">2</option>
@@ -172,7 +176,7 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <section>
                                   <label>Adult:</label>
-                                  <select className="cs-select cs-skin-border">
+                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
                                     <option value="" disabled selected>1</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -184,7 +188,7 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <section>
                                   <label>Children:</label>
-                                  <select className="cs-select cs-skin-border">
+                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
                                     <option value="" disabled selected>1</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -217,19 +221,19 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Departs:</label>
-                                  <input type="text" className="form-control" id="date-start" placeholder="mm/dd/yyyy"/>
+                                  <input type="date" className="datecss" id="date-start" placeholder="mm/dd/yyyy"/>
                                 </div>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Return:</label>
-                                  <input type="text" className="form-control" id="date-end" placeholder="mm/dd/yyyy"/>
+                                  <input type="date" className="datecss" id="date-end" placeholder="mm/dd/yyyy"/>
                                 </div>
                               </div>
                               <div className="col-sm-12 mt">
                                 <section>
                                   <label>Rooms:</label>
-                                  <select className="cs-select cs-skin-border">
+                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
                                     <option value="" disabled selected>1</option>
                                     <option value="economy">1</option>
                                     <option value="first">2</option>
@@ -240,7 +244,7 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <section>
                                   <label >Adult:</label>
-                                  <select className="cs-select cs-skin-border">
+                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
                                     <option value="" disabled selected>1</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -252,7 +256,7 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <section>
                                   <label>Children:</label>
-                                  <select className="cs-select cs-skin-border">
+                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
                                     <option value="" disabled selected>1</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
