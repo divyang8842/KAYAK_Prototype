@@ -173,3 +173,39 @@ CREATE TABLE `flight` (
 
 /* ALTER datatype of credit_card column in user table*/
 ALTER TABLE `kayak_18`.`user`  CHANGE COLUMN `credit_card` `credit_card` BIGINT(8) NULL DEFAULT NULL ;
+
+/* DROPPED hotel table and added tables for Hotel module*/
+DROP TABLE IF EXISTS `hotel`;
+
+CREATE TABLE `hotels` (
+  `hotel_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `hotel_name` VARCHAR(50) NOT NULL,
+  `hotel_star` INT(1) NOT NULL,
+  `hotel_locaion` VARCHAR(100) DEFAULT NULL,
+  `hotel_city` VARCHAR(50) NOT NULL,
+  `hotel_state` VARCHAR(50) DEFAULT NULL,
+  `hotel_zipcode` VARCHAR(10) NOT NULL,
+  `hotel_description` VARCHAR(200) DEFAULT NULL,
+  `deleteflag` INT(11) DEFAULT '0',
+  PRIMARY KEY (`hotel_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `hotel_reviews` (
+  `hotel_id` INT(11) NOT NULL UNIQUE,
+  `review_overall` FLOAT(2,1) NOT NULL,
+  `review_count` INT(11) NOT NULL,
+  `review_location` FLOAT(2,1) NOT NULL,
+  `review_vibe` FLOAT(2,1) NOT NULL,
+  `review_service` FLOAT(2,1) NOT NULL,
+  `review_amenities` FLOAT(2,1) NOT NULL,
+  `review_room` FLOAT(2,1) NOT NULL,
+  `review_food` FLOAT(2,1) NOT NULL,
+  `deleteflag` INT(1) DEFAULT '0',
+  FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `hotel_amenities` (
+  `hotel_id` INT(11) NOT NULL UNIQUE,
+  `amenity` varchar(20) NOT NULL,
+  FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
