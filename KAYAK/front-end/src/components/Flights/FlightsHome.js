@@ -22,6 +22,18 @@ class FlightsHome extends Component {
                         <FLightLeftPanel/>
                     </div>
                     <div className="col-sm-10 col-lg-10 col-md-10 col-xs-10" >
+                        <div className="row">
+                            <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
+                        <button className="btn btn-primary btn-block" >
+                            PRICE
+                        </button>
+                            </div>
+                            <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
+                                <button className="btn btn-primary btn-block" >
+                                    DURATION
+                                </button>
+                            </div>
+                        </div>
                         <FLightResults/>
                     </div>
 

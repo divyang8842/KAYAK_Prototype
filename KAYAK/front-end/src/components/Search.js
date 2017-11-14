@@ -34,16 +34,12 @@ class Search extends Component {
   }
 
   handleHotelSearch(){
-    var city = this.state.Hotels.City;
-    var Checkin = this.state.Hotels.Checkin;
-    var Checkout = this.state.Hotels.Checkout;
-    var Rooms = this.state.Hotels.Rooms;
-    var Guests = this.state.Hotels.Guests;
+
     this.props.history.push("/Hotels");
   }
 
   handleFlightSearch(){
-      FlightsAPI.getFlights()
+      FlightsAPI.getFlights(this.state.Flights)
           .then((output) => {
               this.props.getFlights(output);
               this.props.history.push("/Flights");
@@ -83,20 +79,59 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <div className="input-field">
                                   <label>From:</label>
-                                  <input type="text" className="form-control" id="from-place" placeholder="Los Angeles, USA"/>
+                                  <input type="text"
+                                         className="form-control"
+                                         id="from-place"
+                                         placeholder="Los Angeles, USA"
+                                         value={this.state.Flights.Source}
+                                         onChange={(event) => {
+                                             this.setState({
+                                                 Flights: {
+                                                     ...this.state.Flights,
+                                                     Source: event.target.value
+                                                 }
+                                             });}
+                                         }
+                                  />
                                 </div>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <div className="input-field">
                                   <label>To:</label>
-                                  <input type="text" className="form-control" id="to-place" placeholder="Tokyo, Japan"/>
+                                  <input type="text"
+                                         className="form-control"
+                                         id="to-place"
+                                         placeholder="Tokyo, Japan"
+                                         value={this.state.Flights.Destination}
+                                         onChange={(event) => {
+                                             this.setState({
+                                                 Flights: {
+                                                     ...this.state.Flights,
+                                                     Destination: event.target.value
+                                                 }
+                                             });}
+                                         }
+                                  />
                                 </div>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
 
                                   <label>Depart:</label>
-                                  <input type="date" className="form-control" id="date-start" placeholder="mm/dd/yyyy"/>
+                                  <input type="date"
+                                         className="form-control"
+                                         id="date-start"
+                                         placeholder="mm/dd/yyyy"
+                                         value={this.state.Flights.Depart}
+                                         onChange={(event) => {
+                                             this.setState({
+                                                 Flights: {
+                                                     ...this.state.Flights,
+                                                     Depart: event.target.value
+                                                 }
+                                             });}
+                                         }
+                                  />
 
                                   
                                 </div>
@@ -104,7 +139,20 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Return:</label>
-                                  <input type="date" className="form-control" id="date-end" placeholder="mm/dd/yyyy"/>
+                                  <input type="date"
+                                         className="form-control"
+                                         id="date-end"
+                                         placeholder="mm/dd/yyyy"
+                                         value={this.state.Flights.Return}
+                                         onChange={(event) => {
+                                             this.setState({
+                                                 Flights: {
+                                                     ...this.state.Flights,
+                                                     Return: event.target.value
+                                                 }
+                                             });}
+                                         }
+                                  />
                                 </div>
                               </div>
                               <div className="col-sm-12 mt">

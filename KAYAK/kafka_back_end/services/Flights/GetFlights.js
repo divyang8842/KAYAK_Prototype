@@ -9,8 +9,8 @@ function handle_request(msg, callback){
     var fetchQuery="select * from flight where stops like ? and stops like ?";
     var mappingquery;
     var dataArry = [];
-    var source = "sjc";
-    var des = "dubai";
+    var source = msg.source;
+    var des = msg.Destination;
     dataArry.push('%'+source+'%');
     dataArry.push('%'+des+'%');
     var res=[];
@@ -29,6 +29,7 @@ function handle_request(msg, callback){
     // First Query will fetch flight ids from flight tables based on the input parameter
 
     mysql.fetchData(fetchQuery,dataArry,function (err,results){
+        if(results){
 
         console.log("result "+results[0].flight_id);
 
@@ -123,6 +124,15 @@ function handle_request(msg, callback){
            console.log("Success--- but no result"+response);
            callback(null, response);
        }
+        }
+
+        else
+        {
+            var response =[]
+            response.code = "200";
+            console.log("Success--- but no result"+response);
+            callback(null, response);
+        }
     });
 
 
