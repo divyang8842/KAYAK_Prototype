@@ -111,5 +111,39 @@ var insertHotelData = function(msg,callback){
     });
 
 };
-exports.insertHotelData = insertHotelData;
 
+
+var insertRoomData = function(msg,callback){
+    var res = '';
+    console.log("In handle request:"+ JSON.stringify(msg));
+
+    var insertQuery="INSERT INTO room (room_type,room_size,guestAllowed,room_price) values(?,?,?,?)";
+    var dataArry =  [];
+    dataArry.push(msg.roomtype);
+    dataArry.push(msg.roomsize);
+    dataArry.push(msg.guestAllowed);
+    dataArry.push(msg.roomprice);
+
+    console.log("DATA: "+dataArry);
+    mysql.setData(insertQuery,dataArry,function (err,results){
+        console.log("CHECK RES: "+results);
+        if (err){
+            //res.code = "401";
+            res = "Failed Insertion";
+            console.log("Failed signup---");
+            errorHandler.logError("Signup.js","afterSignUp",err);
+            callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            console.log("Successfully Room Data Inserted");
+            callback(null, results);
+        }
+    });
+
+};
+
+
+exports.insertHotelData = insertHotelData;
+exports.insertRoomData=insertRoomData;

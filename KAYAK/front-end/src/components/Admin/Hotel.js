@@ -229,6 +229,10 @@ class Hotel extends Component {
         hoteldesc:'',
         hotelameneties:'',
         hotelstar:'',
+        roomtype:'',
+        roomsize:'',
+        guestAllowed:'',
+        roomprice:'',
 
         formErrors: {hotelname:'',hoteladdress:'',hotelcity: '',hotelstate: '',hotelzipcode: '',hoteldesc:'',hotelameneties:'',hotelstar:''  },
         type:false,
@@ -337,6 +341,7 @@ class Hotel extends Component {
                         isLoggedIn: false,
                         message: "Inserted Hotel Data Successfully..!!",
                     });
+                    alert("Inserted Hotel Data Successfully..!!")
                     this.props.history.push("/login");
                 } else if (status === 401) {
                     this.setState({
@@ -346,6 +351,26 @@ class Hotel extends Component {
                 }
             });
     };
+    insertRoomDetails=(userdata)=>{
+        API.insertRoomData(userdata)
+            .then((status) => {
+                if (status.status == '201') {
+                    this.setState({
+                        root:status.root,
+                        isLoggedIn: false,
+                        message: "Inserted Room Data Successfully..!!",
+                    });
+                    alert("Inserted Room Data Successfully..!!")
+                    this.props.history.push("/login");
+                } else if (status === 401) {
+                    this.setState({
+                        isLoggedIn: false,
+                        message: "SignUp Failed"
+                    });
+                }
+            });
+
+    }
 
     render() {
         return (
@@ -361,7 +386,7 @@ class Hotel extends Component {
                                         <div className="col-xxs-12 col-xs-6 mt">
                                             <div className="input-field">
                                                 <label>Hotel Name:</label>
-                                                <input type="text" value={this.state.hotelname} className="form-control" onChange={(event)=>{const name="hotelname"
+                                                <input type="text" placeholder="Enter Hotel Name" value={this.state.hotelname} className="form-control" onChange={(event)=>{const name="hotelname"
                                                     const value=event.target.value
                                                     this.setState({hotelname: event.target.value,
                                                         type:true}, () => { this.validateField(name, value)});}}/>
@@ -370,7 +395,7 @@ class Hotel extends Component {
                                         <div className="col-xxs-12 col-xs-6 mt">
                                             <div className="input-field">
                                                 <label>Hotel Address:</label>
-                                                <input type="text" value={this.state.hoteladdress} className="form-control" onChange={(event)=>{const name="hoteladdress"
+                                                <input type="text" placeholder="Enter Hotel Address" value={this.state.hoteladdress} className="form-control" onChange={(event)=>{const name="hoteladdress"
                                                     const value=event.target.value
                                                     this.setState({hoteladdress: event.target.value,
                                                         type:true}, () => { this.validateField(name, value)});}}/>
@@ -379,7 +404,7 @@ class Hotel extends Component {
                                         <div className="col-xxs-12 col-xs-6 mt">
                                             <div className="input-field">
                                                 <label>Hotel City:</label>
-                                                <input type="text" value={this.state.hotelcity} className="form-control" onChange={(event)=>{const name="hotelcity"
+                                                <input type="text" placeholder="Enter Hotel City" value={this.state.hotelcity} className="form-control" onChange={(event)=>{const name="hotelcity"
                                                     const value=event.target.value
                                                     this.setState({hotelcity: event.target.value,
                                                         type:true}, () => { this.validateField(name, value)});}}/>
@@ -389,7 +414,7 @@ class Hotel extends Component {
                                         <div className="col-xxs-12 col-xs-6 mt">
                                             <div className="input-field">
                                                 <label>Hotel State:</label>
-                                                <input type="text" value={this.state.hotelstate} className="form-control" onChange={(event)=>{const name="hotelstate"
+                                                <input type="text" placeholder="Enter Hotel State" value={this.state.hotelstate} className="form-control" onChange={(event)=>{const name="hotelstate"
                                                     const value=event.target.value
                                                     this.setState({hotelstate: event.target.value,
                                                         type:true}, () => { this.validateField(name, value)});}}/>
@@ -399,7 +424,7 @@ class Hotel extends Component {
                                         <div className="col-xxs-12 col-xs-6 mt">
                                             <div className="input-field">
                                                 <label>Hotel Zipcode:</label>
-                                                <input type="text" maxLength="5" value={this.state.hotelzipcode} className="form-control" onChange={(event)=>{const name="hotelzipcode"
+                                                <input type="text" placeholder="Enter Hotel ZipCode" maxLength="5" value={this.state.hotelzipcode} className="form-control" onChange={(event)=>{const name="hotelzipcode"
                                                     const value=event.target.value
                                                     this.setState({hotelzipcode: event.target.value,
                                                         type:true}, () => { this.validateField(name, value)});}}/>
@@ -409,7 +434,7 @@ class Hotel extends Component {
                                         <div className="col-xxs-12 col-xs-6 mt">
                                             <div className="input-field">
                                                 <label>Hotel Description:</label>
-                                                <input type="text" value={this.state.hoteldesc} className="form-control" onChange={(event)=>{const name="hoteldesc"
+                                                <input type="text" placeholder="Enter Hotel Description" value={this.state.hoteldesc} className="form-control" onChange={(event)=>{const name="hoteldesc"
                                                     const value=event.target.value
                                                     this.setState({hoteldesc: event.target.value,
                                                         type:true}, () => { this.validateField(name, value)});}}/>
@@ -418,7 +443,7 @@ class Hotel extends Component {
                                         <div className="col-xxs-12 col-xs-6 mt">
                                             <div className="input-field">
                                                 <label>Hotel Ameneties:</label>
-                                                <input type="text" value={this.state.hotelameneties} className="form-control" onChange={(event)=>{const name="hotelameneties"
+                                                <input type="text" placeholder="Enter Hotel Ameneties" value={this.state.hotelameneties} className="form-control" onChange={(event)=>{const name="hotelameneties"
                                                     const value=event.target.value
                                                     this.setState({hotelameneties: event.target.value,
                                                         type:true}, () => { this.validateField(name, value)});}}/>
@@ -427,7 +452,7 @@ class Hotel extends Component {
                                         <div className="col-xxs-12 col-xs-6 mt">
                                             <div className="input-field">
                                                 <label>Hotel Stars:</label>
-                                                <input type="text" value={this.state.hotelstar} className="form-control" onChange={(event)=>{const name="hotelstar"
+                                                <input type="text" placeholder="Enter Hotel Stars" value={this.state.hotelstar} className="form-control" onChange={(event)=>{const name="hotelstar"
                                                     const value=event.target.value
                                                     this.setState({hotelstar: event.target.value,
                                                         type:true}, () => { this.validateField(name, value)});}}/>
@@ -444,6 +469,60 @@ class Hotel extends Component {
                                     </div>
 
                                 </form>
+
+
+                                <div className="control-group span6 container row">
+                                    <div className="form-group">
+                                        <div className="col-xxs-12 col-xs-12 mt"></div>
+
+                                        <h4>Rooms</h4>
+                                        <div className="col-md-4">
+                                            <label htmlFor="trp_code" className="control-label">Room Types: </label>
+                                            <select className="form-control" name="trp_code" id="trp_code" title="Transporter" style={{width: 350}} onChange={(event)=>{const name="roomtype"
+                                                const value=event.target.value
+                                                this.setState({roomtype: event.target.value,
+                                                    type:true})}}>
+                                                <option value="" disabled selected>Select Room Type</option>
+                                                <option className="form-control" value="Standard Room">Standard Room</option>
+                                                <option className="form-control" value="Deluxe Room">Deluxe Room</option>
+                                                <option className="form-control" value="Grand Deluxe Room">Grand Deluxe Room</option>
+                                                <option className="form-control" value="Superior Suite">Superior Suite</option>
+                                            </select>
+                                        </div>
+                                        <div className="col-md-2">
+                                            <label htmlFor="lrno" className="control-label">Room Size: </label>
+                                            <select className="form-control" name="trp_code" id="trp_code" title="Transporter" style={{width: 160}} onChange={(event)=>{const name="roomsize"
+                                                const value=event.target.value
+                                                this.setState({roomsize: event.target.value,
+                                                    type:true})}}>
+                                                <option value="" disabled selected>Select Room Size</option>
+                                                <option className="form-control" value="325 sqft">325 sqft</option>
+                                                <option className="form-control" value="460 sqft">460 sqft</option>
+                                                <option className="form-control" value="550 sqft">550 sqft</option>
+                                                <option className="form-control" value="700 sqft">700 sqft</option>
+                                            </select>
+                                            </div>
+                                        <div className="col-md-2">
+                                            <label htmlFor="lrdate" className="control-label">Guests Allowed: </label>
+                                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}} onChange={(event)=>{const name="guestsAllowed"
+                                                const value=event.target.value
+                                                this.setState({guestAllowed: event.target.value,
+                                                    type:true})}} />
+                                        </div>
+                                        <div className="col-md-2">
+                                            <label htmlFor="lrdate" className="control-label">Room Price: </label>
+                                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}} onChange={(event)=>{const name="roomprice"
+                                                const value=event.target.value
+                                                this.setState({roomprice: event.target.value,
+                                                    type:true})}}  />
+                                        </div>
+                                        <div className="col-xxs-12 col-xs-12 mt"></div>
+
+                                        <div className="col-xs-2">
+                                            <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertRoomDetails(this.state)}>ADD</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

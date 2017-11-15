@@ -105,6 +105,8 @@ consumer_get_flights.on('message', function (message) {
     console.log('message received in get Files');
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
+    var action=data.data.action;
+    console.log("ACTION-----"+data.data.action);
 
     getFlights.handle_request(data.data, function(err,res){
         console.log('after handle get Flights---');
@@ -129,22 +131,45 @@ consumer_HotelsOps.on('message', function (message) {
     console.log('message received in Hotels');
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
+    var action=data.data.action;
+    if(action==1) {
+        admin_Hotel.insertHotelData(data.data, function (err, res) {
+            console.log('after handle insertHotel---' + JSON.stringify(res));
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
 
-    admin_Hotel.insertHotelData(data.data, function(err,res){
-        console.log('after handle get Flights---'+JSON.stringify(res));
-        var payloads = [
-            { topic: data.replyTo,
-                messages:JSON.stringify({
-                    correlationId:data.correlationId,
-                    data : res
-                }),
-                partition : 0
-            }
-        ];
-
-        producer.send(payloads, function(err, data){
-            console.log("PRODUCER CHECK:---");
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
         });
-        return;
-    });
+    }
+    else if(action==2) {
+        admin_Hotel.insertRoomData(data.data, function (err, res) {
+            console.log('after handle insert Room---' + JSON.stringify(res));
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+    }
 });
