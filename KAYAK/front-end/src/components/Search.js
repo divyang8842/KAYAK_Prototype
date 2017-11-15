@@ -119,7 +119,7 @@ class Search extends Component {
 
                                   <label>Depart:</label>
                                   <input type="date"
-                                         className="form-control"
+                                         className="datecss"
                                          id="date-start"
                                          placeholder="mm/dd/yyyy"
                                          value={this.state.Flights.Depart}
@@ -140,7 +140,7 @@ class Search extends Component {
                                 <div className="input-field">
                                   <label>Return:</label>
                                   <input type="date"
-                                         className="form-control"
+                                         className="datecss"
                                          id="date-end"
                                          placeholder="mm/dd/yyyy"
                                          value={this.state.Flights.Return}
@@ -217,7 +217,7 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Check In:</label>
-                                  <input type="text" className="form-control" id="date-start" placeholder="mm/dd/yyyy"
+                                  <input type="date" className="datecss" id="date-start" placeholder="mm/dd/yyyy"
                                     onChange={(event) => {
                                         this.setState({
                                             Hotels: {
@@ -231,7 +231,7 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Check Out:</label>
-                                  <input type="text" className="form-control" id="date-end" placeholder="mm/dd/yyyy"
+                                  <input type="date" className="datecss" id="date-end" placeholder="mm/dd/yyyy"
                                     onChange={(event) => {
                                         this.setState({
                                             Hotels: {

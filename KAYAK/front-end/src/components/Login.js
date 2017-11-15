@@ -142,7 +142,7 @@ class Login extends Component {
         return (
           <div>
             {this.state.messageLogin==='false' ? (
-              <div id="fh5co-wrapper">
+            //   <div id="fh5co-wrapper">
               <div id="fh5co-page">
 
               <div className="fh5co-hero">
@@ -192,7 +192,7 @@ class Login extends Component {
               <div className="input-field">
               <div className={'form-group ${this.errorClass(this.state.formErrors1.password)}'}>
                 <label>Password:</label>
-                <input type="password" ref="pwd" className="w3-input" onChange={(event)=>{const name="password"
+                <input type="password" ref="pwd" className="form-control" onChange={(event)=>{const name="password"
                                           const value=event.target.value
                                               this.setState({pass: event.target.value,type:true}, () => { this.validateField1(name, value) });}} required/>
                   </div>
@@ -269,7 +269,7 @@ class Login extends Component {
   </div>
 </div>
 
-</div>
+
 </div>) :(<Search/>)}
 </div>
         );
