@@ -1,19 +1,8 @@
-//var ejs = require('ejs');
 var mysql = require('mysql');
-var pool = mysql.createPool({
-	connectionLimit : 100,
-	host : '127.0.0.1',
-	user : 'root',
-	password : 'root',
-	database : 'kayak_18',
-	port : 3306,
-	debug : false
-});
+var dbType = "mysql";
+var pool = require('./connectionPooling');
 
-//
-//var closeConnection = function(connection) {
-//	connection.release();
-//};
+pool.createpool(100,dbType,function(){});
 
 var fetchData = function(sqlQuery,data,callback) {
 	pool.getConnection(function(err, connection) {
@@ -24,9 +13,9 @@ var fetchData = function(sqlQuery,data,callback) {
 			} else {
 				callback(err, rows);
 			}
-			connection.release();
+            pool.closeConnection(db,dbType);
 		});
-	});
+	},dbType);
 };
 
 var setData = function( sqlQuery,data,callback) {
@@ -39,11 +28,10 @@ var setData = function( sqlQuery,data,callback) {
 				callback(err, rows);
 
 			} finally {
-				connection.release();
+                pool.closeConnection(db,dbType);
 			}
 		});
-	});
-
+	},dbType);
 };
 
 exports.fetchData = fetchData;
