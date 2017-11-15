@@ -29,7 +29,7 @@ function handle_request(msg, callback){
     // First Query will fetch flight ids from flight tables based on the input parameter
 
     mysql.fetchData(fetchQuery,dataArry,function (err,results){
-        if(results){
+        if(results.length >0){
 
         console.log("result "+results[0].flight_id);
 
@@ -83,6 +83,7 @@ function handle_request(msg, callback){
                 {
                     finalresultobject.origin_station = results1[i].station_name;
                     finalresultobject.flight_departure = results1[i].flight_departure;
+
                     finalresultobject.airline_name = results1[i].airline_name;
                     source_price = results1[i].economy_class;
                 }
@@ -90,6 +91,7 @@ function handle_request(msg, callback){
                 {
                     finalresultobject.destination_station = results1[i].station_name;
                     finalresultobject.flight_arrival = results1[i].flight_arrival;
+
                     destination_price = results1[i].economy_class;
                     finalresultobject.totalprice = destination_price-source_price;
 
@@ -129,6 +131,7 @@ function handle_request(msg, callback){
         else
         {
             var response =[]
+
             response.code = "200";
             console.log("Success--- but no result"+response);
             callback(null, response);

@@ -5,10 +5,13 @@
   "dependencies": {
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-native": "0.46.4",
+    "react-native-checkbox": "^2.0.0",
+    "react-native-slider": "0.11.0",
+    "react-redux": "*",
+    "react-router-dom": "*",
     "react-scripts": "1.0.17",
-    "react-redux":"*",
-    "redux":"*",
-    "react-router-dom":"*"
+    "redux": "*"
   },
   "scripts": {
     "start": "react-scripts start",
