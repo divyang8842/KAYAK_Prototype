@@ -12,8 +12,10 @@ var kafka = require('../kafka/client');
 exports.getFLights= function(req,res) {
 
     console.log("Inside getFiles Kafka ");
+    console.log(req.body.Source);
+    console.log(req.body.Destination);
     kafka.make_request('get_flights',
-        {"firstname":"Jay"},
+        {"source":req.body.Source,"Destination":req.body.Destination,"startdate":req.body.Depart,"enddate":req.body.Return},
         function(err,results){
         console.log('in result');
         console.log(results);
