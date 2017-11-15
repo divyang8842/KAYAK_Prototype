@@ -83,14 +83,15 @@ class Home extends Component {
       			</div>
       		</header>
 
-   {/*       <Switch>
+         <Switch>
           <Route exact path="/" component={Search}/>
           <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
           <Route exact path="/flights" component={() => <FlightsHome/>}/>
           <Route exact path="/login" component={() => <Login handleLogged={this.logged}/>}/>
           <Route exact path="/account" component={() => <Account id={this.state.uid}/>}/>
-          </Switch>*/}
-                <Route exact path="/hotel" component={() => <Hotel/>}/>
+          <Route exact path="/hotel" component={() => <Hotel/>}/>
+          </Switch>
+                
 
           </div>
         </div>
