@@ -138,8 +138,6 @@ ALTER TABLE `kayak_18`.`user`
 ADD COLUMN `password` VARCHAR(100) NOT NULL AFTER `deleteflag`;
 
 
-
-
 /* Altered user table to add user_type column*/
 ALTER TABLE `kayak_18`.`user` 
 ADD COLUMN `user_type` INT NULL AFTER `password`;
@@ -209,3 +207,8 @@ CREATE TABLE `hotel_amenities` (
   `amenity` varchar(20) NOT NULL,
   FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+
+/* ALTER datatype of phoneno column in user table*/
+ALTER TABLE `kayak_18`.`user` 
+CHANGE COLUMN `phoneno` `phoneno` BIGINT NOT NULL ;
