@@ -49,7 +49,8 @@ componentWillMount(){
   creditValid:true,
   type:false});
 
-  var x={uid:this.props.id.user_id},details=[];
+  var x={uid:this.props.id},details=[];
+  console.log("UID check: "+x.uid);
     API.details(x)
         .then((data) => {
             if (data) {
@@ -159,7 +160,6 @@ console.log("CHECK: "+details.email);
     render() {
         return (
           <div>
-          <div id="fh5co-wrapper">
           <div id="fh5co-page">
           <div className="container">
             <div className="row">
@@ -266,9 +266,6 @@ console.log("CHECK: "+details.email);
             </div>
             </div>
             </div>
-            </div>
-
-
 </div>
         );
     }

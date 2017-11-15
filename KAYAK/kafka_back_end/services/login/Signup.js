@@ -34,6 +34,35 @@ var afterSignUp = function(msg,callback){
             callback(null, results);
     }
 });
-
  };
+
+
+ function check_user(msg, callback){
+   console.log("In handle request of CHECKUSER:"+ JSON.stringify(msg));
+  var res=[];
+   var fetchQuery="SELECT * FROM user WHERE emailid=?";
+   var dataArry =  [];
+   dataArry.push(msg.un);
+   console.log("DATA: "+dataArry);
+   mysql.fetchData(fetchQuery,dataArry,function (err,results){
+     console.log("CHECK RES: "+results);
+     if(err){
+         errorHandler.logError("Signup.js","check_user",err);
+     }
+     else{
+     if(results.length>0){
+           res.value=0;
+           console.log("USER DOES EXISTS");
+           callback(null, res);
+     }
+     else{
+       res.value = 1;
+       console.log("USER DOES NOT EXISTS");
+       callback(null, res);
+     }
+   }
+   });
+   };
+
+ exports.check_user = check_user;
  exports.afterSignUp = afterSignUp;

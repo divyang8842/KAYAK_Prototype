@@ -60,6 +60,25 @@ consumer_login.on('message', function (message) {
       });
     }
 
+    if(action==5){
+    signup.check_user(data.data, function(err,res){
+        console.log('after handle---');
+        var payloads = [
+            { topic: data.replyTo,
+                messages:JSON.stringify({
+                    correlationId:data.correlationId,
+                    data : res.value
+                }),
+                partition : 0
+            }
+        ];
+console.log("TRUE: "+res.value);
+        producer.send(payloads, function(err, data){
+            console.log("PRODUCER CHECK:---");
+        });
+        return;
+    });}
+
     else if(action==3){
       account.handle_request(data.data, function(err,res){
           //console.log('after handle 234 ',res);

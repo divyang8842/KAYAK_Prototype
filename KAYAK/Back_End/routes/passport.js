@@ -16,7 +16,7 @@ console.log("USERNAME CHANEK: "+username);
             {
                 if(results){
                 	console.log("IN PASSPORT: "+results.code);
-                    done(null,{uid:results});
+                    done(null,results);
                 }
                 else {
                     done(null,false);

@@ -11,6 +11,7 @@ class Login extends Component {
     lastname:'',
     email:'',
     pass:'',
+    userEmail:'',
 
     user:'',
     messageLogin:'false',
@@ -19,24 +20,26 @@ class Login extends Component {
     password:'',
 
     formErrors: {email: '', password: ''},
-    formErrors1: {firstname: '',lastname: '',email: '', password: ''},
+    formErrors1: {firstname: '',lastname: '',email: '', password: '',userEmail:''},
     emailValid: false,
     passwordValid: false,
     formValid: false,
     type:false,
     firstNameValid:false,
     lastNameValid:false,
+    checkUsername:false
   };
 
   componentWillMount(){
           this.setState({username:'',password:'',message:'',
           formErrors: {email: '', password: ''},
-          formErrors1: {email: '', password: ''},
+          formErrors1: {firstname: '',lastname: '',email: '', password: '',userEmail:''},
           emailValid: false,
           passwordValid: false,
           formValid: false,
           firstNameValid:false,
           lastNameValid:false,
+          checkUsername:false,
           type:false});
         };
 
@@ -69,6 +72,7 @@ class Login extends Component {
   validateField1(fieldName, value) {
       let fieldValidationErrors = this.state.formErrors1;
       let emailValid = this.state.emailValid;
+      let checkUsername = this.state.checkUsername;
       let passwordValid = this.state.passwordValid;
       let firstNameValid=this.state.firstNameValid;
       let lastNameValid=this.state.lastNameValid;
@@ -83,26 +87,42 @@ class Login extends Component {
             break;
           case 'email':
               emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+              console.log("EMAIL STATE IN API:==== "+emailValid);
               fieldValidationErrors.email = emailValid ? '' : ' is invalid';
               break;
           case 'password':
               passwordValid = value.length >= 3;
               fieldValidationErrors.password = passwordValid ? '': ' is too short';
               break;
+         case 'check':
+          var x={uname:value}
 
+          API.checkuser(x)
+              .then((output) => {
+                checkUsername= output===1;
+                fieldValidationErrors.userEmail = checkUsername ? '': ' already exists';
+                console.log("USER STATE IN API:==== "+checkUsername);
+                this.setState({checkUsername:checkUsername});
+              });
+              this.setState({checkUsername:checkUsername});
+              break;
           default:
               break;
       }
+
       this.setState({formErrors1: fieldValidationErrors,
         firstNameValid:firstNameValid,
         lastNameValid:lastNameValid,
           emailValid: emailValid,
           passwordValid: passwordValid,
+
       }, this.validateForm1);
+
   }
 
   validateForm1() {
-      this.setState({formValid: this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid});
+    console.log("USER STATE IN VALIDATE:==== "+this.state.checkUsername+this.state.firstNameValid+this.state.lastNameValid + this.state.emailValid + this.state.passwordValid);
+      this.setState({formValid: this.state.checkUsername &&this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid});
   }
 
   errorClass(error) {
@@ -119,9 +139,8 @@ class Login extends Component {
                         console.log("Wrong login: "+this.state.islogged);
                     } else {
                       this.setState({messageLogin: 'true', user: output, message:"Login Failed."});
-
-                        console.log("Success login= "+output.uid);
-                        this.props.handleLogged(output.uid);
+                        console.log("Success login= "+output.user_id);
+                        this.props.handleLogged(output.user_id);
                     }
                 });
         };
@@ -142,7 +161,7 @@ class Login extends Component {
         return (
           <div>
             {this.state.messageLogin==='false' ? (
-            //   <div id="fh5co-wrapper">
+              <div id="fh5co-wrapper">
               <div id="fh5co-page">
 
               <div className="fh5co-hero">
@@ -182,9 +201,14 @@ class Login extends Component {
                   <div className="input-field">
                   <div className={'form-group ${this.errorClass(this.state.formErrors1.email)}'}>
                   <label>Email:</label>
-                  <input type="text" ref="em" className="form-control" onChange={(event)=>{const name="email"
-                                              const value=event.target.value
-                                             this.setState({email: event.target.value,type:true}, () => { this.validateField1(name, value) });}} required/>
+                  <input type="text" ref="em" className="form-control" onChange={(event) => {
+                      const name="email"
+                      const value=event.target.value
+                      this.setState({
+                          email: event.target.value,
+                          type:true }, () => { this.validateField1(name, value)});}} onInput={(event)=>{const name="check"
+                                            const value=event.target.value
+                                            this.setState({email: event.target.value,type:true}, () => { this.validateField1(name, value) });}} required/>
                 </div>
               </div>
             </div>
@@ -192,7 +216,7 @@ class Login extends Component {
               <div className="input-field">
               <div className={'form-group ${this.errorClass(this.state.formErrors1.password)}'}>
                 <label>Password:</label>
-                <input type="password" ref="pwd" className="form-control" onChange={(event)=>{const name="password"
+                <input type="password" ref="pwd" className="w3-input" onChange={(event)=>{const name="password"
                                           const value=event.target.value
                                               this.setState({pass: event.target.value,type:true}, () => { this.validateField1(name, value) });}} required/>
                   </div>
@@ -269,7 +293,7 @@ class Login extends Component {
   </div>
 </div>
 
-
+</div>
 </div>) :(<Search/>)}
 </div>
         );

@@ -12,6 +12,7 @@ fetch(`${api}/signup/signup`, {
     ...headers,
     'Content-Type': 'application/json'
   },
+  credentials:'include',
   body: JSON.stringify(payload)
 }).then(res=>res.json())
 .then(res => {
@@ -22,6 +23,7 @@ fetch(`${api}/signup/signup`, {
   return error;
 });
 
+
 //login
 export const login = (payload) =>
 fetch(`${api}/login`, {
@@ -30,6 +32,7 @@ fetch(`${api}/login`, {
     ...headers,
     'Content-Type': 'application/json'
   },
+  credentials:'include',
   body: JSON.stringify(payload)
 }).then(res=>res.json())
 .then(res => {
@@ -39,6 +42,27 @@ fetch(`${api}/login`, {
   console.log("This is login error");
   return error;
 });
+
+
+//check username
+export const checkuser = (payload) =>
+fetch(`${api}/checkuser/checkuser`, {
+  method: 'POST',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+  },
+  credentials:'include',
+  body: JSON.stringify(payload)
+}).then(res=>res.json())
+.then(res => {
+  return res.output;
+})
+.catch(error => {
+  console.log("This is login error");
+  return error;
+});
+
 
 //logout
 export const logout = () =>
@@ -48,6 +72,7 @@ export const logout = () =>
           ...headers,
           'Content-Type': 'application/json'
       },
+      credentials:'include',
             }).then(res => {
                 return res.status;
             }).catch(error => {
@@ -56,6 +81,7 @@ export const logout = () =>
                 });
 
 
+// user details
 export const details = (payload) =>
 fetch(`${api}/account/account`, {
   method: 'POST',
@@ -63,6 +89,7 @@ fetch(`${api}/account/account`, {
     ...headers,
     'Content-Type': 'application/json'
   },
+  credentials:'include',
   body: JSON.stringify(payload)
 }).then(res=>res.json())
 .then(res => {
@@ -73,6 +100,8 @@ fetch(`${api}/account/account`, {
   return error;
 });
 
+
+// update user details
 export const update = (payload) =>
 fetch(`${api}/update`, {
   method: 'POST',
@@ -80,6 +109,7 @@ fetch(`${api}/update`, {
     ...headers,
     'Content-Type': 'application/json'
   },
+  credentials:'include',
   body: JSON.stringify(payload)
 }).then(res=>res.json())
 .then(res => {

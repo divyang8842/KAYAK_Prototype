@@ -12,6 +12,7 @@ var getFlights = require('./routes/Flights/GetFlights');
 
 var signup = require('./routes/signup');
 var account = require('./routes/account');
+var checkuser = require('./routes/checkuser');
 
 var mongoSessionURL = "mongodb://localhost:27017/sessions";
 var expressSessions = require("express-session");
@@ -53,6 +54,7 @@ app.use(passport.initialize());
 /*app.use('/', routes);
 app.use('/users', users);*/
 app.use('/signup', signup.signup);
+app.use('/checkuser', checkuser.checkuser);
 app.use('/account', account.account);
 app.use('/update', account.update);
 app.post('/setHotelData',adminHotel.setHotelData);
@@ -75,8 +77,8 @@ app.post('/login', function(req, res) {
         	res.status(201).json({output:0});
         }
         else{
-        req.session.user = user.uid.user_id;
-        req.session.firstname = user.uid.fname;
+        req.session.user = user.user_id;
+        req.session.firstname = user.fname;
         console.log("Session initialised: "+req.session.user+req.session.firstname);
         req.session.save();
         res.status(201).send({output:user});}
