@@ -3,6 +3,7 @@ var login = require('./services/login/login');
 var signup = require('./services/login/Signup');
 var account = require('./services/login/account');
 var getFlights = require('./services/Flights/GetFlights');
+var admin_Hotel=require('./services/admin/Hotels');
 
 var login_topic_name = 'login_topic';
 var consumer_login = connection.getConsumer(login_topic_name);
@@ -10,6 +11,8 @@ var consumer_login = connection.getConsumer(login_topic_name);
 var get_flights = 'get_flights';
 var consumer_get_flights = connection.getConsumer(get_flights);
 
+var admin_topic_name='admin_topic';
+var consumer_HotelsOps=connection.getConsumer(admin_topic_name);
 var producer = connection.getProducer();
 
 
@@ -121,4 +124,27 @@ consumer_get_flights.on('message', function (message) {
         return;
     });
 });
-;
+
+consumer_HotelsOps.on('message', function (message) {
+    console.log('message received in Hotels');
+    console.log(JSON.stringify(message.value));
+    var data = JSON.parse(message.value);
+
+    admin_Hotel.insertHotelData(data.data, function(err,res){
+        console.log('after handle get Flights---'+JSON.stringify(res));
+        var payloads = [
+            { topic: data.replyTo,
+                messages:JSON.stringify({
+                    correlationId:data.correlationId,
+                    data : res
+                }),
+                partition : 0
+            }
+        ];
+
+        producer.send(payloads, function(err, data){
+            console.log("PRODUCER CHECK:---");
+        });
+        return;
+    });
+});

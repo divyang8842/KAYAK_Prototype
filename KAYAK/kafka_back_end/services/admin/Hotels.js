@@ -1,3 +1,4 @@
+/*
 var mysql =  require('./../database/mysql');
 var errorHandler = require('./../utils/errorLogging');
 
@@ -72,4 +73,43 @@ var deleteRoom = function(data,callback){
 exports.deleteHotel = deleteHotel;
 exports.saveHotel = saveHotel;
 exports.saveRoom = saveRoom;
-exports.deleteRoom = deleteRoom;
+exports.deleteRoom = deleteRoom;*/
+
+var security = require('./../utils/security');
+var mysql=require('./../database/mysql');
+var errorHandler = require('./../utils/errorLogging');
+
+var insertHotelData = function(msg,callback){
+    var res = '';
+    console.log("In handle request:"+ JSON.stringify(msg));
+
+    var insertQuery="INSERT INTO hotels (hotel_name,hotel_star,hotel_location,hotel_city,hotel_state,hotel_zipcode,hotel_description) values(?,?,?,?,?,?,?)";
+    var dataArry =  [];
+    dataArry.push(msg.hotelname);
+    dataArry.push(msg.hotelstar);
+    dataArry.push(msg.hoteladdress);
+    dataArry.push(msg.hotelcity);
+    dataArry.push(msg.hotelstate);
+    dataArry.push(msg.hotelzipcode);
+    dataArry.push(msg.hoteldesc);
+    console.log("DATA: "+dataArry);
+    mysql.setData(insertQuery,dataArry,function (err,results){
+        console.log("CHECK RES: "+results);
+        if (err){
+            //res.code = "401";
+            res = "Failed Insertion";
+            console.log("Failed signup---");
+            errorHandler.logError("Signup.js","afterSignUp",err);
+            callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            console.log("Successfully Hotel Data Inserted");
+            callback(null, results);
+        }
+    });
+
+};
+exports.insertHotelData = insertHotelData;
+

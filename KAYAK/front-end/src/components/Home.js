@@ -5,6 +5,8 @@ import Search from './Search';
 import Account from './Account';
 import HotelsHome from './Hotels/HotelsHome';
 import FlightsHome from './Flights/FlightsHome';
+import Hotel from './Admin/Hotel';
+
 import * as API from '../api/SigninSignup-API';
 import '../public/css/animate.css';
 import '../public/css/bootstrap.css';
@@ -20,7 +22,8 @@ class Home extends Component {
 
   state={
     islogged:'false',
-    uid:''
+    uid:'',
+      isAdmin:true
   };
 
   logged = (id) => {
@@ -56,32 +59,44 @@ class Home extends Component {
       				<div className="nav-header">
       					<a href="#" className="js-fh5co-nav-toggle fh5co-nav-toggle dark"><i></i></a>
       					<h1 id="fh5co-logo"><a href="index.html"><i className="icon-airplane"></i>Kayak</a></h1>
-      					<nav id="fh5co-menu-wrap" role="navigation">
+                        {this.state.isAdmin==='false'?<nav id="fh5co-menu-wrap" role="navigation">
       						<ul className="sf-menu" id="fh5co-primary-menu">
                     <li className="active"><Link to='/'>Home</Link></li>
                     <li><Link to='/login'>Flight</Link></li>
                     <li><Link to='/login'>Car</Link></li>
-                    <li><Link to='/login'>Hotel</Link></li>
+                    <li><Link to='/hotel'>Hotel</Link></li>
                   {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
                   : (<li><Link to=''>User</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
       						</ul>
-      					</nav>
+      					</nav>:<nav id="fh5co-menu-wrap" role="navigation">
+                            <ul className="sf-menu" id="fh5co-primary-menu">
+                                <li className="active"><Link to='/'>AdminHome</Link></li>
+                                <li><Link to='/flight'>Flight</Link></li>
+                                <li><Link to='/car'>Car</Link></li>
+                                <li><Link to='/hotel'>Hotel</Link></li>
+                                {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
+                                    : (<li><Link to=''>User</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                            </ul>
+                        </nav>}
 
       				</div>
       			</div>
       		</header>
 
-          <Switch>
+   {/*       <Switch>
           <Route exact path="/" component={Search}/>
           <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
           <Route exact path="/flights" component={() => <FlightsHome/>}/>
           <Route exact path="/login" component={() => <Login handleLogged={this.logged}/>}/>
           <Route exact path="/account" component={() => <Account id={this.state.uid}/>}/>
-          </Switch>
+          </Switch>*/}
+                <Route exact path="/hotel" component={() => <Hotel/>}/>
 
           </div>
         </div>
 </div>
+
+
         );
     }
 }
