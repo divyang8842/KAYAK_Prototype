@@ -13,7 +13,7 @@ var fetchData = function(sqlQuery,data,callback) {
 			} else {
 				callback(err, rows);
 			}
-            pool.closeConnection(db,dbType);
+            pool.closeConnection(connection,dbType);
 		});
 	},dbType);
 };
@@ -28,7 +28,7 @@ var setData = function( sqlQuery,data,callback) {
 				callback(err, rows);
 
 			} finally {
-                pool.closeConnection(db,dbType);
+                pool.closeConnection(connection,dbType);
 			}
 		});
 	},dbType);

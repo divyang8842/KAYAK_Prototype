@@ -1,5 +1,6 @@
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/dropbox";
+var mysql=require('mysql');
 
 
 var free_mongo_pool = [];
@@ -13,7 +14,7 @@ var TYPE_MYSQL = "mysql";
 var TYPE_DB = TYPE_MONGO;
 
 
-    var createConnection = function (dbType, callback) {
+    var createConnection = function ( callback) {
         if (TYPE_DB == TYPE_MONGO) {
             MongoClient.connect(url, function (err, _db) {
                 if (err) {
@@ -25,9 +26,8 @@ var TYPE_DB = TYPE_MONGO;
             var connection = mysql.createConnection({
                 host: 'localhost',
                 user: 'root',
-                password: 'root',
-                database: 'test',
-
+                password: 'Keval#2812',
+                database: 'kayak_18',
                 port: 3306
             });
             callback(null, connection);
@@ -36,6 +36,8 @@ var TYPE_DB = TYPE_MONGO;
 
 
     var createpool = function (poolingcount, dbType, callback) {
+
+        console.log("Creating pool for "+dbType);
         TYPE_DB = dbType;
         createConnection(function (err, _db) {
             startedConnects = true;
@@ -49,6 +51,8 @@ var TYPE_DB = TYPE_MONGO;
                     free_mysql_pool.push(_db);
                 }
                 createConnectionPool(poolingcount, function (err, result) {
+                    console.log("free_mongo_pool is "+free_mongo_pool.length);
+                    console.log("free_mysql_pool is "+free_mysql_pool.length);
                     callback(true);
                 });
             }
@@ -79,13 +83,19 @@ var TYPE_DB = TYPE_MONGO;
 
 
     var getConnection = function (callback,dbType) {
+        TYPE_DB = dbType;
         if (startedConnects) {
             if (error) {
                 callback(undefined);
             } else {
+
+
+
                 if (TYPE_DB == TYPE_MONGO) {
+                    console.log("get connection for mongo");
                     getMongoConnection(callback);
                 }else{
+                    console.log("get connection for mysql");
                     getMySqlConnection(callback);
                 }
             }
@@ -103,7 +113,7 @@ var TYPE_DB = TYPE_MONGO;
         while (free_mongo_pool.length <= 0) ;
         var db = free_mongo_pool[0];
         free_mongo_pool = free_mongo_pool.slice(1, free_mongo_pool.length);
-        callback(db);
+        callback(null,db);
     };
 
 
@@ -112,7 +122,7 @@ var TYPE_DB = TYPE_MONGO;
         while (free_mysql_pool.length <= 0) ;
         var db = free_mysql_pool[0];
         free_mysql_pool = free_mysql_pool.slice(1, free_mysql_pool.length);
-        callback(db);
+        callback(null,db);
     };
 
 
@@ -120,9 +130,9 @@ var TYPE_DB = TYPE_MONGO;
     var closeConnection = function (db,dbType) {
         TYPE_DB = dbType;
         if (TYPE_DB == TYPE_MONGO) {
-            free_mongo_pool.push(_db);
+            free_mongo_pool.push(db);
         }else{
-            free_mysql_pool.push(_db);
+            free_mysql_pool.push(db);
         }
         //console.log("after getting connection back, the count is ",free_pool.length);
     };
