@@ -26,7 +26,7 @@ var TYPE_DB = TYPE_MONGO;
             var connection = mysql.createConnection({
                 host: 'localhost',
                 user: 'root',
-                password: 'Keval#2812',
+                password: 'root',
                 database: 'kayak_18',
                 port: 3306
             });

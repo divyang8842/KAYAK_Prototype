@@ -9,15 +9,94 @@ class Results extends Component {
 
     state ={
         airlines :['airindia','airasia','luftansa','jetblue','emirates'],
-        checkbox_airindia:1
+        checkbox_airindia:1,
+        array_for_sorting:this.props.flights,
+        flag:0
     };
 
-    flights()
+    // flights(price_flag,duration_flag)
+    // {
+    //     var flight_flag=false;
+    //     var duration ;
+    //     var array_used_for_sorting =[];
+    //
+    //     return this.props.flights.map((flights,index) =>{
+    //
+    //         // Filter Condition for AIRLINES
+    //         var array =this.state.airlines;
+    //
+    //         duration = new Date("01/01/2007 " + flights.flights.flight_arrival).getHours() - new Date("01/01/2007 " + flights.flights.flight_departure).getHours();
+    //
+    //         for (var i=0;i<array.length;i++)
+    //         {
+    //             if(array[i] == flights.flights.airline_name)
+    //             {
+    //                 flight_flag= true;
+    //
+    //             }
+    //         }
+    //
+    //         if (flight_flag){
+    //             flight_flag= false;
+    //
+    //             if( duration> 0)
+    //             {
+    //                 if(flights.flights.totalprice > 20)
+    //                 {
+    //                     array_used_for_sorting.push(flights.flights);
+    //                     if(price_flag)
+    //                     {
+    //                         // array_used_for_sorting.sort(function(a, b) {
+    //                         //     return parseFloat(a.totalprice) - parseFloat(b.totalprice);
+    //                         // });
+    //
+    //                     }
+    //                     else
+    //                     {
+    //                     return(
+    //                         <tr>
+    //                             <td>
+    //                                 {flights.flights.airline_name}
+    //                             </td>
+    //                             <td>
+    //                                 {flights.flights.origin_station}
+    //                             </td>
+    //                             <td>
+    //                                 {flights.flights.destination_station}
+    //                             </td>
+    //                             <td>
+    //                                 {flights.flights.flight_departure}
+    //                             </td>
+    //                             <td>
+    //                                 {flights.flights.flight_arrival}
+    //                             </td>
+    //                             <td>
+    //                                 {flights.flights.totalprice}
+    //                             </td>
+    //                         </tr>
+    //                     )
+    //                     }
+    //                 }
+    //             }
+    //
+    //
+    //
+    //     }
+    //
+    //     });
+    //
+    //     // this.setState({
+    //     //     array_for_sorting: array_used_for_sorting
+    //     // });
+    // }
+
+    flights(price_flag,duration_flag)
     {
         var flight_flag=false;
         var duration ;
+        var array_used_for_sorting =[];
 
-        return this.props.flights.map((flights,index) =>{
+         this.state.array_for_sorting.map((flights,index) =>{
 
             // Filter Condition for AIRLINES
             var array =this.state.airlines;
@@ -40,36 +119,76 @@ class Results extends Component {
                 {
                     if(flights.flights.totalprice > 20)
                     {
-                        return(
-                            <tr>
-                                <td>
-                                    {flights.flights.airline_name}
-                                </td>
-                                <td>
-                                    {flights.flights.origin_station}
-                                </td>
-                                <td>
-                                    {flights.flights.destination_station}
-                                </td>
-                                <td>
-                                    {flights.flights.flight_departure}
-                                </td>
-                                <td>
-                                    {flights.flights.flight_arrival}
-                                </td>
-                                <td>
-                                    {flights.flights.totalprice}
-                                </td>
-                            </tr>
-                        )
+                        array_used_for_sorting.push(flights.flights);
+                        if(price_flag )
+                        {
+                            array_used_for_sorting.sort(function(a, b) {
+                                return parseFloat(a.totalprice) - parseFloat(b.totalprice);
+                            });
+
+
+
+                        }
+                        // if (duration_flag && !price_flag)
+                        // {
+                        //     array_used_for_sorting.sort(function(a, b) {
+                        //         return parseFloat(a.duration) - parseFloat(b.duration);
+                        //     });
+                        //
+                        //     duration_flag = false;
+                        // }
                     }
                 }
 
 
 
-        }
+            }
 
         });
+
+        const flights = Object.keys(array_used_for_sorting).map((items) => (
+            {
+                'flights' : array_used_for_sorting[items]
+
+
+            }
+        ));
+         this.setState({
+            array_for_sorting: flights
+        });
+
+        this.setState({
+            flag:1
+        });
+    }
+
+    temp()
+    {
+
+        return this.state.array_for_sorting.map((flights,index) => {
+
+
+            return (
+                <tr>
+                    <h3>
+                        {flights.flights.airline_name}
+                    </h3>
+                    <br/>
+
+                        {flights.flights.origin_station}
+
+                        {flights.flights.destination_station}
+
+                        {flights.flights.flight_departure}
+
+                        {flights.flights.flight_arrival}
+
+                        {flights.flights.totalprice}
+
+                </tr>
+            )
+
+        })
     }
 
     render()
@@ -91,7 +210,7 @@ class Results extends Component {
                                     value="airindia"
                                     onClick={(event) => {
 
-                                        if ( this.state.checkbox_airindia = 1){
+                                        // if ( this.state.checkbox_airindia = 1){
                                         var temp = this.state.airlines;
                                         var index = temp.indexOf(event.target.value);
                                         temp.splice(index,1);
@@ -101,17 +220,21 @@ class Results extends Component {
                                                 checkbox_airindia: 0
                                             });
 
-                                        this.flights();
-                                        }
-                                        else
-                                        {
-                                            var temp = this.state.airlines;
-                                            temp.push(event.target.value);
-                                            console.log(temp);
-                                            this.setState(Object.assign({},this.state,{airlines:temp}));
-                                            this.setState(Object.assign({},this.state,{checkbox_airindia:1}));
-                                            this.flights();
-                                        }
+                                        this.flights(null,null);
+                                        // temp ********
+                                        this.temp();
+
+                                        // }
+                                        // else
+                                        // {
+                                        //     var temp = this.state.airlines;
+                                        //     temp.push(event.target.value);
+                                        //     console.log(temp);
+                                        //     this.setState(Object.assign({},this.state,{airlines:temp}));
+                                        //     this.setState(Object.assign({},this.state,{checkbox_airindia:1}));
+                                        //     this.flights(null,null);
+                                        //     this.temp();
+                                        // }
                                     }}
                                    checked
                                 />
@@ -122,6 +245,20 @@ class Results extends Component {
                                    id="airasia"
                                    name="airasia"
                                    value="airasia"
+                                   onClick={(event) => {
+
+                                       var temp = this.state.airlines;
+                                       var index = temp.indexOf(event.target.value);
+                                       temp.splice(index,1);
+                                       console.log(temp);
+                                       this.setState(Object.assign({},this.state,{airlines:temp}));
+                                       this.setState({
+                                           checkbox_airindia: 0
+                                       });
+
+                                       this.flights(null,null);
+                                       this.temp();
+                                   }}
                                    checked/>
                             <label for="airasia">Air Asia</label>
 
@@ -131,6 +268,20 @@ class Results extends Component {
                                    id="emirates"
                                    name="emirates"
                                    value="emirates"
+                                   onClick={(event) => {
+
+                                       var temp = this.state.airlines;
+                                       var index = temp.indexOf(event.target.value);
+                                       temp.splice(index,1);
+                                       console.log(temp);
+                                       this.setState(Object.assign({},this.state,{airlines:temp}));
+                                       this.setState({
+                                           checkbox_airindia: 0
+                                       });
+
+                                       this.flights(null,null);
+                                       this.temp();
+                                   }}
                                    checked/>
                             <label for="emirates">Emirates</label>
 
@@ -141,6 +292,20 @@ class Results extends Component {
                                     id="jetblue"
                                    name="jetblue"
                                     value="jetblue"
+                                   onClick={(event) => {
+
+                                       var temp = this.state.airlines;
+                                       var index = temp.indexOf(event.target.value);
+                                       temp.splice(index,1);
+                                       console.log(temp);
+                                       this.setState(Object.assign({},this.state,{airlines:temp}));
+                                       this.setState({
+                                           checkbox_airindia: 0
+                                       });
+
+                                       this.flights(null,null);
+                                       this.temp();
+                                   }}
                                    checked/>
                             <label for="jetblue">Jet Blue</label>
                         </div>
@@ -154,12 +319,15 @@ class Results extends Component {
                 <div className="col-sm-10 col-lg-10 col-md-10 col-xs-10" >
                     <div className="row">
                     <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
-                        <button className="btn btn-primary btn-block" >
+                        <button className="btn btn-primary btn-block"
+                                onClick={() => this.flights(true,null)}
+                        >
                             PRICE
                         </button>
                     </div>
                     <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
-                        <button className="btn btn-primary btn-block" >
+                        <button className="btn btn-primary btn-block"
+                                onClick={() => this.flights(null,null)}>
                             DURATION
                         </button>
                     </div>
@@ -170,7 +338,8 @@ class Results extends Component {
 
                         <tbody>
 
-                        {this.flights()}
+                        {/*{this.flights(null,null)}*/}
+                        {this.temp()}
                         </tbody>
                     </table>
                 </div>
