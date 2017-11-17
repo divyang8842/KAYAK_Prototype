@@ -34,8 +34,16 @@ class Search extends Component {
   }
 
   handleHotelSearch(){
-
-    this.props.history.push("/Hotels");
+    console.log(this.state.Hotels.City);
+    var city = this.state.Hotels.City;
+    HotelsAPI.getHotels({city})
+    .then((result) => {
+        // this.props.getFlights(result);
+        if(result.status == 200){
+          console.log("#@#$@#$#@$"+result);
+          this.props.history.push("/Hotels");
+        }
+    });
   }
 
   handleFlightSearch(){
