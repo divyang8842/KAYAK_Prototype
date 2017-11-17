@@ -7,26 +7,32 @@ pool.createpool(100,dbType,function(){});
 var fetchData = function(sqlQuery,data,callback) {
 	pool.getConnection(function(err, connection) {
 		connection.query(sqlQuery,data, function(err, rows) {
-
-			if (err) {
-				console.log("ERROR: " + err.message);
-			} else {
-				callback(err, rows);
-			}
-            pool.closeConnection(connection,dbType);
-		});
+			try {
+                if (err) {
+                    console.log("ERROR: " + err.message);
+                } else {
+                    callback(err, rows);
+                }
+            } finally {
+                pool.closeConnection(connection,dbType);
+            }
+        });
 	},dbType);
 };
 
-var setData = function( sqlQuery,data,callback) {
+var setData = function( sqlQuery,data,callback,addInsertedId) {
 	pool.getConnection(function(err, connection) {
 		connection.query(sqlQuery,data, function(err, rows) {
 			try {
 				if (err) {
 					console.log("ERROR: " + err.message);
 				}
-				callback(err, rows);
-
+				if(addInsertedId){
+                    var id = rows.insertId;
+                    callback(err, rows,id);
+				}else{
+                    callback(err, rows);
+				}
 			} finally {
                 pool.closeConnection(connection,dbType);
 			}
