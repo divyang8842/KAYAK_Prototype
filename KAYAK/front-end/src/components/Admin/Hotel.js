@@ -213,7 +213,7 @@ export default withRouter(Hotel);*/
 
 
 import React, {Component} from 'react';
-import * as API from '../../api/HotelAdmin-API';
+import * as API from '../../api/Admin/HotelAdmin-API';
 import ReactDOM from 'react-dom';
 import FormErrors from "../FormErrors";
 
@@ -342,7 +342,6 @@ class Hotel extends Component {
                         message: "Inserted Hotel Data Successfully..!!",
                     });
                     alert("Inserted Hotel Data Successfully..!!")
-                    this.props.history.push("/login");
                 } else if (status === 401) {
                     this.setState({
                         isLoggedIn: false,
@@ -361,7 +360,6 @@ class Hotel extends Component {
                         message: "Inserted Room Data Successfully..!!",
                     });
                     alert("Inserted Room Data Successfully..!!")
-                    this.props.history.push("/login");
                 } else if (status === 401) {
                     this.setState({
                         isLoggedIn: false,

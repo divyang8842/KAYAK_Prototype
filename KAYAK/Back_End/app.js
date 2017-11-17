@@ -8,6 +8,8 @@ require('./routes/passport')(passport);
 var cors = require('cors');
 
 var adminHotel = require('./routes/admin/hotel');
+var adminCar = require('./routes/admin/car');
+
 var getFlights = require('./routes/Flights/GetFlights');
 
 var signup = require('./routes/signup');
@@ -57,9 +59,9 @@ app.use('/signup', signup.signup);
 app.use('/checkuser', checkuser.checkuser);
 app.use('/account', account.account);
 app.use('/update', account.update);
-app.use('/password', account.password);
 app.post('/setHotelData',adminHotel.setHotelData);
 app.post('/setRoomData',adminHotel.setRoomData);
+app.post('/setCarData',adminCar.setCarData);
 app.post('/getflights',getFlights.getFLights);
 
 app.post('/logout', function(req,res) {

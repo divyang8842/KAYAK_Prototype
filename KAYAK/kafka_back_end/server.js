@@ -4,6 +4,7 @@ var signup = require('./services/login/Signup');
 var account = require('./services/login/account');
 var getFlights = require('./services/Flights/GetFlights');
 var admin_Hotel=require('./services/admin/Hotels');
+var admin_Car=require('./services/admin/Cars');
 
 var login_topic_name = 'login_topic';
 var consumer_login = connection.getConsumer(login_topic_name);
@@ -60,7 +61,7 @@ consumer_login.on('message', function (message) {
       });
     }
 
-    else if(action==5){
+    if(action==5){
     signup.check_user(data.data, function(err,res){
         console.log('after handle---');
         var payloads = [
@@ -118,25 +119,6 @@ console.log("TRUE: "+res.value);
           return;
       });
     }
-
-    if(action==6){
-    account.update_password(data.data, function(err,res){
-        console.log('after handle---');
-        var payloads = [
-            { topic: data.replyTo,
-                messages:JSON.stringify({
-                    correlationId:data.correlationId,
-                    data : res
-                }),
-                partition : 0
-            }
-        ];
-console.log("TRUE: "+res.value);
-        producer.send(payloads, function(err, data){
-            console.log("PRODUCER CHECK:---");
-        });
-        return;
-    });}
 });
 
 consumer_get_flights.on('message', function (message) {
@@ -193,6 +175,26 @@ consumer_HotelsOps.on('message', function (message) {
     else if(action==2) {
         admin_Hotel.insertRoomData(data.data, function (err, res) {
             console.log('after handle insert Room---' + JSON.stringify(res));
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+    }
+    else if(action==3) {
+        admin_Car.insertCarData(data.data, function (err, res) {
+            console.log('after handle insert Cars---' + JSON.stringify(res));
             var payloads = [
                 {
                     topic: data.replyTo,
