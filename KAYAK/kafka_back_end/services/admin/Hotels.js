@@ -80,7 +80,7 @@ var mysql=require('./../database/mysql');
 var errorHandler = require('./../utils/errorLogging');
 
 var insertHotelData = function(msg,callback){
-    var res = '';
+    var res = {};
     console.log("In handle request:"+ JSON.stringify(msg));
 
     var insertQuery="INSERT INTO hotels (hotel_name,hotel_star,hotel_location,hotel_city,hotel_state,hotel_zipcode,hotel_description) values(?,?,?,?,?,?,?)";
@@ -100,21 +100,22 @@ var insertHotelData = function(msg,callback){
             res = "Failed Insertion";
             console.log("Failed signup---");
             errorHandler.logError("Signup.js","afterSignUp",err);
-            callback(null, res);
         }
         else{
             res.code = "200";
             res.value=results;
             console.log("Successfully Hotel Data Inserted");
-            callback(null, results);
         }
+
+        callback(null, res);
+
     });
 
 };
 
 
 var insertRoomData = function(msg,callback){
-    var res = '';
+    var res = {};
     console.log("In handle request:"+ JSON.stringify(msg));
 
     var insertQuery="INSERT INTO room (room_type,room_size,guestAllowed,room_price) values(?,?,?,?)";
@@ -132,14 +133,14 @@ var insertRoomData = function(msg,callback){
             res = "Failed Insertion";
             console.log("Failed signup---");
             errorHandler.logError("Signup.js","afterSignUp",err);
-            callback(null, res);
         }
         else{
             res.code = "200";
             res.value=results;
             console.log("Successfully Room Data Inserted");
-            callback(null, results);
         }
+        callback(null, res);
+
     });
 
 };

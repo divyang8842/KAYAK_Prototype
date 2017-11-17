@@ -6,6 +6,8 @@ import Account from './Account';
 import HotelsHome from './Hotels/HotelsHome';
 import FlightsHome from './Flights/FlightsHome';
 import Hotel from './Admin/Hotel';
+import Car from './Admin/Car';
+import Flight from './Admin/Flight';
 
 import * as API from '../api/SigninSignup-API';
 import '../public/css/animate.css';
@@ -90,7 +92,10 @@ class Home extends Component {
           <Route exact path="/login" component={() => <Login handleLogged={this.logged}/>}/>
           <Route exact path="/account" component={() => <Account id={this.state.uid}/>}/>
           <Route exact path="/hotel" component={() => <Hotel/>}/>
-          </Switch>
+             <Route exact path="/car" component={() => <Car/>}/>
+             <Route exact path="/flight" component={() => <Flight/>}/>
+
+         </Switch>
                 
 
           </div>

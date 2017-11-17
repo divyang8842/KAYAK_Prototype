@@ -8,6 +8,8 @@ require('./routes/passport')(passport);
 var cors = require('cors');
 
 var adminHotel = require('./routes/admin/hotel');
+var adminCar = require('./routes/admin/car');
+
 var getFlights = require('./routes/Flights/GetFlights');
 var hotels = require('./routes/hotels/hotels');
 
@@ -60,6 +62,7 @@ app.use('/account', account.account);
 app.use('/update', account.update);
 app.post('/setHotelData',adminHotel.setHotelData);
 app.post('/setRoomData',adminHotel.setRoomData);
+app.post('/setCarData',adminCar.setCarData);
 app.post('/getflights',getFlights.getFLights);
 app.post('/getHotels',hotels.getHotels);
 
