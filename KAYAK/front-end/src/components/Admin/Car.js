@@ -100,7 +100,6 @@ class Car extends Component {
                         message: "Inserted Car Data Successfully..!!",
                     });
                     alert("Inserted Car Data Successfully..!!")
-                    this.props.history.push("/login");
                 } else if (status === 401) {
                     this.setState({
                         isLoggedIn: false,
