@@ -8,7 +8,6 @@ function handle_request(msg, callback){
   var fetchQuery="SELECT * FROM user WHERE user_id=?";
   var dataArry =  [];
   dataArry.push(msg.uid);
-  //dataArry.push(encrypwd);
   console.log("DATA: "+dataArry);
   mysql.fetchData(fetchQuery,dataArry,function (err,results){
     if(err){
@@ -45,12 +44,10 @@ var handle_update = function(msg,callback){
   mysql.setData(insertQuery,dataArry,function (err,results){
     console.log("CHECK RES: "+results);
     if (err){
-            //res.code = "401";
             res= "Failed Update";
             console.log("Failed update---");
             errorHandler.logError("account.js","handle_update",err);
             callback(null, res);
-      //throw err;
     }
     else{
           res.code = "200";
@@ -61,5 +58,31 @@ var handle_update = function(msg,callback){
 });
 }
 
+var update_password = function(msg,callback){
+  var res = '';
+  console.log("In handle request:"+ JSON.stringify(msg));
+  var dataArry =  [];
+  var insertQuery="UPDATE user SET password=? WHERE user_id="+msg.uid;
+  var encrypwd=security.encrypt(msg.password);
+  dataArry.push(encrypwd);
+  console.log("DATA: "+dataArry);
+  mysql.setData(insertQuery,dataArry,function (err,results){
+    console.log("CHECK RES: "+results);
+    if (err){
+      res.code = "0";
+            console.log("Failed update---");
+            errorHandler.logError("account.js","change_password",err);
+            callback(null, res);
+    }
+    else{
+          res.code = "1";
+            res.value=results;
+            console.log("Success---");
+            callback(null, res);
+    }
+});
+}
+
 exports.handle_request = handle_request;
 exports.handle_update = handle_update;
+exports.update_password = update_password;

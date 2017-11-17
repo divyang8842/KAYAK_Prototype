@@ -119,3 +119,22 @@ fetch(`${api}/update`, {
   console.log("This is update error");
   return error;
 });
+
+// update password
+export const updatePwd = (payload) =>
+fetch(`${api}/password`, {
+  method: 'POST',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+  },
+  credentials:'include',
+  body: JSON.stringify(payload)
+}).then(res=>res.json())
+.then(res => {
+  return res.output;
+})
+.catch(error => {
+  console.log("This is update error");
+  return error;
+});

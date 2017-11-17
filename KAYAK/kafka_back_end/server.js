@@ -60,7 +60,7 @@ consumer_login.on('message', function (message) {
       });
     }
 
-    if(action==5){
+    else if(action==5){
     signup.check_user(data.data, function(err,res){
         console.log('after handle---');
         var payloads = [
@@ -118,6 +118,25 @@ console.log("TRUE: "+res.value);
           return;
       });
     }
+
+    if(action==6){
+    account.update_password(data.data, function(err,res){
+        console.log('after handle---');
+        var payloads = [
+            { topic: data.replyTo,
+                messages:JSON.stringify({
+                    correlationId:data.correlationId,
+                    data : res
+                }),
+                partition : 0
+            }
+        ];
+console.log("TRUE: "+res.value);
+        producer.send(payloads, function(err, data){
+            console.log("PRODUCER CHECK:---");
+        });
+        return;
+    });}
 });
 
 consumer_get_flights.on('message', function (message) {

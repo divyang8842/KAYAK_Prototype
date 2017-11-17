@@ -23,24 +23,23 @@ class Home extends Component {
   state={
     islogged:'false',
     uid:'',
-      isAdmin:true
+    name:'',
+    isAdmin:true
   };
 
   logged = (id) => {
     this.setState({islogged:'true',uid:id});
     console.log("Logged: "+this.state.islogged);
-    
+
   };
 
   handleLogout = () => {
-    //this.setState({islogged:'false'});
     console.log("Logout: "+this.state.islogged);
     API.logout()
     .then((status) => {
       if(status === 201){
         this.setState({islogged:'false'});
           console.log('logout success---'+this.state.islogged);
-                  //this.componentWillMount();
               }
               else {
                 console.log('logout called error');
@@ -87,11 +86,11 @@ class Home extends Component {
           <Route exact path="/" component={Search}/>
           <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
           <Route exact path="/flights" component={() => <FlightsHome/>}/>
-          <Route exact path="/login" component={() => <Login handleLogged={this.logged}/>}/>
+          {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged}/>}/>):(<Route exact path="/login" component={Search}/>)}
           <Route exact path="/account" component={() => <Account id={this.state.uid}/>}/>
           <Route exact path="/hotel" component={() => <Hotel/>}/>
           </Switch>
-                
+
 
           </div>
         </div>

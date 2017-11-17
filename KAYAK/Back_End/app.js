@@ -57,6 +57,7 @@ app.use('/signup', signup.signup);
 app.use('/checkuser', checkuser.checkuser);
 app.use('/account', account.account);
 app.use('/update', account.update);
+app.use('/password', account.password);
 app.post('/setHotelData',adminHotel.setHotelData);
 app.post('/setRoomData',adminHotel.setRoomData);
 app.post('/getflights',getFlights.getFLights);
