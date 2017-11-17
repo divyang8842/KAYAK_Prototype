@@ -6,7 +6,7 @@ const headers = {
 
 //insertHotelData
 export const getHotels = (payload) =>
-    fetch(`${api}/setHotelData`, {
+    fetch(`${api}/getHotels`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -14,11 +14,10 @@ export const getHotels = (payload) =>
         },
         body: JSON.stringify(payload),
         credentials:'include'
-    }).then(res => res.json())
-        .then(res=>{
-            return res;
-        })
-        .catch(error => {
-            console.log("This is error");
-            return error;
-        });
+    }).then(res => {
+        return res;
+    })
+    .catch(error => {
+        console.log("This is error");
+        return error;
+    });

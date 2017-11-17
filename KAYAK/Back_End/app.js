@@ -9,6 +9,7 @@ var cors = require('cors');
 
 var adminHotel = require('./routes/admin/hotel');
 var getFlights = require('./routes/Flights/GetFlights');
+var hotels = require('./routes/hotels/hotels');
 
 var signup = require('./routes/signup');
 var account = require('./routes/account');
@@ -60,6 +61,7 @@ app.use('/update', account.update);
 app.post('/setHotelData',adminHotel.setHotelData);
 app.post('/setRoomData',adminHotel.setRoomData);
 app.post('/getflights',getFlights.getFLights);
+app.post('/getHotels',hotels.getHotels);
 
 app.post('/logout', function(req,res) {
     console.log(req.session.user);
