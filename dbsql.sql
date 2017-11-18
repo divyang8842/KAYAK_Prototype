@@ -23,9 +23,14 @@ DROP TABLE IF EXISTS `car`;
 CREATE TABLE `car` (
   `car_id` INT(11) NOT NULL AUTO_INCREMENT,
   `car_type` VARCHAR(30) NOT NULL,
-  `car_color` VARCHAR(30) DEFAULT NULL,
+  `car_class` VARCHAR(30) NOT NULL,
   `car_model` VARCHAR(30) DEFAULT NULL,
-  `year` VARCHAR(30) DEFAULT NULL,
+  `car_city` VARCHAR(30) DEFAULT NULL,
+  `car_dropoff_city` VARCHAR(30) DEFAULT NULL,
+  `passengers` VARCHAR(30) DEFAULT NULL,
+  `doors` VARCHAR(30) DEFAULT NULL,
+  `bags` VARCHAR(30) DEFAULT NULL,
+  `available_place` VARCHAR(30) DEFAULT NULL,
   `car_rent` DECIMAL(10,0) NOT NULL,
   `deleteflag` INT(11) DEFAULT '0',
   PRIMARY KEY (`car_id`)
@@ -174,7 +179,6 @@ ALTER TABLE `kayak_18`.`user`  CHANGE COLUMN `credit_card` `credit_card` BIGINT(
 
 /* DROPPED hotel table and added tables for Hotel module*/
 DROP TABLE IF EXISTS `hotel`;
-DROP TABLE IF EXISTS `hotels`;
 
 CREATE TABLE `hotels` (
   `hotel_id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -185,12 +189,9 @@ CREATE TABLE `hotels` (
   `hotel_state` VARCHAR(50) DEFAULT NULL,
   `hotel_zipcode` VARCHAR(10) NOT NULL,
   `hotel_description` VARCHAR(200) DEFAULT NULL,
-  `hotel_amenities` VARCHAR(500) DEFAULT NULL,
   `deleteflag` INT(11) DEFAULT '0',
   PRIMARY KEY (`hotel_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `hotel_reviews`;
 
 CREATE TABLE `hotel_reviews` (
   `hotel_id` INT(11) NOT NULL UNIQUE,
@@ -206,16 +207,13 @@ CREATE TABLE `hotel_reviews` (
   FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `hotel_amenities` (
+  `hotel_id` INT(11) NOT NULL UNIQUE,
+  `amenity` varchar(20) NOT NULL,
+  FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 
 /* ALTER datatype of phoneno column in user table*/
 ALTER TABLE `kayak_18`.`user` 
 CHANGE COLUMN `phoneno` `phoneno` BIGINT NOT NULL ;
-
-
-/* ALTER room table*/
-ALTER TABLE `kayak_18`.`room` 
-ADD COLUMN `hotel_id` INT NOT NULL AFTER `deleteflag`;
-
-ALTER TABLE `kayak_18`.`room` 
-ADD COLUMN `count` INT NULL AFTER `hotel_id`;

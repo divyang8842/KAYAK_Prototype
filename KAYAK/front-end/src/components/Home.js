@@ -5,6 +5,7 @@ import Search from './Search';
 import Account from './Account';
 import HotelsHome from './Hotels/HotelsHome';
 import FlightsHome from './Flights/FlightsHome';
+import CarHome from './Cars/CarHome';
 import Hotel from './Admin/Hotel';
 import Car from './Admin/Car';
 import Flight from './Admin/Flight';
@@ -89,6 +90,7 @@ class Home extends Component {
           <Route exact path="/" component={Search}/>
           <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
           <Route exact path="/flights" component={() => <FlightsHome/>}/>
+             <Route exact path="/cars" component={() => <CarHome/>}/>
           {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged}/>}/>):(<Route exact path="/login" component={Search}/>)}
           <Route exact path="/account" component={() => <Account id={this.state.uid}/>}/>
           <Route exact path="/hotel" component={() => <Hotel/>}/>

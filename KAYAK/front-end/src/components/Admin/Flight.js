@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import * as API from '../../api/Admin/CarAdmin-API';
 import ReactDOM from 'react-dom';
 import FormErrors from "../FormErrors";
-import TimePicker from 'react-bootstrap-time-picker';
+//import TimePicker from 'react-bootstrap-time-picker';
 
 
 class Flight extends Component {
@@ -179,7 +179,7 @@ class Flight extends Component {
                                                     type:true}, () => { this.validateField(name, value)});}}/>
                                         </div>
                                     </div>
-                                    <TimePicker start="10:00" end="21:00" step={30} />
+                                    {/*<TimePicker start="10:00" end="21:00" step={30} />*/}
                                     <div className="col-xxs-12 col-xs-6 mt">
                                         <div className="input-field">
                                             <label>Departure Time:</label>

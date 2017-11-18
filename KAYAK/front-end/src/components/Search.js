@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import { Route, Link,Switch } from 'react-router-dom';
 import * as FlightsAPI from '../api/FlightsAPI';
 import * as HotelsAPI from '../api/HotelsAPI';
+import * as CarsAPI from '../api/CarsAPI';
 import {connect} from 'react-redux';
 import {getFlights} from '../actions/Flights/Flights';
+import {getCars} from '../actions/Cars/Cars';
 import '../public/css/bootstrap-datepicker.min.css';
 import '../public/css/cs-select.css';
 import '../public/css/cs-skin-border.css';
@@ -28,8 +30,10 @@ class Search extends Component {
     },
     Cars:{
       City:'',
+        destination:'',
       Pickup:'',
       Dropoff:'',
+        different_drop_off:false
     }
   }
 
@@ -54,6 +58,14 @@ class Search extends Component {
           });
 
   }
+
+    handleCarsSearch(){
+        CarsAPI.getCars(this.state.Cars)
+            .then((output) => {
+                this.props.getCars(output);
+                this.props.history.push("/Cars");
+            });
+    }
 
   render() {
       return (
@@ -290,64 +302,81 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <div className="input-field">
                                   <label>City:</label>
-                                  <input type="text" className="form-control" id="from-place" placeholder="Los Angeles, USA"/>
+                                  <input type="text"
+                                         className="form-control"
+                                         id="City"
+                                         placeholder="Los Angeles, USA"
+                                         onChange={(event) => {
+                                             this.setState({
+                                                 Cars: {
+                                                     ...this.state.Cars,
+                                                     City: event.target.value
+                                                 }
+                                             });}
+                                         }/>
                                 </div>
                               </div>
+
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <div className="input-field">
                                   <label>Destination:</label>
-                                  <input type="text" className="form-control" id="to-place" placeholder="Tokyo, Japan"/>
+                                  <input type="text"
+                                         className="form-control"
+                                         id="destination"
+                                         placeholder="Tokyo, Japan"
+                                         onChange={(event) => {
+                                             this.setState({
+                                                 Cars: {
+                                                     ...this.state.Cars,
+                                                     destination: event.target.value
+                                                 }
+                                             });}
+                                         }/>
                                 </div>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Departs:</label>
-                                  <input type="date" className="datecss" id="date-start" placeholder="mm/dd/yyyy"/>
+                                  <input type="date"
+                                         className="datecss"
+                                         id="Pickup"
+                                         placeholder="mm/dd/yyyy"
+                                         onChange={(event) => {
+                                             this.setState({
+                                                 Cars: {
+                                                     ...this.state.Cars,
+                                                     Pickup: event.target.value
+                                                 }
+                                             });}
+                                         }
+                                  />
                                 </div>
                               </div>
                               <div className="col-xxs-12 col-xs-6 mt alternate">
                                 <div className="input-field">
                                   <label>Return:</label>
-                                  <input type="date" className="datecss" id="date-end" placeholder="mm/dd/yyyy"/>
+                                  <input type="date"
+                                         className="datecss"
+                                         id="Dropoff"
+                                         placeholder="mm/dd/yyyy"
+                                         onChange={(event) => {
+                                             this.setState({
+                                                 Cars: {
+                                                     ...this.state.Cars,
+                                                     Dropoff: event.target.value
+                                                 }
+                                             });}
+                                         }
+                                  />
                                 </div>
                               </div>
-                              <div className="col-sm-12 mt">
-                                <section>
-                                  <label>Rooms:</label>
-                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
-                                    <option value="" disabled selected>1</option>
-                                    <option value="economy">1</option>
-                                    <option value="first">2</option>
-                                    <option value="business">3</option>
-                                  </select>
-                                </section>
-                              </div>
-                              <div className="col-xxs-12 col-xs-6 mt">
-                                <section>
-                                  <label >Adult:</label>
-                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
-                                    <option value="" disabled selected>1</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                  </select>
-                                </section>
-                              </div>
-                              <div className="col-xxs-12 col-xs-6 mt">
-                                <section>
-                                  <label>Children:</label>
-                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
-                                    <option value="" disabled selected>1</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                  </select>
-                                </section>
-                              </div>
+
                               <div className="col-xs-12">
-                                <input type="submit" className="btn btn-primary btn-block" value="Search Cars" />
+                                <input type="submit"
+                                       className="btn btn-primary btn-block"
+                                       value="Search Cars"
+                                       onClick={() => this.handleCarsSearch()}
+                                />
                               </div>
                             </div>
                           </div>
@@ -376,7 +405,8 @@ class Search extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getFlights : (data) => dispatch(getFlights(data))
+        getFlights : (data) => dispatch(getFlights(data)),
+        getCars : (data) => dispatch(getCars(data))
     };
 }
 

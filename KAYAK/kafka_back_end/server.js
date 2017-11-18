@@ -4,6 +4,7 @@ var signup = require('./services/login/Signup');
 var account = require('./services/login/account');
 var getFlights = require('./services/Flights/GetFlights');
 var getHotels = require('./services/Hotels/GetHotels');
+var getCars = require('./services/Cars/GetCars');
 var admin_Hotel=require('./services/admin/Hotels');
 var admin_Car=require('./services/admin/Cars');
 
@@ -15,6 +16,9 @@ var consumer_get_flights = connection.getConsumer(get_flights);
 
 var hotels = 'hotels_topic';
 var consumer_hotels = connection.getConsumer(hotels);
+
+var cars = 'get_cars';
+var consumer_cars = connection.getConsumer(cars);
 
 var admin_topic_name='admin_topic';
 var consumer_HotelsOps=connection.getConsumer(admin_topic_name);
@@ -134,6 +138,34 @@ consumer_get_flights.on('message', function (message) {
 
     getFlights.handle_request(data.data, function(err,res){
         console.log('after handle get Flights---');
+        var payloads = [
+            { topic: data.replyTo,
+                messages:JSON.stringify({
+                    correlationId:data.correlationId,
+                    data : res
+                }),
+                partition : 0
+            }
+        ];
+
+        producer.send(payloads, function(err, data){
+            console.log("PRODUCER CHECK:---");
+        });
+        return;
+    });
+});
+
+consumer_cars.on('message', function (message) {
+
+    console.log('message received in get Cars');
+
+    console.log(JSON.stringify(message.value));
+    var data = JSON.parse(message.value);
+    var action=data.data.action;
+    console.log("ACTION-----"+data.data.action);
+
+    getCars.handle_request(data.data, function(err,res){
+        console.log('after handle get Cars---');
         var payloads = [
             { topic: data.replyTo,
                 messages:JSON.stringify({
