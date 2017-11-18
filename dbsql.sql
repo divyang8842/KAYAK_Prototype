@@ -211,3 +211,11 @@ CREATE TABLE `hotel_reviews` (
 /* ALTER datatype of phoneno column in user table*/
 ALTER TABLE `kayak_18`.`user` 
 CHANGE COLUMN `phoneno` `phoneno` BIGINT NOT NULL ;
+
+
+/* ALTER room table*/
+ALTER TABLE `kayak_18`.`room` 
+ADD COLUMN `hotel_id` INT NOT NULL AFTER `deleteflag`;
+
+ALTER TABLE `kayak_18`.`room` 
+ADD COLUMN `count` INT NULL AFTER `hotel_id`;

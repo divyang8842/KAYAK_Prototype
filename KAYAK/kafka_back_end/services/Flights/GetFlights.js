@@ -94,6 +94,7 @@ function handle_request(msg, callback){
 
                     destination_price = results1[i].economy_class;
                     finalresultobject.totalprice = destination_price-source_price;
+                    finalresultobject.duration = results1[i].flight_duration;
 
                     finalresult.push(finalresultobject);
                     finalresultobject ={};
