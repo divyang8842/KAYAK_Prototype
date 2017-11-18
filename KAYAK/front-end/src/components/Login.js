@@ -140,7 +140,7 @@ class Login extends Component {
                     } else {
                       this.setState({messageLogin: 'true', user: output, message:"Login Failed."});
                         console.log("Success login= "+output.user_id);
-                        this.props.handleLogged(output.user_id);
+                        this.props.handleLogged(output.user_id,output.fname);
                     }
                 });
         };
@@ -161,7 +161,7 @@ class Login extends Component {
         return (
           <div>
             {this.state.messageLogin==='false' ? (
-              <div id="fh5co-wrapper">
+
               <div id="fh5co-page">
 
               <div className="fh5co-hero">
@@ -292,56 +292,10 @@ class Login extends Component {
     </div>
   </div>
 </div>
-
-</div>
 </div>) :(<Search/>)}
 </div>
         );
     }
-    /*
-    <form  >
-        <fieldset>
-            <div className="form-group" controlId="formHorizontalEmail">
-                <FormControl className={`form-group ${this.errorClass(this.state.formErrors.email)}`}
-                    type="text"
-                    name="email"
-                    placeholder="Email"
-                    value={this.state.username}
-                    onChange={(event) => {
-                        const name="email"
-                        const value=event.target.value
-                        this.setState({
-                            username: event.target.value,
-                            type:true
-
-                        }, () => { this.validateField(name, value) });
-                    }} required autofocus
-                />
-            </div>
-
-            <div className="form-group" controlId="formHorizontalPassword">
-                <FormControl className={`form-group ${this.errorClass(this.state.formErrors.password)}`}
-                    type="password"
-                    name="password"
-                             value={this.state.password}
-                    placeholder="Password"
-                    onChange={(event) => {
-                        const name="password"
-                        const value=event.target.value
-                        this.setState({
-                            password: event.target.value,
-                            type:true
-                        }, () => { this.validateField(name, value) });
-                    }} required
-                />
-            </div>
-            <font color="red">{this.state.message}</font>
-            <Button disabled={!this.state.formValid} onClick={() => this.handleLogin(this.state)} bsSize="large" bsStyle="success" block>Login</Button>
-
-        </fieldset>
-    </form>
-
-    */
 }
 
 export default Login;

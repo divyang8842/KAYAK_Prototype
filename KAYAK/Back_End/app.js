@@ -8,7 +8,10 @@ require('./routes/passport')(passport);
 var cors = require('cors');
 
 var adminHotel = require('./routes/admin/hotel');
+var adminCar = require('./routes/admin/car');
+
 var getFlights = require('./routes/Flights/GetFlights');
+var hotels = require('./routes/hotels/hotels');
 
 var signup = require('./routes/signup');
 var account = require('./routes/account');
@@ -57,9 +60,14 @@ app.use('/signup', signup.signup);
 app.use('/checkuser', checkuser.checkuser);
 app.use('/account', account.account);
 app.use('/update', account.update);
+app.use('/listrooms', adminHotel.getHotelRooms);
+app.use('/updateroom', adminHotel.updateRoom);
+app.use('/deleteroom', adminHotel.deleteRoom);
 app.post('/setHotelData',adminHotel.setHotelData);
 app.post('/setRoomData',adminHotel.setRoomData);
+app.post('/setCarData',adminCar.setCarData);
 app.post('/getflights',getFlights.getFLights);
+app.post('/getHotels',hotels.getHotels);
 
 app.post('/logout', function(req,res) {
     console.log(req.session.user);
@@ -67,6 +75,7 @@ app.post('/logout', function(req,res) {
     req.session.destroy();
     console.log('Session Destroyed');
     res.status(201).json({status:201});
+
 });
 
 app.post('/login', function(req, res) {
@@ -79,7 +88,7 @@ app.post('/login', function(req, res) {
         else{
         req.session.user = user.user_id;
         req.session.firstname = user.fname;
-        console.log("Session initialised: "+req.session.user+req.session.firstname);
+       //console.log("Session initialised: "+req.session.user+req.session.firstname);
         req.session.save();
         res.status(201).send({output:user});}
 

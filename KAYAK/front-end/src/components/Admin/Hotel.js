@@ -213,7 +213,7 @@ export default withRouter(Hotel);*/
 
 
 import React, {Component} from 'react';
-import * as API from '../../api/HotelAdmin-API';
+import * as API from '../../api/Admin/HotelAdmin-API';
 import ReactDOM from 'react-dom';
 import FormErrors from "../FormErrors";
 
@@ -233,6 +233,11 @@ class Hotel extends Component {
         roomsize:'',
         guestAllowed:'',
         roomprice:'',
+        roomcount:'',
+        hotelid:'',
+        roomlist:[],
+        updateID:'',
+        updateType:'',
 
         formErrors: {hotelname:'',hoteladdress:'',hotelcity: '',hotelstate: '',hotelzipcode: '',hoteldesc:'',hotelameneties:'',hotelstar:''  },
         type:false,
@@ -340,9 +345,9 @@ class Hotel extends Component {
                         root:status.root,
                         isLoggedIn: false,
                         message: "Inserted Hotel Data Successfully..!!",
+                        hotelid:status.hotelid
                     });
-                    alert("Inserted Hotel Data Successfully..!!")
-                    this.props.history.push("/login");
+                    alert("Inserted Hotel Data Successfully..!!"+status.hotelid)
                 } else if (status === 401) {
                     this.setState({
                         isLoggedIn: false,
@@ -360,8 +365,8 @@ class Hotel extends Component {
                         isLoggedIn: false,
                         message: "Inserted Room Data Successfully..!!",
                     });
+                    this.getRooms();
                     alert("Inserted Room Data Successfully..!!")
-                    this.props.history.push("/login");
                 } else if (status === 401) {
                     this.setState({
                         isLoggedIn: false,
@@ -372,13 +377,48 @@ class Hotel extends Component {
 
     }
 
+    getRooms=()=>{
+      var x={hid:this.state.hotelid},resAr=[];
+      this.setState({roomlist:[]});
+      API.listrooms(x)
+      .then((data) => {
+          if (data) {
+            console.log("ROOM CHECK: "+data);
+            for(var i=0;i<data.length;i++){
+            resAr = this.state.roomlist.concat(data[i]);
+            this.setState({ roomlist: resAr });
+          }
+          } else {
+              console.log("File not listed");
+          }
+      });
+    }
+
+
+
+    deleteRoom= (id) => {
+      var x={roomid:id};
+      console.log("ROOMID: "+x.roomid);
+        API.deleteroom(x)
+            .then((output) => {
+                if (output === "1") {
+                    console.log("Star updated");
+                } else {
+                    console.log("Star not updated");
+                }
+            });
+    };
+
+    showComp(id,t) {
+      this.setState({updateID:id,updateType:t,visible: !this.state.visible});
+    }
+
     render() {
         return (
             <div>
                     <div id="fh5co-page">
                         <div className="container">
                             <div className="row">
-
 
                                 <form>
                                     <FormErrors formErrors={this.state.formErrors} />
@@ -516,6 +556,13 @@ class Hotel extends Component {
                                                 this.setState({roomprice: event.target.value,
                                                     type:true})}}  />
                                         </div>
+                                        <div className="col-md-2">
+                                            <label htmlFor="lrdate" className="control-label">Count: </label>
+                                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}} onChange={(event)=>{const name="roomcount"
+                                                const value=event.target.value
+                                                this.setState({roomcount: event.target.value,
+                                                    type:true})}}  />
+                                        </div>
                                         <div className="col-xxs-12 col-xs-12 mt"></div>
 
                                         <div className="col-xs-2">
@@ -524,13 +571,110 @@ class Hotel extends Component {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
+                            {this.state.roomlist.map(f => {
+                              return ( <div  key={f.room_id}>
+                              <div>
+                              <ul>
+                              <li>
+                              {f.room_type}&nbsp;{f.room_size}&nbsp;{f.guestsAllowed}&nbsp;{f.room_price}&nbsp;{f.count}&nbsp;
+                              <button onClick={()=> this.showComp(f.room_id,f.room_type)}>Update</button>&nbsp;
+                              <button onClick={()=> this.deleteRoom(f.room_id)}>Remove</button>
+                              </li></ul></div></div>
+                              )})}
+                              <div>
+                                {
+                                  this.state.visible
+                                    ? <Updateroom id={this.state.updateID} type={this.state.updateType} display={this.getRooms}/>
+                                    : null
+                                }
+                              </div>
+
+                        </div>{/*container*/}
                     </div>
-
-
             </div>
         );
     }
 }
+
+
+
+class Updateroom extends Component {
+
+state={roomsize:'',
+guestAllowed:'',
+roomprice:'',
+roomcount:'',
+roomid:this.props.id
+};
+
+updateRoom= (newdata) => {
+  console.log("ROOMID: "+newdata);
+    API.updateroom(newdata)
+        .then((output) => {
+            if (output === "1") {
+                console.log("Room updated");
+                this.props.display();
+            } else {
+                console.log("Room not updated");
+            }
+        });
+};
+
+
+  render() {
+console.log("ID: "+this.props.id+" "+this.props.type);
+      return (
+        <div>
+        <div className="control-group span6 container row">
+            <div className="form-group">
+
+                <h4>Update for {this.props.type}</h4>
+                <div className="col-md-2">
+                    <label htmlFor="lrno" className="control-label">Room Size: </label>
+                    <select className="form-control" name="trp_code" id="trp_code" title="Transporter" style={{width: 160}} onChange={(event)=>{const name="roomsize"
+                        const value=event.target.value
+                        this.setState({roomsize: event.target.value,
+                            type:true})}}>
+                        <option value="" disabled selected>Select Room Size</option>
+                        <option className="form-control" value="325 sqft">325 sqft</option>
+                        <option className="form-control" value="460 sqft">460 sqft</option>
+                        <option className="form-control" value="550 sqft">550 sqft</option>
+                        <option className="form-control" value="700 sqft">700 sqft</option>
+                    </select>
+                    </div>
+                <div className="col-md-2">
+                    <label htmlFor="lrdate" className="control-label">Guests Allowed: </label>
+                    <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}} onChange={(event)=>{const name="guestsAllowed"
+                        const value=event.target.value
+                        this.setState({guestAllowed: event.target.value,
+                            type:true})}} />
+                </div>
+                <div className="col-md-2">
+                    <label htmlFor="lrdate" className="control-label">Room Price: </label>
+                    <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}} onChange={(event)=>{const name="roomprice"
+                        const value=event.target.value
+                        this.setState({roomprice: event.target.value,
+                            type:true})}}  />
+                </div>
+                <div className="col-md-2">
+                    <label htmlFor="lrdate" className="control-label">Count: </label>
+                    <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}} onChange={(event)=>{const name="roomcount"
+                        const value=event.target.value
+                        this.setState({roomcount: event.target.value,
+                            type:true})}}  />
+                </div>
+                <div className="col-xxs-12 col-xs-12 mt"></div>
+
+                <div className="col-xs-2">
+                    <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.updateRoom(this.state)}>UPDATE</button>
+                </div>
+        </div>
+    </div>
+</div>
+);}}
+
+
+
 
 export default Hotel;

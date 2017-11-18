@@ -49,3 +49,26 @@ exports.update= function(req,res) {
             }
         });
 };
+
+exports.password= function(req,res) {
+      var uid=req.session.user;
+      var pwd=req.param("password");
+      console.log("USERID CHECK: "+uid);
+      kafka.make_request('login_topic',{"uid":uid,"password":pwd,"action":6}, function(err,results){
+            console.log('in result');
+            console.log(results);
+            if(err){
+              res.status(201).json({output:0});
+            }
+            else
+            {
+                if(results.code == 1){
+                  console.log("IN PASSPORT: "+results.value);
+                  res.status(201).json({output:1});
+                }
+                else {
+                  res.status(201).json({output:0});
+                }
+            }
+        });
+};

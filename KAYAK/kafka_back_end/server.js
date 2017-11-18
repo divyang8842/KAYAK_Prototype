@@ -3,13 +3,18 @@ var login = require('./services/login/login');
 var signup = require('./services/login/Signup');
 var account = require('./services/login/account');
 var getFlights = require('./services/Flights/GetFlights');
+var getHotels = require('./services/Hotels/GetHotels');
 var admin_Hotel=require('./services/admin/Hotels');
+var admin_Car=require('./services/admin/Cars');
 
 var login_topic_name = 'login_topic';
 var consumer_login = connection.getConsumer(login_topic_name);
 
 var get_flights = 'get_flights';
 var consumer_get_flights = connection.getConsumer(get_flights);
+
+var hotels = 'hotels_topic';
+var consumer_hotels = connection.getConsumer(hotels);
 
 var admin_topic_name='admin_topic';
 var consumer_HotelsOps=connection.getConsumer(admin_topic_name);
@@ -67,7 +72,7 @@ consumer_login.on('message', function (message) {
             { topic: data.replyTo,
                 messages:JSON.stringify({
                     correlationId:data.correlationId,
-                    data : res.value
+                    data : res
                 }),
                 partition : 0
             }
@@ -151,6 +156,7 @@ consumer_HotelsOps.on('message', function (message) {
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
     var action=data.data.action;
+    console.log("ACTION-----"+data.data.action);
     if(action==1) {
         admin_Hotel.insertHotelData(data.data, function (err, res) {
             console.log('after handle insertHotel---' + JSON.stringify(res));
@@ -191,4 +197,104 @@ consumer_HotelsOps.on('message', function (message) {
             return;
         });
     }
+    else if(action==3) {
+        admin_Car.insertCarData(data.data, function (err, res) {
+            console.log('after handle insert Cars---' + JSON.stringify(res));
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+    }
+
+    else if(action==4){
+    	admin_Hotel.getRoomData(data.data, function(err,res){
+            console.log('after handle'+res.value[0].count);
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res.value
+                    }),
+                    partition : 0
+                }];
+            producer.send(payloads, function(err, data){
+                console.log("Producer:-- ");
+            });
+            return;
+        });
+        }
+
+        else if(action==5){
+          admin_Hotel.updateRoomData(data.data, function(err,res){
+                //console.log('after handle'+res.value[0].count);
+                var payloads = [
+                    { topic: data.replyTo,
+                        messages:JSON.stringify({
+                            correlationId:data.correlationId,
+                            data : res.value
+                        }),
+                        partition : 0
+                    }];
+                producer.send(payloads, function(err, data){
+                    console.log("Producer:-- ");
+                });
+                return;
+            });
+            }
+
+            else if(action==6){
+              admin_Hotel.deleteRoomData(data.data, function(err,res){
+                    //console.log('after handle'+res.value[0].count);
+                    var payloads = [
+                        { topic: data.replyTo,
+                            messages:JSON.stringify({
+                                correlationId:data.correlationId,
+                                data : res.value
+                            }),
+                            partition : 0
+                        }];
+                    producer.send(payloads, function(err, data){
+                        console.log("Producer:-- ");
+                    });
+                    return;
+                });
+                }
+});
+
+consumer_hotels.on('message', function (message) {
+    console.log('message received in hotels consumer');
+    console.log(JSON.stringify(message.value));
+    var data = JSON.parse(message.value);
+    var action=data.data.action;
+    console.log("ACTION-----"+data.data.action);
+    if(action=="getHotels"){
+    getHotels.handle_request(data.data, function(err,res){
+        console.log('after handle---');
+        var payloads = [
+            { topic: data.replyTo,
+                messages:JSON.stringify({
+                    correlationId:data.correlationId,
+                    data : res
+                }),
+                partition : 0
+            }
+        ];
+
+        producer.send(payloads, function(err, data){
+            console.log("PRODUCER CHECK:---");
+        });
+        return;
+    });}
 });
