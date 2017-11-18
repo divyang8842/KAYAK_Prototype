@@ -72,7 +72,7 @@ consumer_login.on('message', function (message) {
             { topic: data.replyTo,
                 messages:JSON.stringify({
                     correlationId:data.correlationId,
-                    data : res.value
+                    data : res
                 }),
                 partition : 0
             }
@@ -156,6 +156,7 @@ consumer_HotelsOps.on('message', function (message) {
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
     var action=data.data.action;
+    console.log("ACTION-----"+data.data.action);
     if(action==1) {
         admin_Hotel.insertHotelData(data.data, function (err, res) {
             console.log('after handle insertHotel---' + JSON.stringify(res));
@@ -216,6 +217,60 @@ consumer_HotelsOps.on('message', function (message) {
             return;
         });
     }
+
+    else if(action==4){
+    	admin_Hotel.getRoomData(data.data, function(err,res){
+            console.log('after handle'+res.value[0].count);
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res.value
+                    }),
+                    partition : 0
+                }];
+            producer.send(payloads, function(err, data){
+                console.log("Producer:-- ");
+            });
+            return;
+        });
+        }
+
+        else if(action==5){
+          admin_Hotel.updateRoomData(data.data, function(err,res){
+                //console.log('after handle'+res.value[0].count);
+                var payloads = [
+                    { topic: data.replyTo,
+                        messages:JSON.stringify({
+                            correlationId:data.correlationId,
+                            data : res.value
+                        }),
+                        partition : 0
+                    }];
+                producer.send(payloads, function(err, data){
+                    console.log("Producer:-- ");
+                });
+                return;
+            });
+            }
+
+            else if(action==6){
+              admin_Hotel.deleteRoomData(data.data, function(err,res){
+                    //console.log('after handle'+res.value[0].count);
+                    var payloads = [
+                        { topic: data.replyTo,
+                            messages:JSON.stringify({
+                                correlationId:data.correlationId,
+                                data : res.value
+                            }),
+                            partition : 0
+                        }];
+                    producer.send(payloads, function(err, data){
+                        console.log("Producer:-- ");
+                    });
+                    return;
+                });
+                }
 });
 
 consumer_hotels.on('message', function (message) {

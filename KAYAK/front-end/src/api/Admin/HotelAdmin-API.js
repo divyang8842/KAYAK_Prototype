@@ -40,3 +40,57 @@ export const insertRoomData = (payload) =>
             console.log("This is error");
             return error;
         });
+
+export const listrooms = (payload) =>
+fetch(`${api}/listrooms`, {
+  method: 'POST',
+  headers: {
+    ...headers,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(payload)
+}).then(res=>res.json())
+.then(res => {
+  return res.output;
+})
+.catch(error => {
+  console.log("This is list error");
+  return error;
+});
+
+export const updateroom = (payload) =>
+    fetch(`${api}/updateroom`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include',
+        body: JSON.stringify(payload)
+    }).then(res=>res.json())
+        .then(res => {
+            return res.output;
+        })
+        .catch(error => {
+            console.log("This is update error");
+            return error;
+        });
+
+
+        export const deleteroom = (payload) =>
+            fetch(`${api}/deleteroom`, {
+                method: 'POST',
+                headers: {
+                    ...headers,
+                    'Content-Type': 'application/json'
+                },
+                credentials:'include',
+                body: JSON.stringify(payload)
+            }).then(res=>res.json())
+                .then(res => {
+                    return res.output;
+                })
+                .catch(error => {
+                    console.log("This is update error");
+                    return error;
+                });
