@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
 import { Route, Link,Switch } from 'react-router-dom';
+import {bindActionCreators} from 'redux';
 import * as FlightsAPI from '../api/FlightsAPI';
 import * as HotelsAPI from '../api/HotelsAPI';
 import * as CarsAPI from '../api/CarsAPI';
 import {connect} from 'react-redux';
 import {getFlights} from '../actions/Flights/Flights';
+
 import {getCars} from '../actions/Cars/Cars';
+
+import {loadHotels, loadFilteredHotels} from '../actions/Hotels/Hotels';
+
 import '../public/css/bootstrap-datepicker.min.css';
 import '../public/css/cs-select.css';
 import '../public/css/cs-skin-border.css';
@@ -42,9 +47,9 @@ class Search extends Component {
     var city = this.state.Hotels.City;
     HotelsAPI.getHotels({city})
     .then((result) => {
-        // this.props.getFlights(result);
-        if(result.status == 200){
-          console.log("#@#$@#$#@$"+result);
+        if(result.code == 200){
+          this.props.loadHotels(result.value);
+          this.props.loadFilteredHotels(result.value);
           this.props.history.push("/Hotels");
         }
     });
@@ -404,10 +409,19 @@ class Search extends Component {
   }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        getFlights : (data) => dispatch(getFlights(data)),
-        getCars : (data) => dispatch(getCars(data))
-    };
+
+    // return {
+    //     getFlights : (data) => dispatch(getFlights(data)),
+    //     getCars : (data) => dispatch(getCars(data))
+    // };
+
+    // return {
+    //     getFlights : (data) => dispatch(getFlights(data)),
+
+    // };
+
+    return bindActionCreators({loadHotels : loadHotels, getFlights: getFlights, loadFilteredHotels : loadFilteredHotels,getCars:getCars}, dispatch);
+
 }
 
 //export default Search;

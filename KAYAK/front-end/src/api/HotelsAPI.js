@@ -14,7 +14,11 @@ export const getHotels = (payload) =>
         },
         body: JSON.stringify(payload),
         credentials:'include'
-    }).then(res => {
+    })
+    // .then(res => {
+    //     return res;
+    .then(res => res.json())
+    .then(res=>{
         return res;
     })
     .catch(error => {
