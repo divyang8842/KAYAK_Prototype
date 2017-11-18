@@ -1,12 +1,12 @@
-import {LOAD_HOTELS} from '../../actions/Hotels/Hotels';
+import {LOAD_FILTERED_HOTELS} from '../../actions/Hotels/Hotels';
 
 const initialState ={
     hotels:[]
 };
 
-const Hotels = (state = initialState, action) => { 
+const FilteredHotels = (state = initialState, action) => { 
     switch (action.type) {
-        case LOAD_HOTELS :
+        case LOAD_FILTERED_HOTELS :
         state = {
             hotels: action.data
         };
@@ -18,7 +18,7 @@ const Hotels = (state = initialState, action) => {
     }
 }
 
-export default Hotels;
+export default FilteredHotels;
 
 /*** HotelItem ***/
 // deleteflag:0
