@@ -216,6 +216,7 @@ import React, {Component} from 'react';
 import * as API from '../../api/Admin/HotelAdmin-API';
 import ReactDOM from 'react-dom';
 import FormErrors from "../FormErrors";
+import 'w3-css/w3.css';
 
 class Hotel extends Component {
 
@@ -401,8 +402,9 @@ class Hotel extends Component {
       console.log("ROOMID: "+x.roomid);
         API.deleteroom(x)
             .then((output) => {
-                if (output === "1") {
-                    console.log("Star updated");
+                if (output === 1) {
+                  this.getRooms();
+                    console.log("Deleted");
                 } else {
                     console.log("Star not updated");
                 }
@@ -568,19 +570,36 @@ class Hotel extends Component {
                                         <div className="col-xs-2">
                                             <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertRoomDetails(this.state)}>ADD</button>
                                         </div>
+                                        <div className="col-xxs-12 col-xs-12 mt"></div>
                                     </div>
                                 </div>
                             </div>
 
+                            <div>
+                            <ul className="w3-ul">
+                            <li>
+                            <div className="col-xs-2 col-xxs-2 mt">Room Type</div>
+                            <div className="col-xs-2 col-xxs-2 mt">Size</div>
+                            <div className="col-xs-2 col-xxs-2 mt">Guests</div>
+                            <div className="col-xs-2 col-xxs-2 mt">Price</div>
+                            <div className="col-xs-2 col-xxs-2 mt">Count</div>
+                            <div className="col-xs-2 col-xxs-2 mt">Action</div>
+                            </li></ul></div>
+
                             {this.state.roomlist.map(f => {
-                              return ( <div  key={f.room_id}>
-                              <div>
-                              <ul>
-                              <li>
-                              {f.room_type}&nbsp;{f.room_size}&nbsp;{f.guestsAllowed}&nbsp;{f.room_price}&nbsp;{f.count}&nbsp;
-                              <button onClick={()=> this.showComp(f.room_id,f.room_type)}>Update</button>&nbsp;
-                              <button onClick={()=> this.deleteRoom(f.room_id)}>Remove</button>
-                              </li></ul></div></div>
+                              return (
+                                <div  key={f.room_id}>
+                                <ul className="w3-ul">
+                                <li>
+                                <div className="col-xs-2 col-xxs-2 mt">{f.room_type}</div>
+                                <div className="col-xs-2 col-xxs-2 mt">{f.room_size}</div>
+                                <div className="col-xs-2 col-xxs-2 mt">{f.guestAllowed}</div>
+                                <div className="col-xs-2 col-xxs-2 mt">{f.room_price}</div>
+                                <div className="col-xs-2 col-xxs-2 mt">{f.count}</div>
+                                <div className="col-xs-2 col-xxs-2 mt">
+                                <button onClick={()=> this.showComp(f.room_id,f.room_type)}>Update</button>
+                                <button onClick={()=> this.deleteRoom(f.room_id)}>Remove</button></div>
+                              </li></ul></div>
                               )})}
                               <div>
                                 {
@@ -612,7 +631,7 @@ updateRoom= (newdata) => {
   console.log("ROOMID: "+newdata);
     API.updateroom(newdata)
         .then((output) => {
-            if (output === "1") {
+            if (output === 1) {
                 console.log("Room updated");
                 this.props.display();
             } else {

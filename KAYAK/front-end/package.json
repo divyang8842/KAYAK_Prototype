@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "react": "^16.0.0",
+    "react-bootstrap-time-picker": "^1.0.3",
     "react-dom": "^16.0.0",
     "react-native": "0.46.4",
     "react-native-checkbox": "^2.0.0",
@@ -11,7 +12,8 @@
     "react-redux": "*",
     "react-router-dom": "*",
     "react-scripts": "1.0.17",
-    "redux": "*"
+    "redux": "*",
+    "w3-css": "^4.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
