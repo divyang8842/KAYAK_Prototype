@@ -32,6 +32,7 @@ CREATE TABLE `car` (
   `bags` VARCHAR(30) DEFAULT NULL,
   `available_place` VARCHAR(30) DEFAULT NULL,
   `car_rent` DECIMAL(10,0) NOT NULL,
+  `car_distance` VARCHAR(30) DEFAULT NULL,
   `deleteflag` INT(11) DEFAULT '0',
   PRIMARY KEY (`car_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
@@ -209,7 +210,7 @@ CREATE TABLE `hotel_reviews` (
 
 CREATE TABLE `hotel_amenities` (
   `hotel_id` INT(11) NOT NULL UNIQUE,
-  `amenity` varchar(20) NOT NULL,
+  `amenity` VARCHAR(20) NOT NULL,
   FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
