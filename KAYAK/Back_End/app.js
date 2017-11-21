@@ -13,6 +13,8 @@ var adminCar = require('./routes/admin/car');
 var getFlights = require('./routes/Flights/GetFlights');
 var getCars =require('./routes/Cars/GetCars');
 var hotels = require('./routes/hotels/hotels');
+var adminFlight=require('./routes/admin/flight')
+
 
 var signup = require('./routes/signup');
 var account = require('./routes/account');
@@ -67,6 +69,7 @@ app.use('/deleteroom', adminHotel.deleteRoom);
 app.post('/setHotelData',adminHotel.setHotelData);
 app.post('/setRoomData',adminHotel.setRoomData);
 app.post('/setCarData',adminCar.setCarData);
+app.post('/setFlightData',adminFlight.setFlightData);
 app.post('/getflights',getFlights.getFLights);
 app.post('/getHotels',hotels.getHotels);
 app.post('/getcars',getCars.getCars);

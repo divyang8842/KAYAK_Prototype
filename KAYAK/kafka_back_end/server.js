@@ -7,6 +7,8 @@ var getHotels = require('./services/Hotels/GetHotels');
 var getCars = require('./services/Cars/GetCars');
 var admin_Hotel=require('./services/admin/Hotels');
 var admin_Car=require('./services/admin/Cars');
+var admin_Flight=require('./services/admin/Flights');
+
 
 var login_topic_name = 'login_topic';
 var consumer_login = connection.getConsumer(login_topic_name);
@@ -303,6 +305,26 @@ consumer_HotelsOps.on('message', function (message) {
                     return;
                 });
                 }
+    else if(action==7) {
+        admin_Flight.insertFlightData(data.data, function (err, res) {
+            console.log('after handle insert Flights---' + JSON.stringify(res));
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+    }
 });
 
 consumer_hotels.on('message', function (message) {
