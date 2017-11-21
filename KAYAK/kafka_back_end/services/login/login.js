@@ -8,7 +8,7 @@ function handle_request(msg, callback){
   var password=msg.password;
   var encrypwd=security.encrypt(password);
 
-  var fetchQuery="SELECT user_id,emailid,password,fname FROM user WHERE emailid=?";
+  var fetchQuery="SELECT user_id,emailid,password,fname,user_type FROM user WHERE emailid=?";
   var dataArry =  [];
   dataArry.push(msg.username);
   //dataArry.push(encrypwd);

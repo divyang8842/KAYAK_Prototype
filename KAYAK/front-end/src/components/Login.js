@@ -140,7 +140,8 @@ class Login extends Component {
                     } else {
                       this.setState({messageLogin: 'true', user: output, message:"Login Failed."});
                         console.log("Success login= "+output.user_id);
-                        this.props.handleLogged(output.user_id,output.fname);
+                        console.log("USER type= "+output.user_type);
+                        this.props.handleLogged(output.user_id,output.user_type);
                     }
                 });
         };

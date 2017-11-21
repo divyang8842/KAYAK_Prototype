@@ -26,11 +26,13 @@ class Home extends Component {
   state={
     islogged:'false',
     uid:'',
-      isAdmin:true
+      isAdmin:false
   };
 
-  logged = (id) => {
+  logged = (id,type) => {
     this.setState({islogged:'true',uid:id});
+    if(type==1)
+    this.setState({isAdmin:true});
     console.log("Logged: "+this.state.islogged);
 
   };
@@ -62,7 +64,7 @@ class Home extends Component {
       				<div className="nav-header">
       					<a href="#" className="js-fh5co-nav-toggle fh5co-nav-toggle dark"><i></i></a>
       					<h1 id="fh5co-logo"><a href="index.html"><i className="icon-airplane"></i>Kayak</a></h1>
-                        {this.state.isAdmin==='false'?<nav id="fh5co-menu-wrap" role="navigation">
+                        {this.state.isAdmin===false ?<nav id="fh5co-menu-wrap" role="navigation">
       						<ul className="sf-menu" id="fh5co-primary-menu">
                     <li className="active"><Link to='/'>Home</Link></li>
                     <li><Link to='/login'>Flight</Link></li>
@@ -77,8 +79,10 @@ class Home extends Component {
                                 <li><Link to='/flight'>Flight</Link></li>
                                 <li><Link to='/car'>Car</Link></li>
                                 <li><Link to='/hotel'>Hotel</Link></li>
+                                <li><Link to='/hotel'>Analytics</Link></li>
+                                <li><Link to='/hotel'>Users</Link></li>
                                 {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
-                                    : (<li><Link to=''>User</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                                    : (<li><Link to=''>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                             </ul>
                         </nav>}
 
