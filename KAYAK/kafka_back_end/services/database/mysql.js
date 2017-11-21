@@ -4,7 +4,7 @@ var dbType = pool.TYPE_MYSQL;
 var jsesc = require('jsesc');
 
 //var dataKeys = [];
-var timeForValidCache = 60*4;
+var timeForValidCache = 60*0.5;
 
 var redis = require("redis"),
     client = redis.createClient();
@@ -24,7 +24,7 @@ var fetchData = function(sqlQuery,data,callback,notFromCache) {
 
             client.get(sqlQuery+'_'+data, function(err, reply) {
                 console.log("rows is : "+reply);
-                callback(err, reply);
+                callback(err, JSON.parse(reply));
             });
 
         } else {
@@ -37,7 +37,7 @@ var fetchData = function(sqlQuery,data,callback,notFromCache) {
                             callback(err, []);
                         } else {
 
-                            client.set( ''+(sqlQuery+'_'+data), ''+rows, function(err1, done) {
+                            client.set( ''+(sqlQuery+'_'+data), JSON.stringify(rows), function(err1, done) {
                                 console.log("rows is : "+rows);
                                 client.expire(sqlQuery+'_'+data, timeForValidCache);
                                 //dataKeys.push({key:sqlQuery+'_'+data, time:new Date().getTime()});
@@ -87,5 +87,3 @@ var setData = function( sqlQuery,data,callback,addInsertedId,doEscape) {
 
 exports.fetchData = fetchData;
 exports.setData = setData;
-
-
