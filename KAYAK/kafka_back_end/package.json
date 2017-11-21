@@ -9,12 +9,14 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "1.0.3",
+    "express": "~4.15.2",
+    "jsesc": "^2.5.1",
     "kafka-node": "^2.2.3",
     "mongodb": "^2.2.31",
-    "express": "~4.15.2",
+    "mysql": "*",
     "nodemailer": "4.2.0",
     "nodemailer-smtp-transport": "2.7.4",
-    "mysql": "*"
+    "redis": "^2.8.0"
   },
   "devDependencies": {},
   "description": ""

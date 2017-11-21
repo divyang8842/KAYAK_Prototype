@@ -3,7 +3,7 @@ var db;
 var connected = false;
 var url = "mongodb://localhost:27017/dropbox";
 var pool = require('./connectionPooling');
-var dbType = "mongo";
+var dbType = pool.TYPE_MONGO;
 
 pool.createpool(100,dbType,function(){});
 
@@ -45,6 +45,8 @@ exports.findDoc = function(collectionname,conditionjson,callback){
 };
 
 exports.insertDoc = function(collectionname,insertdata,callback){
+
+    return;
     connect(function (db) {
         var coll = db.collection(collectionname);
         coll.insertOne(insertdata, function(err, data){

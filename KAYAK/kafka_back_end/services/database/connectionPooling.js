@@ -46,13 +46,14 @@ var TYPE_DB = TYPE_MONGO;
                 callback(err, null);
             } else {
                 if (TYPE_DB == TYPE_MONGO) {
+
                     free_mongo_pool.push(_db);
                 }else{
                     free_mysql_pool.push(_db);
                 }
+
+
                 createConnectionPool(poolingcount, function (err, result) {
-                    console.log("free_mongo_pool is "+free_mongo_pool.length);
-                    console.log("free_mysql_pool is "+free_mysql_pool.length);
                     callback(true);
                 });
             }
@@ -74,9 +75,16 @@ var TYPE_DB = TYPE_MONGO;
                     }else{
                         free_mysql_pool.push(_db);
                     }
+
                 }
             });
         }
+        if (TYPE_DB == TYPE_MONGO) {
+            console.log("free_mongo_pool size is "+free_mongo_pool.length);
+        }else{
+            console.log("free_mysql_pool size is "+free_mysql_pool.length);
+        }
+
         callback(false, true);
     };
 
@@ -141,3 +149,5 @@ var TYPE_DB = TYPE_MONGO;
 exports.getConnection = getConnection;
 exports.createpool = createpool;
 exports.closeConnection = closeConnection;
+exports.TYPE_MONGO  = TYPE_MONGO;
+exports.TYPE_MYSQL = TYPE_MYSQL;
