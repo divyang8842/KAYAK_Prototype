@@ -6,7 +6,7 @@ exports.checkuser= function(req,res) {
       console.log("USERID CHECK: "+un);
     	kafka.make_request('login_topic',{"un":un,"action":5}, function(err,results){
             console.log('in result');
-            console.log("CHECK USER: "+results.value);
+            console.log("CHECK USER: "+results);
             if(err){
             	res.status(201).json({output:0});
             }
