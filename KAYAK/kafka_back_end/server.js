@@ -8,6 +8,7 @@ var getCars = require('./services/Cars/GetCars');
 var admin_Hotel=require('./services/admin/Hotels');
 var admin_Car=require('./services/admin/Cars');
 var admin_Flight=require('./services/admin/Flights');
+var admin_Users=require('./services/admin/Users');
 
 
 var login_topic_name = 'login_topic';
@@ -325,6 +326,62 @@ consumer_HotelsOps.on('message', function (message) {
             return;
         });
     }
+
+    else if(action==20){
+    	admin_Users.getUsers(data.data, function(err,res){
+          //  console.log('after handle'+res.value[0].fname);
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res.value
+                    }),
+                    partition : 0
+                }];
+            producer.send(payloads, function(err, data){
+                console.log("Producer:-- ");
+            });
+            return;
+        });
+        }
+
+        else if(action==21){
+          admin_Users.deleteUser(data.data, function(err,res){
+                //console.log('after handle'+res.value[0].fname);
+                var payloads = [
+                    { topic: data.replyTo,
+                        messages:JSON.stringify({
+                            correlationId:data.correlationId,
+                            data : res.value
+                        }),
+                        partition : 0
+                    }];
+                producer.send(payloads, function(err, data){
+                    console.log("Producer:-- ");
+                });
+                return;
+            });
+            }
+
+
+            else if(action=22){
+              admin_Users.newAdmin(data.data, function(err,res){
+                  var payloads = [
+                      { topic: data.replyTo,
+                          messages:JSON.stringify({
+                              correlationId:data.correlationId,
+                              data : res
+                          }),
+                          partition : 0
+                      }
+                  ];
+                  producer.send(payloads, function(err, data){
+                     console.log("Producer:-- ");
+                  });
+                  return;
+              });
+            }
+
 });
 
 consumer_hotels.on('message', function (message) {

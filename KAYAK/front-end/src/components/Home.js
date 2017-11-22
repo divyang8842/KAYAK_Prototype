@@ -8,6 +8,8 @@ import FlightsHome from './Flights/FlightsHome';
 import CarHome from './Cars/CarHome';
 import Hotel from './Admin/Hotel';
 import Car from './Admin/Car';
+import AdminUsers from './Admin/AdminUsers';
+import AdminCreate from './Admin/AdminCreate';
 import Flight from './Admin/Flight';
 
 import * as API from '../api/SigninSignup-API';
@@ -43,7 +45,7 @@ class Home extends Component {
     API.logout()
     .then((status) => {
       if(status === 201){
-        this.setState({islogged:'false'});
+        this.setState({islogged:'false',isAdmin:false});
           console.log('logout success---'+this.state.islogged);
                   //this.componentWillMount();
               }
@@ -80,7 +82,7 @@ class Home extends Component {
                                 <li><Link to='/car'>Car</Link></li>
                                 <li><Link to='/hotel'>Hotel</Link></li>
                                 <li><Link to='/hotel'>Analytics</Link></li>
-                                <li><Link to='/hotel'>Users</Link></li>
+                                <li><Link to=''>Manage</Link> <ul className="fh5co-sub-menu"><li><Link to='/AdminUsers'>Users</Link></li><li><Link to='/AdminCreate'>Admin</Link></li></ul></li>
                                 {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
                                     : (<li><Link to=''>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                             </ul>
@@ -100,7 +102,8 @@ class Home extends Component {
           <Route exact path="/hotel" component={() => <Hotel/>}/>
              <Route exact path="/car" component={() => <Car/>}/>
              <Route exact path="/flight" component={() => <Flight/>}/>
-
+<Route exact path="/AdminUsers" component={() => <AdminUsers/>}/>
+<Route exact path="/AdminCreate" component={() => <AdminCreate/>}/>
          </Switch>
 
 

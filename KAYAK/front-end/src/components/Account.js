@@ -33,7 +33,7 @@ class Account extends Component {
     creditValid:false,
     zipValid:false,
     formValid: false,
-    //checkUsername:false
+    checkUsername:false
   };
 
   changePwd() {

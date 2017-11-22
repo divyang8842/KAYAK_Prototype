@@ -170,7 +170,7 @@ function getRoomData(msg, callback){
         res.value=results;
         callback(null, res);
 }
-});
+},true);
 };
 
 
