@@ -9,7 +9,8 @@ exports.getCars= function(req,res) {
          "destination":req.body.destination,
          "Pickup":req.body.Pickup,
           "Dropoff":req.body.Dropoff,
-            "different_dropoff":req.body.different_drop_off
+            "different_dropoff":req.body.different_drop_off,
+            "action":1
         },
         function(err,results){
             console.log('in result');
@@ -21,7 +22,17 @@ exports.getCars= function(req,res) {
             {
 
                 console.log("IN Get Flights: "+results);
-                res.status(201).json({results});
+
+                for (var k = 0; k< results.length;k++)
+                {
+                    results[k].Pickup=req.body.Pickup;
+                    results[k].Dropoff=req.body.Dropoff;
+
+                }
+
+                res.status(201).json({results:results,
+                    Pickup:req.body.Pickup,
+                    Dropoff:req.body.Dropoff});
 
             }
         });

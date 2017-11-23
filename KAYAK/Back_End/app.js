@@ -12,7 +12,9 @@ var adminCar = require('./routes/admin/car');
 var adminUsers=require('./routes/admin/users');
 
 var getFlights = require('./routes/Flights/GetFlights');
+var flightsBooking = require('./routes/Flights/FlightBooking');
 var getCars =require('./routes/Cars/GetCars');
+var carsbooking =require('./routes/Cars/CarBooking');
 var hotels = require('./routes/hotels/hotels');
 var adminFlight=require('./routes/admin/flight');
 
@@ -79,6 +81,10 @@ app.post('/newadmin',adminUsers.newAdmin);
 app.post('/getflights',getFlights.getFLights);
 app.post('/getHotels',hotels.getHotels);
 app.post('/getcars',getCars.getCars);
+
+app.post('/flightsbooking',flightsBooking.fLightsBooking);
+app.post('/carsbooking',carsbooking.carsbooking);
+
 app.post('/doHotelBooking',hotels.doBooking);
 
 app.post('/logout', function(req,res) {

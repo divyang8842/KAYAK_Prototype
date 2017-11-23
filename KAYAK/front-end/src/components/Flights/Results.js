@@ -4,6 +4,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 //import CheckBox from 'react-native-checkbox';
 //import Slider from 'react-native-slider';
+import { Route, Link,Switch,withRouter } from 'react-router-dom';
+import {getFlightsBooking} from '../../actions/Flights/FlightBooking';
 
 
 class Results extends Component {
@@ -104,6 +106,11 @@ class Results extends Component {
         });
     }
 
+    bookflight()
+    {
+
+    }
+
 
     temp()
     {
@@ -127,6 +134,14 @@ class Results extends Component {
                         {flights.flights.flight_arrival}
 
                         {flights.flights.totalprice}
+
+                    <button className="btn btn-primary btn-block"
+                            onClick={() =>{
+                                var payload = {};
+                                this.props.getFlightsBooking(flights);
+                                this.props.history.push("/flightsbooking");
+                            }
+                                }>View Deal</button>
 
                 </tr>
             )
@@ -410,6 +425,13 @@ function mapStateToProps(state) {
     return {flights};
 }
 
+function mapDispatchToProps(dispatch) {
+
+    return {
+        getFlightsBooking : (data) => dispatch(getFlightsBooking(data))
+    };
+}
+
 //export default Results;
 
-export default connect(mapStateToProps, null)(Results);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Results));

@@ -159,7 +159,7 @@ CREATE TABLE `flight` (
   PRIMARY KEY (`flight_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
-  
+ DROP TABLE IF EXISTS `flight_mapping`; 
   CREATE TABLE `flight_mapping` (
   `flight_id` INT(11),
   `airline_name` VARCHAR(30) NOT NULL,
@@ -238,3 +238,36 @@ CREATE TABLE `room_rates` (
 /* ALTER datatype of phoneno column in user table*/
 ALTER TABLE `kayak_18`.`user` 
 CHANGE COLUMN `phoneno` `phoneno` BIGINT NOT NULL ;
+
+DROP TABLE IF EXISTS `flight_availibility`;
+
+CREATE TABLE `flight_availibility` (
+  `flight_id` INT(11) NOT NULL,
+  `dates` DATE NOT NULL,
+  `economy_seates` INT(11),
+  `first_seates` INT(11),
+  `business_seates` INT(11),
+  `premium_seates` INT(11),
+  FOREIGN KEY (`flight_id`) REFERENCES flight(`flight_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `flight_availibility`;
+
+CREATE TABLE `car_availibility` (
+  `flight_id` INT(11) NOT NULL,
+  `dates` DATE NOT NULL,
+  `economy_seates` INT(11),
+  `first_seates` INT(11),
+  `business_seates` INT(11),
+  `premium_seates` INT(11),
+  FOREIGN KEY (`flight_id`) REFERENCES flight(`flight_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+/* ALTER room table*/
+ ALTER TABLE `kayak_18`.`room` 
+ ADD COLUMN `hotel_id` INT NOT NULL AFTER `deleteflag`;
+ 
+ ALTER TABLE `kayak_18`.`room` 
+ ADD COLUMN `count` INT NULL AFTER `hotel_id`;
+
+

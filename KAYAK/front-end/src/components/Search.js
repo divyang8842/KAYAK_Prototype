@@ -183,7 +183,17 @@ class Search extends Component {
                               <div className="col-sm-12 mt">
                                 <section>
                                   <label>Class:</label>
-                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
+                                  <select className="form-control"
+                                          style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}
+                                          onChange={(event) => {
+                                              this.setState({
+                                                  Flights: {
+                                                      ...this.state.Flights,
+                                                      Class: event.target.value
+                                                  }
+                                              });}
+                                          }
+                                  >
                                     <option value="" disabled selected>Economy</option>
                                     <option value="economy">Economy</option>
                                     <option value="first">First</option>

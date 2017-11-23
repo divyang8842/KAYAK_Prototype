@@ -6,11 +6,13 @@ import Account from './Account';
 import HotelsHome from './Hotels/HotelsHome';
 import FlightsHome from './Flights/FlightsHome';
 import CarHome from './Cars/CarHome';
+import CarBooking from './Cars/CarBooking';
 import Hotel from './Admin/Hotel';
 import Car from './Admin/Car';
 import AdminUsers from './Admin/AdminUsers';
 import AdminCreate from './Admin/AdminCreate';
 import Flight from './Admin/Flight';
+import Flightbooking from './Flights/FlightBooking'
 
 import * as API from '../api/SigninSignup-API';
 import '../public/css/animate.css';
@@ -96,11 +98,13 @@ class Home extends Component {
           <Route exact path="/" component={Search}/>
           <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
           <Route exact path="/flights" component={() => <FlightsHome/>}/>
+           <Route exact path="/flightsbooking" component={() => <Flightbooking/>}/>
              <Route exact path="/cars" component={() => <CarHome/>}/>
           {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged}/>}/>):(<Route exact path="/login" component={Search}/>)}
           <Route exact path="/account" component={() => <Account id={this.state.uid}/>}/>
           <Route exact path="/hotel" component={() => <Hotel/>}/>
              <Route exact path="/car" component={() => <Car/>}/>
+             <Route exact path="/carsbooking" component={() => <CarBooking/>}/>
              <Route exact path="/flight" component={() => <Flight/>}/>
 <Route exact path="/AdminUsers" component={() => <AdminUsers/>}/>
 <Route exact path="/AdminCreate" component={() => <AdminCreate/>}/>
