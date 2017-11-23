@@ -25,3 +25,24 @@ export const getHotels = (payload) =>
         console.log("This is error");
         return error;
     });
+
+//insertHotelData
+export const doHotelBooking = (payload) =>
+fetch(`${api}/doHotelBooking`, {
+    method: 'POST',
+    headers: {
+        ...headers,
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload),
+    credentials:'include'
+})
+// .then(res => {
+//     return res;
+.then(res => {
+    return res.status;
+})
+.catch(error => {
+    console.log("This is error");
+    return error;
+});

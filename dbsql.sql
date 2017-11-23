@@ -159,7 +159,7 @@ CREATE TABLE `flight` (
   PRIMARY KEY (`flight_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
-  
+ DROP TABLE IF EXISTS `flight_mapping`; 
   CREATE TABLE `flight_mapping` (
   `flight_id` INT(11),
   `airline_name` VARCHAR(30) NOT NULL,
@@ -179,7 +179,13 @@ CREATE TABLE `flight` (
 ALTER TABLE `kayak_18`.`user`  CHANGE COLUMN `credit_card` `credit_card` BIGINT(8) NULL DEFAULT NULL ;
 
 /* DROPPED hotel table and added tables for Hotel module*/
+DROP TABLE IF EXISTS `hotel_reviews`;
+DROP TABLE IF EXISTS `hotel_amenities`;
+DROP TABLE IF EXISTS `hotel_availability`;
+DROP TABLE IF EXISTS `room_rates`;
 DROP TABLE IF EXISTS `hotel`;
+DROP TABLE IF EXISTS `hotels`;
+
 
 CREATE TABLE `hotels` (
   `hotel_id` INT(11) NOT NULL AUTO_INCREMENT,
@@ -189,6 +195,7 @@ CREATE TABLE `hotels` (
   `hotel_city` VARCHAR(50) NOT NULL,
   `hotel_state` VARCHAR(50) DEFAULT NULL,
   `hotel_zipcode` VARCHAR(10) NOT NULL,
+  `hotel_amenities` VARCHAR(500) DEFAULT NULL,
   `hotel_description` VARCHAR(200) DEFAULT NULL,
   `deleteflag` INT(11) DEFAULT '0',
   PRIMARY KEY (`hotel_id`)
@@ -208,9 +215,22 @@ CREATE TABLE `hotel_reviews` (
   FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
-CREATE TABLE `hotel_amenities` (
-  `hotel_id` INT(11) NOT NULL UNIQUE,
-  `amenity` VARCHAR(20) NOT NULL,
+CREATE TABLE `hotel_availability` (
+  `hotel_id` INT(11) NOT NULL,
+  `date` DATE NOT NULL,
+  `king_rooms` INT(11) DEFAULT '0',
+  `queen_rooms` INT(11) DEFAULT '0',
+  `standard_rooms` INT(11) DEFAULT '0',
+  `deleteflag` INT(11) DEFAULT '0',
+  FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `room_rates` (
+  `hotel_id` INT(11) NOT NULL,
+  `king_rates` INT(11) DEFAULT '0',
+  `queen_rates` INT(11) DEFAULT '0',
+  `standard_rates` INT(11) DEFAULT '0',
+  `deleteflag` INT(11) DEFAULT '0',
   FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
@@ -242,5 +262,12 @@ CREATE TABLE `car_availibility` (
   `premium_seates` INT(11),
   FOREIGN KEY (`flight_id`) REFERENCES flight(`flight_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+/* ALTER room table*/
+ ALTER TABLE `kayak_18`.`room` 
+ ADD COLUMN `hotel_id` INT NOT NULL AFTER `deleteflag`;
+ 
+ ALTER TABLE `kayak_18`.`room` 
+ ADD COLUMN `count` INT NULL AFTER `hotel_id`;
 
 
