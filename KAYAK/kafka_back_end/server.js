@@ -3,8 +3,10 @@ var login = require('./services/login/login');
 var signup = require('./services/login/Signup');
 var account = require('./services/login/account');
 var getFlights = require('./services/Flights/GetFlights');
+var flightsbooking = require('./services/Flights/FlightBooking');
 var getHotels = require('./services/Hotels/GetHotels');
 var getCars = require('./services/Cars/GetCars');
+var carbooking = require('./services/Cars/CarBooking');
 var admin_Hotel=require('./services/admin/Hotels');
 var admin_Car=require('./services/admin/Cars');
 var admin_Flight=require('./services/admin/Flights');
@@ -135,26 +137,52 @@ consumer_get_flights.on('message', function (message) {
     console.log('message received in get Files');
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
-    var action=data.data.action;
-    console.log("ACTION-----"+data.data.action);
+    var action = data.data.action;
+    console.log("ACTION-----" + data.data.action);
 
-    getFlights.handle_request(data.data, function(err,res){
+    if(action==1)
+    {
+        getFlights.handle_request(data.data, function (err, res) {
         console.log('after handle get Flights---');
         var payloads = [
-            { topic: data.replyTo,
-                messages:JSON.stringify({
-                    correlationId:data.correlationId,
-                    data : res
+            {
+                topic: data.replyTo,
+                messages: JSON.stringify({
+                    correlationId: data.correlationId,
+                    data: res
                 }),
-                partition : 0
+                partition: 0
             }
         ];
 
-        producer.send(payloads, function(err, data){
+        producer.send(payloads, function (err, data) {
             console.log("PRODUCER CHECK:---");
         });
         return;
     });
+}
+
+    else if(action==3)
+    {
+        flightsbooking.handle_request(data.data, function (err, res) {
+            console.log('after handle get Flights---');
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+    }
 });
 
 consumer_cars.on('message', function (message) {
@@ -163,26 +191,55 @@ consumer_cars.on('message', function (message) {
 
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
-    var action=data.data.action;
-    console.log("ACTION-----"+data.data.action);
+    var action = data.data.action;
+    console.log("ACTION-----" + data.data.action);
 
-    getCars.handle_request(data.data, function(err,res){
+   if(action==1)
+   {
+    getCars.handle_request(data.data, function (err, res) {
         console.log('after handle get Cars---');
         var payloads = [
-            { topic: data.replyTo,
-                messages:JSON.stringify({
-                    correlationId:data.correlationId,
-                    data : res
+            {
+                topic: data.replyTo,
+                messages: JSON.stringify({
+                    correlationId: data.correlationId,
+                    data: res
                 }),
-                partition : 0
+                partition: 0
             }
         ];
 
-        producer.send(payloads, function(err, data){
+        producer.send(payloads, function (err, data) {
             console.log("PRODUCER CHECK:---");
         });
         return;
     });
+
+    }
+
+
+    else if(action==3)
+    {
+        carbooking.handle_request(data.data, function (err, res) {
+            console.log('after handle get Cars---');
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+
+    }
 });
 
 consumer_HotelsOps.on('message', function (message) {

@@ -10,9 +10,17 @@ function handle_request(msg, callback){
     var fetchQuery;
     var dataArry = [];
     var finalresultobject ={};
+    var temp = [];
 
-    console.log("msg.City"+msg.City);
-    console.log("msg.destination"+msg.destination);
+
+    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    var toDate = new Date(msg.Pickup);
+    var fromDate = new Date(msg.Dropoff);
+    var numofDays = Math.round(Math.abs((toDate.getTime() - fromDate.getTime())/(oneDay)))+1;
+
+    console.log("numofDays:"+numofDays);
+
+
 
     if (msg.different_dropoff)
     {
@@ -23,15 +31,31 @@ function handle_request(msg, callback){
 
     else
     {
-        fetchQuery ="select * from car where car_city =?";
+        fetchQuery ="SELECT *,COUNT(*) AS COUNT FROM car_availibility ca INNER JOIN car c ON ca.car_id = c.car_id WHERE car_city=? AND dates >= ? AND dates <= ? AND available = 1 GROUP BY c.car_id";
         dataArry.push(msg.City);
+        dataArry.push(msg.Pickup);
+        dataArry.push(msg.Dropoff);
+        console.log("msg.City"+msg.City);
+        console.log("msg.City"+msg.Pickup);
+        console.log("msg.City"+msg.Dropoff);
     }
 
     mysql.fetchData(fetchQuery,dataArry,function (err,results){
         if(results.length >0){
 
-            console.log("results:"+results);
-            callback(null, results);
+             console.log("results:"+results.length);
+             for (var i =0 ; i<results.length ; i++)
+             {
+                 if(results[i].COUNT == numofDays)
+                 {
+                     console.log("results[i]"+results[i].car_id);
+                     temp.push(results[i]);
+                 }
+             }
+
+             callback(null, temp);
+
+
 
 
         }

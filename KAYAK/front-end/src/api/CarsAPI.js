@@ -22,3 +22,24 @@ export const getCars = (payload) =>
             console.log("This is error");
             return error;
         });
+
+
+// Cars Booking API Call
+
+export const carsbooking = (payload) =>
+    fetch(`${api}/carsbooking`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        credentials:'include'
+    }).then(res => res.json())
+        .then(res=>{
+            return res;
+        })
+        .catch(error => {
+            console.log("This is error");
+            return error;
+        });

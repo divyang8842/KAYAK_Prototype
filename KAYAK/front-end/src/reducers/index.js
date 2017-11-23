@@ -4,6 +4,8 @@ import GetFlights from './Flights/Flights-reducers'
 import HotelsReducer from './Hotels/reducer-hotels'
 import GetCars from './Cars/Cars-reducer'
 import FilteredHotelsReducer from './Hotels/reducer-hotels-filtered';
+import FlightsBooking from './Flights/FlightsBooking-reducers'
+import CarsBooking from './Cars/CarsBooking- reducers'
 
 
 
@@ -13,7 +15,9 @@ const allReducers = combineReducers({
 
     getflights : GetFlights,
     getcars:GetCars,
-    filteredHotels : FilteredHotelsReducer
+    filteredHotels : FilteredHotelsReducer,
+    flightbooking:FlightsBooking,
+    carsbooking:CarsBooking
 
 });
 

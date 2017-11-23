@@ -218,3 +218,29 @@ CREATE TABLE `hotel_amenities` (
 /* ALTER datatype of phoneno column in user table*/
 ALTER TABLE `kayak_18`.`user` 
 CHANGE COLUMN `phoneno` `phoneno` BIGINT NOT NULL ;
+
+DROP TABLE IF EXISTS `flight_availibility`;
+
+CREATE TABLE `flight_availibility` (
+  `flight_id` INT(11) NOT NULL,
+  `dates` DATE NOT NULL,
+  `economy_seates` INT(11),
+  `first_seates` INT(11),
+  `business_seates` INT(11),
+  `premium_seates` INT(11),
+  FOREIGN KEY (`flight_id`) REFERENCES flight(`flight_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `flight_availibility`;
+
+CREATE TABLE `car_availibility` (
+  `flight_id` INT(11) NOT NULL,
+  `dates` DATE NOT NULL,
+  `economy_seates` INT(11),
+  `first_seates` INT(11),
+  `business_seates` INT(11),
+  `premium_seates` INT(11),
+  FOREIGN KEY (`flight_id`) REFERENCES flight(`flight_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+

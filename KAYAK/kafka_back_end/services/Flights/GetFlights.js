@@ -5,14 +5,31 @@ var mysql=require('./../database/mysql');
 function handle_request(msg, callback){
 
     console.log("In Get Files handle request:"+ JSON.stringify(msg));
+    console.log("msg.class"+msg.class);
 
-    var fetchQuery="select * from flight where stops like ? and stops like ?";
+    var fetchQuery="select * from flight fl INNER JOIN flight_availibility fa ON fl.flight_id = fa.flight_id where fl.stops like ? and fl.stops like ? AND fa.dates = ? AND fa.first_seates > ?";
+
+    // if(msg.class === "Economy")
+    // {
+    //     fetchQuery = fetchQuery+"fa.economy_seates > ?";
+    // }
+    // else if(msg.class === "First")
+    // {
+    //     fetchQuery = fetchQuery+"fa.first_seates > ?";
+    // }
+    // else if(msg.class ==="Business")
+    // {
+    //     fetchQuery = fetchQuery+"fa.business_seates > ?";
+    // }
+
     var mappingquery;
     var dataArry = [];
     var source = msg.source;
     var des = msg.Destination;
     dataArry.push('%'+source+'%');
     dataArry.push('%'+des+'%');
+    dataArry.push(msg.startdate);
+    dataArry.push(msg.adult);
     var res=[];
     var temp =[];
     var indexofsource;
@@ -71,7 +88,7 @@ function handle_request(msg, callback){
         // Second Query to fetch data based on the flight ids
 
         mappingquery=" select * from flight_mapping where flight_id in ("+ noofarguments+") and station_name in (?,?)";
-        console.log("mappingquery : "+ mappingquery)
+        console.log("mappingquery : "+ mappingquery);
 
         mysql.fetchData(mappingquery,resultforflights,function (err,results1) {
 
@@ -85,6 +102,11 @@ function handle_request(msg, callback){
                     finalresultobject.flight_departure = results1[i].flight_departure;
 
                     finalresultobject.airline_name = results1[i].airline_name;
+
+                    // added for booking
+                    finalresultobject.flight_id = results1[i].flight_id;
+                    finalresultobject.date = msg.startdate;
+                    
                     source_price = results1[i].economy_class;
                 }
                 else if (i%2 ===1)

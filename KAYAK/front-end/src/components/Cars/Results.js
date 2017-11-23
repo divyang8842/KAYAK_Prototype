@@ -1,5 +1,7 @@
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
+import { Route, Link,Switch,withRouter } from 'react-router-dom';
+import {getCarsBooking} from '../../actions/Cars/CarBooking'
 
 class Results extends Component {
 
@@ -115,6 +117,14 @@ class Results extends Component {
                     {cars.cars.passengers}
 
                     {cars.cars.doors}
+
+                    <button className="btn btn-primary btn-block"
+                            onClick={() =>{
+                                var payload = {};
+                                this.props.getCarsBooking(cars);
+                                this.props.history.push("/carsbooking");
+                            }
+                            }>View Deal</button>
 
                 </tr>
             )
@@ -531,9 +541,9 @@ class Results extends Component {
 }
 
 function mapStateToProps(state) {
-        const cars = Object.keys(state.getcars).map((items) => (
+        const cars = Object.keys(state.getcars.results).map((items) => (
             {
-                'cars' : state.getcars[items]
+                'cars' : state.getcars.results[items]
 
 
             }
@@ -542,5 +552,12 @@ function mapStateToProps(state) {
         return {cars};
     }
 
-export default connect(mapStateToProps, null)(Results);
+function mapDispatchToProps(dispatch) {
+
+    return {
+        getCarsBooking : (data) => dispatch(getCarsBooking(data))
+    };
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Results));
 
