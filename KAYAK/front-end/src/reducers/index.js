@@ -13,7 +13,7 @@ const allReducers = combineReducers({
 
     getflights : GetFlights,
     getcars:GetCars,
-    filteredHotels : FilteredHotelsReducer
+    // filteredHotels : FilteredHotelsReducer
 
 });
 

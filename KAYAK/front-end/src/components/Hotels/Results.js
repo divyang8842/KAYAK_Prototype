@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {loadFilteredHotels} from '../../actions/Hotels/Hotels';
+// import {loadFilteredHotels} from '../../actions/Hotels/Hotels';
 import '../../public/css/animate.css';
 import '../../public/css/bootstrap.css';
 import '../../public/css/magnific-popup.css';
@@ -15,8 +15,13 @@ import * as HotelsAPI from '../../api/HotelsAPI';
 
 class Results extends Component {
   state={
+    hotelsArray: [],
     sort_review:0,
     sort_price:0
+  }
+
+  componentWillMount(){
+    this.state.hotelsArray = this.props.hotels.hotels;
   }
 
   handleBooking(hotelItem){
@@ -36,7 +41,7 @@ class Results extends Component {
   }
 
   createHotelsList(){
-    return this.props.filteredHotels.hotels.map((hotelItem) => {
+    return this.state.hotelsArray.map((hotelItem) => {
       return(
         <div className="col-md-8 col-sm-8 ">
           <div className="row">
@@ -50,7 +55,7 @@ class Results extends Component {
                 <h4>Review: {hotelItem.review_overall}/10</h4>
             </div>
             <div className="col-md-4 col-sm-4 ">
-                <h4 class="price">$1,000</h4>
+                <h4 class="price">${hotelItem.standard_rates}</h4>
                 <br/>
                 <button class="btn btn-primary" onClick={() => this.handleBooking(hotelItem)}>Book Now</button>
             </div>
@@ -63,9 +68,9 @@ class Results extends Component {
   });
   }
 
-  filterHotels(){
-    this.props.loadFilteredHotels(this.props.hotels.hotels);
-  }
+  // filterHotels(){
+  //   this.props.loadFilteredHotels(this.props.hotels.hotels);
+  // }
 
   setSortCriteria(sort_criteria){
     if(sort_criteria == "price"){
@@ -99,11 +104,27 @@ class Results extends Component {
   }
 
   sortHotels(sort_criteria){
+    var sortPrice = this.state.sort_price;
+    var sortReview = this.state.sort_review;
     if(sort_criteria == "price"){
-
+      function comparePrice(a,b){
+        if (a.standard_rates < b.standard_rates)
+          return  (sortPrice == 1)? -1 : 1;
+        if (a.standard_rates > b.standard_rates)
+          return  (sortPrice == 1)? 1 : -1;
+        return 0;
+      }
+      this.state.hotelsArray.sort(comparePrice);
     }
     else{
-
+      function compareReviews(a,b){
+        if (a.review_overall < b.review_overall)
+          return  (sortReview == 1)? -1 : 1;
+        if (a.review_overall > b.review_overall)
+          return  (sortReview == 1)? 1 : -1;
+        return 0;
+      }
+      this.state.hotelsArray.sort(compareReviews);
     }
 
   }
@@ -120,14 +141,14 @@ class Results extends Component {
         <div className="row">
             <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
                 <button className="btn btn-primary btn-block"
-                        onClick={() => this.sortHotels("price")}
+                        onClick={() => this.setSortCriteria("price")}
                 >
                     PRICE
                 </button>
             </div>
             <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
                 <button className="btn btn-primary btn-block"
-                        onClick={() => this.sortHotels("review")}>
+                        onClick={() => this.setSortCriteria("review")}>
                     REVIEW SCORE
                 </button>
             </div>
@@ -145,12 +166,12 @@ class Results extends Component {
 function mapStateToProps(state){
   return {
       hotels: state.hotels,
-      filteredHotels: state.filteredHotels
+      // filteredHotels: state.filteredHotels
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({loadFilteredHotels : loadFilteredHotels}, dispatch);
-}
+// function mapDispatchToProps(dispatch) {
+//   return bindActionCreators({loadFilteredHotels : loadFilteredHotels}, dispatch);
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Results);
+export default connect(mapStateToProps)(Results);

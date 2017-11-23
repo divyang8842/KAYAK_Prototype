@@ -49,7 +49,7 @@ class Search extends Component {
     .then((result) => {
         if(result.results.code == 200){
           this.props.loadHotels(result);
-          this.props.loadFilteredHotels(result);
+          // this.props.loadFilteredHotels(result);
           this.props.history.push("/Hotels");
         }
     });
@@ -420,7 +420,7 @@ function mapDispatchToProps(dispatch) {
 
     // };
 
-    return bindActionCreators({loadHotels : loadHotels, getFlights: getFlights, loadFilteredHotels : loadFilteredHotels,getCars:getCars}, dispatch);
+    return bindActionCreators({loadHotels : loadHotels, getFlights: getFlights,getCars:getCars}, dispatch);
 
 }
 
