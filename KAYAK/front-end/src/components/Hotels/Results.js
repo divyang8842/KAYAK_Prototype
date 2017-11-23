@@ -11,6 +11,7 @@ import '../../public/css/magnific-popup.css';
 import '../../public/css/cs-select.css';
 import '../../public/css/cs-skin-border.css';
 import '../../public/css/style.css';
+import * as HotelsAPI from '../../api/HotelsAPI';
 
 class Results extends Component {
   state={
@@ -18,6 +19,21 @@ class Results extends Component {
     sort_price:0
   }
 
+  handleBooking(hotelItem){
+    var checkin = this.props.hotels.checkin;
+    var checkout = this.props.hotels.checkout;
+    var roomtype = "0"; //0=King, 1=Queen, 2=Standard
+    var roomcount = this.props.hotels.roomcount;
+    HotelsAPI.doHotelBooking({hotelItem, checkin, checkout, roomtype, roomcount})
+    .then((status) => {
+        if(status == 200){
+          alert("Booking Done!");
+          // this.props.loadHotels(result);
+          // this.props.loadFilteredHotels(result);
+          // this.props.history.push("/Hotels");
+        }
+    });
+  }
 
   createHotelsList(){
     return this.props.filteredHotels.hotels.map((hotelItem) => {
@@ -36,7 +52,7 @@ class Results extends Component {
             <div className="col-md-4 col-sm-4 ">
                 <h4 class="price">$1,000</h4>
                 <br/>
-                <button class="btn btn-primary">Book Now</button>
+                <button class="btn btn-primary" onClick={() => this.handleBooking(hotelItem)}>Book Now</button>
             </div>
           </div>
           <div>
@@ -83,7 +99,13 @@ class Results extends Component {
   }
 
   sortHotels(sort_criteria){
-    
+    if(sort_criteria == "price"){
+
+    }
+    else{
+
+    }
+
   }
 
   render() {

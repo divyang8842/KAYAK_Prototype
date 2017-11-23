@@ -73,6 +73,7 @@ app.post('/setFlightData',adminFlight.setFlightData);
 app.post('/getflights',getFlights.getFLights);
 app.post('/getHotels',hotels.getHotels);
 app.post('/getcars',getCars.getCars);
+app.post('/doHotelBooking',hotels.doBooking);
 
 app.post('/logout', function(req,res) {
     console.log(req.session.user);

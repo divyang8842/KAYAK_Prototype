@@ -1,14 +1,20 @@
 import {LOAD_FILTERED_HOTELS} from '../../actions/Hotels/Hotels';
 
 const initialState ={
-    hotels:[]
+    hotels:[],
+    checkin:'',
+    checkout:'',
+    roomcount: ''
 };
 
 const FilteredHotels = (state = initialState, action) => { 
     switch (action.type) {
         case LOAD_FILTERED_HOTELS :
         state = {
-            hotels: action.data
+            hotels: action.data.results.value,
+            checkin: action.data.checkin,
+            checkout: action.data.checkout,
+            roomcount: action.data.rooms
         };
         console.log(state);
         return state;

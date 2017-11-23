@@ -4,6 +4,7 @@ var signup = require('./services/login/Signup');
 var account = require('./services/login/account');
 var getFlights = require('./services/Flights/GetFlights');
 var getHotels = require('./services/Hotels/GetHotels');
+var bookHotels = require('./services/Hotels/bookHotels');
 var getCars = require('./services/Cars/GetCars');
 var admin_Hotel=require('./services/admin/Hotels');
 var admin_Car=require('./services/admin/Cars');
@@ -334,21 +335,39 @@ consumer_hotels.on('message', function (message) {
     var action=data.data.action;
     console.log("ACTION-----"+data.data.action);
     if(action=="getHotels"){
-    getHotels.handle_request(data.data, function(err,res){
-        console.log('after handle---');
-        var payloads = [
-            { topic: data.replyTo,
-                messages:JSON.stringify({
-                    correlationId:data.correlationId,
-                    data : res
-                }),
-                partition : 0
-            }
-        ];
+        getHotels.handle_request(data.data, function(err,res){
+            console.log('after handle---');
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res
+                    }),
+                    partition : 0
+                }
+            ];
 
-        producer.send(payloads, function(err, data){
-            console.log("PRODUCER CHECK:---");
-        });
-        return;
-    });}
+            producer.send(payloads, function(err, data){
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });}
+    else if(action=="doBooking"){
+        bookHotels.handle_booking(data.data, function(err,res){
+            console.log('after handle---');
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res
+                    }),
+                    partition : 0
+                }
+            ];
+    
+            producer.send(payloads, function(err, data){
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });}
 });

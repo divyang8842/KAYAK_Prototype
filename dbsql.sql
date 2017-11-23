@@ -181,6 +181,8 @@ ALTER TABLE `kayak_18`.`user`  CHANGE COLUMN `credit_card` `credit_card` BIGINT(
 /* DROPPED hotel table and added tables for Hotel module*/
 DROP TABLE IF EXISTS `hotel_reviews`;
 DROP TABLE IF EXISTS `hotel_amenities`;
+DROP TABLE IF EXISTS `hotel_availability`;
+DROP TABLE IF EXISTS `room_rates`;
 DROP TABLE IF EXISTS `hotel`;
 DROP TABLE IF EXISTS `hotels`;
 
@@ -213,6 +215,24 @@ CREATE TABLE `hotel_reviews` (
   FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `hotel_availability` (
+  `hotel_id` INT(11) NOT NULL,
+  `date` DATE NOT NULL,
+  `king_rooms` INT(11) DEFAULT '0',
+  `queen_rooms` INT(11) DEFAULT '0',
+  `standard_rooms` INT(11) DEFAULT '0',
+  `deleteflag` INT(11) DEFAULT '0',
+  FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `room_rates` (
+  `hotel_id` INT(11) NOT NULL,
+  `king_rates` INT(11) DEFAULT '0',
+  `queen_rates` INT(11) DEFAULT '0',
+  `standard_rates` INT(11) DEFAULT '0',
+  `deleteflag` INT(11) DEFAULT '0',
+  FOREIGN KEY (`hotel_id`) REFERENCES hotels(`hotel_id`)
+) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 
 /* ALTER datatype of phoneno column in user table*/

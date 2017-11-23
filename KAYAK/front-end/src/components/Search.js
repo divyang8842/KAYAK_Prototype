@@ -44,12 +44,12 @@ class Search extends Component {
 
   handleHotelSearch(){
     console.log(this.state.Hotels.City);
-    var city = this.state.Hotels.City;
-    HotelsAPI.getHotels({city})
+    // var city = this.state.Hotels.City;
+    HotelsAPI.getHotels(this.state.Hotels)
     .then((result) => {
-        if(result.code == 200){
-          this.props.loadHotels(result.value);
-          this.props.loadFilteredHotels(result.value);
+        if(result.results.code == 200){
+          this.props.loadHotels(result);
+          this.props.loadFilteredHotels(result);
           this.props.history.push("/Hotels");
         }
     });
