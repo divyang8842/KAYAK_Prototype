@@ -4,20 +4,21 @@ import {connect} from 'react-redux';
 import LeftPanel from './LeftPanel';
 import SearchPanel from './SearchPanel';
 import Results from './Results';
+import '../../public/css/filter.css';
 
 class HotelsHome extends Component {
 
   render() {
     return (
-        <div>
+        <div id="divresult">
             <div>
                 <SearchPanel/>
             </div>
             <div className = "row">
-                <div className="col-lg-2">
+                {/* <div className="col-lg-2">
                     <LeftPanel/>
-                </div>
-                <div className="col-lg-10">
+                </div> */}
+                <div className="col-lg-12">
                     <Results/>
                 </div>
             </div>

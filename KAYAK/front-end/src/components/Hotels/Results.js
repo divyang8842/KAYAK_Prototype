@@ -11,13 +11,20 @@ import '../../public/css/magnific-popup.css';
 import '../../public/css/cs-select.css';
 import '../../public/css/cs-skin-border.css';
 import '../../public/css/style.css';
+import '../../public/css/filter.css';
+import '../../public/css/star.css';
 import * as HotelsAPI from '../../api/HotelsAPI';
 
 class Results extends Component {
   state={
     hotelsArray: [],
     sort_review:0,
-    sort_price:0
+    sort_price:0,
+    filterparams: {
+      price:"500",
+      star:"",
+      freebies:[]
+    }
   }
 
   componentWillMount(){
@@ -42,8 +49,12 @@ class Results extends Component {
 
   createHotelsList(){
     return this.state.hotelsArray.map((hotelItem) => {
+      var styles = {
+        background:'white',
+        margin:'8px'
+      }
       return(
-        <div className="col-md-8 col-sm-8 ">
+        <div className="col-md-8 col-sm-8 " style={styles}>
           <div className="row">
             <div className="col-md-8 col-sm-8 ">
                 <h3>{hotelItem.hotel_name}</h3>
@@ -131,32 +142,92 @@ class Results extends Component {
 
   render() {
     return (
-      // <table class="c-table">
-      //   <tbody>
-      //     {this.createHotelsList()}
-      //   </tbody>
-      // </table>
-
-      <div>
-        <div className="row">
-            <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
-                <button className="btn btn-primary btn-block"
-                        onClick={() => this.setSortCriteria("price")}
-                >
-                    PRICE
-                </button>
+      <div className="row">
+        <div className="col-lg-2" id="divfilter">
+          <div id="divleftpanel">
+            <h4 id="h4filter">Star</h4>
+            <hr />
+            <span class="rating">
+              <input type="radio" class="rating-input"
+                    id="rating-input-1-5" name="rating-input-1"/>
+              <label for="rating-input-1-5" class="rating-star">
+                <p id="parstar">1</p>
+              </label>
+              <input type="radio" class="rating-input"
+                    id="rating-input-1-4" name="rating-input-1"/>
+              <label for="rating-input-1-4" class="rating-star"><p id="parstar">2</p></label>
+              <input type="radio" class="rating-input"
+                    id="rating-input-1-3" name="rating-input-1"/>
+              <label for="rating-input-1-3" class="rating-star"><p id="parstar">3</p></label>
+              <input type="radio" class="rating-input"
+                    id="rating-input-1-2" name="rating-input-1"/>
+              <label for="rating-input-1-2" class="rating-star"><p id="parstar">4</p></label>
+              <input type="radio" class="rating-input"
+                    id="rating-input-1-1" name="rating-input-1"/>
+              <label for="rating-input-1-1" class="rating-star"><p id="parstar">5</p></label>
+            </span>
+            <br/>
+            <br/>
+            <h4 id="h4filter">Price</h4>
+            <hr/>
+            <div>
+              <h6 id="sliderh6">${this.state.filterparams.price}</h6>
             </div>
-            <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
-                <button className="btn btn-primary btn-block"
-                        onClick={() => this.setSortCriteria("review")}>
-                    REVIEW SCORE
-                </button>
+            <input type="range"
+              min="50"
+              max="500"
+              step="10"
+              defaultValue="500"
+              onChange={(event) => {
+                this.setState({
+                    ...this.state,
+                    filterparams: {
+                        ...this.state.filterparams,
+                        price: event.target.value
+                    }
+                });}}
+            />
+            <br/>
+            <br/>
+            <h4 id="h4filter">Freebies</h4>
+            <hr/>
+            <div class="control-group">
+              <label class="control control--checkbox">Free Parking
+                <input type="checkbox"/>
+                <div class="control__indicator"></div>
+              </label>
+              <label class="control control--checkbox">Fitness Center
+                <input type="checkbox"/>
+                <div class="control__indicator"></div>
+              </label>
+              <label class="control control--checkbox">Free Breakfast
+                <input type="checkbox"/>
+                <div class="control__indicator"></div>
+              </label>
             </div>
-        </div> 
-        <div>
-          <span>
-          {this.createHotelsList()}
-          </span>
+          </div>
+        </div>
+        <div className="col-lg-10">
+          <div className="row">
+              <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
+                  <label className="sortbtn btn-block"
+                          onClick={() => this.setSortCriteria("price")}
+                  >
+                      PRICE
+                  </label>
+              </div>
+              <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
+                  <label className="sortbtn btn-block"
+                          onClick={() => this.setSortCriteria("review")}>
+                      REVIEW SCORE
+                  </label>
+              </div>
+          </div> 
+          <div>
+            <span>
+            {this.createHotelsList()}
+            </span>
+          </div>
         </div>
       </div>
     );

@@ -14,39 +14,42 @@ import '../../public/css/style.css';
 class SearchPanel extends Component {
 
   render() {
+    var styles = {
+      padding:'10px'
+  };
     return (
         <div>
-            <div role="tabpanel" className="tab-pane" id="hotelsearch">
-            <div className="row">
+            <div role="tabpanel" className="tab-pane" id="hotelsearch" >
+            <div className="row" style={styles}>
               <span>
-              <div className="col-xxs-3 col-xs-3 mt">
+              <div className="col-xxs-2 col-xs-2 ">
                 <div className="input-field">
-                  <input type="text" className="form-control" id="from-place" placeholder="City"/>
+                  <input type="text" className="searchcss" id="from-place" placeholder="City"/>
                 </div>
               </div>
-              <div className="col-xxs-2 col-xs-2 mt">
+              <div className="col-xxs-2 col-xs-2 ">
                 <div className="input-field">
-                  <input type="text" className="form-control" id="date-start" placeholder="Check In (mm/dd/yyyy)"/>
+                  <input type="date" className="searchcss" id="date-start" placeholder="Check In (mm/dd/yyyy)"/>
                 </div>
               </div>
-              <div className="col-xxs-2 col-xs-2 mt">
+              <div className="col-xxs-2 col-xs-2 ">
                 <div className="input-field">
-                  <input type="text" className="form-control" id="date-end" placeholder="Check Out (mm/dd/yyyy)"/>
+                  <input type="date" className="searchcss" id="date-end" placeholder="Check Out (mm/dd/yyyy)"/>
                 </div>
               </div>
-              <div className="col-sm-1 mt">
+              <div className="col-sm-2 ">
                 <div className="input-field">
-                  <input type="number" className="form-control" id="date-end" placeholder="Rooms"/>
+                  <input type="number" className="searchcss" id="date-end" placeholder="Rooms"/>
                 </div>
               </div>
-              <div className="col-xxs-1 col-xs-1 mt">
+              <div className="col-xxs-2 col-xs-2 ">
                 <div className="input-field">
-                  <input type="number" className="form-control" id="date-end" placeholder="Guests"/>
+                  <input type="number" className="searchcss" id="date-end" placeholder="Guests"/>
                 </div>
               </div>
               <div className="col-xs-2">
-                <button className="btn btn-primary btn-block"
-                  onClick={() => this.handleHotelSearch()}>Search</button>
+                <button className="searchbtn"
+                  onClick={() => this.handleHotelSearch()}>></button>
               </div>
               </span>
             </div>

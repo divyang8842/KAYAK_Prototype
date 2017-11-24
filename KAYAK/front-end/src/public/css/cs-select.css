@@ -35,6 +35,17 @@ box-shadow: none;
 	padding: 10px 10px;
 }
 
+.searchcss{
+background: rgba(255, 255, 255);
+box-shadow: none;
+	color:black;
+	border:none;
+	font-weight:bold;
+	font-size:14px;
+	width:185px;
+	padding: 5px;
+}
+
 .cs-select span {
 	display: block;
 	position: relative;

@@ -12,8 +12,12 @@
 *
 * ======================================================= */
 /* Modified: Tejas Panchal */
+#divleftpanel{
+  margin-left: 10px;
+}
+
 #hotelsearch{
-  background: rgb(235, 234, 255);
+  background: #f2f6fc;
 }
 
 body {

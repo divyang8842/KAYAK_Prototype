@@ -1,0 +1,50 @@
+#parstar{
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    margin-left: 0px;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #367ebd;
+}
+
+#parstar:hover{
+    height: 25px;
+    width: 25px;
+    margin-left: 0px;
+    text-align: center;
+    margin-top: 4px;
+    font-size: 12px;
+    color: white;
+}
+
+
+.rating {
+    overflow: hidden;
+    display: inline-block;
+}
+
+.rating-input {
+    float: right;
+    width: 10px;
+    height: 10px;
+    padding: 0;
+    margin: 0 0 0 -16px;
+    opacity: 0;
+}
+
+.rating-star {
+    float: right;
+    position: relative;
+    display: block;
+    width: 25px;
+    height: 25px;
+    background: url('../images/star.svg') 0 -25px;
+}
+
+.rating-star:hover,
+.rating-star:hover ~ .rating-star,
+.rating-input:checked ~ .rating-star{
+    background-position: 0 0;
+    background: url('../images/starfilled.svg') 0 -25px;
+}
