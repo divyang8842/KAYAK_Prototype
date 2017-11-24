@@ -122,5 +122,27 @@ var roomid=req.param("roomid");
           });
   };
 
+
+exports.getHotelData=function(req,res){
+
+    kafka.make_request('admin_topic',{"action":8}, function(err,results){
+        console.log('in list hotels result');
+        console.log(results);
+        if(err){
+            res.status(201).json({output:0});
+        }
+        else
+        {
+            //if(results.code == 200){
+            console.log("RES VALUE CHECK: "+results);
+            res.status(201).json({output:results});
+            //}
+            /*  else {
+                  res.status(201).json({output:0});
+              }*/
+        }
+    });
+};
+
 exports.setHotelData=setHotelData;
 exports.setRoomData=setRoomData;

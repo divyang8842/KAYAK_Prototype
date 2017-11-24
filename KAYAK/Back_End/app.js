@@ -81,11 +81,15 @@ app.post('/newadmin',adminUsers.newAdmin);
 app.post('/getflights',getFlights.getFLights);
 app.post('/getHotels',hotels.getHotels);
 app.post('/getcars',getCars.getCars);
-
+app.post('/deleteCar',adminCar.deleteCar);
+app.post('/updatecar',adminCar.updateCar);
 app.post('/flightsbooking',flightsBooking.fLightsBooking);
 app.post('/carsbooking',carsbooking.carsbooking);
 
 app.post('/doHotelBooking',hotels.doBooking);
+
+app.get('/listhotels',adminHotel.getHotelData);
+app.get('/listCarsData',adminCar.getCarData);
 
 app.post('/logout', function(req,res) {
     console.log(req.session.user);

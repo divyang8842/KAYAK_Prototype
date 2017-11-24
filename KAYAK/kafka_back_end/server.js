@@ -384,6 +384,83 @@ consumer_HotelsOps.on('message', function (message) {
             return;
         });
     }
+    else if(action==8) {
+        admin_Hotel.getHotelData(data.data, function (err, res) {
+            console.log('after handle get Hotels---' + JSON.stringify(res));
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+    }
+    else if(action==9) {
+        admin_Car.getCarData(data.data, function (err, res) {
+            console.log('after handle get Hotels---' + JSON.stringify(res));
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+    }
+    else if(action==10) {
+        admin_Car.deleteCarData(data.data, function (err, res) {
+            console.log('after handle delete Cars---' + JSON.stringify(res));
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+    }
+    else if(action==11){
+        admin_Car.updateCarData(data.data, function(err,res){
+            //console.log('after handle'+res.value[0].count);
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res.value
+                    }),
+                    partition : 0
+                }];
+            producer.send(payloads, function(err, data){
+                console.log("Producer:-- ");
+            });
+            return;
+        });
+    }
 
     else if(action==20){
     	admin_Users.getUsers(data.data, function(err,res){

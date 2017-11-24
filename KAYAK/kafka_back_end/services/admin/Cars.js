@@ -6,13 +6,20 @@ var insertCarData = function(msg,callback){
     var res = {};
     console.log("In handle request:"+ JSON.stringify(msg));
 
-    var insertQuery="INSERT INTO car (car_type,car_color,car_model,year,car_rent) values(?,?,?,?,?)";
+    var insertQuery="INSERT INTO car (car_type,car_class,car_model,car_city,car_dropoff_city,passengers,doors,bags,available_place,car_rent,car_distance) values(?,?,?,?,?,?,?,?,?,?,?)";
     var dataArry =  [];
-    dataArry.push(msg.cartype);
-    dataArry.push(msg.carcolor);
-    dataArry.push(msg.carmodel);
-    dataArry.push(msg.caryear);
-    dataArry.push(msg.carrent);
+    dataArry.push(msg.car_type);
+    dataArry.push(msg.car_class);
+    dataArry.push(msg.car_model);
+    dataArry.push(msg.car_city);
+    dataArry.push(msg.car_dropoff_city);
+    dataArry.push(msg.passengers);
+    dataArry.push(msg.doors);
+    dataArry.push(msg.bags);
+    dataArry.push(msg.available_place);
+    dataArry.push(msg.car_rent);
+    dataArry.push(msg.car_distance);
+
 
     console.log("DATA: "+dataArry);
     mysql.setData(insertQuery,dataArry,function (err,results){
@@ -35,6 +42,89 @@ var insertCarData = function(msg,callback){
 
 };
 
+function getCarData(msg, callback){
+    console.log("In getCarData:"+ JSON.stringify(msg));
+    var res={};
+    var fetchQuery="SELECT * FROM car WHERE deleteflag=0";
+    console.log("SELECT QUERY: "+fetchQuery);
+    var dataArry =  [];
+    console.log("DATA: "+dataArry);
+    mysql.fetchData(fetchQuery,dataArry,function (err,results){
+        console.log("LIST CARS: "+results);
+        if(err){
+            errorHandler.logError("Car.js","getCarData",err);
+            res.code = "401";
+            res.value = 0;
+            console.log("Failed account");
+            callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            callback(null, res);
+        }
+    });
+};
 
+function deleteCarData(msg, callback){
+    var res = '';
+    console.log("In handle request:"+ JSON.stringify(msg));
+    var insertQuery="UPDATE car SET deleteflag=1 WHERE car_id in ("+msg.carid+")";
+    console.log(insertQuery);
+    var dataArry =  [];
+    console.log("DATA: "+dataArry);
+    mysql.setData(insertQuery,dataArry,function (err,results){
+        console.log("CHECK RES: "+results);
+        if (err){
+            res= "Failed Update";
+            console.log("Failed update---");
+            errorHandler.logError("account.js","handle_update",err);
+            callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            console.log("Success---");
+            callback(null, results);
+        }
+    });
+};
 
+function updateCarData(msg, callback){
+    var res = '';
+    console.log("In handle request:"+ JSON.stringify(msg));
+    var insertQuery="UPDATE car SET car_type=?,car_class=?,car_model=?,car_city=?,car_dropoff_city=?,passengers=?,doors=?,bags=?,available_place=?,car_rent=?,car_distance=? WHERE car_id="+msg.carid;
+    var dataArry =  [];
+    dataArry.push(msg.cartype);
+    dataArry.push(msg.carclass);
+    dataArry.push(msg.carmodel);
+    dataArry.push(msg.carcity);
+    dataArry.push(msg.car_dropoffcity);
+    dataArry.push(msg.passengers);
+    dataArry.push(msg.doors);
+    dataArry.push(msg.bags);
+    dataArry.push(msg.availableplace);
+    dataArry.push(msg.carrent);
+    dataArry.push(msg.cardistance);
+    console.log("DATA: "+dataArry);
+    mysql.setData(insertQuery,dataArry,function (err,results){
+        console.log("CHECK RES: "+results);
+        if (err){
+            res= "Failed Update";
+            console.log("Failed update---");
+            errorHandler.logError("account.js","handle_update",err);
+            callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            console.log("Success---");
+            callback(null, results);
+        }
+    });
+};
+
+exports.updateCarData=updateCarData;
+exports.deleteCarData=deleteCarData;
 exports.insertCarData = insertCarData;
+exports.getCarData = getCarData;

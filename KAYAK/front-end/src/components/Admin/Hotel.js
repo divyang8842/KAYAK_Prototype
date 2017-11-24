@@ -210,13 +210,12 @@ class Hotel extends  Component{
 
 export default withRouter(Hotel);*/
 
-
-
 import React, {Component} from 'react';
 import * as API from '../../api/Admin/HotelAdmin-API';
 import ReactDOM from 'react-dom';
 import FormErrors from "../FormErrors";
 import 'w3-css/w3.css';
+
 
 class Hotel extends Component {
 
@@ -239,6 +238,9 @@ class Hotel extends Component {
         roomlist:[],
         updateID:'',
         updateType:'',
+        hotelData:[],
+        hname:'',
+        hcity:'',
 
         formErrors: {hotelname:'',hoteladdress:'',hotelcity: '',hotelstate: '',hotelzipcode: '',hoteldesc:'',hotelameneties:'',hotelstar:''  },
         type:false,
@@ -395,6 +397,23 @@ class Hotel extends Component {
       });
     }
 
+    viewHotelDetails=()=>{
+        API.getHotelDetails()
+            .then((data)=>{
+            alert(JSON.stringify(data));
+            if(data){
+                this.setState({
+                    hotelData:data.value
+                });
+
+            }
+            else
+            {
+
+            }
+            });
+    }
+
 
 
     deleteRoom= (id) => {
@@ -415,7 +434,27 @@ class Hotel extends Component {
       this.setState({updateID:id,updateType:t,visible: !this.state.visible});
     }
 
+    hotelFilter=()=>
+    {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+    }
     render() {
+        var hoteldata=this.state.hotelData;
+
         return (
             <div>
                     <div id="fh5co-page">
@@ -611,6 +650,50 @@ class Hotel extends Component {
 
                         </div>{/*container*/}
                     </div>
+                <div>
+                    <button onClick={() => this.viewHotelDetails()}>View Hotel Records</button>
+
+                    <div className="filter-list">
+                        <input type="text" placeholder="Search by hotelname" onChange={(event)=>{
+                            this.setState({hname: event.target.value,
+                                type:true})}}/>
+                    </div>
+                    <div className="filter-list">
+                        <input type="text" placeholder="Search by hotel city" onChange={(event)=>{
+                            this.setState({hcity: event.target.value,
+                                type:true})}}/>
+                    </div>
+
+                    <div className="col-xs-2">
+                        <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertHotelDetails(this.state)}>Search</button>
+                    </div>
+
+
+                    <table id="myTable">
+                        <tbody><tr className="header">
+                            <th style={{width: '10%'}}>Hotel Name</th>
+                            <th style={{width: '10%'}}>Hotel Location</th>
+                            <th style={{width: '10%'}}>Hotel City</th>
+                            <th style={{width: '10%'}}>Hotel State</th>
+                            <th style={{width: '10%'}}>Hotel ZipCode</th>
+                            <th style={{width: '10%'}}>Hotel Description</th>
+                            <th style={{width: '10%'}}>Hotel Star</th>
+                        </tr>
+                        {hoteldata.map((logs, i)  =>  <tr  key={i}>
+
+                            <td>{logs.hotel_name}</td>
+                            <td>{logs.hotel_location}</td>
+                            <td>{logs.hotel_city}</td>
+                            <td>{logs.hotel_state}</td>
+                            <td>{logs.hotel_zipcode}</td>
+                            <td>{logs.hotel_description}</td>
+                            <td>{logs.hotel_star}</td>
+                            </tr>
+                        )};
+                        </tbody></table>
+
+
+                </div>
             </div>
         );
     }

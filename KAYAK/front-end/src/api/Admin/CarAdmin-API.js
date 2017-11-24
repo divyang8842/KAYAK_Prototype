@@ -24,3 +24,54 @@ export const insertCarData = (payload) =>
         });
 
 
+export const viewCarDetails = (payload) =>
+    fetch(`${api}/listCarsData`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    }).then(res=>res.json())
+        .then(res => {
+            return res.output;
+        })
+        .catch(error => {
+            console.log("This is list error");
+            return error;
+        });
+
+export const deleteCar = (payload) =>
+    fetch(`${api}/deleteCar`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    }).then(res=>res.json())
+        .then(res => {
+            return res.output;
+        })
+        .catch(error => {
+            console.log("This is list error");
+            return error;
+        });
+
+export const updatecar = (payload) =>
+    fetch(`${api}/updatecar`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include',
+        body: JSON.stringify(payload)
+    }).then(res=>res.json())
+        .then(res => {
+            return res.output;
+        })
+        .catch(error => {
+            console.log("This is update error");
+            return error;
+        });
