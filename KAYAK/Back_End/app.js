@@ -27,6 +27,8 @@ var mongoSessionURL = "mongodb://localhost:27017/sessions";
 var expressSessions = require("express-session");
 var mongoStore = require("connect-mongo/es5")(expressSessions);
 
+var uploadFile=require('./routes/fileoperations/uploadfile');
+
 var app = express();
 
 // view engine setup
@@ -87,6 +89,8 @@ app.post('/flightsbooking',flightsBooking.fLightsBooking);
 app.post('/carsbooking',carsbooking.carsbooking);
 
 app.post('/doHotelBooking',hotels.doBooking);
+
+app.post('/uploadFile',uploadFile);
 
 app.get('/listhotels',adminHotel.getHotelData);
 app.get('/listCarsData',adminCar.getCarData);
