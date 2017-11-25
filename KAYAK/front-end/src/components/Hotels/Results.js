@@ -14,6 +14,7 @@ import '../../public/css/style.css';
 import '../../public/css/filter.css';
 import '../../public/css/star.css';
 import * as HotelsAPI from '../../api/HotelsAPI';
+import SearchPanel from './SearchPanel';
 
 class Results extends Component {
   state={
@@ -186,9 +187,27 @@ class Results extends Component {
     },this.filterHotels);
     console.log(this.state.filterparams.freebies);
   }
+
+  constructor(props) {
+    super(props)
+
+    this.handler = this.handler.bind(this)
+  }
+
+handler(){
+    this.forceUpdate();
+    this.setFreebies();
+    this.filterHotels();
+    // this.setState(this.state);
+    // window.location.reload();
+}
   
   render() {
     return (
+      <div>
+      <div>
+        <SearchPanel handler = {this.handler}/>
+      </div>
       <div className="row">
         <div className="col-lg-2" id="divfilter">
           <div id="divleftpanel">
@@ -366,6 +385,7 @@ class Results extends Component {
             </span>
           </div>
         </div>
+      </div>
       </div>
     );
   }
