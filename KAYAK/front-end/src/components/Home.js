@@ -11,6 +11,7 @@ import Hotel from './Admin/Hotel';
 import Car from './Admin/Car';
 import AdminUsers from './Admin/AdminUsers';
 import AdminCreate from './Admin/AdminCreate';
+import Analytics from './Admin/Analytics';
 import Flight from './Admin/Flight';
 import Flightbooking from './Flights/FlightBooking'
 
@@ -30,7 +31,7 @@ class Home extends Component {
   state={
     islogged:'false',
     uid:'',
-      isAdmin:true
+    isAdmin:false
   };
 
   logged = (id,type) => {
@@ -75,7 +76,7 @@ class Home extends Component {
                     <li><Link to='/login'>Car</Link></li>
                     <li><Link to='/hotel'>Hotel</Link></li>
                   {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
-                  : (<li><Link to=''>User</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                  : (<li><Link to='' onClick={e => e.preventDefault()}>User</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
       						</ul>
       					</nav>:<nav id="fh5co-menu-wrap" role="navigation">
                             <ul className="sf-menu" id="fh5co-primary-menu">
@@ -83,10 +84,10 @@ class Home extends Component {
                                 <li><Link to='/flight'>Flight</Link></li>
                                 <li><Link to='/car'>Car</Link></li>
                                 <li><Link to='/hotel'>Hotel</Link></li>
-                                <li><Link to='/hotel'>Analytics</Link></li>
-                                <li><Link to=''>Manage</Link> <ul className="fh5co-sub-menu"><li><Link to='/AdminUsers'>Users</Link></li><li><Link to='/AdminCreate'>Admin</Link></li></ul></li>
+                                <li><Link to='/analytics'>Analytics</Link></li>
+                                <li><Link to='' onClick={e => e.preventDefault()}>Manage</Link> <ul className="fh5co-sub-menu"><li><Link to='/AdminUsers'>Users</Link></li><li><Link to='/AdminCreate'>Admin</Link></li></ul></li>
                                 {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
-                                    : (<li><Link to=''>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                                    : (<li><Link to='' onClick={e => e.preventDefault()}>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                             </ul>
                         </nav>}
 
@@ -106,8 +107,9 @@ class Home extends Component {
              <Route exact path="/car" component={() => <Car/>}/>
              <Route exact path="/carsbooking" component={() => <CarBooking/>}/>
              <Route exact path="/flight" component={() => <Flight/>}/>
-<Route exact path="/AdminUsers" component={() => <AdminUsers/>}/>
-<Route exact path="/AdminCreate" component={() => <AdminCreate/>}/>
+             <Route exact path="/AdminUsers" component={() => <AdminUsers/>}/>
+             <Route exact path="/AdminCreate" component={() => <AdminCreate/>}/>
+             <Route exact path="/analytics" component={() => <Analytics/>}/>
          </Switch>
 
 

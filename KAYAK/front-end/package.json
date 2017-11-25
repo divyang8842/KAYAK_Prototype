@@ -4,8 +4,10 @@
   "private": true,
   "dependencies": {
     "react": "^16.0.0",
+    "react-bootstrap": "^0.31.5",
     "react-bootstrap-table": "^4.1.5",
     "react-bootstrap-time-picker": "^1.0.3",
+    "react-chartjs-2": "^2.6.4",
     "react-dom": "^16.0.0",
     "react-native": "0.46.4",
     "react-native-checkbox": "^2.0.0",
