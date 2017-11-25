@@ -12,6 +12,7 @@ var admin_Hotel=require('./services/admin/Hotels');
 var admin_Car=require('./services/admin/Cars');
 var admin_Flight=require('./services/admin/Flights');
 var admin_Users=require('./services/admin/Users');
+var file_utils = require('./services/utils/FileUtils');
 
 var fs = require('fs');
 
@@ -33,6 +34,8 @@ var consumer_HotelsOps=connection.getConsumer(admin_topic_name);
 var upload_topic = 'upload_avatar';
 var consumer_upload_avatar = connection.getConsumer(upload_topic);
 
+var download_topic = 'download_avatar';
+var consumer_download_avatar = connection.getConsumer(download_topic);
 
 var producer = connection.getProducer();
 
@@ -569,25 +572,12 @@ consumer_hotels.on('message', function (message) {
         });}
 });
 
-
-
-// function to create file from base64 encoded string
-function base64_decode(base64str, file,callback) {
-    // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
-    var bitmap = new Buffer(base64str, 'base64');
-    // write buffer to file
-    fs.writeFileSync(file, bitmap);
-    console.log('******** File created from base64 encoded string ********');
-    callback(true)
-}
-
 consumer_upload_avatar.on('message', function (message) {
     console.log('message received in upload avatar');
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
 
-    base64_decode(data.data.bufferdata,'./public/uploads/'+data.data.parentpath+'/'+data.data.filename,function(){
-
+    file_utils.base64_decode(data.data.bufferdata,'./public/uploads/'+data.data.parentpath+'/'+data.data.filename,function(){
         var resData = {};
         resData.status = 201;
 
@@ -605,5 +595,30 @@ consumer_upload_avatar.on('message', function (message) {
         });
         return;
     });
+});
 
+consumer_download_avatar.on('message', function (message) {
+    console.log('message received in download avatar');
+    console.log(JSON.stringify(message.value));
+    var data = JSON.parse(message.value);
+
+    file_utils.base64_encode('./public/uploads/'+data.data.parentpath+'/'+data.data.filename,function(bufferdata){
+        var resData = {};
+        resData.status = 201;
+        resData.image = bufferdata;
+
+        var payloads = [
+            { topic: data.replyTo,
+                messages:JSON.stringify({
+                    correlationId:data.correlationId,
+                    data : resData
+                }),
+                partition : 0
+            }
+        ];
+        producer.send(payloads, function(err, data){
+            //console.log(data);
+        });
+        return;
+    });
 });

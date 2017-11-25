@@ -43,41 +43,45 @@ function base64_encode(file,callback) {
 var fileupload = function (req, res) {
     uploads(req, res, function (err) {
         if (err) {
-            res.status(501).json({status: '501'});
+            res.status(501).json({status: '501',message: "Error while uploading avatar."});
         }else{
+
             var picType = req.body.type;
             var picId = req.body.id;
-            var filename = picType+"_"+picId+"."+path.split('.').pop();
+            var filename = picType + "_" + picId + ".jpeg";//+path.split('.').pop();
             var path = picType;
 
-            base64_encode(GLOBAL_TEMP_PATH+'/'+path,function(bufferData){
-                fs.unlinkSync(GLOBAL_TEMP_PATH+'/'+path);
-                var data = {
-                    filename : filename,
-                    parentpath : path,
-                    userid: req.session.user.userid,
-                    bufferdata : bufferData
-                };
-                kafka.make_request('upload_avatar',data, function(err,results) {
-                    console.log('in result');
-                    console.log(results);
-                    if(err){
-                        res.status(401).json({status: '401'});
-                    }
-                    else
-                    {
-                        if(results.status == '201' || results.status == 201){
-
-                            res.status(201).json({status: '201'});
-                        }
-                        else {
+            if(path.split('.').pop()!= 'jpeg' && path.split('.').pop()!= 'JPEG' && path.split('.').pop()!= 'jpg' && path.split('.').pop()!= 'JPG'){
+                fs.unlinkSync(GLOBAL_TEMP_PATH + '/' + path);
+                res.status(501).json({status: '501',message: "File extension is not allowed."});
+            }else {
+                base64_encode(GLOBAL_TEMP_PATH + '/' + path, function (bufferData) {
+                    fs.unlinkSync(GLOBAL_TEMP_PATH + '/' + path);
+                    var data = {
+                        filename: filename,
+                        parentpath: path,
+                        userid: req.session.user.userid,
+                        bufferdata: bufferData
+                    };
+                    kafka.make_request('upload_avatar', data, function (err, results) {
+                        console.log('in result');
+                        console.log(results);
+                        if (err) {
                             res.status(401).json({status: '401'});
                         }
-                    }
-                });
+                        else {
+                            if (results.status == '201' || results.status == 201) {
 
-            })
+                                res.status(201).json({status: '201'});
+                            }
+                            else {
+                                res.status(401).json({status: '401'});
+                            }
+                        }
+                    });
 
+                })
+            }
         }
     })
 };
