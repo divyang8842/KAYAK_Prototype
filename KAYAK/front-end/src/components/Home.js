@@ -76,7 +76,7 @@ class Home extends Component {
                     <li><Link to='/login'>Car</Link></li>
                     <li><Link to='/hotel'>Hotel</Link></li>
                   {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
-                  : (<li><Link to=''>User</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                  : (<li><Link to='' onClick={e => e.preventDefault()}>User</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
       						</ul>
       					</nav>:<nav id="fh5co-menu-wrap" role="navigation">
                             <ul className="sf-menu" id="fh5co-primary-menu">
@@ -85,9 +85,9 @@ class Home extends Component {
                                 <li><Link to='/car'>Car</Link></li>
                                 <li><Link to='/hotel'>Hotel</Link></li>
                                 <li><Link to='/analytics'>Analytics</Link></li>
-                                <li><Link to=''>Manage</Link> <ul className="fh5co-sub-menu"><li><Link to='/AdminUsers'>Users</Link></li><li><Link to='/AdminCreate'>Admin</Link></li></ul></li>
+                                <li><Link to='' onClick={e => e.preventDefault()}>Manage</Link> <ul className="fh5co-sub-menu"><li><Link to='/AdminUsers'>Users</Link></li><li><Link to='/AdminCreate'>Admin</Link></li></ul></li>
                                 {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
-                                    : (<li><Link to=''>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                                    : (<li><Link to='' onClick={e => e.preventDefault()}>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                             </ul>
                         </nav>}
 
