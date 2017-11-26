@@ -9,14 +9,14 @@ class CarsHome extends Component {
     render()
     {
         return(
-            <div className="container-fluid">
+            <div id="divresult">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
-                <div className="row">
+                {/* <div className="row">
                     <h1>
                         Search
                     </h1>
-                </div>
+                </div> */}
                 <div className="row">
                     <CarsResults/>
 
