@@ -9,14 +9,14 @@ class FlightsHome extends Component {
     render()
     {
         return(
-            <div className="container-fluid">
+            <div id="divresult">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
-                <div className="row">
-                    <h1>
-                       <FLightSerachPanel/>
-                    </h1>
-                </div>
+                {/*<div className="row">*/}
+                    {/*<h1>*/}
+                       {/*<FLightSerachPanel/>*/}
+                    {/*</h1>*/}
+                {/*</div>*/}
                 <div className="row">
                      <FLightResults/>
 

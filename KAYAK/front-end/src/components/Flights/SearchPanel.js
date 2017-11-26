@@ -36,16 +36,19 @@ class SearchPanel extends Component {
     }
 
     render() {
+        var styles = {
+            padding:'10px'
+        };
         return (
             <div>
                 <div role="tabpanel" className="tab-pane" id="hotelsearch">
-                    <div className="row">
+                    <div className="row" style={styles}>
               <span>
-              <div className="col-xxs-3 col-xs-3 mt">
+              <div className="col-xxs-2 col-xs-2">
                 <div className="input-field">
                     <div className="input-field">
                    <input type="text"
-                          className="form-control"
+                          className="searchcss"
                           id="from-place"
                           placeholder="Los Angeles, USA"
                           value={this.state.Flights.Source}
@@ -61,10 +64,10 @@ class SearchPanel extends Component {
                     </div>
                 </div>
               </div>
-              <div className="col-xxs-2 col-xs-2 mt">
+              <div className="col-xxs-2 col-xs-2">
                 <div className="input-field">
                    <input type="text"
-                          className="form-control"
+                          className="searchcss"
                           id="to-place"
                           placeholder="Tokyo, Japan"
                           value={this.state.Flights.Destination}
@@ -79,10 +82,10 @@ class SearchPanel extends Component {
                    />
                 </div>
               </div>
-              <div className="col-xxs-2 col-xs-2 mt">
+              <div className="col-xxs-2 col-xs-2 ">
                 <div className="input-field">
                    <input type="date"
-                          className="datecss"
+                          className="searchcss"
                           id="date-start"
                           placeholder="mm/dd/yyyy"
                           value={this.state.Flights.Depart}
@@ -97,10 +100,10 @@ class SearchPanel extends Component {
                    />
                 </div>
               </div>
-              <div className="col-sm-1 mt">
+              <div className="col-xxs-2 col-xs-2">
                 <div className="input-field">
                   <input type="date"
-                         className="datecss"
+                         className="searchcss"
                          id="date-end"
                          placeholder="mm/dd/yyyy"
                          value={this.state.Flights.Return}
@@ -117,8 +120,8 @@ class SearchPanel extends Component {
               </div>
 
               <div className="col-xs-2">
-                <button className="btn btn-primary btn-block"
-                        onClick={() => this.handleFlightSearch()}>Search</button>
+                <button className="searchbtn"
+                        onClick={() => this.handleFlightSearch()}>></button>
               </div>
               </span>
                     </div>

@@ -6,6 +6,19 @@ import {connect} from 'react-redux';
 //import Slider from 'react-native-slider';
 import { Route, Link,Switch,withRouter } from 'react-router-dom';
 import {getFlightsBooking} from '../../actions/Flights/FlightBooking';
+import FLightSerachPanel from './SearchPanel';
+
+import '../../public/css/animate.css';
+import '../../public/css/bootstrap.css';
+import '../../public/css/magnific-popup.css';
+import '../../public/css/superfish.css';
+import '../../public/css/bootstrap-datepicker.min.css';
+import '../../public/css/magnific-popup.css';
+import '../../public/css/cs-select.css';
+import '../../public/css/cs-skin-border.css';
+import '../../public/css/style.css';
+import '../../public/css/filter.css';
+import '../../public/css/star.css';
 
 
 class Results extends Component {
@@ -151,18 +164,25 @@ class Results extends Component {
 
     render()
     {
-
+        var styles={
+            height:'100px'
+        };
         return(
+            <div>
+            <div>
+                <FLightSerachPanel/>
+            </div>
             <div className="container-fluid">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
 
-                <div className="col-sm-2 col-lg-2 col-md-2 col-xs-2" >
-
-
-                    <h3>Air Lines</h3>
+                <div className="col-lg-2" id="divfilter" >
+                    <div id="divleftpanel">
+                        <h4 id="h4filter">Air Lines</h4>
+                        <hr />
                     <form>
                         <div>
+                            <label for="airindia" class="control control--checkbox">Air India
                             <input type="checkbox"
                                     id="airindia"
                                     name="airindia"
@@ -206,9 +226,11 @@ class Results extends Component {
                                     }}
 
                                 />
-                                <label for="airindia">Air India</label>
+                                <div class="control__indicator"></div>
+                                </label>
                         </div>
                         <div>
+                            <label for="airasia" class="control control--checkbox">Air Asia
                             <input type="checkbox"
                                    id="airasia"
                                    name="airasia"
@@ -251,10 +273,12 @@ class Results extends Component {
                                        }
                                    }}
                                    />
-                            <label for="airasia">Air Asia</label>
+                                <div class="control__indicator"></div>
+                            </label>
 
                         </div>
                         <div>
+                            <label for="emirates" class="control control--checkbox">Emirates
                             <input type="checkbox"
                                    id="emirates"
                                    name="emirates"
@@ -297,10 +321,12 @@ class Results extends Component {
                                        }
                                    }}
                                    />
-                            <label for="emirates">Emirates</label>
+                                <div class="control__indicator"></div>
+                            </label>
 
                         </div>
                         <div>
+                            <label for="jetblue" class="control control--checkbox">Jet Blue
 
                             <input type="checkbox"
                                     id="jetblue"
@@ -344,52 +370,88 @@ class Results extends Component {
                                        }
                                    }}
                                    />
-                            <label for="jetblue">Jet Blue</label>
+
+                                <div class="control__indicator"></div></label>
                         </div>
 
                     </form>
 
-                    <h3>Price</h3>
-                    <input type="text"
-                           className="form-control"
-                           id="from-place"
-                           placeholder="Price"
-                           value={this.state.price_filter}
-                           onChange={(event) => {
-                               this.setState({
-                                   price_filter: event.target.value
-                               },this.flights(null,null));
-                           }
+                    <h4 id="h4filter">Price</h4>
+                        <hr/>
+                    {/*<input type="text"*/}
+                           {/*className="form-control"*/}
+                           {/*id="from-place"*/}
+                           {/*placeholder="Price"*/}
+                           {/*value={this.state.price_filter}*/}
+                           {/*onChange={(event) => {*/}
+                               {/*this.setState({*/}
+                                   {/*price_filter: event.target.value*/}
+                               {/*},this.flights(null,null));*/}
+                           {/*}*/}
 
-                           }
-                    />
+                           {/*}*/}
+                    {/*/>*/}
 
-                    <h3>Duration</h3>
-                    <input type="text"
-                           className="form-control"
-                           id="from-place"
-                           placeholder="Price"
-                           value={this.state.duration_filter}
-                           onChange={(event) => {
-                               this.setState({
-                                   duration_filter: event.target.value
-                               },this.flights(null,null));}
-                           }
-                    />
+                        <div>
+                            <h6 id="sliderh6">${this.state.price_filter}</h6>
+                        </div>
+                    <input type="range"
+                               min="10"
+                               max="500"
+                               step="10"
+                               defaultValue="500"
+                               onChange={(event) => {
+                                   this.setState({
+                                       price_filter: event.target.value
+                                   },this.flights(null,null));
+                               }
 
+                               }
+                        />
+
+                        <h4 id="h4filter">Duration</h4>
+                        <hr/>
+                    {/*<input type="text"*/}
+                           {/*className="form-control"*/}
+                           {/*id="from-place"*/}
+                           {/*placeholder="Price"*/}
+                           {/*value={this.state.duration_filter}*/}
+                           {/*onChange={(event) => {*/}
+                               {/*this.setState({*/}
+                                   {/*duration_filter: event.target.value*/}
+                               {/*},this.flights(null,null));}*/}
+                           {/*}*/}
+                    {/*/>*/}
+                    <div style={styles}>
+                        <div>
+                            <h6 id="sliderh6">${this.state.duration_filter}</h6>
+                        </div>
+                        <input type="range"
+                               min="1"
+                               max="20"
+                               step="1"
+                               defaultValue="20"
+                               onChange={(event) => {
+                                   this.setState({
+                                       duration_filter: event.target.value
+                                   },this.flights(null,null));}
+                               }
+                        />
+                    </div>
 
                 </div>
-                <div className="col-sm-10 col-lg-10 col-md-10 col-xs-10" >
+                </div>
+                <div className="col-lg-10" >
                     <div className="row">
                     <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
-                        <button className="btn btn-primary btn-block"
+                        <button className="sortbtn btn-block"
                                 onClick={() => this.flights(true,null)}
                         >
                             PRICE
                         </button>
                     </div>
                     <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
-                        <button className="btn btn-primary btn-block"
+                        <button className="sortbtn btn-block"
                                 onClick={() => this.flights(null,true)}>
                             DURATION
                         </button>
@@ -407,6 +469,7 @@ class Results extends Component {
                         </tbody>
                     </table>
                 </div>
+            </div>
             </div>
             </div>
         );
