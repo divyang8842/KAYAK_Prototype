@@ -2,17 +2,17 @@ var kafka = require('../kafka/client');
 
 var setCarData = function (req, res, next) {
     console.log("Car"+req.body);
-    var cartype=req.param("car_type");
-    var carclass=req.param("car_class");
-    var carmodel=req.param("car_model");
-    var carcity=req.param("car_city");
-    var car_dropoffcity=req.param("car_dropoff_city");
+    var cartype=req.param("cartype");
+    var carclass=req.param("carclass");
+    var carmodel=req.param("carmodel");
+    var carcity=req.param("carcity");
+    var car_dropoffcity=req.param("car_dropoffcity");
     var passengers=req.param("passengers");
     var doors=req.param("doors");
     var bags=req.param("bags");
-    var availableplace=req.param("available_place");
-    var carrent=req.param("car_rent");
-    var cardistance=req.param("car_distance");
+    var availableplace=req.param("availableplace");
+    var carrent=req.param("carrent");
+    var cardistance=req.param("cardistance");
 
 
 

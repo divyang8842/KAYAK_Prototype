@@ -31,7 +31,7 @@ class Home extends Component {
   state={
     islogged:'false',
     uid:'',
-    isAdmin:false
+    isAdmin:true
   };
 
   logged = (id,type) => {

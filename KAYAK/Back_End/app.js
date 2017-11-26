@@ -85,6 +85,8 @@ app.post('/getHotels',hotels.getHotels);
 app.post('/getcars',getCars.getCars);
 app.post('/deleteCar',adminCar.deleteCar);
 app.post('/updatecar',adminCar.updateCar);
+app.post('/deleteFlight',adminFlight.deleteFlight);
+app.post('/updateflight',adminFlight.updateFlight);
 app.post('/flightsbooking',flightsBooking.fLightsBooking);
 app.post('/carsbooking',carsbooking.carsbooking);
 
@@ -94,6 +96,10 @@ app.post('/uploadFile',uploadFile);
 
 app.get('/listhotels',adminHotel.getHotelData);
 app.get('/listCarsData',adminCar.getCarData);
+app.get('/listFlightsData',adminFlight.getFlightData);
+
+
+
 
 app.post('/logout', function(req,res) {
     console.log(req.session.user);
