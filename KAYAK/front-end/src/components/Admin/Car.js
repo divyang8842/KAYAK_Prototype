@@ -12,6 +12,7 @@ class Car extends Component {
 
     state={
         user:'',
+        carid:'',
         cartype: '',
         carclass: '',
         carmodel:'',
@@ -24,6 +25,7 @@ class Car extends Component {
         carrent:'',
         cardistance:'',
         carData:[],
+        visible:false,
 
         formErrors: {cartype:'',carclass:'',carmodel: '',carcity: '',car_dropoffcity: '',passengers:'',doors:'',bags:'',availableplace:'',carrent:'',cardistance:''},
         type:false,
@@ -173,8 +175,48 @@ class Car extends Component {
                 });
         }
 
+    insertCarDetails = (userdata) => {
+        alert(JSON.stringify(userdata));
+        API.insertCarData(userdata)
+            .then((status) => {
+                alert(JSON.stringify(status))
+                if (status.status == '201') {
+                    this.setState({
+                        root:status.root,
+                        isLoggedIn: false,
+                        message: "Inserted Car Data Successfully..!!",
+                    });
+                    alert("Inserted Flight Data Successfully..!!")
+                } else if (status === 401) {
+                    this.setState({
+                        isLoggedIn: false,
+                        message: "SignUp Failed"
+                    });
+                }
+            });
+    };
+    updateCarData= (newdata) => {
+        alert("CARID: "+JSON.stringify(newdata));
+        API.updatecar(newdata)
+            .then((output) => {
+                if (output === 1) {
+                    alert("Car updated");
+                } else {
+                    alert("Car not updated");
+                }
+            });
+    };
+
+
     updateCar(data){
         this.setState({update:data,visible: !this.state.visible});
+
+    }
+
+    showInsert() {
+        this.setState({visible: true});
+
+        alert(this.state.visible);
 
     }
 
@@ -184,7 +226,19 @@ class Car extends Component {
 
         var carList=this.state.carData;
 
-        function insertCarDetails(userdata) {
+       var updateCarData= (newdata) => {
+            alert("CARID: "+JSON.stringify(newdata));
+            API.updatecar(newdata)
+                .then((output) => {
+                    if (output === 1) {
+                        alert("Car updated");
+                    } else {
+                       alert("Car not updated");
+                    }
+                });
+        };
+
+        var insertCarDetails=(userdata) =>{
             alert(JSON.stringify(userdata));
             API.insertCarData(userdata)
                 .then((status) => {
@@ -192,6 +246,7 @@ class Car extends Component {
                     if (status.status == '201') {
 
                         alert("Inserted Car Data Successfully..!!")
+                        this.componentWillMount();
                     } else if (status === 401) {
                         this.setState({
                             isLoggedIn: false,
@@ -236,7 +291,7 @@ class Car extends Component {
         function customConfirm(next, dropRowKeys) {
             alert(dropRowKeys);
             const dropRowKeysStr = dropRowKeys.join(',');
-            if (window.confirm(`(It's a custom confirm)Are you sure you want to delete ${dropRowKeysStr}?`)) {
+            if (window.confirm(`Are you sure you want to delete ${dropRowKeysStr}?`)) {
                 // If the confirmation is true, call the function that
                 // continues the deletion of the record.
                deleteCar(dropRowKeys);
@@ -244,35 +299,90 @@ class Car extends Component {
             }
         }
 
+
+        var onRowSelect =(row, isSelected, e) => {
+            let rowStr = '';
+            var obj = {};
+            var myJsonString = JSON.stringify(row);
+           // alert(myJsonString);
+            for (const prop in row) {
+                obj += '"'+prop +'":"'+ row[prop]+'",';
+            }
+            obj = JSON.parse(myJsonString);
+            alert('The new row is:' + JSON.stringify(obj));
+           // alert(obj.car_type);
+            if (window.confirm(`Are you sure you want to edit?`)) {
+
+                this.setState({
+                    carid:obj.car_id,
+                    cartype: obj.car_type,
+                    carclass: obj.car_class,
+                    carmodel: obj.car_model,
+                    carcity: obj.car_city,
+                    car_dropoffcity: obj.car_dropoff_city,
+                    passengers: obj.passengers,
+                    doors: obj.doors,
+                    bags: obj.bags,
+                    availableplace: obj.available_place,
+                    carrent: obj.car_rent,
+                    cardistance: obj.car_distance
+                });
+
+                this.setState({update:true,visible: !this.state.visible});
+
+            }
+
+            //alert(`is selected: ${isSelected}, ${rowStr}`);
+        }
+
         const options = {
             afterInsertRow: onAfterInsertRow,
             afterDeleteRow: onAfterDeleteRow,  // A hook for after droping rows.
             handleConfirmDeleteRow: customConfirm
         };
+        const cellEditProp = {
+            mode: 'click',
+            blurToSave: true
+
+        };
 
         const selectRowProp = {
-            mode: 'checkbox'
+            mode: 'checkbox',
+            clickToSelect: true,
+            onSelect: onRowSelect
         };
 
 
         return (
             <div>
-                <BootstrapTable data={carList} selectRow={ selectRowProp } insertRow={ true } deleteRow={ true } options={ options } pagination>
-                    <TableHeaderColumn dataField='car_id' isKey>Car ID</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_type' width='180' filter={ { type: 'TextFilter', delay: 1000 } }>Car Type</TableHeaderColumn>
+                <div className="btn-group btn-group-sm" role="group">
+                    <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
+                </div>
+
+         <BootstrapTable  data={carList} selectRow={ selectRowProp }  deleteRow={ true } cellEdit={ cellEditProp } options={ options } pagination>
+                    <TableHeaderColumn dataField='car_id' isKey hidden>Car ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='car_type'  filter={ { type: 'TextFilter', delay: 1000 } }>Car Type</TableHeaderColumn>
                     <TableHeaderColumn dataField='car_class'>Car Class</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_model' width='150'>Car Model</TableHeaderColumn>
+                    <TableHeaderColumn dataField='car_model' >Car Model</TableHeaderColumn>
                     <TableHeaderColumn dataField='car_city'>Car City</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_dropoff_city'>Car DropOff City</TableHeaderColumn>
-                    <TableHeaderColumn dataField='passengers'width='150'>Passengers Capacity</TableHeaderColumn>
-                    <TableHeaderColumn dataField='doors'>Car Doors</TableHeaderColumn>
-                    <TableHeaderColumn dataField='bags'>Car Bags</TableHeaderColumn>
-                    <TableHeaderColumn dataField='available_place' width='150'>Car Available Place</TableHeaderColumn>
+
+                    <TableHeaderColumn dataField='car_dropoff_city'  hidden>Car DropOff City</TableHeaderColumn>
+
+                    <TableHeaderColumn dataField='passengers'>Passengers Capacity</TableHeaderColumn>
+
+                    <TableHeaderColumn dataField='doors' hidden>Car Doors</TableHeaderColumn>
+                    <TableHeaderColumn dataField='bags' hidden>Car Bags</TableHeaderColumn>
+                    <TableHeaderColumn dataField='available_place' width='150'  hidden>Car Available Place</TableHeaderColumn>
+
                     <TableHeaderColumn dataField='car_rent'>Car Rent</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_distance' width='150'>Car Distance</TableHeaderColumn>
+
+                    <TableHeaderColumn dataField='car_distance' width='150'  hidden>Car Distance</TableHeaderColumn>
+
 
                 </BootstrapTable>
-                <div id="fh5co-page">
+
+                {this.state.visible ? <div id="fh5co-page">
+
                     <div className="container">
                         <div className="row">
 
@@ -282,7 +392,7 @@ class Car extends Component {
                                     <div className="col-xxs-12 col-xs-6 mt">
                                         <div className="input-field">
                                             <label>Car Type:</label>
-                                            <input type="text" placeholder="Enter Car Type" value={this.state.cartype} className="form-control" onChange={(event)=>{const name="cartype"
+                                            <input type="text" placeholder="Enter Car Type" value={this.state.cartype} className="form-control"  onChange={(event)=>{const name="cartype"
                                                 const value=event.target.value
                                                 this.setState({cartype: event.target.value,
                                                     type:true}, () => { this.validateField(name, value)});}}/>
@@ -387,72 +497,21 @@ class Car extends Component {
                                     <div className="col-xxs-12 col-xs-12 mt"></div>
 
 
-                                    <div className="col-xs-2">
-                                        <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertCarDetails(this.state)}>Submit</button>
-                                    </div>
+                                    <div className="col-xs-2">{this.state.update ? <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.updateCarData(this.state)}>Update</button>
+                                        :<button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertCarDetails(this.state)}>Submit</button>
+                                       }
+                                        </div>
                                 </div>
 
                             </form>
-                            <div className="col-xxs-12 col-xs-12 mt"></div>
-
-                            <div className="col-xs-2">
-                                <button type="button"  className="btn btn-primary btn-block" onClick={() => this.getCarDetails()}>View Cars</button>
-                            </div>
-
-                            <div className="container" style={{marginTop:100}}>
-
-                            <table id="myTable">
-                                <tbody><tr className="header">
-                                    <th style={{width: '10%'}}>Car Type</th>
-                                    <th style={{width: '10%'}}>Car Class</th>
-                                    <th style={{width: '10%'}}>Car Model</th>
-                                    <th style={{width: '10%'}}>Car City</th>
-                                    <th style={{width: '10%'}}>Car DropOff</th>
-                                    <th style={{width: '10%'}}>Car Passengers</th>
-                                    <th style={{width: '10%'}}>Doors</th>
-                                    <th style={{width: '10%'}}>Bags</th>
-                                    <th style={{width: '10%'}}>Available Place</th>
-                                    <th style={{width: '10%'}}>Car Rent</th>
-                                    <th style={{width: '10%'}}>Car Distance</th>
 
 
 
-                                </tr>
-                                {carList.map((logs, i)  =>  <tr  key={i}>
-
-                                        <td>{logs.car_type}</td>
-                                        <td>{logs.car_class}</td>
-                                        <td>{logs.car_model}</td>
-                                        <td>{logs.car_city}</td>
-                                        <td>{logs.car_dropoff_city}</td>
-                                        <td>{logs.passengers}</td>
-                                        <td>{logs.doors}</td>
-                                        <td>{logs.bags}</td>
-                                         <td>{logs.available_place}</td>
-                                        <td>{logs.car_rent}</td>
-                                        <td>{logs.car_distance}</td>
-                                    <div className="btn-group-vertical">
-                                        <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={()=> this.updateCar(logs)} >UPDATE</button>
-                                        <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.deleteCar(logs.car_id)}>DELETE</button>
-                                    </div>
-
-
-                                    </tr>
-                                )}
-                                </tbody></table>
-
-                                <div>
-                                    {
-                                        this.state.visible
-                                            ? <UpdateCar id={this.state.update} display={this.getCarDetails} />
-                                            : null
-                                    }
-                                </div>
-                            </div>
 
                         </div>
                     </div>
-                </div>
+                </div> : null
+                }
 
 
             </div>
@@ -460,156 +519,6 @@ class Car extends Component {
     }
 }
 
-class UpdateCar extends Component {
-
-    state={
-        carid:this.props.id.car_id,
-        cartype: this.props.id.car_type,
-        carclass: '',
-        carmodel:'',
-        carcity:'',
-        car_dropoffcity:'',
-        passengers:'',
-        doors:'',
-        bags:'',
-        availableplace:'',
-        carrent:'',
-        cardistance:''
-    };
-    componentWillMount(){
-        this.setState(
-
-        )}
-
-    updateCar= (newdata) => {
-        console.log("CARID: "+JSON.stringify(newdata));
-        API.updatecar(newdata)
-            .then((output) => {
-                if (output === 1) {
-                    console.log("Car updated");
-                    this.props.display();
-                } else {
-                    console.log("Car not updated");
-                }
-            });
-    };
-
-
-
-    render() {
-        console.log("ID: "+JSON.stringify(this.props.id.car_type));
-        return (
-            <div>
-                <div className="control-group span6 container row">
-                    <div className="form-group">
-
-                        <h4>Update for {this.props.type}</h4>
-                        <div className="col-md-2">
-                            <label htmlFor="lrno" className="control-label">Car Type: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.state.cartype}
-                                   onChange={(event)=>{const name="cartype"
-                                this.setState({cartype: event.target.value,
-                                    type:true})}} />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="lrdate" className="control-label">Car Class: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.props.id.carclass}
-                                   onChange={(event)=>{const name="guestsAllowed"
-                                const value=event.target.value
-                                this.setState({carclass: event.target.value,
-                                    type:true})}} />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="lrdate" className="control-label">Car Model: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.props.id.carmodel}
-                                   onChange={(event)=>{const name="roomprice"
-                                this.setState({carmodel: event.target.value,
-                                    type:true})}}  />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="lrdate" className="control-label">Car City: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.props.id.carcity}
-                                   onChange={(event)=>{const name="roomcount"
-                                const value=event.target.value
-                                this.setState({carcity: event.target.value,
-                                    type:true})}}  />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="lrdate" className="control-label">Car DropOffCity: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.props.id.car_dropoffcity}
-                                   onChange={(event)=>{const name="roomcount"
-                                const value=event.target.value
-                                this.setState({car_dropoffcity: event.target.value,
-                                    type:true})}}  />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="lrdate" className="control-label">Car Passengers: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.props.id.passengers}
-                                   onChange={(event)=>{const name="roomcount"
-                                const value=event.target.value
-                                this.setState({passengers: event.target.value,
-                                    type:true})}}  />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="lrdate" className="control-label">Car Doors: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.props.id.doors}
-                                   onChange={(event)=>{const name="roomcount"
-                                const value=event.target.value
-                                this.setState({doors: event.target.value,
-                                    type:true})}}  />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="lrdate" className="control-label">Car Bags: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.props.id.bags}
-                                   onChange={(event)=>{const name="roomcount"
-                                const value=event.target.value
-                                this.setState({bags: event.target.value,
-                                    type:true})}}  />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="lrdate" className="control-label">Car Available Place: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.props.id.available_place}
-                                   onChange={(event)=>{const name="roomcount"
-                                const value=event.target.value
-                                this.setState({availableplace: event.target.value,
-                                    type:true})}}  />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="lrdate" className="control-label">Car Rent: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.props.id.car_rent}
-                                   onChange={(event)=>{const name="roomcount"
-                                const value=event.target.value
-                                this.setState({carrent: event.target.value,
-                                    type:true})}}  />
-                        </div>
-                        <div className="col-md-2">
-                            <label htmlFor="lrdate" className="control-label">Car Distance: </label>
-                            <input type="text" className="form-control" name="lrdate" id="lrdate" style={{width: 100}}
-                                   value={this.props.id.car_distance}
-                                   onChange={(event)=>{const name="roomcount"
-                                const value=event.target.value
-                                this.setState({cardistance: event.target.value,
-                                    type:true})}}  />
-                        </div>
-                        <div className="col-xxs-12 col-xs-12 mt"></div>
-
-                        <div className="col-xs-2">
-                            <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.updateCar(this.state)}>UPDATE</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );}}
 
 
 export default Car;

@@ -23,4 +23,54 @@ export const insertFlightData = (payload) =>
             return error;
         });
 
+export const viewFlightDetails = (payload) =>
+    fetch(`${api}/listFlightsData`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    }).then(res=>res.json())
+        .then(res => {
+            return res.output;
+        })
+        .catch(error => {
+            console.log("This is list error");
+            return error;
+        });
 
+export const deleteFlight = (payload) =>
+    fetch(`${api}/deleteFlight`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    }).then(res=>res.json())
+        .then(res => {
+            return res.output;
+        })
+        .catch(error => {
+            console.log("This is list error");
+            return error;
+        });
+
+export const updateFlight = (payload) =>
+    fetch(`${api}/updateflight`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        credentials:'include',
+        body: JSON.stringify(payload)
+    }).then(res=>res.json())
+        .then(res => {
+            return res.output;
+        })
+        .catch(error => {
+            console.log("This is update error");
+            return error;
+        });
