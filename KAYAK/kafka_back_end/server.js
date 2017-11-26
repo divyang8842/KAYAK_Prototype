@@ -13,6 +13,7 @@ var admin_Car=require('./services/admin/Cars');
 var admin_Flight=require('./services/admin/Flights');
 var admin_Users=require('./services/admin/Users');
 var file_utils = require('./services/utils/FileUtils');
+var user_tracking = require('./services/UserTracking/UserTracking');
 
 var fs = require('fs');
 
@@ -36,6 +37,9 @@ var consumer_upload_avatar = connection.getConsumer(upload_topic);
 
 var download_topic = 'download_avatar';
 var consumer_download_avatar = connection.getConsumer(download_topic);
+
+var tracking_topic = 'user_tracking';
+var consumer_user_tracking = connection.getConsumer(tracking_topic);
 
 var producer = connection.getProducer();
 
@@ -621,4 +625,33 @@ consumer_download_avatar.on('message', function (message) {
         });
         return;
     });
+});
+
+consumer_user_tracking.on('message', function (message) {
+    console.log('message received in get Files');
+    console.log(JSON.stringify(message.value));
+    var data = JSON.parse(message.value);
+    var action = data.data.action;
+    console.log("ACTION-----" + data.data.action);
+
+    user_tracking.handle_request(data.data, function (err, res) {
+            console.log('after handle get Flights---');
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+
+
 });

@@ -18,6 +18,7 @@ var carsbooking =require('./routes/Cars/CarBooking');
 var hotels = require('./routes/hotels/hotels');
 var adminFlight=require('./routes/admin/flight');
 
+var userTracking = require('./routes/UserTracking/UserTracking');
 
 var signup = require('./routes/signup');
 var account = require('./routes/account');
@@ -87,6 +88,8 @@ app.post('/deleteCar',adminCar.deleteCar);
 app.post('/updatecar',adminCar.updateCar);
 app.post('/flightsbooking',flightsBooking.fLightsBooking);
 app.post('/carsbooking',carsbooking.carsbooking);
+app.post('/usertracking',userTracking.usertracking);
+
 
 app.post('/doHotelBooking',hotels.doBooking);
 

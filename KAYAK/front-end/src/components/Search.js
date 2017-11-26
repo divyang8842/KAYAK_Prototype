@@ -4,6 +4,7 @@ import {bindActionCreators} from 'redux';
 import * as FlightsAPI from '../api/FlightsAPI';
 import * as HotelsAPI from '../api/HotelsAPI';
 import * as CarsAPI from '../api/CarsAPI';
+import * as UserTracking from '../api/UserTracking';
 import {connect} from 'react-redux';
 import {getFlights} from '../actions/Flights/Flights';
 
@@ -58,9 +59,26 @@ class Search extends Component {
   handleFlightSearch(){
       FlightsAPI.getFlights(this.state.Flights)
           .then((output) => {
+              var tracking_object={};
+
               this.props.getFlights(output);
+
+              tracking_object.current_page="FLIGHT_PAGE";
+              tracking_object.previous_page="SEARCH_PAGE";
+              tracking_object.user_id="jay";
+              tracking_object.session_id="1";
+
+
+              UserTracking.userTracking(tracking_object)
+                  .then((status) => {
+                  console.log("Tracking status:"+status);
+
+
+                  });
               this.props.history.push("/Flights");
+
           });
+
 
   }
 
