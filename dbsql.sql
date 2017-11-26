@@ -251,16 +251,13 @@ CREATE TABLE `flight_availibility` (
   FOREIGN KEY (`flight_id`) REFERENCES flight(`flight_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `flight_availibility`;
+DROP TABLE IF EXISTS `car_availibility`;
 
 CREATE TABLE `car_availibility` (
-  `flight_id` INT(11) NOT NULL,
+  `car_id` INT(11) NOT NULL,
   `dates` DATE NOT NULL,
-  `economy_seates` INT(11),
-  `first_seates` INT(11),
-  `business_seates` INT(11),
-  `premium_seates` INT(11),
-  FOREIGN KEY (`flight_id`) REFERENCES flight(`flight_id`)
+  `available` INT(11),
+  FOREIGN KEY (`car_id`) REFERENCES car(`car_id`)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 /* ALTER room table*/
