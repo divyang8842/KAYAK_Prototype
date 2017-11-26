@@ -148,6 +148,31 @@ var insertRoomData = function(msg,callback){
 
 };
 
+function getHotelData(msg, callback){
+    console.log("In getHotel:"+ JSON.stringify(msg));
+    var res={};
+    var fetchQuery="SELECT * FROM hotels WHERE deleteflag=0";
+    console.log("SELECT QUERY: "+fetchQuery);
+    var dataArry =  [];
+
+    console.log("DATA: "+dataArry);
+    mysql.fetchData(fetchQuery,dataArry,function (err,results){
+        console.log("LIST Hotels: "+results);
+        if(err){
+            errorHandler.logError("Hotels.js","getHotelData",err);
+            res.code = "401";
+            res.value = 0;
+            console.log("Failed account");
+            callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            callback(null, res);
+        }
+    });
+};
+
 function getRoomData(msg, callback){
   console.log("In getRoomData:"+ JSON.stringify(msg));
  var res=[];
@@ -230,3 +255,4 @@ exports.insertRoomData=insertRoomData;
 exports.getRoomData=getRoomData;
 exports.updateRoomData=updateRoomData;
 exports.deleteRoomData=deleteRoomData;
+exports.getHotelData=getHotelData;

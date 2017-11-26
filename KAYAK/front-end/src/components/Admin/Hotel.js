@@ -60,6 +60,8 @@ class Hotel extends Component {
             hotelStarValid:true,
             type:false});
 
+        this.viewHotelDetails();
+
 
     }
 
@@ -246,12 +248,136 @@ class Hotel extends Component {
                 }
             }
     }
+
+    showInsert() {
+        this.setState({visible: true});
+
+
+    }
     render() {
         var hoteldata=this.state.hotelData;
+        var roomData=this.state.roomlist;
+
+        function deleteHotel(data) {
+            alert(data);
+            var flightid={flightid:data};
+
+            API.deleteHotel(flightid)
+                .then((output) => {
+                    if (output === 1) {
+                        console.log("Deleted");
+                    } else {
+                        console.log("Cars not updated");
+                    }
+                });
+
+        };
+
+        function onAfterInsertRow(row) {
+            let newRowStr = '';
+            var obj = {};
+            var myJsonString = JSON.stringify(row);
+            alert(myJsonString);
+            for (const prop in row) {
+                obj += '"'+prop +'":"'+ row[prop]+'",';
+            }
+            //obj+='}';
+            obj = JSON.parse(myJsonString);
+            alert('The new row is:' + JSON.stringify(obj));
+            this.insertHotelDetails(obj);
+        }
+
+        function onAfterDeleteRow(rowKeys) {
+            alert('The rowkey you drop: ' + rowKeys);
+        }
+        function customConfirm(next, dropRowKeys) {
+            alert(dropRowKeys);
+            const dropRowKeysStr = dropRowKeys.join(',');
+            if (window.confirm(`Are you sure you want to delete ${dropRowKeysStr}?`)) {
+                // If the confirmation is true, call the function that
+                // continues the deletion of the record.
+                deleteHotel(dropRowKeys);
+                next();
+            }
+        }
+
+
+        var onRowSelect =(row, isSelected, e) => {
+            let rowStr = '';
+            var obj = {};
+            var myJsonString = JSON.stringify(row);
+            // alert(myJsonString);
+            for (const prop in row) {
+                obj += '"'+prop +'":"'+ row[prop]+'",';
+            }
+            obj = JSON.parse(myJsonString);
+            alert('The new row is:' + JSON.stringify(obj));
+            if (window.confirm(`Are you sure you want to edit?`)) {
+
+                this.setState({
+                    flightid:obj.flight_id,
+                    flightnumber: obj.flight_number,
+                    airlinename: obj.airline_name,
+                    stationname:obj.station_name,
+                    arrivaltime:obj.flight_arrival,
+                    departuretime:obj.flight_departure,
+                    flightduration:obj.flight_duration,
+                    economyClassFare:obj.economy_class,
+                    firstClassFare:obj.first_class,
+                    businessClassFare:obj.business_class,
+                    premiumEcoFare:obj.premiumeconomy_class
+                });
+
+                this.setState({update:true,visible: !this.state.visible});
+
+            }
+
+            //alert(`is selected: ${isSelected}, ${rowStr}`);
+        }
+        const options = {
+            afterInsertRow: onAfterInsertRow,
+            afterDeleteRow: onAfterDeleteRow,  // A hook for after droping rows.
+            handleConfirmDeleteRow: customConfirm
+        };
+        const cellEditProp = {
+            mode: 'click',
+            blurToSave: true
+
+        };
+
+        const selectRowProp = {
+            mode: 'checkbox',
+            clickToSelect: true,
+            onSelect: onRowSelect
+        };
 
         return (
             <div>
-                    <div id="fh5co-page">
+
+                <div className="btn-group btn-group-sm" role="group">
+                    <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
+                </div>
+
+                <BootstrapTable data={hoteldata}  selectRow={ selectRowProp }  deleteRow={ true } cellEdit={ cellEditProp } options={ options } pagination>
+                    <TableHeaderColumn dataField='hotel_id' isKey hidden>Hotel ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_name' >Hotel Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_star'  filter={ { type: 'TextFilter', delay: 1000 } }>Hotel Star</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_location'>Hotel Location</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_city'>Hotel City</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_state'>Hotel State</TableHeaderColumn>
+
+                    <TableHeaderColumn dataField='hotel_zipcode'>Hotel Zipcode</TableHeaderColumn>
+
+                    <TableHeaderColumn dataField='hotel_description' hidden>Hotel Description</TableHeaderColumn>
+
+
+
+                </BootstrapTable>
+
+
+
+
+                {this.state.visible ? <div id="fh5co-page">
                         <div className="container">
                             <div className="row">
 
@@ -443,49 +569,8 @@ class Hotel extends Component {
                               </div>
 
                         </div>{/*container*/}
-                    </div>
+                    </div> : null}
                 <div>
-                    <button onClick={() => this.viewHotelDetails()}>View Hotel Records</button>
-
-                    <div className="filter-list">
-                        <input type="text" placeholder="Search by hotelname" onChange={(event)=>{
-                            this.setState({hname: event.target.value,
-                                type:true})}}/>
-                    </div>
-                    <div className="filter-list">
-                        <input type="text" placeholder="Search by hotel city" onChange={(event)=>{
-                            this.setState({hcity: event.target.value,
-                                type:true})}}/>
-                    </div>
-
-                    <div className="col-xs-2">
-                        <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertHotelDetails(this.state)}>Search</button>
-                    </div>
-
-
-                    <table id="myTable">
-                        <tbody><tr className="header">
-                            <th style={{width: '10%'}}>Hotel Name</th>
-                            <th style={{width: '10%'}}>Hotel Location</th>
-                            <th style={{width: '10%'}}>Hotel City</th>
-                            <th style={{width: '10%'}}>Hotel State</th>
-                            <th style={{width: '10%'}}>Hotel ZipCode</th>
-                            <th style={{width: '10%'}}>Hotel Description</th>
-                            <th style={{width: '10%'}}>Hotel Star</th>
-                        </tr>
-                        {hoteldata.map((logs, i)  =>  <tr  key={i}>
-
-                            <td>{logs.hotel_name}</td>
-                            <td>{logs.hotel_location}</td>
-                            <td>{logs.hotel_city}</td>
-                            <td>{logs.hotel_state}</td>
-                            <td>{logs.hotel_zipcode}</td>
-                            <td>{logs.hotel_description}</td>
-                            <td>{logs.hotel_star}</td>
-                            </tr>
-                        )};
-                        </tbody></table>
-
 
                 </div>
             </div>

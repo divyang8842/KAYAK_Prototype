@@ -41,6 +41,7 @@ function base64_encode(file,callback) {
 };
 
 var fileupload = function (req, res) {
+    //console.log("path is"+path);
     uploads(req, res, function (err) {
         if (err) {
             res.status(501).json({status: '501',message: "Error while uploading avatar."});
@@ -49,18 +50,19 @@ var fileupload = function (req, res) {
             var picType = req.body.type;
             var picId = req.body.id;
             var filename = picType + "_" + picId + ".jpeg";//+path.split('.').pop();
-            var path = picType;
+           // console.log("path1 is"+path);
+            var path = req.file.filename;
 
             if(path.split('.').pop()!= 'jpeg' && path.split('.').pop()!= 'JPEG' && path.split('.').pop()!= 'jpg' && path.split('.').pop()!= 'JPG'){
                 fs.unlinkSync(GLOBAL_TEMP_PATH + '/' + path);
                 res.status(501).json({status: '501',message: "File extension is not allowed."});
             }else {
+                //path = picType;
                 base64_encode(GLOBAL_TEMP_PATH + '/' + path, function (bufferData) {
                     fs.unlinkSync(GLOBAL_TEMP_PATH + '/' + path);
                     var data = {
                         filename: filename,
-                        parentpath: path,
-                        userid: req.session.user.userid,
+                        parentpath: picType,
                         bufferdata: bufferData
                     };
                     kafka.make_request('upload_avatar', data, function (err, results) {
@@ -72,7 +74,7 @@ var fileupload = function (req, res) {
                         else {
                             if (results.status == '201' || results.status == 201) {
 
-                                res.status(201).json({status: '201'});
+                                res.status(201).json({status: '201',data:bufferData});
                             }
                             else {
                                 res.status(401).json({status: '401'});
@@ -86,5 +88,5 @@ var fileupload = function (req, res) {
     })
 };
 
-router.post('/profile', fileupload);
+router.post('/uploadFile', fileupload);
 module.exports = router;

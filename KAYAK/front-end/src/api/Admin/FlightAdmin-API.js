@@ -24,7 +24,7 @@ export const insertFlightData = (payload) =>
         });
 
 export const viewFlightDetails = (payload) =>
-    fetch(`${api}/listFlightsData`, {
+    fetch(`${api}/listFlightData`, {
         method: 'GET',
         headers: {
             ...headers,

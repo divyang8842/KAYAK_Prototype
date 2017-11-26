@@ -52,7 +52,7 @@ class Flight extends Component {
         airlinename: '',
         stationname:'',
         arrivaltime:'',
-        departuretime:'',
+
         flightduration:'',
         flightclasses:'',
         economyClassFare:'',

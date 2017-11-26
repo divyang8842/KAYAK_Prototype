@@ -3,9 +3,12 @@ var kafka = require('./../kafka/client');
 
 var fileDownload = function(req,res){
     var data = {
-        filename: req.body.id,
-        parentpath: req.body.type
+        filename: req.param("id"),
+        parentpath: req.param("type")
     };
+    /*var filename=req.param("id");
+    var parentpath =req.param("type");*/
+    console.log(JSON.stringify(data));
     kafka.make_request('download_avatar', data, function (err, results) {
         console.log('in result');
         console.log(results);
@@ -18,4 +21,6 @@ var fileDownload = function(req,res){
                 res.status(401).json({status: '401'});
             }
         }
+});
 }
+exports.fileDownload = fileDownload;
