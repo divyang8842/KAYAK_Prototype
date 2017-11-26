@@ -1,7 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var db;
 var connected = false;
-var url = "mongodb://localhost:27017/dropbox";
+var url = "mongodb://localhost:27017/kayak_18";
 var pool = require('./connectionPooling');
 var dbType = pool.TYPE_MONGO;
 

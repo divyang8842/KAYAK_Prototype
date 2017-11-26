@@ -9,8 +9,13 @@ exports.carsbooking= function(req,res) {
 
     kafka.make_request('get_cars',
         {"car_id":req.body.car_id,
+            "car_model":req.body.car_model,
+            "car_type":req.body.car_type,
+            "car_class":req.body.car_class,
+            "car_city":req.body.car_city,
             "start_date":req.body.Pickup,
             "end_date":req.body.Dropoff,
+            "car_rent":req.body.car_rent,
             "action":3
         },
         function(err,results){

@@ -11,6 +11,12 @@ exports.fLightsBooking= function(req,res) {
 
     kafka.make_request('get_flights',
         {"flight_id":req.body.flight_id,
+            "airline_name":req.body.airline_name,
+            "origin_station":req.body.origin_station,
+            "destination_station":req.body.destination_station,
+            "flight_departure":req.body.flight_departure,
+            "flight_arrival":req.body.flight_arrival,
+            "totalprice":req.body.totalprice,
             "date":req.body.date,
             "class":"firstclass",
             "noofseats":5,
