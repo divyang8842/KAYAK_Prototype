@@ -175,7 +175,7 @@ input[type=range]::-webkit-slider-thumb {
   .control-group {
     display: inline-block;
     width: 190px;
-    height: 210px;
+    height: 230px;
     text-align: left;
     vertical-align: top;
     background: #fff;

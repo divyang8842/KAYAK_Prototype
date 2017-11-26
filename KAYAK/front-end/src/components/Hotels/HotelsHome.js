@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import LeftPanel from './LeftPanel';
@@ -7,24 +7,23 @@ import Results from './Results';
 import '../../public/css/filter.css';
 
 class HotelsHome extends Component {
-
-  render() {
-    return (
-        <div id="divresult">
-            <div>
-                <SearchPanel/>
-            </div>
-            <div className = "row">
-                {/* <div className="col-lg-2">
+    render() {
+        return (
+            <div id="divresult">
+                {/* <div>
+                    <SearchPanel handler = {this.handler}/>
+                </div> */}
+                <div className="row">
+                    {/* <div className="col-lg-2">
                     <LeftPanel/>
                 </div> */}
-                <div className="col-lg-12">
-                    <Results/>
+                    <div className="col-lg-12">
+                        <Results/>
+                    </div>
                 </div>
             </div>
-        </div>
-    );
-  }
+        );
+    }
 }
 
 export default HotelsHome;
