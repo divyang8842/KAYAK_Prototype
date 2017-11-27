@@ -330,7 +330,6 @@ class Car extends Component {
             obj = JSON.parse(myJsonString);
            // alert('The new row is:' + JSON.stringify(obj));
            // alert(obj.car_type);
-            if (window.confirm(`Are you sure you want to edit?`)) {
 
                 this.setState({
                     carid:obj.car_id,
@@ -359,7 +358,7 @@ var newdata={type:'car',id:obj.car_id};
                     });
                 this.setState({update:true,visible: !this.state.visible});
 
-            }
+
 
         }
 
@@ -388,7 +387,7 @@ var newdata={type:'car',id:obj.car_id};
                     <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
                 </div>
 
-         <BootstrapTable  data={carList} selectRow={ selectRowProp }  deleteRow={ true } cellEdit={ cellEditProp } options={ options } pagination>
+         <BootstrapTable  data={carList} selectRow={ selectRowProp }  deleteRow={ true }  options={ options } pagination>
                     <TableHeaderColumn dataField='car_id' isKey hidden>Car ID</TableHeaderColumn>
                     <TableHeaderColumn dataField='car_type'  filter={ { type: 'TextFilter', delay: 1000 } }>Car Type</TableHeaderColumn>
                     <TableHeaderColumn dataField='car_class'>Car Class</TableHeaderColumn>
