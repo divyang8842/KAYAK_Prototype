@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 //import * as API from '../api/api';
 import { Route, Link,Switch,withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
-import {flightsbooking} from '../../api/FlightsAPI'
+import {flightsbooking} from '../../api/FlightsAPI';
+import * as UserTracking from '../../api/UserTracking';
 
 
 class FlightBooking extends Component {
@@ -26,8 +27,23 @@ class FlightBooking extends Component {
                     <button className="btn btn-primary btn-block"
                             onClick={() =>{
                                 var payload = {};
+                                var tracking_object={};
+
+                                tracking_object.current_page="SEARCH_PAGE";
+                                tracking_object.previous_page="BILLING_FLIGHT";
+                                tracking_object.user_id="jay";
+                                tracking_object.session_id="1";
+
                                 flightsbooking(this.props.flightsbooking)
                                     .then((output) => {
+
+                                        UserTracking.userTracking(tracking_object)
+                                            .then((status) => {
+                                                console.log("Tracking status:"+status);
+
+
+                                            });
+
                                         this.props.history.push("/");
                                     });
 

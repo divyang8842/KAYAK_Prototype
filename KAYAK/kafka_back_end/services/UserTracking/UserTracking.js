@@ -34,18 +34,186 @@ function handle_request(msg, callback){
 
                     }}}
             , function (err, user) {
-                console.log("inside call back" + user);
-                if (user) {
-                    response.code = "200";
-                    console.log("Success--- inside Tracking User- FLIGHT_PAGE"+response);
-                    callback(null, response);
+                console.log("Inside Updated FLIGHT_PAGE Entry");
 
+                if(!err){
+
+                    coll.update({},{$inc: { FLIGHT_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- FLIGHT_PAGE_COUNT"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
                 }
-                else {
+                else
+                {
                     response.code = "400";
                     console.log("Fail"+response);
                     callback(null, response);
                 }
+            });
+    }
+
+       else if(msg.current_page ==="CAR_PAGE")
+        {
+
+            coll.update({}, {
+                    $push: {
+                        CAR_PAGE: {
+                            current_page: msg.current_page,
+                            previous_page:msg.previous_page,
+                            user_id:msg.user_id,
+                            session_id:msg.session_id,
+                            time:Date()
+
+                        }}}  //,{ $inc: { CAR_COUNT: 1} }
+                , function (err, user) {
+
+                    console.log("Inside Updated CAR_PAGE Entry");
+
+                    if(!err){
+
+                    coll.update({},{$inc: { CAR_COUNT: 1 }},
+                            function (err, user) {
+
+                                console.log("inside call back" + user);
+                                if (user) {
+                                    response.code = "200";
+                                    console.log("Success--- inside Tracking User- CAR_PAGE_COUNT"+response);
+                                    callback(null, response);
+
+                                }
+                                else {
+                                    response.code = "400";
+                                    console.log("Fail"+response);
+                                    callback(null, response);
+                                }
+
+                                        }
+
+                        );
+                    }
+                    else
+                    {
+                        response.code = "400";
+                        console.log("Fail"+response);
+                        callback(null, response);
+                    }
+
+
+                });
+        }
+
+    else if(msg.current_page ==="BILLING_FLIGHT")
+    {
+
+        coll.update({}, {
+                $push: {
+                    BILLING_FLIGHT: {
+                        current_page: msg.current_page,
+                        previous_page:msg.previous_page,
+                        user_id:msg.user_id,
+                        session_id:msg.session_id,
+                        time:Date()
+
+                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+            , function (err, user) {
+
+                console.log("Inside Updated BILLING_FLIGHT_PAGE Entry");
+
+                if(!err){
+
+                    coll.update({},{$inc: { BILLING_FLIGHT_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- BILLING_FLIGHT_COUNT"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
+                }
+                else
+                {
+                    response.code = "400";
+                    console.log("Fail"+response);
+                    callback(null, response);
+                }
+
+
+            });
+    }
+
+    else if(msg.current_page ==="SEARCH_PAGE")
+    {
+
+        coll.update({}, {
+                $push: {
+                    SEARCH_PAGE: {
+                        current_page: msg.current_page,
+                        previous_page:msg.previous_page,
+                        user_id:msg.user_id,
+                        session_id:msg.session_id,
+                        time:Date()
+
+                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+            , function (err, user) {
+
+                console.log("Inside Updated SEARCH_PAGE Entry");
+
+                if(!err){
+
+                    coll.update({},{$inc: { SEARCH_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- SEARCH_COUNT"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
+                }
+                else
+                {
+                    response.code = "400";
+                    console.log("Fail"+response);
+                    callback(null, response);
+                }
+
+
             });
     }
 

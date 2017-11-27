@@ -30,6 +30,7 @@ class SearchPanel extends Component {
         FlightsAPI.getFlights(this.state.Flights)
             .then((output) => {
                 this.props.getFlights(output);
+                this.props.handler();
 
             });
 

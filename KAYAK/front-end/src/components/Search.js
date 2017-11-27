@@ -85,8 +85,21 @@ class Search extends Component {
     handleCarsSearch(){
         CarsAPI.getCars(this.state.Cars)
             .then((output) => {
+
+                var tracking_object={};
                 this.props.getCars(output);
+
+                tracking_object.current_page="CAR_PAGE";
+                tracking_object.previous_page="SEARCH_PAGE";
+                tracking_object.user_id="jay";
+                tracking_object.session_id="1";
+
+                UserTracking.userTracking(tracking_object)
+                    .then((status) => {
+                        console.log("Tracking status:"+status);
+                        });
                 this.props.history.push("/Cars");
+
             });
     }
 
@@ -203,6 +216,7 @@ class Search extends Component {
                                   <label>Class:</label>
                                   <select className="form-control"
                                           style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}
+                                          value={this.state.Flights.Class}
                                           onChange={(event) => {
                                               this.setState({
                                                   Flights: {
@@ -222,7 +236,18 @@ class Search extends Component {
                               <div className="col-xxs-12 col-xs-6 mt">
                                 <section>
                                   <label>Adult:</label>
-                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
+                                  <select className="form-control"
+                                          style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}
+                                          value={this.state.Flights.Adult}
+                                          onChange={(event) => {
+                                              this.setState({
+                                                  Flights: {
+                                                      ...this.state.Flights,
+                                                      Adult: event.target.value
+                                                  }
+                                              });}
+                                          }
+                                  >
                                     <option value="" disabled selected>1</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -232,18 +257,7 @@ class Search extends Component {
 
                                 </section>
                               </div>
-                              <div className="col-xxs-12 col-xs-6 mt">
-                                <section>
-                                  <label>Children:</label>
-                                  <select className="form-control" style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}>
-                                    <option value="" disabled selected>1</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                  </select>
-                                </section>
-                              </div>
+
                               <div className="col-xs-12">
                                 <button className="btn btn-primary btn-block"
                                   onClick={() => this.handleFlightSearch()}>Search Flights</button>

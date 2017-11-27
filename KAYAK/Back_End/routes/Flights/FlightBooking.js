@@ -18,8 +18,8 @@ exports.fLightsBooking= function(req,res) {
             "flight_arrival":req.body.flight_arrival,
             "totalprice":req.body.totalprice,
             "date":req.body.date,
-            "class":"firstclass",
-            "noofseats":5,
+            "class":req.body.class,
+            "noofseats":req.body.nooftickets,
             "action":3
         },
         function(err,results){

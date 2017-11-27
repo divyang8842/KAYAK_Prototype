@@ -30,34 +30,80 @@ function handle_request(msg, callback){
                 console.log('Connected to mongo at: ' + mongoURL);
                 var coll = mongo.collection('Billing');
 
-                coll.update({userid:'jay'}, {
-                    $push: {
-                        car: {
-                            billid:new ObjectID(),
-                            car_id:msg.car_id,
-                            car_model:msg.car_model,
-                            car_type:msg.car_type ,
-                            car_class:msg.car_class,
-                            car_city:msg.car_city,
-                            start_date:msg.start_date,
-                            end_date:msg.end_date,
-                            car_rent:msg.car_rent
-                        }
-                    }
-                }, function (err, user) {
-                    console.log("inside call back" + user)
-                    if (user) {
-                        response.code = "200";
-                        console.log("Success--- inside Car booking"+response);
-                        callback(null, response);
+                coll.findOne({"userid" : "jay"},function (err, searchuser) {
+                    if(searchuser)
+                    {
+                        var car_total_new = searchuser.car_total+msg.car_rent;
+                        var number_of_car_bookings = searchuser.car.length ;
+                        number_of_car_bookings = number_of_car_bookings +1;
+
+                        coll.update({userid:'jay'}, {
+                            $push: {
+                                car: {
+                                    billid:new ObjectID(),
+                                    car_id:msg.car_id,
+                                    car_model:msg.car_model,
+                                    car_type:msg.car_type ,
+                                    car_class:msg.car_class,
+                                    car_city:msg.car_city,
+                                    start_date:msg.start_date,
+                                    end_date:msg.end_date,
+                                    car_rent:msg.car_rent
+                                }
+                            }
+                        }, function (err, user) {
+
+                            if(user){
+
+                            coll.update({"userid" : "jay"},{ $set:{car_total:car_total_new,
+                                    car_count:number_of_car_bookings}},
+                                function (err, user2) {
+
+                                if(user2)
+                                {
+                                    response.code = "200";
+                                    console.log("Success--- inside Car booking"+response);
+                                    callback(null, response);
+                                }
+                                else
+                                {
+                                    response.code = "400";
+                                    console.log("Fail"+response);
+                                    callback(null, response);
+
+                                }
+
+
+                                });
+                            }
+                            else
+                            {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+
+                            }
+
+
+
+
+                        });
 
                     }
-                    else {
+
+                    else
+                    {
                         response.code = "400";
                         console.log("Fail"+response);
                         callback(null, response);
+
                     }
+
+
+
                 });
+
+
             });
 
         }
