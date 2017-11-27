@@ -178,10 +178,10 @@ class Car extends Component {
         }
 
     insertCarDetails = (userdata) => {
-        alert(JSON.stringify(userdata));
+       // alert(JSON.stringify(userdata));
         API.insertCarData(userdata)
             .then((status) => {
-                alert(JSON.stringify(status))
+               // alert(JSON.stringify(status))
                 if (status.status == '201') {
                     this.setState({
                         root:status.root,
@@ -198,7 +198,7 @@ class Car extends Component {
             });
     };
     updateCarData= (newdata) => {
-        alert("CARID: "+JSON.stringify(newdata));
+       // alert("CARID: "+JSON.stringify(newdata));
         API.updatecar(newdata)
             .then((output) => {
                 if (output === 1) {
@@ -218,7 +218,7 @@ class Car extends Component {
     showInsert() {
         this.setState({visible: true});
 
-        alert(this.state.visible);
+       // alert(this.state.visible);
 
     }
 
@@ -248,7 +248,7 @@ class Car extends Component {
         var carList=this.state.carData;
 
        var updateCarData= (newdata) => {
-            alert("CARID: "+JSON.stringify(newdata));
+          //  alert("CARID: "+JSON.stringify(newdata));
             API.updatecar(newdata)
                 .then((output) => {
                     if (output === 1) {
@@ -260,7 +260,7 @@ class Car extends Component {
         };
 
         var insertCarDetails=(userdata) =>{
-            alert(JSON.stringify(userdata));
+          //  alert(JSON.stringify(userdata));
             API.insertCarData(userdata)
                 .then((status) => {
                    // alert(JSON.stringify(status))
@@ -307,10 +307,10 @@ class Car extends Component {
         }
 
         function onAfterDeleteRow(rowKeys) {
-            alert('The rowkey you drop: ' + rowKeys);
+           // alert('The rowkey you drop: ' + rowKeys);
         }
         function customConfirm(next, dropRowKeys) {
-            alert(dropRowKeys);
+           // alert(dropRowKeys);
             const dropRowKeysStr = dropRowKeys.join(',');
             if (window.confirm(`Are you sure you want to delete ${dropRowKeysStr}?`)) {
                 // If the confirmation is true, call the function that
@@ -330,7 +330,7 @@ class Car extends Component {
                 obj += '"'+prop +'":"'+ row[prop]+'",';
             }
             obj = JSON.parse(myJsonString);
-            alert('The new row is:' + JSON.stringify(obj));
+           // alert('The new row is:' + JSON.stringify(obj));
            // alert(obj.car_type);
             if (window.confirm(`Are you sure you want to edit?`)) {
 
@@ -354,7 +354,7 @@ var newdata={type:'car',id:obj.car_id};
                 API.getFile(newdata)
                     .then((output) => {
 
-                    alert(output.image);
+                   // alert(output.image);
                         this.setState({
                             srcdata:output.image
                         });
@@ -373,7 +373,8 @@ var newdata={type:'car',id:obj.car_id};
         };
         const cellEditProp = {
             mode: 'click',
-            blurToSave: true
+            blurToSave: true,
+            onClick: onRowSelect
 
         };
 

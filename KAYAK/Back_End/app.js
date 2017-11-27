@@ -104,9 +104,9 @@ app.post('/doHotelBooking',hotels.doBooking);
 app.post('/uploadFile',security.authenticate,uploadFile);
 app.post('/getFile',security.authenticate,downloadFile.fileDownload);
 
-app.get('/listhotels',security.authenticateAdmin,adminHotel.getHotelData);
-app.get('/listCarsData',security.authenticateAdmin,adminCar.getCarData);
-app.get('/listFlightsData',security.authenticateAdmin,adminFlight.getFlightData);
+app.post('/listhotels',security.authenticateAdmin,adminHotel.getHotelData);
+app.post('/listCarsData',security.authenticateAdmin,adminCar.getCarData);
+app.post('/listFlightsData',security.authenticateAdmin,adminFlight.getFlightData);
 
 app.post('/validateLogin',security.getLoggedInInfoFromSession);
 

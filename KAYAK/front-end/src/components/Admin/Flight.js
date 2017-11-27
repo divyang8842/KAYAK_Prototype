@@ -37,10 +37,10 @@ class Flight extends Component {
         if(this.state.type=='d'){
             this.setState({ value ,
                 "departuretime":value
-            },alert(JSON.stringify(this.state)));
+            });
         }else if(this.state.type=='a'){
             this.setState({ value ,
-                "arrivaltime":value},alert(JSON.stringify(this.state)));
+                "arrivaltime":value});
         }
 
     }
@@ -164,7 +164,7 @@ class Flight extends Component {
     getFlightDetails=()=>{
         API.viewFlightDetails()
             .then((data)=>{
-                alert(JSON.stringify(data));
+               // alert(JSON.stringify(data));
                 if(data){
                     this.setState({
                         flightData:data.value
@@ -179,7 +179,7 @@ class Flight extends Component {
     }
 
     updateFlightData= (newdata) => {
-        alert("FLIGHT: "+JSON.stringify(newdata));
+        //alert("FLIGHT: "+JSON.stringify(newdata));
         API.updateFlight(newdata)
             .then((output) => {
                 if (output === 1) {
@@ -192,7 +192,7 @@ class Flight extends Component {
 
 
     insertFlightDetails = (userdata) => {
-        alert(JSON.stringify(userdata));
+        //alert(JSON.stringify(userdata));
         API.insertFlightData(userdata)
             .then((status) => {
                // alert(JSON.stringify(status))
@@ -251,10 +251,10 @@ class Flight extends Component {
 
 
         var insertFlightDetails = (userdata) => {
-            alert(JSON.stringify(userdata));
+           // alert(JSON.stringify(userdata));
             API.insertFlightData(userdata)
                 .then((status) => {
-                    alert(JSON.stringify(status))
+                   // alert(JSON.stringify(status))
                     if (status.status == '201') {
                         this.setState({
                             root:status.root,
@@ -271,7 +271,7 @@ class Flight extends Component {
                 });
         };
         function deleteFlight(data) {
-            alert(data);
+            //alert(data);
             var flightid={flightid:data};
 
             API.deleteFlight(flightid)
@@ -289,21 +289,21 @@ class Flight extends Component {
             let newRowStr = '';
             var obj = {};
             var myJsonString = JSON.stringify(row);
-            alert(myJsonString);
+            //alert(myJsonString);
             for (const prop in row) {
                 obj += '"'+prop +'":"'+ row[prop]+'",';
             }
             //obj+='}';
             obj = JSON.parse(myJsonString);
-            alert('The new row is:' + JSON.stringify(obj));
+           // alert('The new row is:' + JSON.stringify(obj));
             insertFlightDetails(obj);
         }
 
         function onAfterDeleteRow(rowKeys) {
-            alert('The rowkey you drop: ' + rowKeys);
+           // alert('The rowkey you drop: ' + rowKeys);
         }
         function customConfirm(next, dropRowKeys) {
-            alert(dropRowKeys);
+           // alert(dropRowKeys);
             const dropRowKeysStr = dropRowKeys.join(',');
             if (window.confirm(`Are you sure you want to delete ${dropRowKeysStr}?`)) {
                 // If the confirmation is true, call the function that
@@ -323,7 +323,7 @@ class Flight extends Component {
                 obj += '"'+prop +'":"'+ row[prop]+'",';
             }
             obj = JSON.parse(myJsonString);
-            alert('The new row is:' + JSON.stringify(obj));
+           // alert('The new row is:' + JSON.stringify(obj));
             if (window.confirm(`Are you sure you want to edit?`)) {
 
                 this.setState({

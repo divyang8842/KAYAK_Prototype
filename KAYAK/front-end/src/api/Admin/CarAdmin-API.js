@@ -26,12 +26,14 @@ export const insertCarData = (payload) =>
 
 export const viewCarDetails = (payload) =>
     fetch(`${api}/listCarsData`, {
-        method: 'GET',
+        method: 'POST',
         headers: {
             ...headers,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        credentials:'include',
+
     }).then(res=>res.json())
         .then(res => {
             return res.output;

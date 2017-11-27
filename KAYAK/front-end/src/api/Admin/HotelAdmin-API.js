@@ -98,12 +98,14 @@ export const updateroom = (payload) =>
 
 export const getHotelDetails = (payload) =>
     fetch(`${api}/listhotels`, {
-        method: 'GET',
+        method: 'POST',
         headers: {
             ...headers,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        credentials:'include'
+
     }).then(res=>res.json())
         .then(res => {
             return res.output;

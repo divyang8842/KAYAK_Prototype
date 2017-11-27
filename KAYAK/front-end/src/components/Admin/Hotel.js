@@ -139,7 +139,7 @@ class Hotel extends Component {
 
 
     insertHotelDetails = (userdata) => {
-        alert(JSON.stringify(userdata));
+       // alert(JSON.stringify(userdata));
         API.insertHotelData(userdata)
             .then((status) => {
                 if (status.status == '201') {
@@ -158,29 +158,9 @@ class Hotel extends Component {
                 }
             });
     };
-    insertRoomDetails=(userdata)=>{
-        API.insertRoomData(userdata)
-            .then((status) => {
-                if (status.status == '201') {
-                    this.setState({
-                        root:status.root,
-                        isLoggedIn: false,
-                        message: "Inserted Room Data Successfully..!!",
-                    });
-                    this.getRooms();
-                    alert("Inserted Room Data Successfully..!!")
-                } else if (status === 401) {
-                    this.setState({
-                        isLoggedIn: false,
-                        message: "SignUp Failed"
-                    });
-                }
-            });
-
-    }
 
     updateHotelData= (newdata) => {
-        alert("HOTEL: "+JSON.stringify(newdata));
+        //alert("HOTEL: "+JSON.stringify(newdata));
         API.updateHotel(newdata)
             .then((output) => {
                 if (output === 1) {
@@ -192,27 +172,12 @@ class Hotel extends Component {
     };
 
 
-    getRooms=()=>{
-      var x={hid:this.state.hotelid},resAr=[];
-      this.setState({roomlist:[]});
-      API.listrooms(x)
-      .then((data) => {
-          if (data) {
-            console.log("ROOM CHECK: "+data);
-            for(var i=0;i<data.length;i++){
-            resAr = this.state.roomlist.concat(data[i]);
-            this.setState({ roomlist: resAr });
-          }
-          } else {
-              console.log("File not listed");
-          }
-      });
-    }
+
 
     viewHotelDetails=()=>{
         API.getHotelDetails()
             .then((data)=>{
-            alert(JSON.stringify(data));
+           // alert(JSON.stringify(data));
             if(data){
                 this.setState({
                     hotelData:data.value
@@ -257,7 +222,7 @@ class Hotel extends Component {
         var roomData=this.state.roomlist;
 
         function deleteHotel(data) {
-            alert(data);
+            //alert(data);
             var hotelid={hotelid:data};
 
             API.deleteHotel(hotelid)
@@ -275,21 +240,21 @@ class Hotel extends Component {
             let newRowStr = '';
             var obj = {};
             var myJsonString = JSON.stringify(row);
-            alert(myJsonString);
+           // alert(myJsonString);
             for (const prop in row) {
                 obj += '"'+prop +'":"'+ row[prop]+'",';
             }
             //obj+='}';
             obj = JSON.parse(myJsonString);
-            alert('The new row is:' + JSON.stringify(obj));
+           // alert('The new row is:' + JSON.stringify(obj));
             this.insertHotelDetails(obj);
         }
 
         function onAfterDeleteRow(rowKeys) {
-            alert('The rowkey you drop: ' + rowKeys);
+            //alert('The rowkey you drop: ' + rowKeys);
         }
         function customConfirm(next, dropRowKeys) {
-            alert(dropRowKeys);
+           // alert(dropRowKeys);
             const dropRowKeysStr = dropRowKeys.join(',');
             if (window.confirm(`Are you sure you want to delete ${dropRowKeysStr}?`)) {
                 // If the confirmation is true, call the function that
@@ -309,7 +274,7 @@ class Hotel extends Component {
                 obj += '"'+prop +'":"'+ row[prop]+'",';
             }
             obj = JSON.parse(myJsonString);
-            alert('The new row is:' + JSON.stringify(obj));
+           // alert('The new row is:' + JSON.stringify(obj));
             if (window.confirm(`Are you sure you want to edit?`)) {
 
                 this.setState({
