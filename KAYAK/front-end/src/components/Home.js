@@ -81,7 +81,7 @@ class Home extends Component {
                     <li className="active"><Link to='/'>Home</Link></li>
                     <li><Link to='/login'>Flight</Link></li>
                     <li><Link to='/login'>Car</Link></li>
-                    <li><Link to='/hotel'>Hotel</Link></li>
+                    <li><Link to='/login'>Hotel</Link></li>
                   {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
                   : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
       						</ul>
