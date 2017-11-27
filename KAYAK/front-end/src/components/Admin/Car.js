@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import * as API from '../../api/Admin/CarAdmin-API';
+import * as Api from '../../api/fileOperation';
+
 import ReactDOM from 'react-dom';
 import FormErrors from "../FormErrors";
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
@@ -163,7 +165,6 @@ class Car extends Component {
     getCarDetails=()=>{
             API.viewCarDetails()
                 .then((data)=>{
-                    //alert(JSON.stringify(data));
                     if(data){
                         this.setState({
                             carData:data.value
@@ -178,7 +179,6 @@ class Car extends Component {
         }
 
     insertCarDetails = (userdata) => {
-       // alert(JSON.stringify(userdata));
         API.insertCarData(userdata)
             .then((status) => {
                // alert(JSON.stringify(status))
@@ -218,8 +218,6 @@ class Car extends Component {
     showInsert() {
         this.setState({visible: true});
 
-       // alert(this.state.visible);
-
     }
 
     handleFileUpload = (event) => {
@@ -230,7 +228,7 @@ class Car extends Component {
         payload.append('type',"car");
         payload.append('id',this.state.carid);
 
-        API.uploadFile(payload)
+        Api.uploadFile(payload)
             .then((response) => {
                 if (response.status == 201) {
                     this.setState({
@@ -351,7 +349,7 @@ class Car extends Component {
                 });
 
 var newdata={type:'car',id:obj.car_id};
-                API.getFile(newdata)
+                Api.getFile(newdata)
                     .then((output) => {
 
                    // alert(output.image);
@@ -363,7 +361,6 @@ var newdata={type:'car',id:obj.car_id};
 
             }
 
-            //alert(`is selected: ${isSelected}, ${rowStr}`);
         }
 
         const options = {
@@ -372,9 +369,9 @@ var newdata={type:'car',id:obj.car_id};
             handleConfirmDeleteRow: customConfirm
         };
         const cellEditProp = {
-            mode: 'click',
+            mode: 'dbclick',
             blurToSave: true,
-            onClick: onRowSelect
+            beforeSaveCell: onRowSelect,
 
         };
 
@@ -420,7 +417,7 @@ var newdata={type:'car',id:obj.car_id};
 
                             <form>
                                 <FormErrors formErrors={this.state.formErrors} />
-                                <label>Upload Picture:</label>
+                                {this.state.update? <div> <label>Upload Picture:</label>
                                 <TextField
                                     className={'fileupload'}
                                     type="file"
@@ -428,7 +425,7 @@ var newdata={type:'car',id:obj.car_id};
                                     onChange={this.handleFileUpload}
                                 />
 
-                                <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={this.state.srcdata}></img>
+                                    <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={this.state.srcdata}></img></div>:null}
 
 {/*
                                 <img  id="base64image" src="data:image/jpeg;base64, " />

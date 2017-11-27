@@ -1,7 +1,7 @@
 
 var authenticate = function (req, res, next) {
     var session = req.session;
-
+    console.log("SESSIONS"+JSON.stringify(session));
     if(session && session.user && session.user.id && session.user.id>0){
         var isAuthenticated = true;
     }
@@ -15,8 +15,8 @@ var authenticate = function (req, res, next) {
 
 var authenticateAdmin = function (req, res, next) {
     var session = req.session;
-console.log("SESSIONS"+session);
-    if(session && session.user && session.user.id && session.user.id>0 && session.user.type==1){
+console.log("SESSIONS"+JSON.stringify(session));
+    if(session && session.user && session.user.user_id && session.user.user_id>0 && session.user.user_type==1){
         var isAuthenticated = true;
     }
 

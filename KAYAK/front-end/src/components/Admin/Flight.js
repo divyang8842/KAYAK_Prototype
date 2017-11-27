@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import * as API from '../../api/Admin/FlightAdmin-API';
+import * as Api from '../../api/fileOperation';
 import ReactDOM from 'react-dom';
 import FormErrors from "../FormErrors";
 import TimePicker from 'react-bootstrap-time-picker';
 import TimePicker1 from 'react-bootstrap-time-picker';
 import { timeToInt } from 'time-number';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import TextField from 'material-ui/TextField';
 var ReactBsTable  = require('react-bootstrap-table');
 var BootstrapTable = ReactBsTable.BootstrapTable;
 var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
@@ -240,9 +242,28 @@ class Flight extends Component {
     showInsert() {
         this.setState({visible: true});
 
-        alert(this.state.visible);
 
     }
+    handleFileUpload = (event) => {
+
+        const payload = new FormData();
+
+        payload.append('avatar', event.target.files[0]);
+        payload.append('type',"flight");
+        payload.append('id',this.state.flightid);
+
+        Api.uploadFile(payload)
+            .then((response) => {
+                if (response.status == 201) {
+                    this.setState({
+                        srcdata:"data:image/jpeg;base64,"+response.data
+                    });
+                }
+            });
+
+    };
+
+
 
 
     render() {
@@ -337,8 +358,20 @@ class Flight extends Component {
                     economyClassFare:obj.economy_class,
                     firstClassFare:obj.first_class,
                     businessClassFare:obj.business_class,
-                    premiumEcoFare:obj.premiumeconomy_class
+                    premiumEcoFare:obj.premiumeconomy_class,
+                    srcdata :''
+
                 });
+
+                var newdata={type:'flight',id:obj.flight_id};
+                Api.getFile(newdata)
+                    .then((output) => {
+
+                        // alert(output.image);
+                        this.setState({
+                            srcdata:output.image
+                        });
+                    });
 
                 this.setState({update:true,visible: !this.state.visible});
 
@@ -353,14 +386,14 @@ class Flight extends Component {
         };
         const cellEditProp = {
             mode: 'click',
-            blurToSave: true
+            blurToSave: true,
+            beforeSaveCell: onRowSelect
 
         };
 
         const selectRowProp = {
             mode: 'checkbox',
             clickToSelect: true,
-            onSelect: onRowSelect
         };
 
         return (
@@ -393,6 +426,17 @@ class Flight extends Component {
                         <div className="row">
                             <form>
                                 <FormErrors formErrors={this.state.formErrors} />
+                                {this.state.update? <div> <label>Upload Picture:</label>
+                                    <TextField
+                                        className={'fileupload'}
+                                        type="file"
+                                        name="mypic"
+                                        onChange={this.handleFileUpload}
+                                    />
+
+                                    <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={this.state.srcdata}></img></div>:null}
+
+
                                 <div className="row">
                                     <div className="col-xxs-12 col-xs-6 mt">
                                         <div className="input-field">

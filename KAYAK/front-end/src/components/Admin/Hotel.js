@@ -2,10 +2,13 @@
 
 import React, {Component} from 'react';
 import * as API from '../../api/Admin/HotelAdmin-API';
+import * as Api from '../../api/fileOperation';
 import ReactDOM from 'react-dom';
 import FormErrors from "../FormErrors";
 import 'w3-css/w3.css';
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import TextField from 'material-ui/TextField';
+
 var ReactBsTable  = require('react-bootstrap-table');
 var BootstrapTable = ReactBsTable.BootstrapTable;
 var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
@@ -215,8 +218,27 @@ class Hotel extends Component {
     showInsert() {
         this.setState({visible: true});
 
-
     }
+
+    handleFileUpload = (event) => {
+
+        const payload = new FormData();
+
+        payload.append('avatar', event.target.files[0]);
+        payload.append('type',"hotel");
+        payload.append('id',this.state.hotelid);
+
+        Api.uploadFile(payload)
+            .then((response) => {
+                if (response.status == 201) {
+                    this.setState({
+                        srcdata:"data:image/jpeg;base64,"+response.data
+                    });
+                }
+            });
+
+    };
+
     render() {
         var hoteldata=this.state.hotelData;
         var roomData=this.state.roomlist;
@@ -287,7 +309,18 @@ class Hotel extends Component {
                     hoteldesc:obj.hotel_description,
                     hotelameneties:obj.hotel_ameneties,
                     hotelstar:obj.hotel_star,
+                    srcdata:''
                 });
+
+                var newdata={type:'hotel',id:obj.hotel_id};
+                Api.getFile(newdata)
+                    .then((output) => {
+
+                        // alert(output.image);
+                        this.setState({
+                            srcdata:output.image
+                        });
+                    });
 
                 this.setState({update:true,visible: !this.state.visible});
 
@@ -302,14 +335,14 @@ class Hotel extends Component {
         };
         const cellEditProp = {
             mode: 'click',
-            blurToSave: true
+            blurToSave: true,
+            beforeSaveCell: onRowSelect
 
         };
 
         const selectRowProp = {
             mode: 'checkbox',
             clickToSelect: true,
-            onSelect: onRowSelect
         };
 
         return (
@@ -344,6 +377,16 @@ class Hotel extends Component {
 
                                 <form>
                                     <FormErrors formErrors={this.state.formErrors} />
+                                    {this.state.update? <div> <label>Upload Picture:</label>
+                                        <TextField
+                                            className={'fileupload'}
+                                            type="file"
+                                            name="mypic"
+                                            onChange={this.handleFileUpload}
+                                        />
+
+                                            <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={this.state.srcdata}></img></div>:null}
+
                                     <div className="row">
                                         <div className="col-xxs-12 col-xs-6 mt">
                                             <div className="input-field">
