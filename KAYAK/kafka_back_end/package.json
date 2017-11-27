@@ -9,7 +9,7 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "1.0.3",
-    "express": "~4.15.2",
+    "express": "^4.15.5",
     "jsesc": "^2.5.1",
     "kafka-node": "^2.2.3",
     "mongodb": "^2.2.31",

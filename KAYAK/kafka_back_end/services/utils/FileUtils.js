@@ -1,11 +1,18 @@
+var fs    = require("fs");
+
 // function to encode file data to base64 encoded string
 var base64_encode =  function(file,callback) {
     // read binary data
-    var bitmap = fs.readFileSync(file);
+    var bufferData = "";
+    try{
+   var bitmap = fs.readFileSync(file);
     // convert binary data to base64 encoded string
-    var bufferData =  new Buffer(bitmap).toString('base64');
+    bufferData =  new Buffer(bitmap).toString('base64');
+}catch(ex){
 
+}
     callback(bufferData);
+
 };
 
 // function to create file from base64 encoded string

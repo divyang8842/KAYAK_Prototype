@@ -3,6 +3,8 @@ import * as API from '../../api/Admin/CarAdmin-API';
 import ReactDOM from 'react-dom';
 import FormErrors from "../FormErrors";
 import '../../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import TextField from 'material-ui/TextField';
+
 var ReactBsTable  = require('react-bootstrap-table');
 var BootstrapTable = ReactBsTable.BootstrapTable;
 var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
@@ -220,6 +222,25 @@ class Car extends Component {
 
     }
 
+    handleFileUpload = (event) => {
+
+        const payload = new FormData();
+
+        payload.append('avatar', event.target.files[0]);
+        payload.append('type',"car");
+        payload.append('id',this.state.carid);
+
+        API.uploadFile(payload)
+            .then((response) => {
+                if (response.status == 201) {
+                    this.setState({
+                        srcdata:"data:image/jpeg;base64,"+response.data
+                    });
+                }
+            });
+
+    };
+
 
 
     render() {
@@ -242,7 +263,7 @@ class Car extends Component {
             alert(JSON.stringify(userdata));
             API.insertCarData(userdata)
                 .then((status) => {
-                    alert(JSON.stringify(status))
+                   // alert(JSON.stringify(status))
                     if (status.status == '201') {
 
                         alert("Inserted Car Data Successfully..!!")
@@ -257,7 +278,7 @@ class Car extends Component {
         };
 
         function deleteCar(data) {
-            alert(data);
+            //alert(data);
             var carid={carid:data};
 
             API.deleteCar(carid)
@@ -275,13 +296,13 @@ class Car extends Component {
             let newRowStr = '';
             var obj = {};
             var myJsonString = JSON.stringify(row);
-            alert(myJsonString);
+          //  alert(myJsonString);
             for (const prop in row) {
                 obj += '"'+prop +'":"'+ row[prop]+'",';
             }
             //obj+='}';
             obj = JSON.parse(myJsonString);
-            alert('The new row is:' + JSON.stringify(obj));
+           // alert('The new row is:' + JSON.stringify(obj));
             insertCarDetails(obj);
         }
 
@@ -325,9 +346,19 @@ class Car extends Component {
                     bags: obj.bags,
                     availableplace: obj.available_place,
                     carrent: obj.car_rent,
-                    cardistance: obj.car_distance
+                    cardistance: obj.car_distance,
+                    srcdata :''
                 });
 
+var newdata={type:'car',id:obj.car_id};
+                API.getFile(newdata)
+                    .then((output) => {
+
+                    alert(output.image);
+                        this.setState({
+                            srcdata:output.image
+                        });
+                    });
                 this.setState({update:true,visible: !this.state.visible});
 
             }
@@ -388,6 +419,19 @@ class Car extends Component {
 
                             <form>
                                 <FormErrors formErrors={this.state.formErrors} />
+                                <label>Upload Picture:</label>
+                                <TextField
+                                    className={'fileupload'}
+                                    type="file"
+                                    name="mypic"
+                                    onChange={this.handleFileUpload}
+                                />
+
+                                <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={this.state.srcdata}></img>
+
+{/*
+                                <img  id="base64image" src="data:image/jpeg;base64, " />
+*/}
                                 <div className="row">
                                     <div className="col-xxs-12 col-xs-6 mt">
                                         <div className="input-field">

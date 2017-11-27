@@ -1,7 +1,8 @@
 import {connect} from 'react-redux';
 import React, {Component} from 'react';
 import { Route, Link,Switch,withRouter } from 'react-router-dom';
-import {getCarsBooking} from '../../actions/Cars/CarBooking'
+import {getCarsBooking} from '../../actions/Cars/CarBooking';
+import SearchPanel from './SearchPanel';
 
 class Results extends Component {
 
@@ -132,19 +133,40 @@ class Results extends Component {
         })
     }
 
+    constructor(props) {
+        super(props)
+    
+        this.handler = this.handler.bind(this)
+    }
+
+    handler(){
+        // this.forceUpdate();
+        // this.setFreebies();
+        // this.filterHotels();
+        this.forceUpdate();
+        this.temp();
+        this.flights(null,null);
+    }
+
     render() {
         return(
+            <div>
+            <div>
+              <SearchPanel handler = {this.handler}/>
+            </div>
             <div className="container-fluid">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
 
-                <div className="col-sm-2 col-lg-2 col-md-2 col-xs-2" >
+                <div className="col-sm-2 col-lg-2 col-md-2 col-xs-2" id="divfilter">
 
 
-
-                    <h3>Car Type</h3>
+                <div id="divleftpanel">
+                    <h4 id="h4filter">Car Type</h4>
+                    <hr />
                     <form>
                         <div>
+                        <label class="control control--checkbox">Small
                             <input type="checkbox"
                                    id="small"
                                    name="small"
@@ -187,10 +209,12 @@ class Results extends Component {
                                        }
                                    }}
 
-                            />
-                            <label for="small">Small</label>
+                            defaultChecked/>
+                            <div class="control__indicator"></div>
+                            </label>
                         </div>
                         <div>
+                        <label class="control control--checkbox">Medium
                             <input type="checkbox"
                                    id="medium"
                                    name="medium"
@@ -232,11 +256,13 @@ class Results extends Component {
                                            this.temp();
                                        }
                                    }}
-                            />
-                            <label for="medium">Medium </label>
+                                   defaultChecked/>
+                            <div class="control__indicator"></div>
+                            </label>
 
                         </div>
                         <div>
+                        <label class="control control--checkbox">Large
                             <input type="checkbox"
                                    id="large"
                                    name="large"
@@ -278,12 +304,13 @@ class Results extends Component {
                                            this.temp();
                                        }
                                    }}
-                            />
-                            <label for="large">Large</label>
+                                   defaultChecked/>
+                            <div class="control__indicator"></div>
+                            </label>
 
                         </div>
                         <div>
-
+                        <label class="control control--checkbox">SUV
                             <input type="checkbox"
                                    id="SUV"
                                    name="SUV"
@@ -325,14 +352,15 @@ class Results extends Component {
                                            this.temp();
                                        }
                                    }}
-                            />
-                            <label for="SUV">SUV</label>
+                                   defaultChecked/>
+                             <div class="control__indicator"></div>
+                            </label>
                         </div>
 
 
 
                         <div>
-
+                        <label class="control control--checkbox">Convertible
                             <input type="checkbox"
                                    id="convertible"
                                    name="convertible"
@@ -374,12 +402,13 @@ class Results extends Component {
                                            this.temp();
                                        }
                                    }}
-                            />
-                            <label for="convertible">Convertible</label>
+                                   defaultChecked/>
+                            <div class="control__indicator"></div>
+                            </label>
                         </div>
 
                         <div>
-
+                        <label class="control control--checkbox">Luxury
                             <input type="checkbox"
                                    id="luxury"
                                    name="luxury"
@@ -421,12 +450,13 @@ class Results extends Component {
                                            this.temp();
                                        }
                                    }}
-                            />
-                            <label for="luxury">Luxury</label>
+                                   defaultChecked/>
+                            <div class="control__indicator"></div>
+                            </label>
                         </div>
 
                         <div>
-
+                        <label class="control control--checkbox">Van
                             <input type="checkbox"
                                    id="van"
                                    name="van"
@@ -468,17 +498,25 @@ class Results extends Component {
                                            this.temp();
                                        }
                                    }}
-                            />
-                            <label for="van">Van</label>
+                                   defaultChecked/>
+                            <div class="control__indicator"></div>
+                            </label>
                         </div>
 
                     </form>
 
-                    <h3>Price</h3>
-                    <input type="text"
-                           className="form-control"
-                           id="from-place"
-                           placeholder="Price"
+                    <br/>
+                    <br/>
+                    <h4 id="h4filter">Price</h4>
+                    <hr/>
+                    <div>
+                        <h6 id="sliderh6">${this.state.price_filter}</h6>
+                    </div>
+                    <input type="range"
+                            min="50"
+                            max="500"
+                            step="10"
+                            defaultValue="500"
                            value={this.state.price_filter}
                            onChange={(event) => {
                                this.setState({
@@ -489,7 +527,13 @@ class Results extends Component {
                            }
                     />
 
-                    <h3>Duration</h3>
+                    <br/>
+                    <br/>
+                    <h4 id="h4filter">Duration</h4>
+                    <hr/>
+                    <div>
+                        {/* <h6 id="sliderh6">${this.state.filterparams.price}</h6> */}
+                    </div>
                     <input type="text"
                            className="form-control"
                            id="from-place"
@@ -504,20 +548,21 @@ class Results extends Component {
 
 
                 </div>
+                </div>
                 <div className="col-sm-10 col-lg-10 col-md-10 col-xs-10" >
                     <div className="row">
                         <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
-                            <button className="btn btn-primary btn-block"
+                            <label className="sortbtn btn-block"
                                     onClick={() => this.flights(true,null)}
                             >
                                 PRICE
-                            </button>
+                            </label>
                         </div>
                         <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
-                            <button className="btn btn-primary btn-block"
+                            <label className="sortbtn btn-block"
                                     onClick={() => this.flights(null,true)}>
                                 DURATION
-                            </button>
+                            </label>
                         </div>
                     </div>
                     <div className="row">
@@ -533,6 +578,7 @@ class Results extends Component {
                         </table>
                     </div>
                 </div>
+            </div>
             </div>
         );
 

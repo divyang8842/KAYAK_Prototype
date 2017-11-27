@@ -84,6 +84,11 @@ var insertHotelData = function(msg,callback){
     console.log("In handle request:"+ JSON.stringify(msg));
 
     var insertQuery="INSERT INTO hotels (hotel_name,hotel_star,hotel_location,hotel_city,hotel_state,hotel_zipcode,hotel_description) values(?,?,?,?,?,?,?)";
+    var query= "INSERT INTO hotel_availability (date,king_rooms,queen_rooms,standard_rooms) values(NOW(),?,?,?)";
+    var array=[];
+    array.push(msg.kingrooms);
+    array.push(msg.queenrooms);
+    array.push(msg.standardrooms);
     var dataArry =  [];
     dataArry.push(msg.hotelname);
     dataArry.push(msg.hotelstar);
@@ -106,7 +111,25 @@ var insertHotelData = function(msg,callback){
             res.value=results;
             res.id=id;
             console.log("Successfully Hotel Data Inserted: ",id);
-        }
+
+            mysql.setData(query,array,function (err,results,id) {
+                if (err){
+                    //res.code = "401";
+                    res = "Failed Insertion";
+                    console.log("Failed signup---");
+                    errorHandler.logError("Signup.js","afterSignUp",err);
+                }
+                else
+                {
+                    res.code = "200";
+                    res.value=results;
+                    res.id=id;
+                    console.log("Successfully Room Data Inserted: ",id);
+                }
+            });
+            }
+
+
 
         callback(null, res);
 
@@ -146,6 +169,31 @@ var insertRoomData = function(msg,callback){
 
     });
 
+};
+
+function getHotelData(msg, callback){
+    console.log("In getHotel:"+ JSON.stringify(msg));
+    var res={};
+    var fetchQuery="SELECT * FROM hotels WHERE deleteflag=0";
+    console.log("SELECT QUERY: "+fetchQuery);
+    var dataArry =  [];
+
+    console.log("DATA: "+dataArry);
+    mysql.fetchData(fetchQuery,dataArry,function (err,results){
+        console.log("LIST Hotels: "+results);
+        if(err){
+            errorHandler.logError("Hotels.js","getHotelData",err);
+            res.code = "401";
+            res.value = 0;
+            console.log("Failed account");
+            callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            callback(null, res);
+        }
+    });
 };
 
 function getRoomData(msg, callback){
@@ -225,8 +273,68 @@ function deleteRoomData(msg, callback){
 });
 };
 
+function deleteHotelData(msg, callback){
+    var res = '';
+    console.log("In handle request:"+ JSON.stringify(msg));
+    var insertQuery="UPDATE hotels SET deleteflag=1 WHERE hotel_id in ("+msg.hotelid+")";
+    var dataArry =  [];
+    console.log(insertQuery);
+
+    console.log("DATA: "+dataArry);
+    mysql.setData(insertQuery,dataArry,function (err,results){
+        console.log("CHECK RES: "+results);
+        if (err){
+            res= "Failed Update";
+            console.log("Failed update---");
+            errorHandler.logError("account.js","handle_update",err);
+            callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            console.log("Success---");
+            callback(null, results);
+        }
+    });
+};
+
+function updateHotelData(msg, callback){
+    var res = '';
+    console.log("In handle request:"+ JSON.stringify(msg));
+    var insertQuery="UPDATE hotels SET hotel_name=?,hotel_star=?,hotel_location=?,hotel_city=?,hotel_state=?,hotel_zipcode=?,hotel_description=? WHERE hotel_id="+msg.hotelid;
+    var dataArry =  [];
+    dataArry.push(msg.hotelname);
+    dataArry.push(msg.hotelstar);
+    dataArry.push(msg.hoteladdress);
+    dataArry.push(msg.hotelcity);
+    dataArry.push(msg.hotelstate);
+    dataArry.push(msg.hotelzipcode);
+    dataArry.push(msg.hoteldesc);
+    console.log("DATA: "+dataArry);
+    console.log(insertQuery);
+
+    mysql.setData(insertQuery,dataArry,function (err,results){
+        console.log("CHECK RES: "+results);
+        if (err){
+            res= "Failed Update";
+            console.log("Failed update---");
+            errorHandler.logError("account.js","handle_update",err);
+            callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            console.log("Success---");
+            callback(null, results);
+        }
+    });
+};
+
 exports.insertHotelData = insertHotelData;
 exports.insertRoomData=insertRoomData;
 exports.getRoomData=getRoomData;
 exports.updateRoomData=updateRoomData;
 exports.deleteRoomData=deleteRoomData;
+exports.getHotelData=getHotelData;
+exports.deleteHotelData=deleteHotelData;
+exports.updateHotelData=updateHotelData;

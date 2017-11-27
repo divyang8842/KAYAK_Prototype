@@ -23,6 +23,9 @@ class Hotel extends Component {
         hoteldesc:'',
         hotelameneties:'',
         hotelstar:'',
+        kingrooms:'',
+        queenrooms:'',
+        standardrooms:'',
         roomtype:'',
         roomsize:'',
         guestAllowed:'',
@@ -59,6 +62,8 @@ class Hotel extends Component {
             hotelAmenetiesValid:true,
             hotelStarValid:true,
             type:false});
+
+        this.viewHotelDetails();
 
 
     }
@@ -174,6 +179,19 @@ class Hotel extends Component {
 
     }
 
+    updateHotelData= (newdata) => {
+        alert("HOTEL: "+JSON.stringify(newdata));
+        API.updateHotel(newdata)
+            .then((output) => {
+                if (output === 1) {
+                    alert("Hotel updated");
+                } else {
+                    alert("Hotel not updated");
+                }
+            });
+    };
+
+
     getRooms=()=>{
       var x={hid:this.state.hotelid},resAr=[];
       this.setState({roomlist:[]});
@@ -228,30 +246,134 @@ class Hotel extends Component {
       this.setState({updateID:id,updateType:t,visible: !this.state.visible});
     }
 
-    hotelFilter=()=>
-    {
-            var input, filter, table, tr, td, i;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
+
+    showInsert() {
+        this.setState({visible: true});
+
+
     }
     render() {
         var hoteldata=this.state.hotelData;
+        var roomData=this.state.roomlist;
+
+        function deleteHotel(data) {
+            alert(data);
+            var hotelid={hotelid:data};
+
+            API.deleteHotel(hotelid)
+                .then((output) => {
+                    if (output === 1) {
+                        console.log("Deleted");
+                    } else {
+                        console.log("Hotels not deleted");
+                    }
+                });
+
+        };
+
+        function onAfterInsertRow(row) {
+            let newRowStr = '';
+            var obj = {};
+            var myJsonString = JSON.stringify(row);
+            alert(myJsonString);
+            for (const prop in row) {
+                obj += '"'+prop +'":"'+ row[prop]+'",';
+            }
+            //obj+='}';
+            obj = JSON.parse(myJsonString);
+            alert('The new row is:' + JSON.stringify(obj));
+            this.insertHotelDetails(obj);
+        }
+
+        function onAfterDeleteRow(rowKeys) {
+            alert('The rowkey you drop: ' + rowKeys);
+        }
+        function customConfirm(next, dropRowKeys) {
+            alert(dropRowKeys);
+            const dropRowKeysStr = dropRowKeys.join(',');
+            if (window.confirm(`Are you sure you want to delete ${dropRowKeysStr}?`)) {
+                // If the confirmation is true, call the function that
+                // continues the deletion of the record.
+                deleteHotel(dropRowKeys);
+                next();
+            }
+        }
+
+
+        var onRowSelect =(row, isSelected, e) => {
+            let rowStr = '';
+            var obj = {};
+            var myJsonString = JSON.stringify(row);
+            // alert(myJsonString);
+            for (const prop in row) {
+                obj += '"'+prop +'":"'+ row[prop]+'",';
+            }
+            obj = JSON.parse(myJsonString);
+            alert('The new row is:' + JSON.stringify(obj));
+            if (window.confirm(`Are you sure you want to edit?`)) {
+
+                this.setState({
+                    hotelid:obj.hotel_id,
+                    hotelname: obj.hotel_name,
+                    hoteladdress: obj.hotel_location,
+                    hotelcity:obj.hotel_city,
+                    hotelstate:obj.hotel_state,
+                    hotelzipcode:obj.hotel_zipcode,
+                    hoteldesc:obj.hotel_description,
+                    hotelameneties:obj.hotel_ameneties,
+                    hotelstar:obj.hotel_star,
+                });
+
+                this.setState({update:true,visible: !this.state.visible});
+
+            }
+
+            //alert(`is selected: ${isSelected}, ${rowStr}`);
+        }
+        const options = {
+            afterInsertRow: onAfterInsertRow,
+            afterDeleteRow: onAfterDeleteRow,  // A hook for after droping rows.
+            handleConfirmDeleteRow: customConfirm
+        };
+        const cellEditProp = {
+            mode: 'click',
+            blurToSave: true
+
+        };
+
+        const selectRowProp = {
+            mode: 'checkbox',
+            clickToSelect: true,
+            onSelect: onRowSelect
+        };
 
         return (
             <div>
-                    <div id="fh5co-page">
+
+                <div className="btn-group btn-group-sm" role="group">
+                    <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
+                </div>
+
+                <BootstrapTable data={hoteldata}  selectRow={ selectRowProp }  deleteRow={ true } cellEdit={ cellEditProp } options={ options } pagination>
+                    <TableHeaderColumn dataField='hotel_id' isKey hidden>Hotel ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_name' >Hotel Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_star'  filter={ { type: 'TextFilter', delay: 1000 } }>Hotel Star</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_location'>Hotel Location</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_city'>Hotel City</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_state'>Hotel State</TableHeaderColumn>
+
+                    <TableHeaderColumn dataField='hotel_zipcode'>Hotel Zipcode</TableHeaderColumn>
+
+                    <TableHeaderColumn dataField='hotel_description' hidden>Hotel Description</TableHeaderColumn>
+
+
+
+                </BootstrapTable>
+
+
+
+
+                {this.state.visible ? <div id="fh5co-page">
                         <div className="container">
                             <div className="row">
 
@@ -333,20 +455,49 @@ class Hotel extends Component {
                                                         type:true}, () => { this.validateField(name, value)});}}/>
                                             </div>
                                         </div>
+                                        <div className="col-xxs-12 col-xs-6 mt">
+                                            <div className="input-field">
+                                                <label>King Rooms:</label>
+                                                <input type="text" placeholder="Enter King Rooms" value={this.state.kingrooms} className="form-control" onChange={(event)=>{const name="kingrooms"
+                                                    const value=event.target.value
+                                                    this.setState({kingrooms: event.target.value,
+                                                        type:true}, () => { this.validateField(name, value)});}}/>
+                                            </div>
+                                        </div>
+                                        <div className="col-xxs-12 col-xs-6 mt">
+                                            <div className="input-field">
+                                                <label>Queen Rooms:</label>
+                                                <input type="text" placeholder="Enter Queen Rooms" value={this.state.queenrooms} className="form-control" onChange={(event)=>{const name="queenrooms"
+                                                    const value=event.target.value
+                                                    this.setState({queenrooms: event.target.value,
+                                                        type:true}, () => { this.validateField(name, value)});}}/>
+                                            </div>
+                                        </div>
+                                        <div className="col-xxs-12 col-xs-6 mt">
+                                            <div className="input-field">
+                                                <label>Standard Rooms:</label>
+                                                <input type="text" placeholder="Enter Standard Rooms" value={this.state.standardrooms} className="form-control" onChange={(event)=>{const name="standardrooms"
+                                                    const value=event.target.value
+                                                    this.setState({standardrooms: event.target.value,
+                                                        type:true}, () => { this.validateField(name, value)});}}/>
+                                            </div>
+                                        </div>
 
 
                                         <div className="col-xxs-12 col-xs-12 mt"></div>
 
 
-                                        <div className="col-xs-2">
-                                            <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertHotelDetails(this.state)}>Submit</button>
+                                        <div className="col-xs-2">{this.state.update ? <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.updateHotelData(this.state)}>Update</button> :
+                                            <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertHotelDetails(this.state)}>Submit</button>}
                                         </div>
+
+
                                     </div>
 
                                 </form>
 
 
-                                <div className="control-group span6 container row">
+                                {/*<div className="control-group span6 container row">
                                     <div className="form-group">
                                         <div className="col-xxs-12 col-xs-12 mt"></div>
 
@@ -405,87 +556,12 @@ class Hotel extends Component {
                                         </div>
                                         <div className="col-xxs-12 col-xs-12 mt"></div>
                                     </div>
-                                </div>
+                                </div>*/}
                             </div>
 
-                            <div>
-                            <ul className="w3-ul">
-                            <li>
-                            <div className="col-xs-2 col-xxs-2 mt">Room Type</div>
-                            <div className="col-xs-2 col-xxs-2 mt">Size</div>
-                            <div className="col-xs-2 col-xxs-2 mt">Guests</div>
-                            <div className="col-xs-2 col-xxs-2 mt">Price</div>
-                            <div className="col-xs-2 col-xxs-2 mt">Count</div>
-                            <div className="col-xs-2 col-xxs-2 mt">Action</div>
-                            </li></ul></div>
-
-                            {this.state.roomlist.map(f => {
-                              return (
-                                <div  key={f.room_id}>
-                                <ul className="w3-ul">
-                                <li>
-                                <div className="col-xs-2 col-xxs-2 mt">{f.room_type}</div>
-                                <div className="col-xs-2 col-xxs-2 mt">{f.room_size}</div>
-                                <div className="col-xs-2 col-xxs-2 mt">{f.guestAllowed}</div>
-                                <div className="col-xs-2 col-xxs-2 mt">{f.room_price}</div>
-                                <div className="col-xs-2 col-xxs-2 mt">{f.count}</div>
-                                <div className="col-xs-2 col-xxs-2 mt">
-                                <button onClick={()=> this.showComp(f.room_id,f.room_type)}>Update</button>
-                                <button onClick={()=> this.deleteRoom(f.room_id)}>Remove</button></div>
-                              </li></ul></div>
-                              )})}
-                              <div>
-                                {
-                                  this.state.visible
-                                    ? <Updateroom id={this.state.updateID} type={this.state.updateType} display={this.getRooms}/>
-                                    : null
-                                }
-                              </div>
-
                         </div>{/*container*/}
-                    </div>
+                    </div> : null}
                 <div>
-                    <button onClick={() => this.viewHotelDetails()}>View Hotel Records</button>
-
-                    <div className="filter-list">
-                        <input type="text" placeholder="Search by hotelname" onChange={(event)=>{
-                            this.setState({hname: event.target.value,
-                                type:true})}}/>
-                    </div>
-                    <div className="filter-list">
-                        <input type="text" placeholder="Search by hotel city" onChange={(event)=>{
-                            this.setState({hcity: event.target.value,
-                                type:true})}}/>
-                    </div>
-
-                    <div className="col-xs-2">
-                        <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertHotelDetails(this.state)}>Search</button>
-                    </div>
-
-
-                    <table id="myTable">
-                        <tbody><tr className="header">
-                            <th style={{width: '10%'}}>Hotel Name</th>
-                            <th style={{width: '10%'}}>Hotel Location</th>
-                            <th style={{width: '10%'}}>Hotel City</th>
-                            <th style={{width: '10%'}}>Hotel State</th>
-                            <th style={{width: '10%'}}>Hotel ZipCode</th>
-                            <th style={{width: '10%'}}>Hotel Description</th>
-                            <th style={{width: '10%'}}>Hotel Star</th>
-                        </tr>
-                        {hoteldata.map((logs, i)  =>  <tr  key={i}>
-
-                            <td>{logs.hotel_name}</td>
-                            <td>{logs.hotel_location}</td>
-                            <td>{logs.hotel_city}</td>
-                            <td>{logs.hotel_state}</td>
-                            <td>{logs.hotel_zipcode}</td>
-                            <td>{logs.hotel_description}</td>
-                            <td>{logs.hotel_star}</td>
-                            </tr>
-                        )};
-                        </tbody></table>
-
 
                 </div>
             </div>
@@ -495,7 +571,7 @@ class Hotel extends Component {
 
 
 
-class Updateroom extends Component {
+/*class Updateroom extends Component {
 
 state={roomsize:'',
 guestAllowed:'',
@@ -568,7 +644,7 @@ console.log("ID: "+this.props.id+" "+this.props.type);
         </div>
     </div>
 </div>
-);}}
+);}}*/
 
 
 

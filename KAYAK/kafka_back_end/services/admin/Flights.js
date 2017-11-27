@@ -42,7 +42,7 @@ var insertFlightData = function(msg,callback){
 };
 
 function getFlightData(msg, callback){
-    console.log("In getCarData:"+ JSON.stringify(msg));
+    console.log("In getFlight:"+ JSON.stringify(msg));
     var res={};
     var fetchQuery="SELECT * FROM flight_mapping WHERE deleteflag=0";
     console.log("SELECT QUERY: "+fetchQuery);

@@ -3,7 +3,8 @@ import * as API from '../api/SigninSignup-API';
 import ReactDOM from 'react-dom';
 import Search from './Home';
 import FormErrors from "./FormErrors";
-
+import * as APIimage from '../api/fileOperation';
+import TextField from 'material-ui/TextField';
 class Account extends Component {
   state={
     user:'',
@@ -19,6 +20,7 @@ class Account extends Component {
     password:'',
     userEmail:'',
     visible:false,
+    srcdata:'',
 
     formErrors: {email:'',password:'',firstname: '',lastname: '',addr: '',city:'',state:'',phone:'',credit:'',zip:'',userEmail:''},
     type:false,
@@ -41,6 +43,7 @@ class Account extends Component {
   }
 
 componentWillMount(){
+  this.handleFileFetch();
   this.setState({formErrors: {firstname: '',lastname: '',address: '',city:'',state:'',phone:'',credit:'',zip:'',userEmail:''},
   emailValid: true,
   passwordValid: true,
@@ -76,6 +79,45 @@ componentWillMount(){
             }
         });
 }
+
+handleFileUpload = (event) => {
+
+    const payload = new FormData();
+
+    payload.append('avatar', event.target.files[0]);
+    payload.append('type',"user");
+    payload.append('id',this.props.id);
+
+    APIimage.uploadFile(payload)
+        .then((response) => {
+            if (response.status == 201) {
+                this.setState({
+                    srcdata:"data:image/jpeg;base64,"+response.data
+                });
+            }
+        });
+
+};
+
+
+handleFileFetch= (event) => {
+
+    const payload = {'type':"user",'id':this.props.id};
+
+    APIimage.getFile(payload)
+        .then((response) => {
+            if (response.status == 201) {
+              if(response.image!==''){
+                this.setState({
+                    srcdata:"data:image/jpeg;base64,"+response.image
+                });}
+                else {
+                  
+                }
+            }
+        });
+
+};
 
 
 validateField(fieldName, value) {
@@ -117,7 +159,8 @@ validateField(fieldName, value) {
                   fieldValidationErrors.state = stateValid ? '': ' is required';
                   break;
       case 'zip':
-                  zipValid = value.length !== 0 && value.length ===5 && value.match('^[0-9]+$');
+                  zipValid = value.length !== 0 && ((value.length ===5 && value.match('^[0-9]+$')) || (value.length ===10 && value.match('^\\d{5}(-\\d{4})?$')));
+
                   fieldValidationErrors.zip = zipValid ? '': ' is invalid';
                   break;
       case 'phone':
@@ -182,6 +225,13 @@ console.log("CHECK: "+details.email);
           <div className="container">
             <div className="row">
 
+            <TextField
+                className={'fileupload'}
+                type="file"
+                name="mypic"
+                onChange={this.handleFileUpload}
+            />
+            <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={this.state.srcdata}></img>
 
             <form>
             <FormErrors formErrors={this.state.formErrors} />
@@ -236,7 +286,7 @@ console.log("CHECK: "+details.email);
             <div className="col-xxs-12 col-xs-6 mt">
             <div className="input-field">
               <label>Zip:</label>
-              <input type="text" maxLength="5" value={this.state.zip} className="form-control" onChange={(event)=>{const name="zip"
+              <input type="text" maxLength="10" value={this.state.zip} className="form-control" onChange={(event)=>{const name="zip"
                                                                     const value=event.target.value
                                            this.setState({zip: event.target.value,
                                            type:true}, () => { this.validateField(name, value)});}}/>
