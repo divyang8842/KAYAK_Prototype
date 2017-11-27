@@ -116,7 +116,7 @@ export const getHotelDetails = (payload) =>
 
 
 export const deleteHotel = (payload) =>
-    fetch(`${api}/deleteFlight`, {
+    fetch(`${api}/deleteHotel`, {
         method: 'POST',
         headers: {
             ...headers,
@@ -133,7 +133,7 @@ export const deleteHotel = (payload) =>
         });
 
 export const updateHotel = (payload) =>
-    fetch(`${api}/updateflight`, {
+    fetch(`${api}/updatehotel`, {
         method: 'POST',
         headers: {
             ...headers,
