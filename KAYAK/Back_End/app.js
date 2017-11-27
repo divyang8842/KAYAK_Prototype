@@ -29,6 +29,7 @@ var expressSessions = require("express-session");
 var mongoStore = require("connect-mongo/es5")(expressSessions);
 
 var uploadFile=require('./routes/fileoperations/uploadfile');
+var downloadFile=require('./routes/fileoperations/downloadFiles');
 
 var app = express();
 
@@ -96,6 +97,7 @@ app.post('/usertracking',userTracking.usertracking);
 app.post('/doHotelBooking',hotels.doBooking);
 
 app.post('/uploadFile',uploadFile);
+app.post('/getFile',downloadFile.fileDownload);
 
 app.get('/listhotels',adminHotel.getHotelData);
 app.get('/listCarsData',adminCar.getCarData);

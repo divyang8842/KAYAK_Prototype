@@ -31,6 +31,19 @@ class Login extends Component {
   };
 
   componentWillMount(){
+
+/*
+    API.checkLogged(localStorage.getItem('userid'))
+        .then((output) => {
+            if (output === 0) {
+              console.log("Incorrect");
+
+            } else {
+                console.log("Correct ");
+            }
+        });*/
+
+
           this.setState({username:'',password:'',message:'',
           formErrors: {email: '', password: ''},
           formErrors1: {firstname: '',lastname: '',email: '', password: '',userEmail:''},
@@ -138,7 +151,8 @@ class Login extends Component {
                       this.setState({islogged: 'false', message:"Invalid credentials. Login again." });
                         console.log("Wrong login: "+this.state.islogged);
                     } else {
-                      this.setState({messageLogin: 'true', user: output, message:"Login Failed."});
+                      this.setState({messageLogin: 'true', user: output, message:""});
+                      localStorage.setItem('userid', output.user_id);
                         console.log("Success login= "+output.user_id);
                         console.log("USER type= "+output.user_type);
                         this.props.handleLogged(output.user_id,output.user_type);

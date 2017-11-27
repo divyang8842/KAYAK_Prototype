@@ -137,3 +137,22 @@ export const updatePwd = (payload) =>
             console.log("This is update error");
             return error;
         });
+
+
+        export const checkLogged = (payload) =>
+            fetch(`${api}/checklogged`, {
+                method: 'POST',
+                headers: {
+                    ...headers,
+                    'Content-Type': 'application/json'
+                },
+                credentials:'include',
+                body: JSON.stringify(payload)
+            }).then(res=>res.json())
+                .then(res => {
+                    return res.output;
+                })
+                .catch(error => {
+                    console.log("This is update error");
+                    return error;
+                });

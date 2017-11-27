@@ -625,7 +625,7 @@ consumer_hotels.on('message', function (message) {
                     partition : 0
                 }
             ];
-    
+
             producer.send(payloads, function(err, data){
                 console.log("PRODUCER CHECK:---");
             });
@@ -663,7 +663,7 @@ consumer_download_avatar.on('message', function (message) {
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
 
-    file_utils.base64_encode('./public/uploads/'+data.data.parentpath+'/'+data.data.filename,function(bufferdata){
+    file_utils.base64_encode('./public/uploads/'+data.data.parentpath+"/"+data.data.parentpath+'_'+data.data.filename+".jpeg",function(bufferdata){
         var resData = {};
         resData.status = 201;
         resData.image = bufferdata;

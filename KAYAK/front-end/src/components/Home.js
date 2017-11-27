@@ -31,7 +31,7 @@ class Home extends Component {
   state={
     islogged:'false',
     uid:'',
-    isAdmin:true
+    isAdmin:false
   };
 
   logged = (id,type) => {
@@ -49,6 +49,7 @@ class Home extends Component {
     .then((status) => {
       if(status === 201){
         this.setState({islogged:'false',isAdmin:false});
+      //  localStorage.removeItem('userid');
           console.log('logout success---'+this.state.islogged);
                   //this.componentWillMount();
               }
