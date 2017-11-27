@@ -18,6 +18,10 @@ var carsbooking =require('./routes/Cars/CarBooking');
 var hotels = require('./routes/hotels/hotels');
 var adminFlight=require('./routes/admin/flight');
 
+
+var security=require('./routes/utils/security');
+
+
 var userTracking = require('./routes/UserTracking/UserTracking');
 
 var signup = require('./routes/signup');
@@ -29,6 +33,7 @@ var expressSessions = require("express-session");
 var mongoStore = require("connect-mongo/es5")(expressSessions);
 
 var uploadFile=require('./routes/fileoperations/uploadfile');
+var downloadFile=require('./routes/fileoperations/downloadFiles');
 
 var app = express();
 
@@ -67,41 +72,43 @@ app.use(passport.initialize());
 app.use('/users', users);*/
 app.use('/signup', signup.signup);
 app.use('/checkuser', checkuser.checkuser);
-app.use('/account', account.account);
-app.use('/update', account.update);
-app.use('/listrooms', adminHotel.getHotelRooms);
-app.use('/updateroom', adminHotel.updateRoom);
-app.use('/deleteroom', adminHotel.deleteRoom);
-app.post('/setHotelData',adminHotel.setHotelData);
-app.post('/setRoomData',adminHotel.setRoomData);
-app.post('/setCarData',adminCar.setCarData);
-app.post('/setFlightData',adminFlight.setFlightData);
+app.use('/account',security.authenticate, account.account);
+app.use('/update', security.authenticate,account.update);
+app.use('/listrooms',security.authenticateAdmin, adminHotel.getHotelRooms);
+app.use('/updateroom',security.authenticateAdmin, adminHotel.updateRoom);
+app.use('/deleteroom',security.authenticateAdmin, adminHotel.deleteRoom);
+app.post('/setHotelData',security.authenticateAdmin,adminHotel.setHotelData);
+app.post('/setRoomData',security.authenticateAdmin,adminHotel.setRoomData);
+app.post('/setCarData',security.authenticateAdmin,adminCar.setCarData);
+app.post('/setFlightData',security.authenticateAdmin,adminFlight.setFlightData);
 
-app.post('/listusers',adminUsers.getUsers);
-app.post('/deleteuser',adminUsers.deleteUser);
-app.post('/newadmin',adminUsers.newAdmin);
+app.post('/listusers',security.authenticateAdmin,adminUsers.getUsers);
+app.post('/deleteuser',security.authenticateAdmin,adminUsers.deleteUser);
+app.post('/newadmin',security.authenticateAdmin,adminUsers.newAdmin);
 
 app.post('/getflights',getFlights.getFLights);
 app.post('/getHotels',hotels.getHotels);
 app.post('/getcars',getCars.getCars);
-app.post('/deleteCar',adminCar.deleteCar);
-app.post('/updatecar',adminCar.updateCar);
-app.post('/deleteFlight',adminFlight.deleteFlight);
-app.post('/updateflight',adminFlight.updateFlight);
+
+app.post('/deleteCar',security.authenticateAdmin,adminCar.deleteCar);
+app.post('/updatecar',security.authenticateAdmin,adminCar.updateCar);
+app.post('/deleteFlight',security.authenticateAdmin,adminFlight.deleteFlight);
+app.post('/updateflight',security.authenticateAdmin,adminFlight.updateFlight);
+
+
 app.post('/flightsbooking',flightsBooking.fLightsBooking);
 app.post('/carsbooking',carsbooking.carsbooking);
 app.post('/usertracking',userTracking.usertracking);
-
-
 app.post('/doHotelBooking',hotels.doBooking);
 
-app.post('/uploadFile',uploadFile);
+app.post('/uploadFile',security.authenticate,uploadFile);
+app.post('/getFile',security.authenticate,downloadFile.fileDownload);
 
-app.get('/listhotels',adminHotel.getHotelData);
-app.get('/listCarsData',adminCar.getCarData);
-app.get('/listFlightsData',adminFlight.getFlightData);
+app.get('/listhotels',security.authenticateAdmin,adminHotel.getHotelData);
+app.get('/listCarsData',security.authenticateAdmin,adminCar.getCarData);
+app.get('/listFlightsData',security.authenticateAdmin,adminFlight.getFlightData);
 
-
+app.post('/validateLogin',security.getLoggedInInfoFromSession);
 
 
 app.post('/logout', function(req,res) {
@@ -115,15 +122,13 @@ app.post('/logout', function(req,res) {
 
 app.post('/login', function(req, res) {
     passport.authenticate('login', function(err, user) {
-      console.log("USER: "+user);
+     // console.log("USER: "+user);
         if(!user) {
         	console.log("CHECK: "+ user);
         	res.status(201).json({output:0});
         }
         else{
-        req.session.user = user.user_id;
-        req.session.firstname = user.fname;
-       //console.log("Session initialised: "+req.session.user+req.session.firstname);
+        req.session.user = user;
         req.session.save();
         res.status(201).send({output:user});}
 

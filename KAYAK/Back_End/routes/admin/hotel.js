@@ -10,9 +10,12 @@ var setHotelData = function (req, res, next) {
     var hoteldesc=req.param("hoteldesc");
     var hotelameneties=req.param("hotelameneties");
     var hotelstar=req.param("hotelstar");
+    var kingrooms=req.param("kingrooms");
+    var queenrooms=req.param("queenrooms");
+    var standardrooms=req.param("standardrooms");
 
 
-    kafka.make_request('admin_topic',{"hotelname":hotelname,"hoteladdress":hoteladdress,"hotelcity":hotelcity,"hotelstate":hotelstate,"hotelzipcode":hotelzip,"hoteldesc":hoteldesc,"hotelameneties":hotelameneties,"hotelstar":hotelstar,"action":1}, function(err,results){
+    kafka.make_request('admin_topic',{"hotelname":hotelname,"hoteladdress":hoteladdress,"hotelcity":hotelcity,"hotelstate":hotelstate,"hotelzipcode":hotelzip,"hoteldesc":hoteldesc,"hotelameneties":hotelameneties,"hotelstar":hotelstar,"kingrooms":kingrooms,"queenrooms":queenrooms,"standardrooms":standardrooms,"action":1}, function(err,results){
         console.log('in result');
         console.log(results);
         if(err){
@@ -143,6 +146,47 @@ exports.getHotelData=function(req,res){
         }
     });
 };
+
+exports.deleteHotel= function(req,res) {
+    var hotelid=req.param("hotelid");
+    kafka.make_request('admin_topic',{"hotelid":hotelid,"action":15}, function(err,results){
+        console.log('in result');
+        console.log(results);
+        if(err){
+            res.status(201).json({output:0});
+        }
+        else
+        {
+            console.log("IN PASSPORT: ");
+            res.status(201).json({output:1});
+        }
+    });
+};
+
+exports.updateHotel= function(req,res) {
+    var hotelid=req.param("hotelid");
+    var hotelname=req.param("hotelname");
+    var hoteladdress=req.param("hoteladdress");
+    var hotelcity=req.param("hotelcity");
+    var hotelstate=req.param("hotelstate");
+    var hotelzip=req.param("hotelzipcode");
+    var hoteldesc=req.param("hoteldesc");
+    var hotelameneties=req.param("hotelameneties");
+    var hotelstar=req.param("hotelstar");
+    kafka.make_request('admin_topic',{"hotelname":hotelname,"hoteladdress":hoteladdress,"hotelcity":hotelcity,"hotelstate":hotelstate,"hotelzipcode":hotelzip,"hoteldesc":hoteldesc,"hotelameneties":hotelameneties,"hotelstar":hotelstar,"hotelid":hotelid,"action":16}, function(err,results){
+        console.log('in result');
+        console.log(results);
+        if(err){
+            res.status(201).json({output:0});
+        }
+        else
+        {
+            console.log("IN PASSPORT: ");
+            res.status(201).json({output:1});
+        }
+    });
+};
+
 
 exports.setHotelData=setHotelData;
 exports.setRoomData=setRoomData;

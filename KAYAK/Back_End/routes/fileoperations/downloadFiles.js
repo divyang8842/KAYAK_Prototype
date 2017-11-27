@@ -2,9 +2,10 @@ var GLOBAL_TEMP_PATH = "./public/uploads/temp";
 var kafka = require('./../kafka/client');
 
 var fileDownload = function(req,res){
+  
     var data = {
-        filename: req.param("id"),
-        parentpath: req.param("type")
+        filename: req.body.id,
+        parentpath: req.body.type
     };
     /*var filename=req.param("id");
     var parentpath =req.param("type");*/
