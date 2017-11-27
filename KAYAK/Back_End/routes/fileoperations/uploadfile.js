@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var multer = require('multer');
+var mkdirs = require('mkdirs');
 
 var GLOBAL_TEMP_PATH = "./public/uploads/temp";
 
@@ -21,11 +22,12 @@ var storage = multer.diskStorage({
 });
 
 var createDirectory = function(filepath,callback){
-
-    fs.mkdir(filepath, function (err) {
-        if (err)  {callback(err,filepath);}
-        else  {callback(err,filepath);}
-    });
+    try {
+        mkdirs(filepath);
+        callback(false, filepath);
+    }catch(ex){
+        callback(true,filepath);
+    }
 };
 
 var uploads = multer({storage:storage}).single('avatar');

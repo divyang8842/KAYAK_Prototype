@@ -64,7 +64,7 @@ figure {
 
 ::-webkit-selection {
   color: #fcfcfc;
-  background: #F78536;
+
 }
 
 ::-moz-selection {
@@ -162,13 +162,8 @@ figure {
   bottom: 0;
   right: 0;
   z-index: 1;
-  background: rgba(255, 62, 28, 0.5);
-  background: -moz-linear-gradient(left, rgba(255, 62, 28, 0.5) 0%, rgba(255, 140, 0, 0.5) 100%);
-  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 62, 28, 0.5)), color-stop(100%, rgba(255, 140, 0, 0.5)));
-  background: -webkit-linear-gradient(left, rgba(255, 62, 28, 0.5) 0%, rgba(255, 140, 0, 0.5) 100%);
-  background: -o-linear-gradient(left, rgba(255, 62, 28, 0.5) 0%, rgba(255, 140, 0, 0.5) 100%);
-  background: -ms-linear-gradient(left, rgba(255, 62, 28, 0.5) 0%, rgba(255, 140, 0, 0.5) 100%);
-  background: linear-gradient(to right, rgba(255, 62, 28, 0.5) 0%, rgba(255, 140, 0, 0.5) 100%);
+  background-image: url("../images/Cover_pic.jpg")  !important;
+
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff3e1c', endColorstr='#ff8c00', GradientType=1 );
 }
 
@@ -369,7 +364,7 @@ figure {
   height: 50px;
   z-index: 1022;
   /* background: #fff; Modified: Tejas Panchal*/
-  background: #000000
+  background: #4c4da0
 }
 
 .nav-header {

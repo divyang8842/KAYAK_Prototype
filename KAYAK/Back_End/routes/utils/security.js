@@ -16,11 +16,13 @@ var authenticate = function (req, res, next) {
 
 var authenticateAdmin = function (req, res, next) {
     var session = req.session;
-
+console.log("SESSIONS"+session);
     if(session && session.user && session.user.id && session.user.id>0 && session.user.type==1){
         var isAuthenticated = true;
     }
+
     if (isAuthenticated) {
+        console.log("HERE");
         next();
     }
     else {

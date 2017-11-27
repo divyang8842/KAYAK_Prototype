@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as HotelsAPI from '../../api/HotelsAPI';
-import {loadHotels} from '../../actions/Hotels/Hotels';
+import * as CarsAPI from '../../api/CarsAPI';
+import {getCars} from '../../actions/Cars/Cars';
 import Results from './Results';
 import '../../public/css/animate.css';
 import '../../public/css/bootstrap.css';
@@ -16,26 +16,20 @@ import '../../public/css/style.css';
 
 class SearchPanel extends Component {
   state={
-    Hotels:{
+    Cars:{
       City:'',
-      Checkin:'',
-      Checkout:'',
-      Rooms:'',
-      Guests:''
+      Destination:'',
+      Pickup:'',
+      Dropoff:''
     }
   }
 
-  handleHotelSearch(){
-    console.log(this.state.Hotels.City);
-    HotelsAPI.getHotels(this.state.Hotels)
-    .then((result) => {
-        if(result.results.code == 200){
-          this.props.loadHotels(result);
-          this.props.handler();
-          // window.location.reload();          
-          // Results.forceUpdate();
-          // this.props.history.push("/Hotels");
-        }
+  handleCarSearch(){
+    console.log(this.state.Cars);
+    CarsAPI.getCars(this.state.Cars)
+    .then((output) => {
+        this.props.getCars(output);
+        this.props.handler();
     });
   }
 
@@ -53,8 +47,8 @@ class SearchPanel extends Component {
                   <input type="text" className="searchcss" id="from-place" placeholder="From"
                     onChange={(event) => {
                       this.setState({
-                          Hotels: {
-                              ...this.state.Hotels,
+                          Cars: {
+                              ...this.state.Cars,
                               City: event.target.value
                           }
                       });}
@@ -66,9 +60,9 @@ class SearchPanel extends Component {
                 <input type="text" className="searchcss" id="from-place" placeholder="To"
                     onChange={(event) => {
                       this.setState({
-                          Hotels: {
-                              ...this.state.Hotels,
-                              City: event.target.value
+                          Cars: {
+                              ...this.state.Cars,
+                              Destination: event.target.value
                           }
                       });}
                       }/>
@@ -81,9 +75,9 @@ class SearchPanel extends Component {
                   <input type="date" className="searchcss" id="date-end" placeholder="Pick-up"
                     onChange={(event) => {
                       this.setState({
-                          Hotels: {
-                              ...this.state.Hotels,
-                              Checkout: event.target.value
+                          Cars: {
+                              ...this.state.Cars,
+                              Pickup: event.target.value
                           }
                       });}
                       }/>
@@ -97,9 +91,9 @@ class SearchPanel extends Component {
                 <input type="date" className="searchcss" id="date-end" placeholder="Drop-off"
                     onChange={(event) => {
                       this.setState({
-                          Hotels: {
-                              ...this.state.Hotels,
-                              Checkout: event.target.value
+                          Cars: {
+                              ...this.state.Cars,
+                              Dropoff: event.target.value
                           }
                       });}
                       }/>
@@ -108,7 +102,7 @@ class SearchPanel extends Component {
               </div>
               <div className="col-xs-2">
                 <button className="searchbtn"
-                  onClick={() => this.handleHotelSearch()}>></button>
+                  onClick={() => this.handleCarSearch()}>></button>
               </div>
               </span>
             </div>
@@ -119,7 +113,7 @@ class SearchPanel extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-      return bindActionCreators({loadHotels : loadHotels}, dispatch);
+      return bindActionCreators({getCars:getCars}, dispatch);
   }
   
   //export default Search;

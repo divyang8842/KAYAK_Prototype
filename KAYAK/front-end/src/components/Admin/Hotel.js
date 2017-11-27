@@ -23,6 +23,9 @@ class Hotel extends Component {
         hoteldesc:'',
         hotelameneties:'',
         hotelstar:'',
+        kingrooms:'',
+        queenrooms:'',
+        standardrooms:'',
         roomtype:'',
         roomsize:'',
         guestAllowed:'',
@@ -136,7 +139,7 @@ class Hotel extends Component {
 
 
     insertHotelDetails = (userdata) => {
-        alert(JSON.stringify(userdata));
+       // alert(JSON.stringify(userdata));
         API.insertHotelData(userdata)
             .then((status) => {
                 if (status.status == '201') {
@@ -155,48 +158,26 @@ class Hotel extends Component {
                 }
             });
     };
-    insertRoomDetails=(userdata)=>{
-        API.insertRoomData(userdata)
-            .then((status) => {
-                if (status.status == '201') {
-                    this.setState({
-                        root:status.root,
-                        isLoggedIn: false,
-                        message: "Inserted Room Data Successfully..!!",
-                    });
-                    this.getRooms();
-                    alert("Inserted Room Data Successfully..!!")
-                } else if (status === 401) {
-                    this.setState({
-                        isLoggedIn: false,
-                        message: "SignUp Failed"
-                    });
+
+    updateHotelData= (newdata) => {
+        //alert("HOTEL: "+JSON.stringify(newdata));
+        API.updateHotel(newdata)
+            .then((output) => {
+                if (output === 1) {
+                    alert("Hotel updated");
+                } else {
+                    alert("Hotel not updated");
                 }
             });
+    };
 
-    }
 
-    getRooms=()=>{
-      var x={hid:this.state.hotelid},resAr=[];
-      this.setState({roomlist:[]});
-      API.listrooms(x)
-      .then((data) => {
-          if (data) {
-            console.log("ROOM CHECK: "+data);
-            for(var i=0;i<data.length;i++){
-            resAr = this.state.roomlist.concat(data[i]);
-            this.setState({ roomlist: resAr });
-          }
-          } else {
-              console.log("File not listed");
-          }
-      });
-    }
+
 
     viewHotelDetails=()=>{
         API.getHotelDetails()
             .then((data)=>{
-            alert(JSON.stringify(data));
+           // alert(JSON.stringify(data));
             if(data){
                 this.setState({
                     hotelData:data.value
@@ -230,24 +211,6 @@ class Hotel extends Component {
       this.setState({updateID:id,updateType:t,visible: !this.state.visible});
     }
 
-    hotelFilter=()=>
-    {
-            var input, filter, table, tr, td, i;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[0];
-                if (td) {
-                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }
-            }
-    }
 
     showInsert() {
         this.setState({visible: true});
@@ -259,15 +222,15 @@ class Hotel extends Component {
         var roomData=this.state.roomlist;
 
         function deleteHotel(data) {
-            alert(data);
-            var flightid={flightid:data};
+            //alert(data);
+            var hotelid={hotelid:data};
 
-            API.deleteHotel(flightid)
+            API.deleteHotel(hotelid)
                 .then((output) => {
                     if (output === 1) {
                         console.log("Deleted");
                     } else {
-                        console.log("Cars not updated");
+                        console.log("Hotels not deleted");
                     }
                 });
 
@@ -277,21 +240,21 @@ class Hotel extends Component {
             let newRowStr = '';
             var obj = {};
             var myJsonString = JSON.stringify(row);
-            alert(myJsonString);
+           // alert(myJsonString);
             for (const prop in row) {
                 obj += '"'+prop +'":"'+ row[prop]+'",';
             }
             //obj+='}';
             obj = JSON.parse(myJsonString);
-            alert('The new row is:' + JSON.stringify(obj));
+           // alert('The new row is:' + JSON.stringify(obj));
             this.insertHotelDetails(obj);
         }
 
         function onAfterDeleteRow(rowKeys) {
-            alert('The rowkey you drop: ' + rowKeys);
+            //alert('The rowkey you drop: ' + rowKeys);
         }
         function customConfirm(next, dropRowKeys) {
-            alert(dropRowKeys);
+           // alert(dropRowKeys);
             const dropRowKeysStr = dropRowKeys.join(',');
             if (window.confirm(`Are you sure you want to delete ${dropRowKeysStr}?`)) {
                 // If the confirmation is true, call the function that
@@ -311,21 +274,19 @@ class Hotel extends Component {
                 obj += '"'+prop +'":"'+ row[prop]+'",';
             }
             obj = JSON.parse(myJsonString);
-            alert('The new row is:' + JSON.stringify(obj));
+           // alert('The new row is:' + JSON.stringify(obj));
             if (window.confirm(`Are you sure you want to edit?`)) {
 
                 this.setState({
-                    flightid:obj.flight_id,
-                    flightnumber: obj.flight_number,
-                    airlinename: obj.airline_name,
-                    stationname:obj.station_name,
-                    arrivaltime:obj.flight_arrival,
-                    departuretime:obj.flight_departure,
-                    flightduration:obj.flight_duration,
-                    economyClassFare:obj.economy_class,
-                    firstClassFare:obj.first_class,
-                    businessClassFare:obj.business_class,
-                    premiumEcoFare:obj.premiumeconomy_class
+                    hotelid:obj.hotel_id,
+                    hotelname: obj.hotel_name,
+                    hoteladdress: obj.hotel_location,
+                    hotelcity:obj.hotel_city,
+                    hotelstate:obj.hotel_state,
+                    hotelzipcode:obj.hotel_zipcode,
+                    hoteldesc:obj.hotel_description,
+                    hotelameneties:obj.hotel_ameneties,
+                    hotelstar:obj.hotel_star,
                 });
 
                 this.setState({update:true,visible: !this.state.visible});
@@ -459,20 +420,49 @@ class Hotel extends Component {
                                                         type:true}, () => { this.validateField(name, value)});}}/>
                                             </div>
                                         </div>
+                                        <div className="col-xxs-12 col-xs-6 mt">
+                                            <div className="input-field">
+                                                <label>King Rooms:</label>
+                                                <input type="text" placeholder="Enter King Rooms" value={this.state.kingrooms} className="form-control" onChange={(event)=>{const name="kingrooms"
+                                                    const value=event.target.value
+                                                    this.setState({kingrooms: event.target.value,
+                                                        type:true}, () => { this.validateField(name, value)});}}/>
+                                            </div>
+                                        </div>
+                                        <div className="col-xxs-12 col-xs-6 mt">
+                                            <div className="input-field">
+                                                <label>Queen Rooms:</label>
+                                                <input type="text" placeholder="Enter Queen Rooms" value={this.state.queenrooms} className="form-control" onChange={(event)=>{const name="queenrooms"
+                                                    const value=event.target.value
+                                                    this.setState({queenrooms: event.target.value,
+                                                        type:true}, () => { this.validateField(name, value)});}}/>
+                                            </div>
+                                        </div>
+                                        <div className="col-xxs-12 col-xs-6 mt">
+                                            <div className="input-field">
+                                                <label>Standard Rooms:</label>
+                                                <input type="text" placeholder="Enter Standard Rooms" value={this.state.standardrooms} className="form-control" onChange={(event)=>{const name="standardrooms"
+                                                    const value=event.target.value
+                                                    this.setState({standardrooms: event.target.value,
+                                                        type:true}, () => { this.validateField(name, value)});}}/>
+                                            </div>
+                                        </div>
 
 
                                         <div className="col-xxs-12 col-xs-12 mt"></div>
 
 
-                                        <div className="col-xs-2">
-                                            <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertHotelDetails(this.state)}>Submit</button>
+                                        <div className="col-xs-2">{this.state.update ? <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.updateHotelData(this.state)}>Update</button> :
+                                            <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertHotelDetails(this.state)}>Submit</button>}
                                         </div>
+
+
                                     </div>
 
                                 </form>
 
 
-                                <div className="control-group span6 container row">
+                                {/*<div className="control-group span6 container row">
                                     <div className="form-group">
                                         <div className="col-xxs-12 col-xs-12 mt"></div>
 
@@ -531,42 +521,8 @@ class Hotel extends Component {
                                         </div>
                                         <div className="col-xxs-12 col-xs-12 mt"></div>
                                     </div>
-                                </div>
+                                </div>*/}
                             </div>
-
-                            <div>
-                            <ul className="w3-ul">
-                            <li>
-                            <div className="col-xs-2 col-xxs-2 mt">Room Type</div>
-                            <div className="col-xs-2 col-xxs-2 mt">Size</div>
-                            <div className="col-xs-2 col-xxs-2 mt">Guests</div>
-                            <div className="col-xs-2 col-xxs-2 mt">Price</div>
-                            <div className="col-xs-2 col-xxs-2 mt">Count</div>
-                            <div className="col-xs-2 col-xxs-2 mt">Action</div>
-                            </li></ul></div>
-
-                            {this.state.roomlist.map(f => {
-                              return (
-                                <div  key={f.room_id}>
-                                <ul className="w3-ul">
-                                <li>
-                                <div className="col-xs-2 col-xxs-2 mt">{f.room_type}</div>
-                                <div className="col-xs-2 col-xxs-2 mt">{f.room_size}</div>
-                                <div className="col-xs-2 col-xxs-2 mt">{f.guestAllowed}</div>
-                                <div className="col-xs-2 col-xxs-2 mt">{f.room_price}</div>
-                                <div className="col-xs-2 col-xxs-2 mt">{f.count}</div>
-                                <div className="col-xs-2 col-xxs-2 mt">
-                                <button onClick={()=> this.showComp(f.room_id,f.room_type)}>Update</button>
-                                <button onClick={()=> this.deleteRoom(f.room_id)}>Remove</button></div>
-                              </li></ul></div>
-                              )})}
-                              <div>
-                                {
-                                  this.state.visible
-                                    ? <Updateroom id={this.state.updateID} type={this.state.updateType} display={this.getRooms}/>
-                                    : null
-                                }
-                              </div>
 
                         </div>{/*container*/}
                     </div> : null}
@@ -580,7 +536,7 @@ class Hotel extends Component {
 
 
 
-class Updateroom extends Component {
+/*class Updateroom extends Component {
 
 state={roomsize:'',
 guestAllowed:'',
@@ -653,7 +609,7 @@ console.log("ID: "+this.props.id+" "+this.props.type);
         </div>
     </div>
 </div>
-);}}
+);}}*/
 
 
 

@@ -169,7 +169,7 @@ componentDidMount()
         };
 
         handleSignup = (user) => {
-          console.log("CHECK: "+user.firstname);
+          alert("CHECK: "+user.firstname);
             API.signup(user)
                 .then((output) => {
                     if (output === 0) {
@@ -247,7 +247,7 @@ componentDidMount()
             </div>
 
             <div className="col-xs-12">
-<input type="submit" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleSignup(this.state)}/>
+<input type="submit" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleSignup(this.state)}/>
             </div>
           </div>
           </form>

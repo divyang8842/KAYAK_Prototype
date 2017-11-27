@@ -7,20 +7,21 @@ function handle_request(msg, callback){
     console.log("In Get Files handle request:"+ JSON.stringify(msg));
     console.log("msg.class"+msg.class);
 
-    var fetchQuery="select * from flight fl INNER JOIN flight_availibility fa ON fl.flight_id = fa.flight_id where fl.stops like ? and fl.stops like ? AND fa.dates = ? AND fa.first_seates > ?";
+    var fetchQuery="select * from flight fl INNER JOIN flight_availibility fa ON fl.flight_id = fa.flight_id where fl.stops like ? and fl.stops like ? AND fa.dates = ? AND";
+    //fa.first_seates > ?
 
-    // if(msg.class === "Economy")
-    // {
-    //     fetchQuery = fetchQuery+"fa.economy_seates > ?";
-    // }
-    // else if(msg.class === "First")
-    // {
-    //     fetchQuery = fetchQuery+"fa.first_seates > ?";
-    // }
-    // else if(msg.class ==="Business")
-    // {
-    //     fetchQuery = fetchQuery+"fa.business_seates > ?";
-    // }
+    if(msg.class === "economy")
+    {
+        fetchQuery = fetchQuery+" fa.economy_seates > ?";
+    }
+    else if(msg.class === "first")
+    {
+        fetchQuery = fetchQuery+" fa.first_seates > ?";
+    }
+    else if(msg.class ==="business")
+    {
+        fetchQuery = fetchQuery+" fa.business_seates > ?";
+    }
 
     var mappingquery;
     var dataArry = [];
@@ -41,7 +42,9 @@ function handle_request(msg, callback){
     var destination_price = 0;
     var noofarguments = '?';
 
+    console.log("msg.adult: "+msg.adult);
     console.log("DATA: "+dataArry);
+    console.log("fetchQuery:"+fetchQuery);
 
     // First Query will fetch flight ids from flight tables based on the input parameter
 
@@ -117,6 +120,8 @@ function handle_request(msg, callback){
                     destination_price = results1[i].economy_class;
                     finalresultobject.totalprice = destination_price-source_price;
                     finalresultobject.duration = results1[i].flight_duration;
+                    finalresultobject.class = msg.class;
+                    finalresultobject.nooftickets = msg.adult;
 
                     finalresult.push(finalresultobject);
                     finalresultobject ={};

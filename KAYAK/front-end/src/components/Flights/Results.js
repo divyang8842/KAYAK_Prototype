@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import { Route, Link,Switch,withRouter } from 'react-router-dom';
 import {getFlightsBooking} from '../../actions/Flights/FlightBooking';
 import FLightSerachPanel from './SearchPanel';
+import * as UserTracking from '../../api/UserTracking';
 
 import '../../public/css/animate.css';
 import '../../public/css/bootstrap.css';
@@ -34,8 +35,10 @@ class Results extends Component {
         array_for_sorting_result:this.props.flights,
         flag:0,
         check_boxes:[],
-        price_filter:0,
-        duration_filter:0
+        price_filter:500,
+        duration_filter:20,
+        price_asc:1,
+        duration_asc:1
     };
 
 
@@ -70,24 +73,58 @@ class Results extends Component {
             if (flight_flag){
                 flight_flag= false;
 
-                if( flights.flights.duration> this.state.duration_filter)
+                if( flights.flights.duration< this.state.duration_filter)
                 {
-                    if(flights.flights.totalprice > this.state.price_filter)
+                    if(flights.flights.totalprice < this.state.price_filter)
                     {
                         array_used_for_sorting.push(flights.flights);
                         if(price_flag )
                         {
-                            array_used_for_sorting.sort(function(a, b) {
-                                return parseFloat(a.totalprice) - parseFloat(b.totalprice);
-                            });
+                            if(this.state.price_asc === 1){
+                                array_used_for_sorting.sort(function(a, b) {
+                                    return parseFloat(a.totalprice) - parseFloat(b.totalprice);
+                                });
+
+                                this.setState({
+                                    price_asc: 0
+                                });
+
+                            }
+
+                            else
+                            {
+                                array_used_for_sorting.sort(function(a, b) {
+                                    return parseFloat(b.totalprice) - parseFloat(a.totalprice);
+                                });
+                                this.setState({
+                                    price_asc: 1
+                                });
+                            }
+
 
                         }
 
                         if(duration_flag)
                         {
+                            if(this.state.duration_asc === 1){
                             array_used_for_sorting.sort(function(a, b) {
                                 return parseFloat(a.duration) - parseFloat(b.duration);
                             });
+                                this.setState({
+                                    duration_asc: 0
+                                });
+
+                        }
+
+                        else
+                        {
+                            array_used_for_sorting.sort(function(a, b) {
+                                return parseFloat(b.duration) - parseFloat(a.duration);
+                            });
+                            this.setState({
+                                duration_asc: 1
+                            });
+                        }
 
 
                         }
@@ -150,8 +187,24 @@ class Results extends Component {
 
                     <button className="btn btn-primary btn-block"
                             onClick={() =>{
+
                                 var payload = {};
+                                var tracking_object={};
+
                                 this.props.getFlightsBooking(flights);
+
+                                tracking_object.current_page="BILLING_FLIGHT";
+                                tracking_object.previous_page="FLIGHT_PAGE";
+                                tracking_object.user_id="jay";
+                                tracking_object.session_id="1";
+
+                                UserTracking.userTracking(tracking_object)
+                                    .then((status) => {
+                                        console.log("Tracking status:"+status);
+
+
+                                    });
+
                                 this.props.history.push("/flightsbooking");
                             }
                                 }>View Deal</button>
@@ -224,7 +277,7 @@ class Results extends Component {
                                             this.temp();
                                          }
                                     }}
-
+                                   defaultChecked
                                 />
                                 <div class="control__indicator"></div>
                                 </label>
@@ -272,6 +325,7 @@ class Results extends Component {
                                            this.temp();
                                        }
                                    }}
+                                   defaultChecked
                                    />
                                 <div class="control__indicator"></div>
                             </label>
@@ -320,7 +374,8 @@ class Results extends Component {
                                            this.temp();
                                        }
                                    }}
-                                   />
+                                   defaultChecked
+                            />
                                 <div class="control__indicator"></div>
                             </label>
 
@@ -369,6 +424,7 @@ class Results extends Component {
                                            this.temp();
                                        }
                                    }}
+                                   defaultChecked
                                    />
 
                                 <div class="control__indicator"></div></label>
@@ -403,7 +459,7 @@ class Results extends Component {
                                onChange={(event) => {
                                    this.setState({
                                        price_filter: event.target.value
-                                   },this.flights(null,null));
+                                   },this.flights);
                                }
 
                                }
@@ -434,7 +490,7 @@ class Results extends Component {
                                onChange={(event) => {
                                    this.setState({
                                        duration_filter: event.target.value
-                                   },this.flights(null,null));}
+                                   },this.flights);}
                                }
                         />
                     </div>

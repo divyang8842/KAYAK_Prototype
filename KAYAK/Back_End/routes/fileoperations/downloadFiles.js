@@ -7,12 +7,8 @@ var fileDownload = function(req,res){
         filename: req.body.id,
         parentpath: req.body.type
     };
-    /*var filename=req.param("id");
-    var parentpath =req.param("type");*/
-    console.log(JSON.stringify(data));
+    //console.log(JSON.stringify(data));
     kafka.make_request('download_avatar', data, function (err, results) {
-        console.log('in result');
-        console.log(results);
         if (err) {
             res.status(401).json({status: '401'});
         } else {

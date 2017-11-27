@@ -531,6 +531,43 @@ consumer_HotelsOps.on('message', function (message) {
             return;
         });
     }
+    else if(action==15) {
+        admin_Hotel.deleteHotelData(data.data, function (err, res) {
+            console.log('after handle delete Cars---' + JSON.stringify(res));
+            var payloads = [
+                {
+                    topic: data.replyTo,
+                    messages: JSON.stringify({
+                        correlationId: data.correlationId,
+                        data: res
+                    }),
+                    partition: 0
+                }
+            ];
+
+            producer.send(payloads, function (err, data) {
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });
+    }
+    else if(action==16){
+        admin_Hotel.updateHotelData(data.data, function(err,res){
+            //console.log('after handle'+res.value[0].count);
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res.value
+                    }),
+                    partition : 0
+                }];
+            producer.send(payloads, function(err, data){
+                console.log("Producer:-- ");
+            });
+            return;
+        });
+    }
 
     else if(action==20){
     	admin_Users.getUsers(data.data, function(err,res){
@@ -638,7 +675,7 @@ consumer_upload_avatar.on('message', function (message) {
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
 
-    file_utils.base64_decode(data.data.bufferdata,'./public/uploads/'+data.data.parentpath+'/'+data.data.filename,function(){
+    file_utils.base64_decode(data.data.bufferdata,'./public/uploads/'+data.data.parentpath,data.data.filename,function(){
         var resData = {};
         resData.status = 201;
 

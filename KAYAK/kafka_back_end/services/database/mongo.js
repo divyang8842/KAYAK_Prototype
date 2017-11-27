@@ -20,7 +20,7 @@ var collection = function(name){
 
 
 exports.findOneDoc = function(collectionname,conditionjson,callback){
-    connect(function (db) {
+    connect(function (err,db) {
         var coll = db.collection(collectionname);
         coll.findOne(conditionjson, function(err, data){
             pool.closeConnection(db,dbType);
@@ -30,7 +30,7 @@ exports.findOneDoc = function(collectionname,conditionjson,callback){
 };
 
 exports.findDoc = function(collectionname,conditionjson,callback){
-    connect(function (db) {
+    connect(function (err,db) {
         var coll = db.collection(collectionname);
         var cursor = coll.find(conditionjson);
         //pool.closeConnection(db,dbType);
@@ -45,9 +45,7 @@ exports.findDoc = function(collectionname,conditionjson,callback){
 };
 
 exports.insertDoc = function(collectionname,insertdata,callback){
-
-    return;
-    connect(function (db) {
+    connect(function (err,db) {
         var coll = db.collection(collectionname);
         coll.insertOne(insertdata, function(err, data){
             pool.closeConnection(db,dbType);
@@ -57,7 +55,7 @@ exports.insertDoc = function(collectionname,insertdata,callback){
 };
 
 exports.update = function(collectionname,query,insertdata,callback){
-    connect(function (db) {
+    connect(function (err,db) {
         var coll = db.collection(collectionname);
 
         coll.update(query,insertdata, function(err, data){

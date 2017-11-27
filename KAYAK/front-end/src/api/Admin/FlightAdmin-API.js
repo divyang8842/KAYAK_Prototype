@@ -24,13 +24,14 @@ export const insertFlightData = (payload) =>
         });
 
 export const viewFlightDetails = (payload) =>
-    fetch(`${api}/listFlightData`, {
-        method: 'GET',
+    fetch(`${api}/listFlightsData`, {
+        method: 'POST',
         headers: {
             ...headers,
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
+        credentials:'include'
     }).then(res=>res.json())
         .then(res => {
             return res.output;
