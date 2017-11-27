@@ -133,10 +133,19 @@ class Results extends Component {
         })
     }
 
+    constructor(props) {
+        super(props)
+    
+        this.handler = this.handler.bind(this)
+    }
+
     handler(){
         // this.forceUpdate();
         // this.setFreebies();
         // this.filterHotels();
+        this.forceUpdate();
+        this.temp();
+        this.flights(null,null);
     }
 
     render() {
