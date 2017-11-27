@@ -104,18 +104,47 @@ class Search extends Component {
     }
 
   render() {
+      var blackColor = {
+          color: 'black'
+
+      };
+      var bgcolor = {
+          background:'#c2c8d04f'
+      }
+      var divStyle = {
+          fontSize: 12
+        };
+      var bgnone = {
+          background:'none'
+      }
+      var mrt = {
+          marginTop : 0
+      }
+      var mrt7 = {
+          marginTop : '-7em'
+      }
+
+      var mrr1 = {
+          marginRight : 10
+      }
+
       return (
         <div>
           <div className="fh5co-hero">
             <div className="fh5co-overlay"></div>
-              <div className="fh5co-cover" data-stellar-background-ratio="0.5" style={{backgroundImage: "url(../public/images/cover_bg_1.jpg)"}}>
+              <div className="fh5co-cover" data-stellar-background-ratio="0.5" style={{backgroundImage: "url(../public/images/Cover_pic.jpg)"}}>
+
                 <div className="desc">
+
+
                   <div className="container">
                     <div className="row">
-                      <div className="col-sm-5 col-md-5">
-                        <div className="tabulation animate-box">
+                      <div className="col-sm-12 col-md-12 " style={mrt7}>
 
+                        <div className="tabulation animate-box mbl" style={mrt}>
 
+                            <div style={bgnone} className="col-sm-4 col-md-4">&nbsp;</div>
+                            <div className="col-sm-4 col-md-4">
                           <ul className="nav nav-tabs" role="tablist">
                               <li role="presentation" className="active">
                                 <a href="#flights" aria-controls="flights" role="tab" data-toggle="tab">Flights</a>
@@ -127,17 +156,20 @@ class Search extends Component {
                                 <a href="#packages" aria-controls="packages" role="tab" data-toggle="tab">Cars</a>
                               </li>
                           </ul>
-
-
-                          <div className="tab-content">
+                            </div>
+                            <div className="col-sm-4 col-md-4" ></div>
+                        </div>
+                            <div className="tabulation animate-box" style={mrt}>
+                          <div className="tab-content" style={bgcolor}>
                           <div role="tabpanel" className="tab-pane active" id="flights">
                             <div className="row">
-                              <div className="col-xxs-12 col-xs-6 mt">
+                              <div className="col-xxs-2 col-xs-2 mt">
                                 <div className="input-field">
-                                  <label>From:</label>
+                                 <label>From:</label>
                                   <input type="text"
                                          className="form-control"
                                          id="from-place"
+                                         style={blackColor}
                                          placeholder="Los Angeles, USA"
                                          value={this.state.Flights.Source}
                                          onChange={(event) => {
@@ -151,9 +183,9 @@ class Search extends Component {
                                   />
                                 </div>
                               </div>
-                              <div className="col-xxs-12 col-xs-6 mt">
+                              <div className="col-xxs-2 col-xs-2 mt">
                                 <div className="input-field">
-                                  <label>To:</label>
+                                 <label>To:</label>
                                   <input type="text"
                                          className="form-control"
                                          id="to-place"
@@ -170,14 +202,14 @@ class Search extends Component {
                                   />
                                 </div>
                               </div>
-                              <div className="col-xxs-12 col-xs-6 mt alternate">
+                              <div className="col-xxs-2 col-xs-2 mt alternate " style={mrr1}>
                                 <div className="input-field">
 
-                                  <label>Depart:</label>
+                                 <label>Depart:</label>
                                   <input type="date"
                                          className="datecss"
                                          id="date-start"
-                                         placeholder="mm/dd/yyyy"
+                                         placeholder="Depart"
                                          value={this.state.Flights.Depart}
                                          onChange={(event) => {
                                              this.setState({
@@ -192,13 +224,13 @@ class Search extends Component {
                                   
                                 </div>
                               </div>
-                              <div className="col-xxs-12 col-xs-6 mt alternate">
+                              <div className="col-xxs-2 col-xs-2 mt alternate" style={mrr1}>
                                 <div className="input-field">
-                                  <label>Return:</label>
+                                 <label>Return:</label>
                                   <input type="date"
                                          className="datecss"
                                          id="date-end"
-                                         placeholder="mm/dd/yyyy"
+                                         placeholder="Return"
                                          value={this.state.Flights.Return}
                                          onChange={(event) => {
                                              this.setState({
@@ -211,9 +243,9 @@ class Search extends Component {
                                   />
                                 </div>
                               </div>
-                              <div className="col-sm-12 mt">
+                              <div className="col-sm-1 mt" >
                                 <section>
-                                  <label>Class:</label>
+                                 <label>Class:</label>
                                   <select className="form-control"
                                           style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}
                                           value={this.state.Flights.Class}
@@ -233,7 +265,7 @@ class Search extends Component {
                                   </select>
                                 </section>
                               </div>
-                              <div className="col-xxs-12 col-xs-6 mt">
+                              <div className="col-xxs-2 col-xs-1 mt">
                                 <section>
                                   <label>Adult:</label>
                                   <select className="form-control"
@@ -248,7 +280,7 @@ class Search extends Component {
                                               });}
                                           }
                                   >
-                                    <option value="" disabled selected>1</option>
+                                    {/*<option value="" disabled selected={"selected"}>Adult</option>*/}
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -258,16 +290,20 @@ class Search extends Component {
                                 </section>
                               </div>
 
-                              <div className="col-xs-12">
-                                <button className="btn btn-primary btn-block"
-                                  onClick={() => this.handleFlightSearch()}>Search Flights</button>
+                              <div className="col-xs-1">
+                                  <section>
+                                      <label></label>
+                                <button className="btn btn-primary btn-block" style={divStyle}
+                                  onClick={() => this.handleFlightSearch()}> => </button>
+                                  </section>
+
                               </div>
                             </div>
                           </div>
 
                           <div role="tabpanel" className="tab-pane" id="hotels">
                             <div className="row">
-                              <div className="col-xxs-12 col-xs-12 mt">
+                              <div className="col-xxs-2 col-xs-2 mt">
                                 <div className="input-field">
                                   <label>City:</label>
                                   <input type="text" className="form-control" id="from-place" placeholder="Los Angeles, USA"
@@ -281,7 +317,7 @@ class Search extends Component {
                                         }/>
                                 </div>
                               </div>
-                              <div className="col-xxs-12 col-xs-6 mt alternate">
+                              <div className="col-xxs-2 col-xs-2 mt alternate"  style={mrr1}>
                                 <div className="input-field">
                                   <label>Check In:</label>
                                   <input type="date" className="datecss" id="date-start" placeholder="mm/dd/yyyy"
@@ -295,7 +331,7 @@ class Search extends Component {
                                         }/>
                                 </div>
                               </div>
-                              <div className="col-xxs-12 col-xs-6 mt alternate">
+                              <div className="col-xxs-2 col-xs-2 mt alternate"  style={mrr1}>
                                 <div className="input-field">
                                   <label>Check Out:</label>
                                   <input type="date" className="datecss" id="date-end" placeholder="mm/dd/yyyy"
@@ -309,7 +345,7 @@ class Search extends Component {
                                         }/>
                                 </div>
                               </div>
-                              <div className="col-sm-6 mt">
+                              <div className="col-sm-2 mt">
                                 <div className="input-field">
                                   <label>Rooms:</label>
                                   <input type="text" className="form-control" id="rooms" placeholder="Number of Rooms"
@@ -323,7 +359,7 @@ class Search extends Component {
                                         }/>
                                 </div>
                               </div>
-                              <div className="col-xxs-6 col-xs-6 mt">
+                              <div className="col-xxs-2 col-xs-2 mt">
                                 <div className="input-field">
                                 <label>Guests:</label>
                                 <input type="text" className="form-control" id="guests" placeholder="Number of Guests"
@@ -337,16 +373,17 @@ class Search extends Component {
                                       }/>
                                 </div>
                               </div>
-                              <div className="col-xs-12">
-                                <button className="btn btn-primary btn-block"
-                                  onClick={() => this.handleHotelSearch()}>Search Hotels</button>
+                              <div className="col-xs-1">
+                                  <label></label>
+                                <button className="btn btn-primary btn-block" style={divStyle}
+                                  onClick={() => this.handleHotelSearch()}>=></button>
                               </div>
                             </div>
                           </div>
 
                           <div role="tabpanel" className="tab-pane" id="packages">
                             <div className="row">
-                              <div className="col-xxs-12 col-xs-6 mt">
+                              <div className="col-xxs-2 col-xs-2 mt">
                                 <div className="input-field">
                                   <label>City:</label>
                                   <input type="text"
@@ -364,7 +401,7 @@ class Search extends Component {
                                 </div>
                               </div>
 
-                              <div className="col-xxs-12 col-xs-6 mt">
+                              <div className="col-xxs-2 col-xs-2 mt">
                                 <div className="input-field">
                                   <label>Destination:</label>
                                   <input type="text"
@@ -381,7 +418,7 @@ class Search extends Component {
                                          }/>
                                 </div>
                               </div>
-                              <div className="col-xxs-12 col-xs-6 mt alternate">
+                              <div className="col-xxs-2 col-xs-2 mt alternate"  style={mrr1}>
                                 <div className="input-field">
                                   <label>Departs:</label>
                                   <input type="date"
@@ -399,7 +436,7 @@ class Search extends Component {
                                   />
                                 </div>
                               </div>
-                              <div className="col-xxs-12 col-xs-6 mt alternate">
+                              <div className="col-xxs-2 col-xs-2 mt alternate">
                                 <div className="input-field">
                                   <label>Return:</label>
                                   <input type="date"
@@ -417,12 +454,15 @@ class Search extends Component {
                                   />
                                 </div>
                               </div>
-
-                              <div className="col-xs-12">
-                                <input type="submit"
+                                <div className="col-xs-1"></div>
+                              <div className="col-xs-1">
+                                  <label></label>
+                                  <button className="btn btn-primary btn-block" style={divStyle}
+                                          onClick={() => this.handleCarsSearch()}>=></button>
+                                {/*<input type="submit"
                                        className="btn btn-primary btn-block"
                                        value="Search Cars"
-                                       onClick={() => this.handleCarsSearch()}
+                                       onClick={() => this.handleCarsSearch()}*/}
                                 />
                               </div>
                             </div>
@@ -431,14 +471,14 @@ class Search extends Component {
 
                         </div>
                       </div>
-                      <div className="desc2 animate-box">
+                    {/*  <div className="desc2 animate-box">
                         <div className="col-sm-7 col-sm-push-1 col-md-7 col-md-push-1">
                           <p>HandCrafted by <a href="http://frehtml5.co/" target="_blank" className="fh5co-site-name">FreeHTML5.co</a></p>
                           <h2>Exclusive Limited Time Offer</h2>
                           <h3>Fly to Hong Kong via Los Angeles, USA</h3>
                           <span className="price">$599</span>
                         </div>
-                      </div>
+                      </div>*/}
 
                     </div>
                   </div>

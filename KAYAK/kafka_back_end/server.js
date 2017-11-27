@@ -675,7 +675,7 @@ consumer_upload_avatar.on('message', function (message) {
     console.log(JSON.stringify(message.value));
     var data = JSON.parse(message.value);
 
-    file_utils.base64_decode(data.data.bufferdata,'./public/uploads/'+data.data.parentpath+'/'+data.data.filename,function(){
+    file_utils.base64_decode(data.data.bufferdata,'./public/uploads/'+data.data.parentpath,data.data.filename,function(){
         var resData = {};
         resData.status = 201;
 

@@ -1,28 +1,34 @@
 var fs    = require("fs");
+var mkdirs = require('mkdirs');
 
 // function to encode file data to base64 encoded string
 var base64_encode =  function(file,callback) {
     // read binary data
     var bufferData = "";
     try{
-   var bitmap = fs.readFileSync(file);
-    // convert binary data to base64 encoded string
-    bufferData =  new Buffer(bitmap).toString('base64');
-}catch(ex){
+        var bitmap = fs.readFileSync(file);
+        // convert binary data to base64 encoded string
+        bufferData =  new Buffer(bitmap).toString('base64');
+    }catch(ex){
 
-}
+    }
     callback(bufferData);
 
 };
 
 // function to create file from base64 encoded string
-var base64_decode = function(base64str, file,callback) {
-    // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
-    var bitmap = new Buffer(base64str, 'base64');
-    // write buffer to file
-    fs.writeFileSync(file, bitmap);
-    console.log('******** File created from base64 encoded string ********');
-    callback(true)
+var base64_decode = function(base64str,parent, file,callback) {
+    try {
+        mkdirs(parent);
+        // create buffer object from base64 encoded string, it is important to tell the constructor that the string is base64 encoded
+        var bitmap = new Buffer(base64str, 'base64');
+        // write buffer to file
+        fs.writeFileSync(parent+"/"+file, bitmap);
+        console.log('******** File created from base64 encoded string ********');
+        callback(true);
+    }catch(ex){
+        callback(false);
+    }
 }
 
 

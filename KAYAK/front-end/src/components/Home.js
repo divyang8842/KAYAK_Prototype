@@ -61,7 +61,7 @@ class Home extends Component {
 
     render() {
         return (
-          <div>
+          <div style={{backgroundImage: "url(../public/images/Cover_pic.jpg)"}}>
           <div id="fh5co-wrapper">
       		<div id="fh5co-page">
 

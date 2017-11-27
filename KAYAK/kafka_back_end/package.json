@@ -12,6 +12,7 @@
     "express": "^4.15.5",
     "jsesc": "^2.5.1",
     "kafka-node": "^2.2.3",
+    "mkdirs": "0.0.2",
     "mongodb": "^2.2.31",
     "mysql": "*",
     "nodemailer": "4.2.0",
