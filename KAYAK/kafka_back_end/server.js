@@ -57,7 +57,7 @@ consumer_login.on('message', function (message) {
             { topic: data.replyTo,
                 messages:JSON.stringify({
                     correlationId:data.correlationId,
-                    data : res.value[0]
+                    data : res.value
                 }),
                 partition : 0
             }

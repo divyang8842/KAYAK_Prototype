@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import * as API from '../api/SigninSignup-API';
 import ReactDOM from 'react-dom';
-import Search from './Home';
+import Login from './Login';
 import FormErrors from "./FormErrors";
 import * as APIimage from '../api/fileOperation';
 import TextField from 'material-ui/TextField';
@@ -42,6 +42,29 @@ class Account extends Component {
     this.setState({visible: !this.state.visible});
   }
 
+/*
+componentDidMount(){
+  if(localStorage.getItem('userid')){
+console.log("CHECK IN FUNC: "+localStorage.getItem('userid'));
+  var currentUser={id:localStorage.getItem('userid')};
+  localStorage.removeItem('userid');
+      API.checkLogged(currentUser)
+          .then((output) => {
+            console.log("CHECK THIS: "+output.status);
+              if (output.status === "501") {
+                console.log("Incorrect");
+                this.props.handleNotLogged();
+
+              } else {
+                  console.log("Correct ");
+                  localStorage.setItem('userid', output.userid);
+                  this.props.handleLogged(output.userid,output.type,output.firstname);
+              }
+          });
+  }
+
+}*/
+
 componentWillMount(){
   this.handleFileFetch();
   this.setState({formErrors: {firstname: '',lastname: '',address: '',city:'',state:'',phone:'',credit:'',zip:'',userEmail:''},
@@ -80,14 +103,12 @@ componentWillMount(){
         });
 }
 
+
 handleFileUpload = (event) => {
-
     const payload = new FormData();
-
     payload.append('avatar', event.target.files[0]);
     payload.append('type',"user");
     payload.append('id',this.props.id);
-
     APIimage.uploadFile(payload)
         .then((response) => {
             if (response.status == 201) {
@@ -96,14 +117,11 @@ handleFileUpload = (event) => {
                 });
             }
         });
-
 };
 
 
 handleFileFetch= (event) => {
-
     const payload = {'type':"user",'id':this.props.id};
-
     APIimage.getFile(payload)
         .then((response) => {
             if (response.status == 201) {
@@ -112,7 +130,7 @@ handleFileFetch= (event) => {
                     srcdata:"data:image/jpeg;base64,"+response.image
                 });}
                 else {
-                  
+
                 }
             }
         });
@@ -221,6 +239,8 @@ console.log("CHECK: "+details.email);
     render() {
         return (
           <div>
+          {this.props.user==='true' ? (
+<div>
           <div id="fh5co-page">
           <div className="container">
             <div className="row">
@@ -344,6 +364,7 @@ console.log("CHECK: "+details.email);
       </div>
 </div>
 </div>
+</div>):(<Login handleLogged={this.props.handleLogged} handleNotLogged={this.props.handleNotLogged}/>)}
 </div>
 );}}
 

@@ -82,9 +82,9 @@ app.post('/setRoomData',security.authenticateAdmin,adminHotel.setRoomData);
 app.post('/setCarData',security.authenticateAdmin,adminCar.setCarData);
 app.post('/setFlightData',security.authenticateAdmin,adminFlight.setFlightData);
 
-app.post('/listusers',security.authenticateAdmin,adminUsers.getUsers);
-app.post('/deleteuser',security.authenticateAdmin,adminUsers.deleteUser);
-app.post('/newadmin',security.authenticateAdmin,adminUsers.newAdmin);
+app.post('/listusers',adminUsers.getUsers);
+app.post('/deleteuser',adminUsers.deleteUser);
+app.post('/newadmin',adminUsers.newAdmin);
 
 app.post('/getflights',getFlights.getFLights);
 app.post('/getHotels',hotels.getHotels);
@@ -113,14 +113,14 @@ app.post('/validateLogin',security.getLoggedInInfoFromSession);
 
 app.post('/logout', function(req,res) {
     console.log(req.session.user);
-
+req.session.user=undefined;
     req.session.destroy();
     console.log('Session Destroyed');
     res.status(201).json({status:201});
 
 });
 
-app.post('/login', function(req, res) {
+app.post('/login',function(req, res) {
     passport.authenticate('login', function(err, user) {
      // console.log("USER: "+user);
         if(!user) {

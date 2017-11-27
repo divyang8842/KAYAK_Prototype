@@ -7,7 +7,8 @@ const headers = {
 export const uploadFile = (payload) =>
     fetch(`${api}/uploadFile`, {
         method: 'POST',
-        body: payload
+        body: payload,
+        credentials:'include'
     }).then(res=>res.json())
         .then(res => {
             return res;
@@ -24,6 +25,7 @@ export const getFile = (payload) =>
           ...headers,
           'Content-Type': 'application/json'
         },
+        credentials:'include',
         body: JSON.stringify(payload)
     }).then(res=>res.json())
         .then(res => {

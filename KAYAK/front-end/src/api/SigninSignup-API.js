@@ -93,7 +93,10 @@ fetch(`${api}/account/account`, {
   body: JSON.stringify(payload)
 }).then(res=>res.json())
 .then(res => {
-  return res.output;
+  if(res.output)
+    return res.output;
+  else
+    return res;
 })
 .catch(error => {
   console.log("This is login error");
@@ -140,7 +143,7 @@ export const updatePwd = (payload) =>
 
 
         export const checkLogged = (payload) =>
-            fetch(`${api}/checklogged`, {
+            fetch(`${api}/validateLogin`, {
                 method: 'POST',
                 headers: {
                     ...headers,
@@ -150,7 +153,7 @@ export const updatePwd = (payload) =>
                 body: JSON.stringify(payload)
             }).then(res=>res.json())
                 .then(res => {
-                    return res.output;
+                    return res;
                 })
                 .catch(error => {
                     console.log("This is update error");

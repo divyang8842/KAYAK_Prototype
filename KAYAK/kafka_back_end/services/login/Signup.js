@@ -50,7 +50,7 @@ var afterSignUp = function(msg,callback){
          errorHandler.logError("Signup.js","check_user",err);
      }
      else{
-     if(results.length>0){
+     if(results.length){
            res.value=0;
            console.log("USER DOES EXISTS");
            callback(null, res);
