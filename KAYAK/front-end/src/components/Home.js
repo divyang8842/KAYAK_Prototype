@@ -31,16 +31,22 @@ class Home extends Component {
   state={
     islogged:'false',
     uid:'',
-    isAdmin:false
+    isAdmin:false,
+    firstname:''
   };
 
-  logged = (id,type) => {
-    this.setState({islogged:'true',uid:id});
+  logged = (id,type,name) => {
+    this.setState({islogged:'true',uid:id,firstname:name});
     if(type==1)
     this.setState({isAdmin:true});
     console.log("Logged: "+this.state.islogged);
 
   };
+
+  isNotlogged=()=>{
+    console.log("ANJANA CHECK ");
+    this.setState({islogged:'false',uid:'',firstname:'',name:''});
+  }
 
   handleLogout = () => {
     //this.setState({islogged:'false'});
@@ -49,9 +55,9 @@ class Home extends Component {
     .then((status) => {
       if(status === 201){
         this.setState({islogged:'false',isAdmin:false});
-      //  localStorage.removeItem('userid');
+        console.log("LOCALSTO: "+localStorage.getItem('userid'));
+        localStorage.removeItem('userid');
           console.log('logout success---'+this.state.islogged);
-                  //this.componentWillMount();
               }
               else {
                 console.log('logout called error');
@@ -77,7 +83,7 @@ class Home extends Component {
                     <li><Link to='/login'>Car</Link></li>
                     <li><Link to='/hotel'>Hotel</Link></li>
                   {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
-                  : (<li><Link to='' onClick={e => e.preventDefault()}>User</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                  : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
       						</ul>
       					</nav>:<nav id="fh5co-menu-wrap" role="navigation">
                             <ul className="sf-menu" id="fh5co-primary-menu">
@@ -102,14 +108,14 @@ class Home extends Component {
           <Route exact path="/flights" component={() => <FlightsHome/>}/>
            <Route exact path="/flightsbooking" component={() => <Flightbooking/>}/>
              <Route exact path="/cars" component={() => <CarHome/>}/>
-          {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged}/>}/>):(<Route exact path="/login" component={Search}/>)}
-          <Route exact path="/account" component={() => <Account id={this.state.uid}/>}/>
+          {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>):(<Route exact path="/login" component={Search}/>)}
+          <Route exact path="/account" component={() => <Account user={this.state.islogged} id={this.state.uid} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
           <Route exact path="/hotel" component={() => <Hotel/>}/>
              <Route exact path="/car" component={() => <Car/>}/>
              <Route exact path="/carsbooking" component={() => <CarBooking/>}/>
              <Route exact path="/flight" component={() => <Flight/>}/>
-             <Route exact path="/AdminUsers" component={() => <AdminUsers/>}/>
-             <Route exact path="/AdminCreate" component={() => <AdminCreate/>}/>
+             <Route exact path="/AdminUsers" component={() => <AdminUsers user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
+             <Route exact path="/AdminCreate" component={() => <AdminCreate user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
              <Route exact path="/analytics" component={() => <Analytics/>}/>
          </Switch>
 

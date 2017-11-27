@@ -4,6 +4,7 @@ import * as API2 from '../../api/SigninSignup-API';
 import ReactDOM from 'react-dom';
 import FormErrors from "../FormErrors";
 import 'w3-css/w3.css';
+import Login from '../Login';
 
 class AdminUsers extends Component {
   state={
@@ -56,6 +57,8 @@ showComp(id) {
     render() {
         return (
           <div>
+          {this.props.user==='true' ? (
+          <div>
           <div id="fh5co-page">
           <div className="container">
             <div className="row">
@@ -91,6 +94,7 @@ showComp(id) {
       </div>
 </div>
 </div>
+</div>):(<Login handleLogged={this.props.handleLogged} handleNotLogged={this.props.handleNotLogged}/>)}
 </div>
 );}}
 

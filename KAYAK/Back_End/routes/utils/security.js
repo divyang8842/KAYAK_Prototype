@@ -4,6 +4,7 @@ var authenticate = function (req, res, next) {
     console.log("SESSIONS"+JSON.stringify(session));
     if(session && session.user && session.user.id && session.user.id>0){
         var isAuthenticated = true;
+        console.log("CHECK AUTH: "+isAuthenticated);
     }
     if (isAuthenticated) {
         next();

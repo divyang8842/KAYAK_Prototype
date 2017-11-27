@@ -24,7 +24,8 @@ function handle_request(msg, callback){
     var compare=security.compareEncrypted(msg.password,results[0].password);
     if (compare){
         res.code = "200";
-          res.value=results;
+        res.value={id:results[0].user_id,firstname:results[0].fname,type:results[0].user_type};
+          //res.value=results;
           console.log("Success---"+res);
           callback(null, res);
     }
