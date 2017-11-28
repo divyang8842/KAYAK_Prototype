@@ -74,7 +74,7 @@ function handle_request(msg, callback){
                         console.log('Connected to mongo at: ' + mongoURL);
                         var coll = mongo.collection('Billing');
 
-                        coll.findOne({"userid" : "jay"},function (err, searchuser) {
+                        coll.findOne({"userid" : msg.userid},function (err, searchuser) {
                              if(searchuser)
                              {
                                  console.log("searchuser"+searchuser.flight_total);
@@ -86,7 +86,7 @@ function handle_request(msg, callback){
                                  console.log("searchuser.flight.length:"+searchuser.flight.length);
                                  console.log("flight_total_new"+flight_total_new);
 
-                                 coll.update({userid:'jay'}, {
+                                 coll.update({userid:msg.userid}, {
                                      $push: {
                                          flight: {
                                              billid:new ObjectID(),
@@ -107,7 +107,7 @@ function handle_request(msg, callback){
                                      console.log("inside call back" + user);
                                      if (user) {
 
-                                         coll.update({"userid" : "jay"},{ $set:{flight_total:flight_total_new,
+                                         coll.update({"userid" : msg.userid},{ $set:{flight_total:flight_total_new,
                                                                                 flight_count:number_of_flight_bookings}},
                                              function (err, user2) {
 

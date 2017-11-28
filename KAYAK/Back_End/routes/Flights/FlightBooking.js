@@ -4,6 +4,7 @@ var kafka = require('../kafka/client');
 
 
 exports.fLightsBooking= function(req,res) {
+var userid = req.session.user.id;
 
   console.log("Inside Flight Booking");
 
@@ -20,7 +21,8 @@ exports.fLightsBooking= function(req,res) {
             "date":req.body.date,
             "class":req.body.class,
             "noofseats":req.body.nooftickets,
-            "action":3
+            "action":3,
+            "userid":userid
         },
         function(err,results){
             console.log('in result');
