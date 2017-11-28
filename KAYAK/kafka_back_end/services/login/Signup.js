@@ -2,6 +2,11 @@ var security = require('./../utils/security');
 var mysql=require('./../database/mysql');
 //var errorHandler = require('./../utils/errorLogging');
 
+
+var mongo = require("../database/mongo_connect");
+var mongoURL = "mongodb://localhost:27017/kayak_18";
+var ObjectID = require('mongodb').ObjectID;
+
 var afterSignUp = function(msg,callback){
   var res = '';
   console.log("In handle request:"+ JSON.stringify(msg));
@@ -28,12 +33,50 @@ var afterSignUp = function(msg,callback){
             callback(null, res);
     }
     else{
-          res.code = "200";
-            res.value=results;
-            console.log("Success---");
-            callback(null, results);
+
+
+        // Code Added By Jay Desai
+        // Structure - Billing
+        mongo.connect(mongoURL, function() {
+
+            console.log('Connected to mongo at: ' + mongoURL);
+            var coll = mongo.collection('Billing');
+
+            coll.insert({userid: results.insertId,
+                    flight:[],
+                    flight_total:0,
+                    flight_count:0,
+                    car:[],
+                    car_total:0,
+                    car_count:0,
+                    hotel:[],
+                    hotel_total:0,
+                    hotel_count:0
+                },
+                function(err, user)
+                {
+                    if(!err)
+                    {
+                        res.code = "200";
+                          res.value=results;
+                          console.log("Success---");
+                          callback(null, results);
+                    }
+                    else
+                    {
+                        res = "Failed Signup";
+                        console.log("Failed signup---");
+                        errorHandler.logError("Signup.js","afterSignUp",err);
+                        callback(null, res);
+
+                    }
+                }
+                )
+
+        })
+
     }
-});
+},true);
  };
 
 
