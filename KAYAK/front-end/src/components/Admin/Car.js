@@ -188,7 +188,8 @@ class Car extends Component {
                         isLoggedIn: false,
                         message: "Inserted Car Data Successfully..!!",
                     });
-                    alert("Inserted Flight Data Successfully..!!")
+                    alert("Inserted Flight Data Successfully..!!");
+                    window.location.href = '/car';
                 } else if (status === 401) {
                     this.setState({
                         isLoggedIn: false,
@@ -203,6 +204,8 @@ class Car extends Component {
             .then((output) => {
                 if (output === 1) {
                     alert("Car updated");
+                    window.location.href = '/car';
+
                 } else {
                     alert("Car not updated");
                 }
@@ -251,6 +254,8 @@ class Car extends Component {
                 .then((output) => {
                     if (output === 1) {
                         alert("Car updated");
+                        window.location.href = '/car';
+
                     } else {
                        alert("Car not updated");
                     }

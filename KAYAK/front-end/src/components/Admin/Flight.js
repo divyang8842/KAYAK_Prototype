@@ -437,7 +437,6 @@ class Flight extends Component {
 
                                     <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={this.state.srcdata}></img></div>:null}
 
-
                                 <div className="row">
                                     <div className="col-xxs-12 col-xs-6 mt">
                                         <div className="input-field">
