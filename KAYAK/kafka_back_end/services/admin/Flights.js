@@ -1,7 +1,7 @@
 
-var security = require('./../utils/security');
 var mysql=require('./../database/mysql');
 var errorHandler = require('./../utils/errorLogging');
+var mongo = require('./../database/mongo');
 
 var insertFlightData = function(msg,callback){
     var res = {};
@@ -20,6 +20,12 @@ var insertFlightData = function(msg,callback){
     dataArry.push(msg.businessClassFare);
     dataArry.push(msg.premiumEcoFare);
 
+    mongo.findOneDoc("flight_analytics",{"name":msg.airlinename},function(data,err){
+        var currentyear = new Date().getFullYear();
+        if(!data || !data._id){
+            mongo.insertDoc("flight_analytics",{"name":msg.airlinename,currentyear: {count:0,revenue:0}},function(){})
+        }
+    });
     console.log("DATA: "+dataArry);
     mysql.setData(insertQuery,dataArry,function (err,results){
         console.log("CHECK RES: "+results);

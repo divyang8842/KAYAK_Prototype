@@ -28,10 +28,11 @@ class Car extends Component {
         availableplace:'',
         carrent:'',
         cardistance:'',
+        caragency:'',
         carData:[],
         visible:false,
 
-        formErrors: {cartype:'',carclass:'',carmodel: '',carcity: '',car_dropoffcity: '',passengers:'',doors:'',bags:'',availableplace:'',carrent:'',cardistance:''},
+        formErrors: {cartype:'',carclass:'',carmodel: '',carcity: '',car_dropoffcity: '',passengers:'',doors:'',bags:'',availableplace:'',carrent:'',cardistance:'',caragency:''},
         type:false,
         carTypeValid:false,
         carClassValid:false,
@@ -43,12 +44,13 @@ class Car extends Component {
         carBagsValid:false,
         carAvailablePlaceValid:false,
         carRentValid:false,
-        carDistanceValid:false
+        carDistanceValid:false,
+        carAgencyValid:false,
 
     };
 
     componentWillMount(){
-        this.setState({formErrors: {cartype:'',carclass:'',carmodel: '',carcity: '',car_dropoffcity: '',passengers:'',doors:'',bags:'',availableplace:'',carrent:'',cardistance:''},
+        this.setState({formErrors: {cartype:'',carclass:'',carmodel: '',carcity: '',car_dropoffcity: '',passengers:'',doors:'',bags:'',availableplace:'',carrent:'',cardistance:'',caragency:''},
             carTypeValid:true,
             carClassValid:true,
             carModelValid: true,
@@ -59,7 +61,8 @@ class Car extends Component {
             carBagsValid:true,
             carAvailablePlaceValid:true,
             carRentValid:true,
-            carDistanceValid:true
+            carDistanceValid:true,
+            carAgencyValid:true
  });
         this.getCarDetails();
 
@@ -79,6 +82,7 @@ class Car extends Component {
         let carAvailablePlaceValid=this.state.carAvailablePlaceValid;
         let carRentValid=this.state.carRentValid;
         let carDistanceValid=this.state.carDistanceValid;
+        let carAgencyValid=this.state.carAgencyValid;
 
 
 
@@ -130,6 +134,11 @@ class Car extends Component {
                 carDistanceValid = value.length !== 0;
                 fieldValidationErrors.hoteldesc = carDistanceValid ? '': ' is required';
                 break;
+
+            case 'caragency':
+                carAgencyValid = value.length !== 0;
+                fieldValidationErrors.hoteldesc = carAgencyValid ? '': ' is required';
+                break;
             default:
                 break;
         }
@@ -144,13 +153,14 @@ class Car extends Component {
             carBagsValid:carBagsValid,
             carAvailablePlaceValid:carAvailablePlaceValid,
             carRentValid: carRentValid,
-            carDistanceValid:carDistanceValid
+            carDistanceValid:carDistanceValid,
+            carAgencyValid:carAgencyValid
 
         }, this.validateForm);
     }
 
     validateForm() {
-        this.setState({formValid: this.state.carTypeValid && this.state.carClassValid && this.state.carModelValid && this.state.carCityValid && this.state.carDropOffCityValid && this.state.carPassengersValid && this.state.carDoorsValid && this.state.carBagsValid && this.state.carAvailablePlaceValid  && this.state.carRentValid && this.state.carDistanceValid});
+        this.setState({formValid: this.state.carTypeValid && this.state.carClassValid && this.state.carModelValid && this.state.carCityValid && this.state.carDropOffCityValid && this.state.carPassengersValid && this.state.carDoorsValid && this.state.carBagsValid && this.state.carAvailablePlaceValid  && this.state.carRentValid && this.state.carDistanceValid && this.state.carAgencyValid});
     }
 
     errorClass(error) {
@@ -349,6 +359,7 @@ class Car extends Component {
                     availableplace: obj.available_place,
                     carrent: obj.car_rent,
                     cardistance: obj.car_distance,
+                    caragency:obj.car_agency,
                     srcdata :''
                 });
 
@@ -410,9 +421,10 @@ var newdata={type:'car',id:obj.car_id};
                     <TableHeaderColumn dataField='car_rent'>Car Rent</TableHeaderColumn>
 
                     <TableHeaderColumn dataField='car_distance' width='150'  hidden>Car Distance</TableHeaderColumn>
+                     <TableHeaderColumn dataField='car_agency' width='150'  >Car Agency</TableHeaderColumn>
 
 
-                </BootstrapTable>
+         </BootstrapTable>
 
                 {this.state.visible ? <div id="fh5co-page">
 
@@ -535,6 +547,16 @@ var newdata={type:'car',id:obj.car_id};
                                             <input type="text" placeholder="Enter Car Distance" value={this.state.cardistance} className="form-control" onChange={(event)=>{const name="cardistance"
                                                 const value=event.target.value
                                                 this.setState({cardistance: event.target.value,
+                                                    type:true}, () => { this.validateField(name, value)});}}/>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-xxs-12 col-xs-6 mt">
+                                        <div className="input-field">
+                                            <label>Car Agency:</label>
+                                            <input type="text" placeholder="Enter Car Agency" value={this.state.caragency} className="form-control" onChange={(event)=>{const name="caragency"
+                                                const value=event.target.value
+                                                this.setState({caragency: event.target.value,
                                                     type:true}, () => { this.validateField(name, value)});}}/>
                                         </div>
                                     </div>

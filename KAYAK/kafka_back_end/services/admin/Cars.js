@@ -6,7 +6,7 @@ var insertCarData = function(msg,callback){
     var res = {};
     console.log("In handle request:"+ JSON.stringify(msg));
 
-    var insertQuery="INSERT INTO car (car_type,car_class,car_model,car_city,car_dropoff_city,passengers,doors,bags,available_place,car_rent,car_distance) values(?,?,?,?,?,?,?,?,?,?,?)";
+    var insertQuery="INSERT INTO car (car_type,car_class,car_model,car_city,car_dropoff_city,passengers,doors,bags,available_place,car_rent,car_distance,car_agency) values(?,?,?,?,?,?,?,?,?,?,?,?)";
     var dataArry =  [];
     dataArry.push(msg.car_type);
     dataArry.push(msg.car_class);
@@ -19,6 +19,7 @@ var insertCarData = function(msg,callback){
     dataArry.push(msg.available_place);
     dataArry.push(msg.car_rent);
     dataArry.push(msg.car_distance);
+    dataArry.push(msg.car_agency);
 
 
     console.log("DATA: "+dataArry);
@@ -93,7 +94,7 @@ function deleteCarData(msg, callback){
 function updateCarData(msg, callback){
     var res = '';
     console.log("In handle request:"+ JSON.stringify(msg));
-    var insertQuery="UPDATE car SET car_type=?,car_class=?,car_model=?,car_city=?,car_dropoff_city=?,passengers=?,doors=?,bags=?,available_place=?,car_rent=?,car_distance=? WHERE car_id="+msg.carid;
+    var insertQuery="UPDATE car SET car_type=?,car_class=?,car_model=?,car_city=?,car_dropoff_city=?,passengers=?,doors=?,bags=?,available_place=?,car_rent=?,car_distance=?,car_agency=? WHERE car_id="+msg.carid;
     var dataArry =  [];
     dataArry.push(msg.cartype);
     dataArry.push(msg.carclass);
@@ -106,6 +107,8 @@ function updateCarData(msg, callback){
     dataArry.push(msg.availableplace);
     dataArry.push(msg.carrent);
     dataArry.push(msg.cardistance);
+    dataArry.push(msg.caragency);
+
     console.log("DATA: "+dataArry);
     mysql.setData(insertQuery,dataArry,function (err,results){
         console.log("CHECK RES: "+results);

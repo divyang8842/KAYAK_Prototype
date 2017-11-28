@@ -13,10 +13,10 @@ var setCarData = function (req, res, next) {
     var availableplace=req.param("availableplace");
     var carrent=req.param("carrent");
     var cardistance=req.param("cardistance");
+    var caragency=req.param("caragency");
 
 
-
-    kafka.make_request('admin_topic',{"car_type":cartype,"car_class":carclass,"car_model":carmodel,"car_city":carcity,"car_dropoff_city":car_dropoffcity,"passengers":passengers,"doors":doors,"bags":bags,"available_place":availableplace,"car_rent":carrent,"car_distance":cardistance,"action":3}, function(err,results){
+    kafka.make_request('admin_topic',{"car_type":cartype,"car_class":carclass,"car_model":carmodel,"car_city":carcity,"car_dropoff_city":car_dropoffcity,"passengers":passengers,"doors":doors,"bags":bags,"available_place":availableplace,"car_rent":carrent,"car_distance":cardistance,"car_agency":caragency,"action":3}, function(err,results){
         console.log('in result');
         console.log(results);
         if(err){
@@ -86,7 +86,9 @@ exports.updateCar= function(req,res) {
     var availableplace=req.param("availableplace");
     var carrent=req.param("carrent");
     var cardistance=req.param("cardistance");
-    kafka.make_request('admin_topic',{"cartype":cartype,"carclass":carclass,"carmodel":carmodel,"carcity":carcity,"car_dropoffcity":car_dropoffcity,"passengers":passengers,"doors":doors,"bags":bags,"availableplace":availableplace,"carrent":carrent,"cardistance":cardistance,"carid":carid,"action":11}, function(err,results){
+    var caragency=req.param("caragency");
+
+    kafka.make_request('admin_topic',{"cartype":cartype,"carclass":carclass,"carmodel":carmodel,"carcity":carcity,"car_dropoffcity":car_dropoffcity,"passengers":passengers,"doors":doors,"bags":bags,"availableplace":availableplace,"carrent":carrent,"cardistance":cardistance,"caragency":caragency,"carid":carid,"action":11}, function(err,results){
         console.log('in result');
         console.log(results);
         if(err){
