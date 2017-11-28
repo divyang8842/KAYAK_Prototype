@@ -14,6 +14,7 @@ var admin_Flight=require('./services/admin/Flights');
 var admin_Users=require('./services/admin/Users');
 var file_utils = require('./services/utils/FileUtils');
 var user_tracking = require('./services/UserTracking/UserTracking');
+var chart = require('./services/admin/analytics/chartsData');
 
 var fs = require('fs');
 
