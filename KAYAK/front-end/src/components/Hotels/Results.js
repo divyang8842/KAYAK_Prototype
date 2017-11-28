@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-// import {loadFilteredHotels} from '../../actions/Hotels/Hotels';
+import {getHotelsBooking} from '../../actions/Hotels/Hotels';
+import { Route, Link,Switch,withRouter } from 'react-router-dom';
 import '../../public/css/animate.css';
 import '../../public/css/bootstrap.css';
 import '../../public/css/magnific-popup.css';
@@ -39,19 +40,23 @@ class Results extends Component {
   }
 
   handleBooking(hotelItem){
-    var checkin = this.props.hotels.checkin;
-    var checkout = this.props.hotels.checkout;
-    var roomtype = "0"; //0=King, 1=Queen, 2=Standard
-    var roomcount = this.props.hotels.roomcount;
-    HotelsAPI.doHotelBooking({hotelItem, checkin, checkout, roomtype, roomcount})
-    .then((status) => {
-        if(status == 200){
-          alert("Booking Done!");
-          // this.props.loadHotels(result);
-          // this.props.loadFilteredHotels(result);
-          // this.props.history.push("/Hotels");
-        }
-    });
+    this.props.getHotelsBooking(hotelItem);
+    this.props.history.push("/hotelsbooking");
+
+    // var checkin = this.props.hotels.checkin;
+    // var checkout = this.props.hotels.checkout;
+    // var roomtype = "0"; //0=King, 1=Queen, 2=Standard
+    // var roomcount = this.props.hotels.roomcount;
+
+    // HotelsAPI.doHotelBooking({hotelItem, checkin, checkout, roomtype, roomcount})
+    // .then((status) => {
+    //     if(status == 200){
+    //       alert("Booking Done!");
+    //       // this.props.loadHotels(result);
+    //       // this.props.loadFilteredHotels(result);
+    //       // this.props.history.push("/Hotels");
+    //     }
+    // });
   }
 
 
@@ -76,7 +81,7 @@ class Results extends Component {
             <div className="col-md-4 col-sm-4 ">
                 <h4 class="price">${hotelItem.standard_rates}</h4>
                 <br/>
-                <button class="btn btn-primary" onClick={() => this.handleBooking(hotelItem)}>Book Now</button>
+                <button class="btn btn-primary" onClick={() => this.handleBooking(hotelItem)}>View Deal</button>
             </div>
           </div>
           <div>
@@ -398,8 +403,8 @@ function mapStateToProps(state){
   }
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({loadFilteredHotels : loadFilteredHotels}, dispatch);
-// }
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({getHotelsBooking : getHotelsBooking}, dispatch);
+}
 
-export default connect(mapStateToProps)(Results);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Results));

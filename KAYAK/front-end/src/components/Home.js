@@ -14,6 +14,7 @@ import AdminCreate from './Admin/AdminCreate';
 import Analytics from './Admin/Analytics';
 import Flight from './Admin/Flight';
 import Flightbooking from './Flights/FlightBooking'
+import HotelBooking from './Hotels/HotelBooking'
 
 import * as API from '../api/SigninSignup-API';
 import '../public/css/animate.css';
@@ -105,6 +106,7 @@ class Home extends Component {
          <Switch>
           <Route exact path="/" component={Search}/>
           <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
+          <Route exact path="/hotelsbooking" component={() => <HotelBooking/>}/>
           <Route exact path="/flights" component={() => <FlightsHome/>}/>
            <Route exact path="/flightsbooking" component={() => <Flightbooking/>}/>
              <Route exact path="/cars" component={() => <CarHome/>}/>

@@ -7,13 +7,15 @@ function handle_booking(msg, callback){
     console.log("In Book hotels handle Booking:"+ JSON.stringify(msg));
 
     var dataArry = [];
-    var hotelid = msg.hotelid;
+    var hotelid = msg.hotelitem.hotel_id;
     var checkin = msg.checkin;
     var checkout = msg.checkout;
     var roomtype = msg.roomtype;
     var roomcount = msg.roomcount;
     var fetchQuery = "";
     var res={};
+
+    console.log("roomcount:"+roomcount);
 
     switch(roomtype){
         case "0":{
@@ -41,6 +43,7 @@ function handle_booking(msg, callback){
     
 
     console.log("DATA: "+dataArry);
+    console.log("QUERY: "+fetchQuery);
 
     mysql.fetchData(fetchQuery,dataArry,function (err,results){
         if(err){

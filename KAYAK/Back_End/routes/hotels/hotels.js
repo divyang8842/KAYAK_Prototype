@@ -36,16 +36,16 @@ exports.getHotels= function(req,res) {
 exports.doBooking= function(req,res) {
     
         console.log("Inside doBooking");
-        console.log(req.body.hotelItem.hotel_id);
+        console.log(req.body.hotelItem);
         console.log(req.body.checkin);
         console.log(req.body.checkout);
         var checkin = req.body.checkin;
         var checkout = req.body.checkout;
         var roomtype = req.body.roomtype;
-        var hotelid = req.body.hotelItem.hotel_id;
+        var hotelItem = req.body.hotelItem;
         var roomcount = req.body.roomcount;
         kafka.make_request('hotels_topic',
-            {"action":"doBooking","checkin":checkin,"checkout":checkout,"hotelid":hotelid, "roomtype":roomtype, "roomcount":roomcount},
+            {"action":"doBooking","checkin":checkin,"checkout":checkout,"hotelitem":hotelItem, "roomtype":roomtype, "roomcount":roomcount},
             function(err,results){
                 console.log(results);
                 
