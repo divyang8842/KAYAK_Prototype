@@ -14,6 +14,8 @@ import AdminCreate from './Admin/AdminCreate';
 import Analytics from './Admin/Analytics';
 import Flight from './Admin/Flight';
 import Flightbooking from './Flights/FlightBooking'
+import HotelBooking from './Hotels/HotelBooking'
+import Dialog from 'react-bootstrap-dialog'
 
 import * as API from '../api/SigninSignup-API';
 import '../public/css/animate.css';
@@ -32,21 +34,43 @@ class Home extends Component {
     islogged:'false',
     uid:'',
     isAdmin:false,
-    firstname:''
+    firstname:'',
+    type:''
   };
 
-  logged = (id,type,name) => {
-    this.setState({islogged:'true',uid:id,firstname:name});
-    if(type==1)
+  logged = (id,ty,name) => {
+    this.setState({islogged:'true',uid:id,firstname:name,type:ty});
+    if(ty==1)
     this.setState({isAdmin:true});
     console.log("Logged: "+this.state.islogged);
 
   };
 
   isNotlogged=()=>{
-    console.log("ANJANA CHECK ");
     this.setState({islogged:'false',uid:'',firstname:'',name:''});
   }
+
+  componentDidMount()
+  {
+    if(localStorage.getItem('userid')){
+    var currentUser={id:localStorage.getItem('userid')};
+    localStorage.removeItem('userid');
+        API.checkLogged(currentUser)
+            .then((output) => {
+              console.log("CHECK THIS: "+output.status);
+                if (output.status === "501") {
+                  console.log("Incorrect");
+                  this.isNotlogged();
+
+                } else {
+                    console.log("Correct ");
+                    localStorage.setItem('userid', output.userid);
+                    this.logged(output.userid,output.type,output.firstname);
+                }
+            });
+    }
+  }
+
 
   handleLogout = () => {
     //this.setState({islogged:'false'});
@@ -74,8 +98,8 @@ class Home extends Component {
       		<header id="fh5co-header-section" className="sticky-banner">
       			<div className="container">
       				<div className="nav-header">
-      					<a href="#" className="js-fh5co-nav-toggle fh5co-nav-toggle dark"><i></i></a>
-      					<h1 id="fh5co-logo"><a href="index.html"><i className="icon-airplane"></i>Kayak</a></h1>
+              <div><h1 id="fh5co-logo"><a href="http://localhost:3000/">Kayak</a></h1></div>
+
                         {this.state.isAdmin===false ?<nav id="fh5co-menu-wrap" role="navigation">
       						<ul className="sf-menu" id="fh5co-primary-menu">
                     <li className="active"><Link to='/'>Home</Link></li>
@@ -105,6 +129,7 @@ class Home extends Component {
          <Switch>
           <Route exact path="/" component={Search}/>
           <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
+          <Route exact path="/hotelsbooking" component={() => <HotelBooking/>}/>
           <Route exact path="/flights" component={() => <FlightsHome/>}/>
            <Route exact path="/flightsbooking" component={() => <Flightbooking/>}/>
              <Route exact path="/cars" component={() => <CarHome/>}/>

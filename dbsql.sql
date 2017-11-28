@@ -171,12 +171,15 @@ CREATE TABLE `flight` (
   `first_class` VARCHAR(30) DEFAULT NULL,
   `business_class` VARCHAR(30) DEFAULT NULL,
   `premiumeconomy_class` VARCHAR(30) DEFAULT NULL,
+
   `deleteflag` INT(11) DEFAULT '0'
   
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
 
 /* ALTER datatype of credit_card column in user table*/
 ALTER TABLE `kayak_18`.`user`  CHANGE COLUMN `credit_card` `credit_card` BIGINT(8) NULL DEFAULT NULL ;
+
+
 
 /* DROPPED hotel table and added tables for Hotel module*/
 DROP TABLE IF EXISTS `hotel_reviews`;
@@ -267,4 +270,11 @@ CREATE TABLE `car_availibility` (
  ALTER TABLE `kayak_18`.`room` 
  ADD COLUMN `count` INT NULL AFTER `hotel_id`;
 
-
+ 
+ /*Adding flight_number in flight mapping table*/
+  ALTER TABLE `kayak_18`.`flight_mapping` 
+ ADD COLUMN `flight_number` VARCHAR(45) NOT NULL BEFORE `deleteflag`;
+/* ALTER datatype of credit_card column in user table*/
+ALTER TABLE `kayak_18`.`hotels`  CHANGE COLUMN `hotel_locaion` `hotel_location` BIGINT(8) VARCHAR(100) DEFAULT NULL, ; 
+ 
+ 
