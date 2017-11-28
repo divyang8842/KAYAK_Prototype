@@ -345,7 +345,6 @@ class Flight extends Component {
             }
             obj = JSON.parse(myJsonString);
            // alert('The new row is:' + JSON.stringify(obj));
-            if (window.confirm(`Are you sure you want to edit?`)) {
 
                 this.setState({
                     flightid:obj.flight_id,
@@ -375,7 +374,7 @@ class Flight extends Component {
 
                 this.setState({update:true,visible: !this.state.visible});
 
-            }
+
 
             //alert(`is selected: ${isSelected}, ${rowStr}`);
         }
@@ -394,6 +393,8 @@ class Flight extends Component {
         const selectRowProp = {
             mode: 'checkbox',
             clickToSelect: true,
+            onSelect: onRowSelect
+
         };
 
         return (
@@ -402,7 +403,7 @@ class Flight extends Component {
                     <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
                 </div>
 
-                <BootstrapTable  data={flightList} selectRow={ selectRowProp }  deleteRow={ true } cellEdit={ cellEditProp } options={ options } pagination>
+                <BootstrapTable  data={flightList} selectRow={ selectRowProp }  deleteRow={ true }  options={ options } pagination>
                     <TableHeaderColumn dataField='flight_id' isKey hidden>Flight ID</TableHeaderColumn>
                     <TableHeaderColumn dataField='flight_number' >Flight Number</TableHeaderColumn>
                     <TableHeaderColumn dataField='airline_name'  filter={ { type: 'TextFilter', delay: 1000 } }>Airline Name</TableHeaderColumn>
@@ -435,7 +436,6 @@ class Flight extends Component {
                                     />
 
                                     <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={this.state.srcdata}></img></div>:null}
-
 
                                 <div className="row">
                                     <div className="col-xxs-12 col-xs-6 mt">

@@ -297,7 +297,6 @@ class Hotel extends Component {
             }
             obj = JSON.parse(myJsonString);
            // alert('The new row is:' + JSON.stringify(obj));
-            if (window.confirm(`Are you sure you want to edit?`)) {
 
                 this.setState({
                     hotelid:obj.hotel_id,
@@ -324,7 +323,7 @@ class Hotel extends Component {
 
                 this.setState({update:true,visible: !this.state.visible});
 
-            }
+
 
             //alert(`is selected: ${isSelected}, ${rowStr}`);
         }
@@ -343,6 +342,8 @@ class Hotel extends Component {
         const selectRowProp = {
             mode: 'checkbox',
             clickToSelect: true,
+            onSelect: onRowSelect
+
         };
 
         return (
@@ -352,7 +353,7 @@ class Hotel extends Component {
                     <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
                 </div>
 
-                <BootstrapTable data={hoteldata}  selectRow={ selectRowProp }  deleteRow={ true } cellEdit={ cellEditProp } options={ options } pagination>
+                <BootstrapTable data={hoteldata}  selectRow={ selectRowProp }  deleteRow={ true }  options={ options } pagination>
                     <TableHeaderColumn dataField='hotel_id' isKey hidden>Hotel ID</TableHeaderColumn>
                     <TableHeaderColumn dataField='hotel_name' >Hotel Name</TableHeaderColumn>
                     <TableHeaderColumn dataField='hotel_star'  filter={ { type: 'TextFilter', delay: 1000 } }>Hotel Star</TableHeaderColumn>
