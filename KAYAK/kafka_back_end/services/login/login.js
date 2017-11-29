@@ -47,7 +47,7 @@ function handle_request(msg, callback){
 //throw err;
   }
 }
-});
+},true);
 
 };
 

@@ -18,6 +18,8 @@ var carsbooking =require('./routes/Cars/CarBooking');
 var hotels = require('./routes/hotels/hotels');
 var adminFlight=require('./routes/admin/flight');
 
+var adminCharts=require('./routes/admin/ChartsData');
+
 
 var security=require('./routes/utils/security');
 
@@ -74,6 +76,7 @@ app.use('/signup', signup.signup);
 app.use('/checkuser', checkuser.checkuser);
 app.use('/account',security.authenticate, account.account);
 app.use('/update', security.authenticate,account.update);
+app.use('/password', account.password);
 app.use('/listrooms',security.authenticateAdmin, adminHotel.getHotelRooms);
 app.use('/updateroom',security.authenticateAdmin, adminHotel.updateRoom);
 app.use('/deleteroom',security.authenticateAdmin, adminHotel.deleteRoom);
@@ -107,8 +110,11 @@ app.post('/getFile',security.authenticate,downloadFile.fileDownload);
 app.post('/listhotels',security.authenticateAdmin,adminHotel.getHotelData);
 app.post('/listCarsData',security.authenticateAdmin,adminCar.getCarData);
 app.post('/listFlightsData',security.authenticateAdmin,adminFlight.getFlightData);
+app.post('/getChartData',security.authenticateAdmin,adminCharts.getChartData);
 
 app.post('/validateLogin',security.getLoggedInInfoFromSession);
+
+
 
 
 app.post('/logout', function(req,res) {
