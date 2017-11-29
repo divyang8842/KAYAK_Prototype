@@ -105,7 +105,8 @@ app.post('/usertracking',userTracking.usertracking);
 app.post('/doHotelBooking',hotels.doBooking);
 
 app.post('/uploadFile',security.authenticate,uploadFile);
-app.post('/getFile',security.authenticate,downloadFile.fileDownload);
+// app.post('/getFile',security.authenticate,downloadFile.fileDownload);
+app.post('/getFile',downloadFile.fileDownload);
 
 app.post('/listhotels',security.authenticateAdmin,adminHotel.getHotelData);
 app.post('/listCarsData',security.authenticateAdmin,adminCar.getCarData);
