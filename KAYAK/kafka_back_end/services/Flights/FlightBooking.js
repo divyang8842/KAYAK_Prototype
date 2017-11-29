@@ -9,17 +9,26 @@ var ObjectID = require('mongodb').ObjectID;
 
 function handle_request(msg, callback){
 
+    console.log("BOOOOOOOKKKKKKKKKKKKKKKKKKKKKINGGGGGGGGGGGG");
     var response =[];
     var fetchQuery="SELECT * FROM flight_availibility WHERE flight_id = ? AND dates = ?";
+    var fetchQuery_return;
     var fetchQuery_final;
     var dataArry = [];
     var dataArry_final = [];
+    var dataArry_return = [];
     dataArry.push(msg.flight_id);
     dataArry.push(msg.date);
+
+    dataArry_return.push(msg.noofseats_return);
+    dataArry_return.push(msg.flight_id_return);
+    dataArry_return.push(msg.date_return);
     var final_seates;
 
     console.log("msg.class:"+msg.class);
     console.log("msg.noofseats:"+msg.noofseats);
+    console.log("msg.class_return:"+msg.class_return);
+    console.log("msg.noofseats_return:"+msg.noofseats_return);
 
     if(msg.class === "economy")
     {
@@ -34,11 +43,26 @@ function handle_request(msg, callback){
         fetchQuery_final="UPDATE flight_availibility SET business_seates = ? WHERE flight_id = ? AND dates = ?";
     }
 
+    // Update Query for flight return
+
+    if(msg.class === "economy")
+    {
+        fetchQuery_return="UPDATE flight_availibility SET economy_seates = economy_seates - ? WHERE flight_id = ? AND dates = ?";
+    }
+    else if(msg.class === "first")
+    {
+        fetchQuery_return="UPDATE flight_availibility SET first_seates = first_seates - ? WHERE flight_id = ? AND dates = ?";
+    }
+    else if(msg.class ==="business")
+    {
+        fetchQuery_return="UPDATE flight_availibility SET business_seates = business_seates - ? WHERE flight_id = ? AND dates = ?";
+    }
     console.log(msg.flight_departure);
     console.log(msg.totalprice);
     console.log(msg.airline_name);
 
         mysql.fetchData(fetchQuery,dataArry,function (err,results){
+            console.log("Inside 1");
 
         if(results.length > 0)
         {
@@ -64,93 +88,105 @@ function handle_request(msg, callback){
             dataArry_final.push(msg.date);
 
             mysql.fetchData(fetchQuery_final,dataArry_final,function (err,results){
+                console.log("Inside 2");
 
 
-                if(!err)
-                {
+                if(!err) {
 
-                    mongo.connect(mongoURL, function() {
+                    mysql.fetchData(fetchQuery_return,dataArry_return,function (err,results) {
+                        if (!err)
+                        {
+                            console.log("Inside 3");
+                            mongo.connect(mongoURL, function () {
 
-                        console.log('Connected to mongo at: ' + mongoURL);
-                        var coll = mongo.collection('Billing');
+                                console.log('Connected to mongo at: ' + mongoURL);
+                                var coll = mongo.collection('Billing');
 
-                        coll.findOne({"userid" : msg.userid},function (err, searchuser) {
-                             if(searchuser)
-                             {
-                                 console.log("searchuser"+searchuser.flight_total);
-                                 //console.log("flight_total"+searchuser[0].flight_total);
-                                 var flight_total_new = searchuser.flight_total+msg.totalprice;
-                                 var number_of_flight_bookings = searchuser.flight.length ;
-                                 number_of_flight_bookings = number_of_flight_bookings +1;
+                                coll.findOne({"userid": msg.userid}, function (err, searchuser) {
+                                        if (searchuser) {
+                                            console.log("searchuser" + searchuser.flight_total);
+                                            //console.log("flight_total"+searchuser[0].flight_total);
+                                            var flight_total_new = searchuser.flight_total + msg.totalprice;
+                                            var number_of_flight_bookings = searchuser.flight.length;
+                                            number_of_flight_bookings = number_of_flight_bookings + 1;
 
-                                 console.log("searchuser.flight.length:"+searchuser.flight.length);
-                                 console.log("flight_total_new"+flight_total_new);
+                                            console.log("searchuser.flight.length:" + searchuser.flight.length);
+                                            console.log("flight_total_new" + flight_total_new);
 
-                                 coll.update({userid:msg.userid}, {
-                                     $push: {
-                                         flight: {
-                                             billid:new ObjectID(),
-                                             flight_id:msg.flight_id,
-                                             airline_name:msg.airline_name,
-                                             origin_station:msg.origin_station ,
-                                             destination_station:msg.destination_station,
-                                             flight_departure:msg.flight_departure,
-                                             flight_arrival:msg.flight_arrival,
-                                             totalprice:msg.totalprice,
-                                             noofseats:msg.noofseats,
-                                             class:msg.class
-                                         }
-                                     }
-                                 }, function (err, user) {
-
-
-                                     console.log("inside call back" + user);
-                                     if (user) {
-
-                                         coll.update({"userid" : msg.userid},{ $set:{flight_total:flight_total_new,
-                                                                                flight_count:number_of_flight_bookings}},
-                                             function (err, user2) {
-
-                                             if(!err)
-                                             {
-                                                 response.code = "200";
-                                                 console.log("Success"+response);
-                                                 callback(null, response);
-                                             }
-                                             else
-                                             {
-                                                 response.code = "400";
-                                                 console.log("Fail"+response);
-                                                 callback(null, response);
-
-                                             }
-
-                                             })
-
-                                     }
-                                     else {
-                                         response.code = "400";
-                                         console.log("Fail"+response);
-                                         callback(null, response);
-                                     }
-                                 });
-
-                             }
-                             else
-                                 {
-                                     response.code = "400";
-                                     console.log("Fail"+response);
-                                     callback(null, response);
-
-                             }
-                            }
+                                            coll.update({userid: msg.userid}, {
+                                                $push: {
+                                                    flight: {
+                                                        billid: new ObjectID(),
+                                                        flight_id: msg.flight_id,
+                                                        airline_name: msg.airline_name,
+                                                        origin_station: msg.origin_station,
+                                                        destination_station: msg.destination_station,
+                                                        flight_departure: msg.flight_departure,
+                                                        flight_arrival: msg.flight_arrival,
+                                                        totalprice: msg.totalprice,
+                                                        noofseats: msg.noofseats,
+                                                        class: msg.class
+                                                    }
+                                                }
+                                            }, function (err, user) {
 
 
-                        )
+                                                console.log("inside call back" + user);
+                                                if (user) {
+
+                                                    coll.update({"userid": msg.userid}, {
+                                                            $set: {
+                                                                flight_total: flight_total_new,
+                                                                flight_count: number_of_flight_bookings
+                                                            }
+                                                        },
+                                                        function (err, user2) {
+
+                                                            if (!err) {
+                                                                response.code = "200";
+                                                                console.log("Success" + response);
+                                                                callback(null, response);
+                                                            }
+                                                            else {
+                                                                response.code = "400";
+                                                                console.log("Fail" + response);
+                                                                callback(null, response);
+
+                                                            }
+
+                                                        })
+
+                                                }
+                                                else {
+                                                    response.code = "400";
+                                                    console.log("Fail" + response);
+                                                    callback(null, response);
+                                                }
+                                            });
+
+                                        }
+                                        else {
+                                            response.code = "400";
+                                            console.log("Fail" + response);
+                                            callback(null, response);
+
+                                        }
+                                    }
+                                )
 
 
+                            });
 
-                    });
+                    }
+                    else
+                        {
+                            response.code = "400";
+                            console.log("Fail" + response);
+                            callback(null, response);
+
+                        }
+
+                });
 
 
 

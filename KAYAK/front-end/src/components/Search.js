@@ -7,8 +7,10 @@ import * as CarsAPI from '../api/CarsAPI';
 import * as UserTracking from '../api/UserTracking';
 import {connect} from 'react-redux';
 import {getFlights} from '../actions/Flights/Flights';
+import * as API from '../api/fileOperation';
+import {getReturnFlights} from '../actions/Flights/Flights';
 
-import {getCars} from '../actions/Cars/Cars';
+import {getCars, getCarImage} from '../actions/Cars/Cars';
 
 import {loadHotels, loadFilteredHotels} from '../actions/Hotels/Hotels';
 
@@ -75,7 +77,33 @@ class Search extends Component {
 
 
                   });
-              this.props.history.push("/Flights");
+
+              if(this.state.Flights.Return !== null)
+              {
+                    console.log("Please Book Return Ticket also");
+                  console.log(this.state.Flights.Return);
+                  var return_payload ={};
+                  return_payload.Source =this.state.Flights.Destination;
+                  return_payload.Destination=this.state.Flights.Source;
+                  return_payload.Depart=this.state.Flights.Return;
+                  return_payload.Return='';
+                  return_payload.Class=this.state.Flights.Class;
+                  return_payload.Adult=this.state.Flights.Adult;
+
+                  FlightsAPI.getFlights(return_payload)
+                      .then((output) => {
+
+                          this.props.getReturnFlights(output);
+                          this.props.history.push("/Flights");
+
+                      });
+
+              }
+              else
+              {
+                  this.props.history.push("/Flights");
+              }
+
 
           });
 
@@ -87,7 +115,20 @@ class Search extends Component {
             .then((output) => {
 
                 var tracking_object={};
-                this.props.getCars(output);
+                Promise.resolve(this.props.getCars(output))
+                .then(()=>{
+                    this.props.cars.results.map((carItem) => {
+                    var newdata={type:'car',id:carItem.car_id};
+                    API.getFile(newdata)
+                        .then((output) => {
+                            // this.setState({
+                            //     srcdata:output.image
+                            // });
+                        this.props.getCarImage({carItem, output});
+                        });
+                  });
+                });
+
 
                 tracking_object.current_page="CAR_PAGE";
                 tracking_object.previous_page="SEARCH_PAGE";
@@ -495,6 +536,13 @@ class Search extends Component {
       }
   }
 
+function mapStateToProps(state){
+    return {
+        cars: state.getcars,
+        // filteredHotels: state.filteredHotels
+    }
+}
+
 function mapDispatchToProps(dispatch) {
 
     // return {
@@ -507,10 +555,12 @@ function mapDispatchToProps(dispatch) {
 
     // };
 
-    return bindActionCreators({loadHotels : loadHotels, getFlights: getFlights,getCars:getCars}, dispatch);
+
+    return bindActionCreators({loadHotels : loadHotels, getFlights: getFlights,getCars:getCars,getReturnFlights:getReturnFlights, getCarImage:getCarImage}, dispatch);
+
 
 }
 
 //export default Search;
 
-export default connect(null, mapDispatchToProps)(Search);
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

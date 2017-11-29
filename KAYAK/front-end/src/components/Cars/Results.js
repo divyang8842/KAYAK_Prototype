@@ -15,13 +15,19 @@ class Results extends Component {
         checkbox_convertible:1,
         checkbox_luxury:1,
         checkbox_van:1,
-        array_for_sorting:this.props.cars,
-        array_for_sorting_result:this.props.cars,
+        array_for_sorting:[],
+        array_for_sorting_result:[],
         flag:0,
         check_boxes:[],
         price_filter:0,
-        duration_filter:0
+        duration_filter:0,
+        filtered: false
     };
+
+    componentWillMount(){
+        this.state.array_for_sorting = this.props.cars;
+        this.state.array_for_sorting_result = this.props.cars;
+    }
 
     flights(price_flag,duration_flag)
     {
@@ -32,7 +38,7 @@ class Results extends Component {
         console.log("array_for_sorting_result:"+this.state.array_for_sorting_result);
 
 
-        this.state.array_for_sorting.map((cars,index) =>{
+        this.props.cars.map((cars,index) =>{
 
             // Filter Condition for AIRLINES
             var array =this.state.airlines;
@@ -88,7 +94,8 @@ class Results extends Component {
 
 
         this.setState({
-            array_for_sorting_result: cars
+            array_for_sorting_result: cars,
+            filtered: true
         });
 
         this.setState({
@@ -98,8 +105,10 @@ class Results extends Component {
 
     temp()
     {
-
-        return this.state.array_for_sorting_result.map((cars,index) => {
+        var car_array = [];
+        if(this.state.filtered) car_array = this.state.array_for_sorting_result;
+        else car_array = this.props.cars;
+        return car_array.map((cars,index) => {
 
 
             return (
@@ -118,7 +127,7 @@ class Results extends Component {
                     {cars.cars.passengers}
 
                     {cars.cars.doors}
-
+                    <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={"data:image/png;base64,"+cars.cars.srcdata}></img>
                     <button className="btn btn-primary btn-block"
                             onClick={() =>{
                                 var payload = {};
