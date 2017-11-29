@@ -13,9 +13,10 @@ import AdminUsers from './Admin/AdminUsers';
 import AdminCreate from './Admin/AdminCreate';
 import Analytics from './Admin/Analytics';
 import Flight from './Admin/Flight';
-import Flightbooking from './Flights/FlightBooking'
-import HotelBooking from './Hotels/HotelBooking'
-import Dialog from 'react-bootstrap-dialog'
+import Flightbooking from './Flights/FlightBooking';
+import HotelBooking from './Hotels/HotelBooking';
+import Dialog from 'react-bootstrap-dialog';
+//import Modal from 'react-bootstrap-modal';
 
 import * as API from '../api/SigninSignup-API';
 import '../public/css/animate.css';
@@ -103,9 +104,9 @@ class Home extends Component {
                         {this.state.isAdmin===false ?<nav id="fh5co-menu-wrap" role="navigation">
       						<ul className="sf-menu" id="fh5co-primary-menu">
                     <li className="active"><Link to='/'>Home</Link></li>
-                    <li><Link to='/login'>Flight</Link></li>
-                    <li><Link to='/login'>Car</Link></li>
-                    <li><Link to='/login'>Hotel</Link></li>
+                    <li><Link to='/flightsearch'>Flight</Link></li>
+                    <li><Link to='/carsearch'>Car</Link></li>
+                    <li><Link to='/hotelsearch'>Hotel</Link></li>
                   {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
                   : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
       						</ul>
@@ -128,6 +129,10 @@ class Home extends Component {
 
          <Switch>
           <Route exact path="/" component={Search}/>
+          <Route exact path="/flightsearch" component={() => <Search/>}/>
+          <Route exact path="/carsearch" component={() => <Search/>}/>
+           <Route exact path="/hotelsearch" component={() => <Search/>}/>
+
           <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
           <Route exact path="/hotelsbooking" component={() => <HotelBooking/>}/>
           <Route exact path="/flights" component={() => <FlightsHome/>}/>

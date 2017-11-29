@@ -108,7 +108,7 @@ componentDidMount()
             break;
           case 'email':
               emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-              console.log("EMAIL STATE IN API:==== "+emailValid);
+              //console.log("EMAIL STATE IN API:==== "+emailValid);
               fieldValidationErrors.email = emailValid ? '' : ' is invalid';
               break;
           case 'password':
@@ -122,7 +122,7 @@ componentDidMount()
               .then((output) => {
                 checkUsername= output===1;
                 fieldValidationErrors.userEmail = checkUsername ? '': ' already exists';
-                console.log("USER STATE IN API:==== "+checkUsername);
+                //console.log("USER STATE IN API:==== "+checkUsername);
                 this.setState({checkUsername:checkUsername});
               });
               this.setState({checkUsername:checkUsername});
@@ -142,7 +142,7 @@ componentDidMount()
   }
 
   validateForm1() {
-    console.log("USER STATE IN VALIDATE:==== "+this.state.checkUsername+this.state.firstNameValid+this.state.lastNameValid + this.state.emailValid + this.state.passwordValid);
+    //console.log("USER STATE IN VALIDATE:==== "+this.state.checkUsername+this.state.firstNameValid+this.state.lastNameValid + this.state.emailValid + this.state.passwordValid);
       this.setState({formValid: this.state.checkUsername &&this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid});
   }
 
@@ -151,18 +151,18 @@ componentDidMount()
   }
 
      handleLogin = (input) => {
-          console.log(input.loginemail);
+          //console.log(input.loginemail);
             API.login(input)
                 .then((output) => {
                     if (output === 0) {
-                      console.log("OUPUT= "+output);
+                      //console.log("OUPUT= "+output);
                       this.setState({islogged: 'false', message:"Invalid credentials. Login again." });
                         console.log("Wrong login: "+this.state.islogged);
                     } else {
                       this.setState({messageLogin: 'true', user: output, message:""});
                       localStorage.setItem('userid', output.id);
-                        console.log("Success login= "+output.id);
-                        console.log("USER type= "+output.type);
+                      //  console.log("Success login= "+output.id);
+                        //console.log("USER type= "+output.type);
                         this.props.handleLogged(output.id,output.type,output.firstname);
                     }
                 });

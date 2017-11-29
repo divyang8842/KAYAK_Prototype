@@ -74,6 +74,7 @@ app.use('/signup', signup.signup);
 app.use('/checkuser', checkuser.checkuser);
 app.use('/account',security.authenticate, account.account);
 app.use('/update', security.authenticate,account.update);
+app.use('/password', account.password);
 app.use('/listrooms',security.authenticateAdmin, adminHotel.getHotelRooms);
 app.use('/updateroom',security.authenticateAdmin, adminHotel.updateRoom);
 app.use('/deleteroom',security.authenticateAdmin, adminHotel.deleteRoom);

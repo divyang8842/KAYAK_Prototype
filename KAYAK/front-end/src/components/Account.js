@@ -83,7 +83,7 @@ componentWillMount(){
   type:false});
 
   var x={uid:this.props.id},details=[];
-  console.log("UID check: "+x.uid);
+
     API.details(x)
         .then((data) => {
             if (data) {
@@ -225,7 +225,7 @@ errorClass(error) {
 
 
 handleDetails = (details) => {
-console.log("CHECK: "+details.email);
+//console.log("CHECK: "+details.email);
             API.update(details)
                 .then((output) => {
                     if (output === 0) {
@@ -425,7 +425,8 @@ console.log("ID: "+this.props.id);
                                           this.setState({password: event.target.value,type:true}, () => { this.validateField(name, value) });}} required/>
           </div>
           </div><br/><br/><br/><br/>
-                <div className="col-xs-2">
+          <div className="col-xxs-12 col-xs-12 mt"></div>
+                <div className="col-xxs-3 col-xs-3 mt">
                 <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.handlePassword(this.state)}>Submit</button>
                 </div>
                 </div>
