@@ -68,14 +68,13 @@ consumer_login.on('message', function (message) {
         ];
 
         producer.send(payloads, function(err, data){
-            console.log("PRODUCER CHECK:---");
+            console.log("PRODUCER CHECK");
         });
         return;
     });}
 
     else if(action==1){
       signup.afterSignUp(data.data, function(err,res){
-          //console.log('after handle 234 ',res);
           var payloads = [
               { topic: data.replyTo,
                   messages:JSON.stringify({
@@ -86,7 +85,7 @@ consumer_login.on('message', function (message) {
               }
           ];
           producer.send(payloads, function(err, data){
-             console.log("Producer:-- ");
+             console.log("Producer");
           });
           return;
       });
@@ -94,7 +93,6 @@ consumer_login.on('message', function (message) {
 
     if(action==5){
     signup.check_user(data.data, function(err,res){
-        console.log('after handle---');
         var payloads = [
             { topic: data.replyTo,
                 messages:JSON.stringify({
@@ -106,15 +104,12 @@ consumer_login.on('message', function (message) {
         ];
 console.log("TRUE: "+res.value);
         producer.send(payloads, function(err, data){
-            console.log("PRODUCER CHECK:---");
         });
         return;
     });}
 
     else if(action==3){
       account.handle_request(data.data, function(err,res){
-          //console.log('after handle 234 ',res);
-          console.log('after handle---');
           var payloads = [
               { topic: data.replyTo,
                   messages:JSON.stringify({
@@ -125,7 +120,7 @@ console.log("TRUE: "+res.value);
               }
           ];
           producer.send(payloads, function(err, data){
-             console.log("Producer:-- ");
+             console.log("Producer");
           });
           return;
       });
@@ -133,8 +128,6 @@ console.log("TRUE: "+res.value);
 
     else if(action==4){
       account.handle_update(data.data, function(err,res){
-          //console.log('after handle 234 ',res);
-          console.log('after handle---');
           var payloads = [
               { topic: data.replyTo,
                   messages:JSON.stringify({
@@ -145,11 +138,31 @@ console.log("TRUE: "+res.value);
               }
           ];
           producer.send(payloads, function(err, data){
-             console.log("Producer:-- ");
+             console.log("Producer");
           });
           return;
       });
     }
+
+    else if(action==6){
+      console.log("ACTION-----"+data.data.action);
+    account.update_password(data.data, function(err,res){
+        console.log('after password change---');
+        var payloads = [
+            { topic: data.replyTo,
+                messages:JSON.stringify({
+                    correlationId:data.correlationId,
+                    data : res.code
+                }),
+                partition : 0
+            }
+        ];
+console.log("TRUE: "+res.value);
+        producer.send(payloads, function(err, data){
+            console.log("PRODUCER CHECK");
+        });
+        return;
+    });}
 });
 
 consumer_get_flights.on('message', function (message) {
