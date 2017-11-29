@@ -42,6 +42,9 @@ var consumer_download_avatar = connection.getConsumer(download_topic);
 var tracking_topic = 'user_tracking';
 var consumer_user_tracking = connection.getConsumer(tracking_topic);
 
+var charts_topic = "charts_data";
+var consumer_charts = connection.getConsumer(charts_topic);
+
 var producer = connection.getProducer();
 
 
@@ -747,6 +750,35 @@ consumer_user_tracking.on('message', function (message) {
             });
             return;
         });
-
-
 });
+
+
+
+consumer_charts.on('message', function (message) {
+    console.log('message received in charts');
+    console.log(JSON.stringify(message.value));
+    var data = JSON.parse(message.value);
+    var type = data.data.type;
+    console.log("TYPE-----" + type);
+
+
+    chart.handle_Request(data.data, function (err, res) {
+        console.log('after handle get chart data---');
+        var payloads = [
+            {
+                topic: data.replyTo,
+                messages: JSON.stringify({
+                    correlationId: data.correlationId,
+                    data: res
+                }),
+                partition: 0
+            }
+        ];
+
+        producer.send(payloads, function (err, data) {
+            console.log("PRODUCER CHECK:---");
+        });
+        return;
+    });
+});
+
