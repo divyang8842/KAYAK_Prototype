@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as HotelsAPI from '../../api/HotelsAPI';
-import {loadHotels} from '../../actions/Hotels/Hotels';
+import {loadHotels, getHotelImage} from '../../actions/Hotels/Hotels';
 import Results from './Results';
 import '../../public/css/animate.css';
 import '../../public/css/bootstrap.css';
@@ -13,6 +13,7 @@ import '../../public/css/magnific-popup.css';
 import '../../public/css/cs-select.css';
 import '../../public/css/cs-skin-border.css';
 import '../../public/css/style.css';
+import * as API from '../../api/fileOperation';
 
 class SearchPanel extends Component {
   state={
@@ -30,12 +31,27 @@ class SearchPanel extends Component {
     HotelsAPI.getHotels(this.state.Hotels)
     .then((result) => {
         if(result.results.code == 200){
-          this.props.loadHotels(result);
-          this.props.handler();
+          Promise.resolve(this.props.loadHotels(result),
+          this.props.handler())
+          .then(()=>{
+            if(this.props.hotels.hotels){
+              this.props.hotels.hotels.map((hotelItem) => {
+                  var newdata={type:'hotel',id:hotelItem.hotel_id};
+                  API.getFile(newdata)
+                      .then((output) => {
+                          // this.setState({
+                          //     srcdata:output.image
+                          // });
+                      this.props.getHotelImage({hotelItem, output});
+                      this.props.handler();
+                      });
+                });
+            }
           // window.location.reload();          
           // Results.forceUpdate();
           // this.props.history.push("/Hotels");
-        }
+        });
+      }
     });
   }
 
@@ -125,10 +141,17 @@ class SearchPanel extends Component {
   }
 }
 
+function mapStateToProps(state){
+  return {
+      hotels: state.hotels
+      // filteredHotels: state.filteredHotels
+  }
+}
+
 function mapDispatchToProps(dispatch) {
-      return bindActionCreators({loadHotels : loadHotels}, dispatch);
+      return bindActionCreators({loadHotels : loadHotels, getHotelImage:getHotelImage}, dispatch);
   }
   
   //export default Search;
   
-  export default connect(null, mapDispatchToProps)(SearchPanel);
+  export default connect(mapStateToProps, mapDispatchToProps)(SearchPanel);

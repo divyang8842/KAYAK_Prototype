@@ -50,22 +50,26 @@ class Search extends Component {
     // var city = this.state.Hotels.City;
     HotelsAPI.getHotels(this.state.Hotels)
     .then((result) => {
-        if(result.results.code == 200){
-          Promise.resolve(this.props.loadHotels(result))
-            .then(()=>{
-                this.props.hotels.hotels.map((hotelItem) => {
-                    var newdata={type:'hotel',id:hotelItem.hotel_id};
-                    API.getFile(newdata)
-                        .then((output) => {
-                            // this.setState({
-                            //     srcdata:output.image
-                            // });
-                        this.props.getHotelImage({hotelItem, output});
+        if(result.results){
+            if(result.results.code == 200){
+            Promise.resolve(this.props.loadHotels(result))
+                .then(()=>{
+                    if(this.props.hotels.hotels){
+                        this.props.hotels.hotels.map((hotelItem) => {
+                            var newdata={type:'hotel',id:hotelItem.hotel_id};
+                            API.getFile(newdata)
+                                .then((output) => {
+                                    // this.setState({
+                                    //     srcdata:output.image
+                                    // });
+                                this.props.getHotelImage({hotelItem, output});
+                                });
                         });
-                  });
-            });
-          // this.props.loadFilteredHotels(result);
-          this.props.history.push("/Hotels");
+                    }
+                });
+            // this.props.loadFilteredHotels(result);
+            this.props.history.push("/Hotels");
+            }
         }
     });
   }
