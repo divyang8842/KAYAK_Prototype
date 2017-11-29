@@ -25,14 +25,16 @@ import '../../public/css/star.css';
 class Results extends Component {
 
     state ={
-        airlines :['airindia','airasia','luftansa','jetblue','emirates'],
+        airlines :['airindia','airasia','luftansa','jetblue','emirates','alaska'],
         checkbox_airindia:1,
         checkbox_airasia:1,
         checkbox_emirates:1,
         checkbox_jetblue:1,
         checkbox_luftansa:1,
         array_for_sorting:this.props.flights,
+        array_for_sorting_return:this.props.flights_return,
         array_for_sorting_result:this.props.flights,
+        array_for_sorting_result_return:[],
         flag:0,
         check_boxes:[],
         price_filter:500,
@@ -44,6 +46,11 @@ class Results extends Component {
 
     flights(price_flag,duration_flag)
     {
+       // IF condition decides the flow for Single trip processing/ Round Trip processing
+        //Single Trip Processing
+
+       if(this.state.array_for_sorting_return.length === 0 ){
+
         var flight_flag=false;
         var duration ;
         var array_used_for_sorting =[];
@@ -52,6 +59,7 @@ class Results extends Component {
 
         console.log("array_for_sorting:"+this.state.array_for_sorting);
         console.log("array_for_sorting_result:"+this.state.array_for_sorting_result);
+        console.log("array_for_sorting_result_return:"+this.state.array_for_sorting_result_return.length);
 
 
          this.state.array_for_sorting.map((flights,index) =>{
@@ -154,6 +162,149 @@ class Results extends Component {
         this.setState({
             flag:1
         });
+
+        }
+
+        else // Round Trip processing
+       {
+           var result={};
+           var resuult_array=[];
+           var flight_flag=false;
+           var duration ;
+           var array_used_for_sorting =[];
+
+           this.state.array_for_sorting.map((flights,index) => {
+
+                   this.state.array_for_sorting_return.map((flightsreturn,index) => {
+
+                       result.airline_name = flights.flights.airline_name;
+                       result.class  = flights.flights.class;
+                       result.date  = flights.flights.date;
+                       result.nooftickets  = flights.flights.nooftickets;
+                       result.flight_id  = flights.flights.flight_id;
+                       result.origin_station = flights.flights.origin_station;
+                       result.destination_station = flights.flights.destination_station;
+                       result.flight_departure = flights.flights.flight_departure;
+                       result.flight_arrival = flights.flights.flight_arrival;
+                       result.duration=flights.flights.duration;
+
+                       result.totalprice = flights.flights.totalprice+ flightsreturn.flights_return.totalprice;
+
+                       result.airline_name_return = flightsreturn.flights_return.airline_name;
+                       result.origin_station_return = flightsreturn.flights_return.origin_station;
+                       result.destination_station_return = flightsreturn.flights_return.destination_station;
+                       result.flight_departure_return = flightsreturn.flights_return.flight_departure;
+                       result.flight_arrival_return = flightsreturn.flights_return.flight_arrival;
+                       result.duration_return=flightsreturn.flights_return.duration;
+                       result.class_return  = flightsreturn.flights_return.class;
+                       result.date_return  = flightsreturn.flights_return.date;
+                       result.nooftickets_return  = flightsreturn.flights_return.nooftickets;
+                       result.flight_id_return  = flightsreturn.flights_return.flight_id;
+
+                       resuult_array.push(result);
+                       console.log(resuult_array);
+                       result={};
+
+                   })
+               }
+           );
+
+           resuult_array.map((flights,index) =>{
+
+               // Filter Condition for AIRLINES
+               var array =this.state.airlines;
+
+               // for (var i=0;i<array.length;i++)
+               // {
+               //     if(array[i] == flights.airline_name && array[i] == flights.airline_name_return)
+               //     {
+               //         flight_flag= true;
+               //
+               //     }
+               // }
+
+               if(array.indexOf(flights.airline_name) >=0 && array.indexOf(flights.airline_name_return) >=0)
+               {
+                   flight_flag= true;
+               }
+
+               if (flight_flag){
+                   flight_flag= false;
+
+                   if( flights.duration< this.state.duration_filter && flights.duration_return < this.state.duration_filter)
+                   {
+                       if(flights.totalprice < this.state.price_filter)
+                       {
+                           array_used_for_sorting.push(flights);
+                           if(price_flag )
+                           {
+                               if(this.state.price_asc === 1){
+                                   array_used_for_sorting.sort(function(a, b) {
+                                       return parseFloat(a.totalprice) - parseFloat(b.totalprice);
+                                   });
+
+                                   this.setState({
+                                       price_asc: 0
+                                   });
+
+                               }
+
+                               else
+                               {
+                                   array_used_for_sorting.sort(function(a, b) {
+                                       return parseFloat(b.totalprice) - parseFloat(a.totalprice);
+                                   });
+                                   this.setState({
+                                       price_asc: 1
+                                   });
+                               }
+
+
+                           }
+
+                           if(duration_flag)
+                           {
+                               if(this.state.duration_asc === 1){
+                                   array_used_for_sorting.sort(function(a, b) {
+                                       return parseFloat(a.duration) - parseFloat(b.duration);
+                                   });
+                                   this.setState({
+                                       duration_asc: 0
+                                   });
+
+                               }
+
+                               else
+                               {
+                                   array_used_for_sorting.sort(function(a, b) {
+                                       return parseFloat(b.duration) - parseFloat(a.duration);
+                                   });
+                                   this.setState({
+                                       duration_asc: 1
+                                   });
+                               }
+
+
+                           }
+
+                       }
+                   }
+
+
+
+               }
+
+           });
+
+           this.setState({
+               array_for_sorting_result_return: array_used_for_sorting
+           });
+
+           this.setState({
+               flag:1
+           });
+
+       }
     }
 
     bookflight()
@@ -164,55 +315,265 @@ class Results extends Component {
 
     temp()
     {
+        var styles = {
+            background:'white',
+            'margin-bottom':'8px',
+            'margin-left':'10px'
+        };
+        if(this.state.array_for_sorting_return.length === 0 ){
 
         return this.state.array_for_sorting_result.map((flights,index) => {
-
-
             return (
-                <tr>
-                    <h3>
-                        {flights.flights.airline_name}
-                    </h3>
-                    <br/>
+                <div className="col-md-10 col-sm-10 " style={styles}>
+                    <div className="row">
+                        <div className="col-md-8 col-sm-8 ">
+                            <div className="col-md-4 col-sm-4 ">
+                                <h2>
+                                    {flights.flights.airline_name}
+                                </h2>
+                            </div>
+                            <div className="col-md-4 col-sm-4 ">
+                                <div className="col-md-6 col-sm-6 ">
+                                    <div className="row">
+                                    <h3>
+                                {flights.flights.flight_departure}
+                                    </h3>
+                                    </div>
+                                    <div className="row">
+                                 {flights.flights.origin_station}
+                                    </div>
 
-                        {flights.flights.origin_station}
+                                </div>
+                                <div className="col-md-6 col-sm-6 ">
+                                    <div className="row">
+                                        <h3>
+                                {flights.flights.flight_arrival}
+                                        </h3>
+                                    </div>
+                                    <div className="row">
+                                {flights.flights.destination_station}
+                                    </div>
+                                </div>
 
-                        {flights.flights.destination_station}
-
-                        {flights.flights.flight_departure}
-
-                        {flights.flights.flight_arrival}
-
-                        {flights.flights.totalprice}
+                            </div>
+                            <div className="col-md-4 col-sm-4 ">
+                                <div className="row">
+                                    <h3>
+                                {flights.flights.totalprice}
+                                    </h3>
+                                </div>
+                                <div className="row">
 
                     <button className="btn btn-primary btn-block"
-                            onClick={() =>{
+                            onClick={() => {
 
                                 var payload = {};
-                                var tracking_object={};
+                                var tracking_object = {};
 
                                 this.props.getFlightsBooking(flights);
 
-                                tracking_object.current_page="BILLING_FLIGHT";
-                                tracking_object.previous_page="FLIGHT_PAGE";
-                                tracking_object.user_id="jay";
-                                tracking_object.session_id="1";
+                                tracking_object.current_page = "BILLING_FLIGHT";
+                                tracking_object.previous_page = "FLIGHT_PAGE";
+                                tracking_object.user_id = "jay";
+                                tracking_object.session_id = "1";
 
                                 UserTracking.userTracking(tracking_object)
                                     .then((status) => {
-                                        console.log("Tracking status:"+status);
+                                        console.log("Tracking status:" + status);
 
 
                                     });
 
                                 this.props.history.push("/flightsbooking");
                             }
-                                }>View Deal</button>
+                            }>View Deal
+                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                </tr>
+
             )
-
         })
+    }
+
+    else {
+            var result = {};
+            var resuult_array = [];
+
+            this.state.array_for_sorting.map((flights, index) => {
+
+                    this.state.array_for_sorting_return.map((flightsreturn, index) => {
+
+                        result.airline_name = flights.flights.airline_name;
+                        result.class  = flights.flights.class;
+                        result.date  = flights.flights.date;
+                        result.nooftickets  = flights.flights.nooftickets;
+                        result.flight_id  = flights.flights.flight_id;
+                        result.origin_station = flights.flights.origin_station;
+                        result.destination_station = flights.flights.destination_station;
+                        result.flight_departure = flights.flights.flight_departure;
+                        result.flight_arrival = flights.flights.flight_arrival;
+
+                        result.totalprice = flights.flights.totalprice + flightsreturn.flights_return.totalprice;
+
+                        result.airline_name_return = flightsreturn.flights_return.airline_name;
+                        result.origin_station_return = flightsreturn.flights_return.origin_station;
+                        result.destination_station_return = flightsreturn.flights_return.destination_station;
+                        result.flight_departure_return = flightsreturn.flights_return.flight_departure;
+                        result.flight_arrival_return = flightsreturn.flights_return.flight_arrival;
+                        result.class_return  = flightsreturn.flights_return.class;
+                        result.date_return  = flightsreturn.flights_return.date;
+                        result.nooftickets_return  = flightsreturn.flights_return.nooftickets;
+                        result.flight_id_return  = flightsreturn.flights_return.flight_id;
+
+                        resuult_array.push(result);
+                        result={};
+
+
+
+
+                    })
+                }
+            );
+            console.log(resuult_array);
+
+           if(this.state.array_for_sorting_result_return.length===0 && this.state.flag === 0)
+            { return resuult_array.map((flights, index) => {
+                return (
+                    <div className="col-md-8 col-sm-8 " style={styles}>
+                        <div className="row">
+                            <div className="col-md-8 col-sm-8 ">
+                        <h3>
+                            {flights.airline_name}
+                        </h3>
+                        <br/>
+
+                        {flights.origin_station}
+
+                        {flights.destination_station}
+
+                        {flights.flight_departure}
+
+                        {flights.flight_arrival}
+
+                        {flights.totalprice}
+
+                        <h3>
+                            {flights.airline_name_return}
+                        </h3>
+                        <br/>
+
+                        {flights.origin_station_return}
+
+                        {flights.destination_station_return}
+
+                        {flights.flight_departure_return}
+
+                        {flights.flight_arrival_return}
+
+                        <button className="btn btn-primary btn-block"
+                                onClick={() => {
+
+                                    var payload = {flights:flights};
+                                    var tracking_object = {};
+
+                                    this.props.getFlightsBooking(payload);
+
+                                    tracking_object.current_page = "BILLING_FLIGHT";
+                                    tracking_object.previous_page = "FLIGHT_PAGE";
+                                    tracking_object.user_id = "jay";
+                                    tracking_object.session_id = "1";
+
+                                    UserTracking.userTracking(tracking_object)
+                                        .then((status) => {
+                                            console.log("Tracking status:" + status);
+
+
+                                        });
+
+                                    this.props.history.push("/flightsbooking");
+                                }
+                                }>View Deal
+                        </button>
+
+                            </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
+
+        else
+           {
+               return this.state.array_for_sorting_result_return.map((flights, index) => {
+                   return (
+                       <div className="col-md-8 col-sm-8 " style={styles}>
+                           <div className="row">
+                               <div className="col-md-8 col-sm-8 ">
+                           <h3>
+                               {flights.airline_name}
+                           </h3>
+                           <br/>
+
+                           {flights.origin_station}
+
+                           {flights.destination_station}
+
+                           {flights.flight_departure}
+
+                           {flights.flight_arrival}
+
+                           {flights.totalprice}
+
+                           <h3>
+                               {flights.airline_name_return}
+                           </h3>
+                           <br/>
+
+                           {flights.origin_station_return}
+
+                           {flights.destination_station_return}
+
+                           {flights.flight_departure_return}
+
+                           {flights.flight_arrival_return}
+
+                           <button className="btn btn-primary btn-block"
+                                   onClick={() => {
+
+                                       var payload = {flights:flights};
+                                       var tracking_object = {};
+
+                                       this.props.getFlightsBooking(payload);
+
+                                       tracking_object.current_page = "BILLING_FLIGHT";
+                                       tracking_object.previous_page = "FLIGHT_PAGE";
+                                       tracking_object.user_id = "jay";
+                                       tracking_object.session_id = "1";
+
+                                       UserTracking.userTracking(tracking_object)
+                                           .then((status) => {
+                                               console.log("Tracking status:" + status);
+
+
+                                           });
+
+                                       this.props.history.push("/flightsbooking");
+                                   }
+                                   }>View Deal
+                           </button>
+
+                               </div>
+                           </div>
+                       </div>
+                   )
+               })
+           }
+
+        }
     }
 
     render()
@@ -515,15 +876,16 @@ class Results extends Component {
                 </div>
                 <div className="row">
 
-                    <table >
+                    {/*<table >*/}
 
-                        <tbody>
+                        {/*<tbody>*/}
 
                         {/*{this.flights(null,null)}*/}
-
+                    <span>
                         {this.temp()}
-                        </tbody>
-                    </table>
+                    </span>
+                        {/*</tbody>*/}
+                    {/*</table>*/}
                 </div>
             </div>
             </div>
@@ -541,7 +903,15 @@ function mapStateToProps(state) {
         }
     ));
 
-    return {flights};
+    const flights_return = Object.keys(state.getreturnflights).map((items) => (
+        {
+            'flights_return' : state.getreturnflights[items]
+
+
+        }
+    ));
+
+    return {flights,flights_return};
 }
 
 function mapDispatchToProps(dispatch) {

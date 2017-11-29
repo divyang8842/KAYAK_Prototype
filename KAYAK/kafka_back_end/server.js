@@ -181,7 +181,7 @@ consumer_get_flights.on('message', function (message) {
     else if(action==3)
     {
         flightsbooking.handle_request(data.data, function (err, res) {
-            console.log('after handle get Flights---');
+            console.log('after handle Flights booking---');
             var payloads = [
                 {
                     topic: data.replyTo,
