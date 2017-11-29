@@ -1,4 +1,5 @@
 import {LOAD_HOTELS} from '../../actions/Hotels/Hotels';
+import {LOAD_HOTELIMAGE} from '../../actions/Hotels/Hotels';
 
 const initialState ={
     hotels:[],
@@ -18,6 +19,23 @@ const Hotels = (state = initialState, action) => {
         };
         console.log(state);
         return state;
+
+        case LOAD_HOTELIMAGE :
+            state.hotels= state.hotels.map((hotelItem) => {
+                if (hotelItem.hotel_id == action.data.hotelItem.hotel_id) {
+                    return Object.assign({}, hotelItem, {
+                        srcdata : action.data.output.image
+                    })
+                }
+                return hotelItem;
+            });
+            state = {
+                hotels: state.hotels,
+                checkin: state.checkin,
+                checkout: state.checkout,
+                roomcount: state.roomcount
+            };
+            return state;
 
         default :
         return state;

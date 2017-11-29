@@ -32,7 +32,8 @@ class Results extends Component {
       chk_pool: false,
       chk_tennis: false,
       chk_airport: false
-    }
+    },
+    filtered: false
   }
 
   componentWillMount(){
@@ -61,7 +62,10 @@ class Results extends Component {
 
 
   createHotelsList(){
-    return this.state.hotelsArray.map((hotelItem) => {
+    var hotel_array = [];
+    if(this.state.filtered) hotel_array = this.state.hotelsArray;
+    else hotel_array = this.props.hotels.hotels;
+    return hotel_array.map((hotelItem) => {
       var styles = {
         background:'white',
         'margin-bottom':'8px'
@@ -70,7 +74,10 @@ class Results extends Component {
       return(
         <div className="col-md-8 col-sm-8 " style={styles}>
           <div className="row">
-            <div className="col-md-8 col-sm-8 ">
+          <div className="col-md-2 col-sm-2 ">
+          <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={"data:image/png;base64,"+hotelItem.srcdata}></img>
+          </div>          
+            <div className="col-md-6 col-sm-6 ">
                 <h3>{hotelItem.hotel_name}</h3>
                 <span>
                   <h4>{hotelItem.hotel_star} star</h4>
@@ -98,13 +105,15 @@ class Results extends Component {
       if(this.state.sort_price == 0){
         this.setState({
           ...this.state,
-          sort_price:1
+          sort_price:1,
+          filtered: true
         },this.sortHotels(sort_criteria));
       }
       else{
         this.setState({
           ...this.state,
-          sort_price:0
+          sort_price:0,
+          filtered: true
         },this.sortHotels(sort_criteria));
       }
     }
@@ -112,13 +121,15 @@ class Results extends Component {
       if(this.state.sort_review == 0){
         this.setState({
           ...this.state,
-          sort_review:1
+          sort_review:1,
+          filtered: true
         },this.sortHotels(sort_criteria));
       }
       else{
         this.setState({
           ...this.state,
-          sort_review:0
+          sort_review:0,
+          filtered: true
         },this.sortHotels(sort_criteria));
       }
     }
@@ -173,7 +184,8 @@ class Results extends Component {
     });
     this.setState({
       ...this.state,
-      hotelsArray: tempHotelsArray
+      hotelsArray: tempHotelsArray,
+      filtered: true
     });
   }
 
@@ -399,7 +411,7 @@ handler(){
 
 function mapStateToProps(state){
   return {
-      hotels: state.hotels,
+      hotels: state.hotels
       // filteredHotels: state.filteredHotels
   }
 }

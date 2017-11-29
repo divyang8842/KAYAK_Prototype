@@ -12,7 +12,7 @@ import {getReturnFlights} from '../actions/Flights/Flights';
 
 import {getCars, getCarImage} from '../actions/Cars/Cars';
 
-import {loadHotels, loadFilteredHotels} from '../actions/Hotels/Hotels';
+import {loadHotels, loadFilteredHotels, getHotelImage} from '../actions/Hotels/Hotels';
 
 import '../public/css/bootstrap-datepicker.min.css';
 import '../public/css/cs-select.css';
@@ -51,7 +51,19 @@ class Search extends Component {
     HotelsAPI.getHotels(this.state.Hotels)
     .then((result) => {
         if(result.results.code == 200){
-          this.props.loadHotels(result);
+          Promise.resolve(this.props.loadHotels(result))
+            .then(()=>{
+                this.props.hotels.hotels.map((hotelItem) => {
+                    var newdata={type:'hotel',id:hotelItem.hotel_id};
+                    API.getFile(newdata)
+                        .then((output) => {
+                            // this.setState({
+                            //     srcdata:output.image
+                            // });
+                        this.props.getHotelImage({hotelItem, output});
+                        });
+                  });
+            });
           // this.props.loadFilteredHotels(result);
           this.props.history.push("/Hotels");
         }
@@ -539,6 +551,7 @@ class Search extends Component {
 function mapStateToProps(state){
     return {
         cars: state.getcars,
+        hotels: state.hotels
         // filteredHotels: state.filteredHotels
     }
 }
@@ -556,7 +569,7 @@ function mapDispatchToProps(dispatch) {
     // };
 
 
-    return bindActionCreators({loadHotels : loadHotels, getFlights: getFlights,getCars:getCars,getReturnFlights:getReturnFlights, getCarImage:getCarImage}, dispatch);
+    return bindActionCreators({loadHotels : loadHotels, getFlights: getFlights,getCars:getCars,getReturnFlights:getReturnFlights, getCarImage:getCarImage,getHotelImage:getHotelImage}, dispatch);
 
 
 }

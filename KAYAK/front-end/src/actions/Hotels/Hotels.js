@@ -2,6 +2,7 @@
 export const LOAD_HOTELS='LOAD_HOTELS';
 // export const LOAD_FILTERED_HOTELS='LOAD_FILTERED_HOTELS';
 export const UPDATE_HOTELS_BOOKING='UPDATE_HOTELS_BOOKING';
+export const LOAD_HOTELIMAGE='LOAD_HOTELIMAGE';
 
 export function loadHotels(data) {
     return {
@@ -20,6 +21,13 @@ export function loadHotels(data) {
 export function getHotelsBooking(data) {
     return {
         type: 'UPDATE_HOTELS_BOOKING',
+        data,
+    };
+}
+
+export function getHotelImage(data) {
+    return {
+        type: 'LOAD_HOTELIMAGE',
         data,
     };
 }
