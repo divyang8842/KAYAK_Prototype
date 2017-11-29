@@ -65,7 +65,8 @@ class Results extends Component {
       var styles = {
         background:'white',
         'margin-bottom':'8px'
-      }
+      };
+
       return(
         <div className="col-md-8 col-sm-8 " style={styles}>
           <div className="row">

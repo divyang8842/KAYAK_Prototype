@@ -8,6 +8,7 @@ import * as UserTracking from '../api/UserTracking';
 import {connect} from 'react-redux';
 import {getFlights} from '../actions/Flights/Flights';
 import * as API from '../api/fileOperation';
+import {getReturnFlights} from '../actions/Flights/Flights';
 
 import {getCars, getCarImage} from '../actions/Cars/Cars';
 
@@ -76,7 +77,33 @@ class Search extends Component {
 
 
                   });
-              this.props.history.push("/Flights");
+
+              if(this.state.Flights.Return !== null)
+              {
+                    console.log("Please Book Return Ticket also");
+                  console.log(this.state.Flights.Return);
+                  var return_payload ={};
+                  return_payload.Source =this.state.Flights.Destination;
+                  return_payload.Destination=this.state.Flights.Source;
+                  return_payload.Depart=this.state.Flights.Return;
+                  return_payload.Return='';
+                  return_payload.Class=this.state.Flights.Class;
+                  return_payload.Adult=this.state.Flights.Adult;
+
+                  FlightsAPI.getFlights(return_payload)
+                      .then((output) => {
+
+                          this.props.getReturnFlights(output);
+                          this.props.history.push("/Flights");
+
+                      });
+
+              }
+              else
+              {
+                  this.props.history.push("/Flights");
+              }
+
 
           });
 
@@ -528,7 +555,9 @@ function mapDispatchToProps(dispatch) {
 
     // };
 
-    return bindActionCreators({loadHotels : loadHotels, getFlights: getFlights,getCars:getCars, getCarImage:getCarImage}, dispatch);
+
+    return bindActionCreators({loadHotels : loadHotels, getFlights: getFlights,getCars:getCars,getReturnFlights:getReturnFlights, getCarImage:getCarImage}, dispatch);
+
 
 }
 

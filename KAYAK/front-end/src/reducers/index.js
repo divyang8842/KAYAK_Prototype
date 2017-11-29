@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux';
 
 import GetFlights from './Flights/Flights-reducers'
+import GetReturnFlights from './Flights/Flights-return-reducer';
 import HotelsReducer from './Hotels/reducer-hotels'
 import GetCars from './Cars/Cars-reducer'
 import FilteredHotelsReducer from './Hotels/reducer-hotels-filtered';
@@ -20,8 +21,8 @@ const allReducers = combineReducers({
 
     // filteredHotels : FilteredHotelsReducer,
     flightbooking:FlightsBooking,
-    carsbooking:CarsBooking
-
+    carsbooking:CarsBooking,
+    getreturnflights:GetReturnFlights
 });
 
 export default allReducers;
