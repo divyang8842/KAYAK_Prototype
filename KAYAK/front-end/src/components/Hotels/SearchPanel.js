@@ -26,10 +26,59 @@ class SearchPanel extends Component {
     }
   }
 
+  componentWillMount(){
+    if(this.props.hotels.hotels){
+      if(!(this.props.hotels.hotels.length>0)){
+        var hotels = {
+          City:localStorage.City,
+          Checkin:localStorage.Checkin,
+          Checkout:localStorage.Checkout,
+          Rooms:localStorage.Rooms,
+          Guests:localStorage.Guests
+        };
+        HotelsAPI.getHotels(hotels)
+        .then((result) => {
+          if(result.results){
+            if(result.results.code == 200){
+              Promise.resolve(this.props.loadHotels(result),
+              this.props.handler())
+              .then(()=>{
+                if(this.props.hotels.hotels){
+                  this.props.hotels.hotels.map((hotelItem) => {
+                      var newdata={type:'hotel',id:hotelItem.hotel_id};
+                      API.getFile(newdata)
+                          .then((output) => {
+                              // this.setState({
+                              //     srcdata:output.image
+                              // });
+                          this.props.getHotelImage({hotelItem, output});
+                          this.props.handler();
+                          });
+                    });
+                }
+              // window.location.reload();          
+              // Results.forceUpdate();
+              // this.props.history.push("/Hotels");
+              });
+            }
+          }
+        });
+      }
+    }
+  }
+
   handleHotelSearch(){
     console.log(this.state.Hotels.City);
+    if (typeof(Storage) !== "undefined") {
+      localStorage.City = this.state.Hotels.City;
+      localStorage.Checkin = this.state.Hotels.Checkin;
+      localStorage.Checkout = this.state.Hotels.Checkout;
+      localStorage.Rooms = this.state.Hotels.Rooms;
+      localStorage.Guests = this.state.Hotels.Guests;
+  }
     HotelsAPI.getHotels(this.state.Hotels)
     .then((result) => {
+      if(result.results){
         if(result.results.code == 200){
           Promise.resolve(this.props.loadHotels(result),
           this.props.handler())
@@ -46,11 +95,12 @@ class SearchPanel extends Component {
                       this.props.handler();
                       });
                 });
-            }
+              }
           // window.location.reload();          
           // Results.forceUpdate();
           // this.props.history.push("/Hotels");
-        });
+          });
+        }
       }
     });
   }

@@ -48,6 +48,13 @@ class Search extends Component {
   handleHotelSearch(){
     console.log(this.state.Hotels.City);
     // var city = this.state.Hotels.City;
+    if (typeof(Storage) !== "undefined") {
+        localStorage.City = this.state.Hotels.City;
+        localStorage.Checkin = this.state.Hotels.Checkin;
+        localStorage.Checkout = this.state.Hotels.Checkout;
+        localStorage.Rooms = this.state.Hotels.Rooms;
+        localStorage.Guests = this.state.Hotels.Guests;
+    }
     HotelsAPI.getHotels(this.state.Hotels)
     .then((result) => {
         if(result.results){

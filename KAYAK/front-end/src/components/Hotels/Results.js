@@ -100,7 +100,26 @@ class Results extends Component {
                 <div className="col-md-4 col-sm-4 ">
                   <h4 class="price">${hotelItem.standard_rates}</h4>
                   <br/>
-                  <button class="btn btn-primary" onClick={() => this.handleBooking(hotelItem)}>View Deal</button>
+                  {/* <button class="btn btn-primary" onClick={() => this.handleBooking(hotelItem)}>View Deal</button> */}
+                  <button type="button" class="searchbtn" data-toggle="modal" data-target="#myModal">View Deal</button>
+                  
+                  <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Select Room</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>Some text in the modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="searchbtn" data-dismiss="modal" onClick={() => this.handleBooking(hotelItem)}>Continue</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
                 </div>
               </div>
               <div>
