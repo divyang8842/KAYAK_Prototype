@@ -105,8 +105,8 @@ class Home extends Component {
       						<ul className="sf-menu" id="fh5co-primary-menu">
                     <li className="active"><Link to='/'>Home</Link></li>
                     <li><Link to='/flightsearch'>Flight</Link></li>
-                    <li><Link to='/carsearch'>Car</Link></li>
                     <li><Link to='/hotelsearch'>Hotel</Link></li>
+                    <li><Link to='/carsearch'>Car</Link></li>
                   {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
                   : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
       						</ul>
@@ -114,8 +114,8 @@ class Home extends Component {
                             <ul className="sf-menu" id="fh5co-primary-menu">
                                 <li className="active"><Link to='/'>AdminHome</Link></li>
                                 <li><Link to='/flight'>Flight</Link></li>
-                                <li><Link to='/car'>Car</Link></li>
                                 <li><Link to='/hotel'>Hotel</Link></li>
+                                <li><Link to='/car'>Car</Link></li>
                                 <li><Link to='/analytics'>Analytics</Link></li>
                                 <li><Link to='' onClick={e => e.preventDefault()}>Manage</Link> <ul className="fh5co-sub-menu"><li><Link to='/AdminUsers'>Users</Link></li><li><Link to='/AdminCreate'>Admin</Link></li></ul></li>
                                 {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
@@ -129,9 +129,9 @@ class Home extends Component {
 
          <Switch>
           <Route exact path="/" component={Search}/>
-          <Route exact path="/flightsearch" component={() => <Search/>}/>
-          <Route exact path="/carsearch" component={() => <Search/>}/>
-           <Route exact path="/hotelsearch" component={() => <Search/>}/>
+          <Route exact path="/flightsearch" component={() => <Search temp={1}/>}/>
+          <Route exact path="/carsearch" component={() => <Search temp={3}/>}/>
+           <Route exact path="/hotelsearch" component={() => <Search temp={2}/>}/>
 
           <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
           <Route exact path="/hotelsbooking" component={() => <HotelBooking/>}/>

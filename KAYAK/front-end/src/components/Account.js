@@ -244,15 +244,14 @@ handleDetails = (details) => {
           <div id="fh5co-page">
           <div className="container">
             <div className="row">
-
+  <br/>
+            <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={this.state.srcdata}></img>
             <TextField
                 className={'fileupload'}
                 type="file"
                 name="mypic"
-                onChange={this.handleFileUpload}
-            />
-            <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={this.state.srcdata}></img>
-
+                onChange={this.handleFileUpload}/>
+            <br/><br/>
             <form>
             <FormErrors formErrors={this.state.formErrors} />
             <div className="row">
