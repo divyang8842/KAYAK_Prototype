@@ -358,7 +358,7 @@ class Results extends Component {
                             </div>
                             <div className="col-md-4 col-sm-4 ">
                                 <div className="row">
-                                    <h3>
+                                    <h3 align="center">
                                 {flights.flights.totalprice}
                                     </h3>
                                 </div>
@@ -576,6 +576,37 @@ class Results extends Component {
         }
     }
 
+    constructor(props) {
+        super(props)
+
+        this.handler = this.handler.bind(this)
+    }
+    handler(){
+        // this.forceUpdate();
+        // this.setFreebies();
+        // this.filterHotels();
+        // this.setState(this.state);
+        // window.location.reload();
+        var array_flights = this.props.flights;
+        var array_flights_return = this.props.flights_return;
+        console.log(array_flights);
+        this.setState({
+            array_for_sorting:array_flights
+
+        });
+
+        this.setState({
+            array_for_sorting_return:array_flights_return
+
+        });
+        this.setState({
+            array_for_sorting_result:array_flights
+
+        });
+
+
+    }
+
     render()
     {
         var styles={
@@ -584,7 +615,7 @@ class Results extends Component {
         return(
             <div>
             <div>
-                <FLightSerachPanel/>
+                <FLightSerachPanel handler = {this.handler}/>
             </div>
             <div className="container-fluid">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
