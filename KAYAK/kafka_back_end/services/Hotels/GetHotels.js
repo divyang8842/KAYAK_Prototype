@@ -45,6 +45,10 @@ function handle_request(msg, callback){
             res.code = 200;
             res.value = hotelsResult;
         }
+        else if(results){
+            console.log('No hotels found');
+            res.code = 200;
+        }
         else{
             console.log('Unable to fetch hotels');
             res.code = 400;
