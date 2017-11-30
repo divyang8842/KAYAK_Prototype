@@ -111,7 +111,7 @@ app.post('/getFile',downloadFile.fileDownload);
 app.post('/listhotels',security.authenticateAdmin,adminHotel.getHotelData);
 app.post('/listCarsData',security.authenticateAdmin,adminCar.getCarData);
 app.post('/listFlightsData',security.authenticateAdmin,adminFlight.getFlightData);
-app.post('/getChartData',security.authenticateAdmin,adminCharts.getChartData);
+app.post('/getChartsData',security.authenticateAdmin,adminCharts.getChartData);
 
 app.post('/validateLogin',security.getLoggedInInfoFromSession);
 

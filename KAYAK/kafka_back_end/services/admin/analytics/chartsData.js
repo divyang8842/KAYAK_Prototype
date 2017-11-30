@@ -58,7 +58,7 @@ function handle_Request(msg,callback){
                                     clicksPerPage(function(err,result){
                                         returnData.clicks_per_page = result;
                                         // more calls to be added
-                                        console.log("returnData for charts is :"+returnData);
+                                        console.log("returnData for charts is :"+JSON.stringify(returnData));
                                         callback(false,returnData);
                                     })
                                 });
