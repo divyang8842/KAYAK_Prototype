@@ -109,16 +109,27 @@ function getTop10Numbers(msg, callback) {
             callback(true,responseData);
         }
 
-        coll.find({}).sort({'2017.count':-1}).limit(10).toArray(function(err, result) {  //'2017.count' can be switched with column variable
-            if(!err)
-            {
-                console.log("Success--- inside top 10 hotel ana");
-                console.log(result);
-                console.log(result.length);
-                resultData = result;
-                //callback(null, result);
-            }
-        });
+        if(action=='count') {
+            coll.find({'year': year}).sort({'count': -1}).limit(10).toArray(function (err, result) {  //'2017.count' can be switched with column variable
+                if (!err) {
+                    //console.log("Success--- inside top 10 hotel ana");
+                    //console.log(result);
+                    //console.log(result.length);
+                    resultData = result;
+                    //callback(null, result);
+                }
+            });
+        }else{
+            coll.find({'year': year}).sort({'revenue': -1}).limit(10).toArray(function (err, result) {  //'2017.count' can be switched with column variable
+                if (!err) {
+                    //console.log("Success--- inside top 10 hotel ana");
+                    //console.log(result);
+                    //console.log(result.length);
+                    resultData = result;
+                    //callback(null, result);
+                }
+            });
+        }
 
         var titles = [];
         var data = [];
