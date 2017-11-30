@@ -101,8 +101,9 @@ class Hotel extends Component {
                 hotelStateValid = value.length !== 0;
                 fieldValidationErrors.hotelstate = hotelStateValid ? '': ' is required';
                 break;
-            case 'hotelzipcode':
-                hotelZipcodeValid = value.length !== 0 && value.length ===5 && value.match('^[0-9]+$');
+
+             case 'hotelzipcode':
+                hotelZipcodeValid = value.length !== 0 && ((value.length ===5 && value.match('^[0-9]+$')) || (value.length ===10 && value.match('^\\d{5}(-\\d{4})?$')));
                 fieldValidationErrors.hotelzipcode = hotelZipcodeValid ? '': ' is invalid';
                 break;
             case 'hoteldesc':
@@ -241,6 +242,10 @@ class Hotel extends Component {
 
     };
 
+    toggleVisible = (event) =>{
+        this.setState({update:true,visible: !this.state.visible});
+    }
+
     render() {
         var hoteldata=this.state.hotelData;
         var roomData=this.state.roomlist;
@@ -323,7 +328,6 @@ class Hotel extends Component {
                         });
                     });
 
-                this.setState({update:true,visible: !this.state.visible});
 
 
 
@@ -332,7 +336,9 @@ class Hotel extends Component {
         const options = {
             afterInsertRow: onAfterInsertRow,
             afterDeleteRow: onAfterDeleteRow,  // A hook for after droping rows.
-            handleConfirmDeleteRow: customConfirm
+            handleConfirmDeleteRow: customConfirm,
+            onRowDoubleClick:this.toggleVisible
+
         };
         const cellEditProp = {
             mode: 'click',

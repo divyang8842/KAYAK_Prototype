@@ -256,7 +256,9 @@ class Car extends Component {
     };
 
 
-
+    toggleVisible = (event) =>{
+        this.setState({update:true,visible: !this.state.visible});
+    }
     render() {
 
         var carList=this.state.carData;
@@ -376,7 +378,6 @@ var newdata={type:'car',id:obj.car_id};
                             srcdata:output.image
                         });
                     });
-                this.setState({update:true,visible: !this.state.visible});
 
 
 
@@ -385,7 +386,9 @@ var newdata={type:'car',id:obj.car_id};
         const options = {
             afterInsertRow: onAfterInsertRow,
             afterDeleteRow: onAfterDeleteRow,  // A hook for after droping rows.
-            handleConfirmDeleteRow: customConfirm
+            handleConfirmDeleteRow: customConfirm,
+            onRowDoubleClick:this.toggleVisible
+
         };
         const cellEditProp = {
             mode: 'dbclick',
