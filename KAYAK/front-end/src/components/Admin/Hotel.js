@@ -147,15 +147,13 @@ class Hotel extends Component {
             .then((status) => {
                 if (status.status == '201') {
                     this.setState({
-                        root:status.root,
-                        isLoggedIn: false,
                         message: "Inserted Hotel Data Successfully..!!",
                         hotelid:status.hotelid
                     });
-                    alert("Inserted Hotel Data Successfully..!!"+status.hotelid)
+                    alert("Inserted Hotel Data Successfully..!!")
+                    this.setState({visible: !this.state.visible});
                 } else if (status === 401) {
                     this.setState({
-                        isLoggedIn: false,
                         message: "SignUp Failed"
                     });
                 }
@@ -167,9 +165,10 @@ class Hotel extends Component {
         API.updateHotel(newdata)
             .then((output) => {
                 if (output === 1) {
-                    alert("Hotel updated");
+                    alert("Hotel updated successfully.");
+                    this.setState({visible: !this.state.visible});
                 } else {
-                    alert("Hotel not updated");
+                    alert("Error while updating Hotel data.");
                 }
             });
     };
@@ -348,10 +347,10 @@ class Hotel extends Component {
 
         return (
             <div>
-
+                {this.state.visible ?null :
                 <div className="btn-group btn-group-sm" role="group">
                     <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
-                </div>
+
 
                 <BootstrapTable data={hoteldata}  selectRow={ selectRowProp }  deleteRow={ true }  options={ options } pagination>
                     <TableHeaderColumn dataField='hotel_id' isKey hidden>Hotel ID</TableHeaderColumn>
@@ -370,7 +369,7 @@ class Hotel extends Component {
                 </BootstrapTable>
 
 
-
+</div>}
 
                 {this.state.visible ? <div id="fh5co-page">
                         <div className="container">
