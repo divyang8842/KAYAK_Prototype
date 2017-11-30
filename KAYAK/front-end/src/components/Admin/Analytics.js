@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Route, Link,Switch } from 'react-router-dom';
 import Chart from './Chart';
-import chartAPI from './../../api/Admin/ChartsAPI'
+import * as chartAPI from './../../api/Admin/ChartsAPI'
 
 class Analytics extends Component {
 
@@ -24,7 +24,7 @@ class Analytics extends Component {
   }
 
   getChartData(data){
-      chartAPI.getChartData(data,function(err,result){
+      chartAPI.getChartsData(data,function(err,result){
           this.setState({
               chartDataCars:{
                   labels: ['a1', 'a2', 'a3', 'a4', 'a5', 'a6','a7','a8','a9','a10'],
