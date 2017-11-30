@@ -150,7 +150,9 @@ class Hotel extends Component {
                         message: "Inserted Hotel Data Successfully..!!",
                         hotelid:status.hotelid
                     });
+
                     alert("Inserted Hotel Data Successfully..!!")
+                    this.viewHotelDetails();
                     this.setState({visible: !this.state.visible});
                 } else if (status === 401) {
                     this.setState({
@@ -166,6 +168,7 @@ class Hotel extends Component {
             .then((output) => {
                 if (output === 1) {
                     alert("Hotel updated successfully.");
+                    this.viewHotelDetails();
                     this.setState({visible: !this.state.visible});
                 } else {
                     alert("Error while updating Hotel data.");
