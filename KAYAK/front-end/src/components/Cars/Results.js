@@ -19,7 +19,7 @@ class Results extends Component {
         array_for_sorting_result:this.props.cars,
         flag:0,
         check_boxes:[],
-        price_filter:0,
+        price_filter:500,
         duration_filter:0
     };
 
@@ -49,7 +49,7 @@ class Results extends Component {
             if (flight_flag){
                 flight_flag= false;
 
-                    if(cars.cars.car_rent > this.state.price_filter)
+                    if(cars.cars.car_rent < this.state.price_filter)
                     {
                         array_used_for_sorting.push(cars.cars);
                         if(price_flag )
@@ -521,7 +521,7 @@ class Results extends Component {
                            onChange={(event) => {
                                this.setState({
                                    price_filter: event.target.value
-                               },this.flights(null,null));
+                               },this.flights);
                            }
 
                            }

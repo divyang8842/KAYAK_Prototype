@@ -12,6 +12,7 @@ import '../../public/css/cs-skin-border.css';
 import '../../public/css/style.css';
 import * as FlightsAPI from '../../api/FlightsAPI';
 import {getFlights} from '../../actions/Flights/Flights';
+import {getReturnFlights} from '../../actions/Flights/Flights';
 
 class SearchPanel extends Component {
 
@@ -30,7 +31,33 @@ class SearchPanel extends Component {
         FlightsAPI.getFlights(this.state.Flights)
             .then((output) => {
                 this.props.getFlights(output);
-                this.props.handler();
+
+
+                if(this.state.Flights.Return !== null)
+                {
+                    console.log("Please Book Return Ticket also");
+                    console.log(this.state.Flights.Return);
+                    var return_payload ={};
+                    return_payload.Source =this.state.Flights.Destination;
+                    return_payload.Destination=this.state.Flights.Source;
+                    return_payload.Depart=this.state.Flights.Return;
+                    return_payload.Return='';
+                    return_payload.Class=this.state.Flights.Class;
+                    return_payload.Adult=this.state.Flights.Adult;
+
+                    FlightsAPI.getFlights(return_payload)
+                        .then((output) => {
+
+                            this.props.getReturnFlights(output);
+                            this.props.handler();
+
+                        });
+
+                }
+                else
+                {
+                    this.props.handler();
+                }
 
             });
 
@@ -119,6 +146,56 @@ class SearchPanel extends Component {
                   />
                 </div>
               </div>
+                  <div className="col-sm-1 mt" >
+                      <div className="input-field">
+
+                   <section>
+                                 <label>Class:</label>
+                                  <select className="form-control"
+                                          style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}
+                                          value={this.state.Flights.Class}
+                                          onChange={(event) => {
+                                              this.setState({
+                                                  Flights: {
+                                                      ...this.state.Flights,
+                                                      Class: event.target.value
+                                                  }
+                                              });}
+                                          }
+                                  >
+                                    <option value="" disabled selected>Economy</option>
+                                    <option value="economy">Economy</option>
+                                    <option value="first">First</option>
+                                    <option value="business">Business</option>
+                                  </select>
+                                </section>
+                  </div>
+                  </div>
+
+                   <div className="col-xxs-2 col-xs-1 mt">
+                                <section>
+                                  <label>Adult:</label>
+                                  <select className="form-control"
+                                          style={{border:"none",background:"rgba(0, 0, 0, 0.05)",color:"#F78536",fontWeight:"bold",fontSize:"14px"}}
+                                          value={this.state.Flights.Adult}
+                                          onChange={(event) => {
+                                              this.setState({
+                                                  Flights: {
+                                                      ...this.state.Flights,
+                                                      Adult: event.target.value
+                                                  }
+                                              });}
+                                          }
+                                  >
+                                    {/*<option value="" disabled selected={"selected"}>Adult</option>*/}
+                                      <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                  </select>
+
+                                </section>
+                              </div>
 
               <div className="col-xs-2">
                 <button className="searchbtn"
@@ -134,7 +211,8 @@ class SearchPanel extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        getFlights : (data) => dispatch(getFlights(data))
+        getFlights : (data) => dispatch(getFlights(data)),
+        getReturnFlights:(data) => dispatch(getReturnFlights(data))
     };
 }
 
