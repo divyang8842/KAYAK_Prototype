@@ -261,8 +261,9 @@ class Car extends Component {
             API.updatecar(newdata)
                 .then((output) => {
                     if (output === 1) {
+
+                        this.getCarDetails();
                         alert("Car updated Successfully.");
-                        window.location.href = '/car';
                     } else {
                        alert("Error while updating car data.");
                     }
@@ -275,12 +276,13 @@ class Car extends Component {
                 .then((status) => {
                    // alert(JSON.stringify(status))
                     if (status.status == '201') {
-
-                        alert("Inserted Car Data Successfully..!!")
                         this.getCarDetails();
+                        alert("Inserted Car Data Successfully..!!")
+
                     } else if (status === 401) {
+                        alert("Error while inserting car data.");
                         this.setState({
-                            message: "SignUp Failed"
+                            message: "Error while inserting car data."
                         });
                     }
                 });
@@ -293,7 +295,7 @@ class Car extends Component {
             API.deleteCar(carid)
                 .then((output) => {
                     if (output === 1) {
-                        alert("Car deleted successfully");
+                        alert("Car deleted successfully..!");
                     } else {
                        alert("Error while deleting entry.");
                     }
