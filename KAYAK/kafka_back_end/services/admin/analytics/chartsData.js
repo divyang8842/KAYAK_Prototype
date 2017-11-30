@@ -1,8 +1,6 @@
 var mongo = require("../../database/mongo_connect");
 var mongoURL = "mongodb://localhost:27017/kayak_18";
 
-
-
 // top 10 AIr Lines Query
 // Result will be an array of Object
 // Example
@@ -60,6 +58,7 @@ function handle_Request(msg,callback){
                                     clicksPerPage(function(err,result){
                                         returnData.clicks_per_page = result;
                                         // more calls to be added
+                                        console.log("returnData for charts is :"+returnData);
                                         callback(false,returnData);
                                     })
                                 });
