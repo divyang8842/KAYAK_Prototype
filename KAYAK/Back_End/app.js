@@ -76,7 +76,7 @@ app.use('/signup', signup.signup);
 app.use('/checkuser', checkuser.checkuser);
 app.use('/account',security.authenticate, account.account);
 app.use('/update', security.authenticate,account.update);
-app.use('/password', account.password);
+app.use('/password',security.authenticate, account.password);
 app.use('/listrooms',security.authenticateAdmin, adminHotel.getHotelRooms);
 app.use('/updateroom',security.authenticateAdmin, adminHotel.updateRoom);
 app.use('/deleteroom',security.authenticateAdmin, adminHotel.deleteRoom);
@@ -85,9 +85,9 @@ app.post('/setRoomData',security.authenticateAdmin,adminHotel.setRoomData);
 app.post('/setCarData',security.authenticateAdmin,adminCar.setCarData);
 app.post('/setFlightData',security.authenticateAdmin,adminFlight.setFlightData);
 
-app.post('/listusers',adminUsers.getUsers);
-app.post('/deleteuser',adminUsers.deleteUser);
-app.post('/newadmin',adminUsers.newAdmin);
+app.post('/listusers',security.authenticateAdmin,adminUsers.getUsers);
+app.post('/deleteuser',security.authenticateAdmin,adminUsers.deleteUser);
+app.post('/newadmin',security.authenticateAdmin,adminUsers.newAdmin);
 
 app.post('/getflights',getFlights.getFLights);
 app.post('/getHotels',hotels.getHotels);
