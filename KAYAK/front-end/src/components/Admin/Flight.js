@@ -268,6 +268,10 @@ class Flight extends Component {
 
     };
 
+    toggleVisible = (event) =>{
+        this.setState({update:true,visible: !this.state.visible});
+    }
+
 
 
 
@@ -276,7 +280,7 @@ class Flight extends Component {
         var flightList=this.state.flightData;
 
 
-        var insertFlightDetails = (userdata) => {
+       /* var insertFlightDetails = (userdata) => {
            // alert(JSON.stringify(userdata));
             API.insertFlightData(userdata)
                 .then((status) => {
@@ -294,7 +298,7 @@ class Flight extends Component {
                         });
                     }
                 });
-        };
+        };*/
         function deleteFlight(data) {
             //alert(data);
             var flightid={flightid:data};
@@ -321,7 +325,7 @@ class Flight extends Component {
             //obj+='}';
             obj = JSON.parse(myJsonString);
            // alert('The new row is:' + JSON.stringify(obj));
-            insertFlightDetails(obj);
+            this.insertFlightDetails(obj);
         }
 
         function onAfterDeleteRow(rowKeys) {
@@ -345,7 +349,7 @@ class Flight extends Component {
             var myJsonString = JSON.stringify(row);
             // alert(myJsonString);
             for (const prop in row) {
-                obj += '"'+prop +'":"'+ row[prop]+'",';
+                obj += '"'+selectRowProp +'":"'+ row[prop]+'",';
             }
             obj = JSON.parse(myJsonString);
            // alert('The new row is:' + JSON.stringify(obj));
@@ -376,19 +380,22 @@ class Flight extends Component {
                         });
                     });
 
-                this.setState({update:true,visible: !this.state.visible});
+               //
 
 
 
             //alert(`is selected: ${isSelected}, ${rowStr}`);
         }
+
+
         const options = {
             afterInsertRow: onAfterInsertRow,
             afterDeleteRow: onAfterDeleteRow,  // A hook for after droping rows.
-            handleConfirmDeleteRow: customConfirm
+            handleConfirmDeleteRow: customConfirm,
+            onRowDoubleClick:this.toggleVisible
         };
         const cellEditProp = {
-            mode: 'click',
+            mode: '',
             blurToSave: true,
             beforeSaveCell: onRowSelect
 

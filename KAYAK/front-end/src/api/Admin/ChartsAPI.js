@@ -18,6 +18,6 @@ export const getChartsData = (payload) =>
             return res.output;
         })
         .catch(error => {
-            console.log("This is list error");
+            console.log("This is error");
             return error;
         });
