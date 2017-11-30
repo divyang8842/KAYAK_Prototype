@@ -55,12 +55,12 @@ function handle_Request(msg,callback){
                                 var data = {year:year,type:"city",action:"revenue"};
                                 getTop10Numbers(data,function(err,result){
                                     returnData.city_revenue = result;
-                                    clicksPerPage(function(err,result){
-                                        returnData.clicks_per_page = result;
+                                   // clicksPerPage(function(err,result){
+                                   //     returnData.clicks_per_page = result;
                                         // more calls to be added
                                         console.log("returnData for charts is :"+JSON.stringify(returnData));
                                         callback(false,returnData);
-                                    })
+                                   // })
                                 });
 
                             });
@@ -118,7 +118,7 @@ function getTop10Numbers(msg, callback) {
                         var length = resultData.length;
                         while(length>0){
                             titles.push(resultData[--length].name);
-                            data.push(resultData[--length].count);
+                            data.push(resultData[length].count);
                         }
                     }
                     responseData = {"title":titles,"data":data};
@@ -155,7 +155,7 @@ var clicksPerPage = function(callback){
                 var length = pages.length;
                 var titles = ["FLIGHT_PAGE","CAR_PAGE","HOTEL_PAGE","BILLING_FLIGHT","BILLING_CAR","BILLING_HOTEL","SEARCH_PAGE","SIGNIN_PAGE","SIGNUP_PAGE"];
                 var data = [0,0,0,0,0,0,0,0,0,0];
-                if(length>0){
+                if(pages && pages.FLIGHT_PAGE){
                     data = [pages.FLIGHT_PAGE, pages.CAR_PAGE, pages.HOTEL_PAGE, pages.BILLING_FLIGHT, pages.BILLING_CAR, pages.BILLING_HOTEL, pages.SEARCH_PAGE, pages.SIGNIN_PAGE, pages.SIGNUP_PAGE];
                 }
                 responseData = {"title":titles,"data":data};
