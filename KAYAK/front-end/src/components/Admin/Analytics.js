@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Route, Link,Switch } from 'react-router-dom';
 import Chart from './Chart';
+import chartAPI from './../../api/Admin/ChartsAPI'
 
 class Analytics extends Component {
 
@@ -18,49 +19,51 @@ class Analytics extends Component {
   };
 
   componentWillMount(){
-    this.getChartData();
+      var year = new Date().getFullYear();
+    this.getChartData({"year":year});
   }
 
-  getChartData(){
-    // API calls here
-    this.setState({
-      chartDataCars:{
-        labels: ['a1', 'a2', 'a3', 'a4', 'a5', 'a6','a7','a8','a9','a10'],
-        datasets:[{ label:'Cars',
-                    data:[417,181,153,106,105,398,272,200,300,267],
-                    backgroundColor:[
-                      'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
-                      'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
-                      'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
-      chartDataFlights:{
-        labels: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6','f7','f8','f9','f10'],
-        datasets:[{ label:'Flights',
-                    data:[617,815,1130,1065,1051,950,666,777,888,999],
-                    backgroundColor:[
-                      'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
-                      'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
-                      'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
-      chartDataHotels:{
-        labels: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6','h7','h8','h9','h10'],
-        datasets:[{ label:'Hotels',
-                    data:[417,181,153,106,105,398,272,200,300,267],
-                    backgroundColor:[
-                      'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
-                      'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
-                      'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
-      chartDataMost:{
-        labels: ['flights', 'hotels','cars'],
-        datasets:[{ label:'Modules',
-                    data:[217,181,300],
-                    backgroundColor:[
-                      'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 159, 64, 0.6)']}]},
-      chartDataLeast:{
-        labels: ['admin', 'analytics'],
-        datasets:[{ label:'Modules',
-                    data:[47,11],
-                    backgroundColor:[
-                      'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)']}]},
-    });
+  getChartData(data){
+      chartAPI.getChartData(data,function(err,result){
+          this.setState({
+              chartDataCars:{
+                  labels: ['a1', 'a2', 'a3', 'a4', 'a5', 'a6','a7','a8','a9','a10'],
+                  datasets:[{ label:'Cars',
+                      data:[417,181,153,106,105,398,272,200,300,267],
+                      backgroundColor:[
+                          'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                          'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                          'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+              chartDataFlights:{
+                  labels: ['f1', 'f2', 'f3', 'f4', 'f5', 'f6','f7','f8','f9','f10'],
+                  datasets:[{ label:'Flights',
+                      data:[617,815,1130,1065,1051,950,666,777,888,999],
+                      backgroundColor:[
+                          'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                          'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                          'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+              chartDataHotels:{
+                  labels: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6','h7','h8','h9','h10'],
+                  datasets:[{ label:'Hotels',
+                      data:[417,181,153,106,105,398,272,200,300,267],
+                      backgroundColor:[
+                          'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                          'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                          'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+              chartDataMost:{
+                  labels: ['flights', 'hotels','cars'],
+                  datasets:[{ label:'Modules',
+                      data:[217,181,300],
+                      backgroundColor:[
+                          'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 159, 64, 0.6)']}]},
+              chartDataLeast:{
+                  labels: ['admin', 'analytics'],
+                  datasets:[{ label:'Modules',
+                      data:[47,11],
+                      backgroundColor:[
+                          'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)']}]},
+          });
+      });
   }
 
 
