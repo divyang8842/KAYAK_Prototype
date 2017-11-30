@@ -26,8 +26,8 @@ var afterSignUp = function(msg,callback){
   mysql.setData(insertQuery,dataArry,function (err,results){
     console.log("CHECK RES: "+results);
     if (err){
-            //res.code = "401";
-            res = "Failed Signup";
+            res = "401";
+            //res.value = "Failed Signup";
             console.log("Failed signup---");
             errorHandler.logError("Signup.js","afterSignUp",err);
             callback(null, res);
@@ -57,14 +57,14 @@ var afterSignUp = function(msg,callback){
                 {
                     if(!err)
                     {
-                        res.code = "200";
-                          res.value=results;
-                          console.log("Success---");
-                          callback(null, results);
+                        res= '200';
+                          //res.value=results;
+                          console.log("Success---"+res.code);
+                          callback(null, res);
                     }
                     else
                     {
-                        res = "Failed Signup";
+                        res = '401';
                         console.log("Failed signup---");
                         errorHandler.logError("Signup.js","afterSignUp",err);
                         callback(null, res);
