@@ -143,9 +143,214 @@ function handle_request(msg, callback){
                                                         function (err, user2) {
 
                                                             if (!err) {
-                                                                response.code = "200";
-                                                                console.log("Success" + response);
-                                                                callback(null, response);
+
+                                                                // data to be inserted in flight_analytics
+
+                                                                var new_total;
+                                                                var new_counter;
+                                                                coll = mongo.collection('flight_analytics');
+                                                                coll.findOne({name: msg.airline_name,
+                                                                        year:new Date().getFullYear()},
+                                                                    function(err, user){
+                                                                    console.log("user"+JSON.stringify(user));
+                                                                       
+                                                                    if(user && user.name)
+                                                                    {
+                                                                        new_total = user.revenue+msg.totalprice;
+                                                                        new_counter = user.count+1;
+
+                                                                        console.log("Inside Flight Analytics");
+
+                                                                        coll.update({name: msg.airline_name,
+                                                                                year:new Date().getFullYear()
+                                                                                }, {
+                                                                                $set: {
+                                                                                    revenue: new_total,
+                                                                                    count: new_counter
+                                                                                }
+                                                                            },
+                                                                            function (err, user2) {
+
+                                                                                if (!err) {
+
+                                                                                    // City Wise Update
+
+                                                                                    // console.log("Inside Flight Analytics 1");
+
+
+                                                                                    var new_total_city;
+                                                                                    var new_counter_city;
+                                                                                    coll = mongo.collection('city_analytics');
+
+                                                                                    coll.findOne({name: msg.origin_station,
+                                                                                            year:new Date().getFullYear()},
+                                                                                        function(err, user){
+                                                                                            if(user && user.name)
+                                                                                            {
+                                                                                                new_total_city = user.revenue+msg.totalprice;
+                                                                                                new_counter_city = user.count+1;
+
+                                                                                                console.log("Inside City Analytics");
+
+                                                                                                coll.update({name: msg.origin_station,
+                                                                                                        year:new Date().getFullYear()
+                                                                                                    }, {
+                                                                                                        $set: {
+                                                                                                            revenue: new_total_city,
+                                                                                                            count: new_counter_city
+                                                                                                        }
+                                                                                                    },
+                                                                                                    function (err, user2) {
+
+                                                                                                    if(!err)
+                                                                                                    {
+                                                                                                        response.code = "200";
+                                                                                                        console.log("Success" + response);
+                                                                                                        callback(null, response);
+
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        response.code = "400";
+                                                                                                        console.log("Fail" + response);
+                                                                                                        callback(null, response);
+                                                                                                    }
+
+                                                                                                    });
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                coll.insert({name: msg.origin_station,
+                                                                                                        year:new Date().getFullYear(),
+                                                                                                        revenue: msg.totalprice,
+                                                                                                        count: 1
+                                                                                                    }
+                                                                                                    ,
+                                                                                                    function (err, user2) {
+                                                                                                        if(!err)
+                                                                                                        {
+                                                                                                            response.code = "200";
+                                                                                                            console.log("Success" + response);
+                                                                                                            callback(null, response);
+
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            response.code = "400";
+                                                                                                            console.log("Fail" + response);
+                                                                                                            callback(null, response);
+                                                                                                        }
+
+                                                                                                    })
+
+                                                                                            }
+
+                                                                                        });
+                                                                                }
+                                                                                    else
+                                                                                {
+                                                                                    response.code = "400";
+                                                                                    console.log("Fail" + response);
+                                                                                    callback(null, response);
+                                                                                }
+                                                                        });
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        console.log("Inside Flight Analytics");
+                                                                        coll.insert({name: msg.airline_name,
+                                                                                year:new Date().getFullYear(),
+                                                                                revenue: msg.totalprice,
+                                                                                count: 1
+                                                                                }
+                                                                            ,
+                                                                            function (err, user2) {
+
+                                                                                console.log("Inside Flight Analytics 2");
+
+                                                                                if (!err) {
+
+                                                                                    coll = mongo.collection('city_analytics');
+
+                                                                                    coll.findOne({name: msg.origin_station,
+                                                                                            year:new Date().getFullYear()},
+                                                                                        function(err, user){
+                                                                                            if(user && user.name)
+                                                                                            {
+                                                                                                new_total_city = user.revenue+msg.totalprice;
+                                                                                                new_counter_city = user.count+1;
+
+                                                                                                console.log("Inside City Analytics");
+
+                                                                                                coll.update({name: msg.origin_station,
+                                                                                                        year:new Date().getFullYear()
+                                                                                                    }, {
+                                                                                                        $set: {
+                                                                                                            revenue: new_total_city,
+                                                                                                            count: new_counter_city
+                                                                                                        }
+                                                                                                    },
+                                                                                                    function (err, user2) {
+
+                                                                                                        if(!err)
+                                                                                                        {
+                                                                                                            response.code = "200";
+                                                                                                            console.log("Success" + response);
+                                                                                                            callback(null, response);
+
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            response.code = "400";
+                                                                                                            console.log("Fail" + response);
+                                                                                                            callback(null, response);
+                                                                                                        }
+
+                                                                                                    });
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                coll.insert({name: msg.origin_station,
+                                                                                                        year:new Date().getFullYear(),
+                                                                                                        revenue: msg.totalprice,
+                                                                                                        count: 1
+                                                                                                    }
+                                                                                                    ,
+                                                                                                    function (err, user2) {
+                                                                                                        if(!err)
+                                                                                                        {
+                                                                                                            response.code = "200";
+                                                                                                            console.log("Success" + response);
+                                                                                                            callback(null, response);
+
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            response.code = "400";
+                                                                                                            console.log("Fail" + response);
+                                                                                                            callback(null, response);
+                                                                                                        }
+
+                                                                                                    })
+
+                                                                                            }
+
+                                                                                        });
+
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    response.code = "400";
+                                                                                    console.log("Fail" + response);
+                                                                                    callback(null, response);
+
+                                                                                }
+                                                                        });
+
+                                                                    }
+
+                                                                })
                                                             }
                                                             else {
                                                                 response.code = "400";
