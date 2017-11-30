@@ -196,8 +196,10 @@ class Car extends Component {
                     this.setState({
                         message: "Inserted Car Data Successfully..!!",
                     });
+                    this.getCarDetails();
                     alert("Car Data Inserted Successfully..!!");
-                    window.location.href = '/car';
+                    this.setState({visible: !this.state.visible});
+                    //window.location.href = '/car';
                 } else if (status === 401) {
                     alert("Error while inserting car data.");
                     this.setState({
@@ -211,7 +213,10 @@ class Car extends Component {
         API.updatecar(newdata)
             .then((output) => {
                 if (output === 1) {
+
+                    this.getCarDetails();
                     alert("Car updated Successfully.");
+
                     window.location.href = '/car';
 
                 } else {
@@ -277,6 +282,7 @@ class Car extends Component {
                    // alert(JSON.stringify(status))
                     if (status.status == '201') {
                         this.getCarDetails();
+                        this.setState({visible: !this.state.visible});
                         alert("Inserted Car Data Successfully..!!")
 
                     } else if (status === 401) {

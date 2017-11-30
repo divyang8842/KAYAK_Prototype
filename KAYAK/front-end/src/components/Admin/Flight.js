@@ -30,7 +30,8 @@ class Flight extends Component {
             departuretime:'',
             arrivaltime:'',
             flightData:[],
-            type:''
+            type:'',
+            visible:false
         };
     }
 
@@ -169,7 +170,8 @@ class Flight extends Component {
                // alert(JSON.stringify(data));
                 if(data){
                     this.setState({
-                        flightData:data.value
+                        flightData:data.value,
+
                     });
 
                 }
@@ -185,9 +187,11 @@ class Flight extends Component {
         API.updateFlight(newdata)
             .then((output) => {
                 if (output === 1) {
-                    alert("Car updated");
+                    this.getFlightDetails();
+                    alert("Flight data updated successfully.");
+                    this.setState({visible: !this.state.visible});
                 } else {
-                    alert("Car not updated");
+                    alert("Error while updating Flight data.");
                 }
             });
     };
@@ -200,16 +204,17 @@ class Flight extends Component {
                // alert(JSON.stringify(status))
                 if (status.status == '201') {
                     this.setState({
-                        root:status.root,
-                        isLoggedIn: false,
                         message: "Inserted Flight Data Successfully..!!",
                     });
-                    alert("Inserted Flight Data Successfully..!!")
+                    this.getFlightDetails();
+                    this.setState({visible: !this.state.visible});
+                    alert("Inserted Flight Data Successfully..!!");
+
                 } else if (status === 401) {
                     this.setState({
-                        isLoggedIn: false,
-                        message: "SignUp Failed"
+                        message: "Error while inserting flight data."
                     });
+                    alert("Error while inserting flight data.")
                 }
             });
     };
@@ -278,15 +283,14 @@ class Flight extends Component {
                    // alert(JSON.stringify(status))
                     if (status.status == '201') {
                         this.setState({
-                            root:status.root,
-                            isLoggedIn: false,
                             message: "Inserted Flight Data Successfully..!!",
                         });
                         alert("Inserted Flight Data Successfully..!!")
+                        this.setState({visible: !this.state.visible});
                     } else if (status === 401) {
+                        alert("Error while inserting flight data.");
                         this.setState({
-                            isLoggedIn: false,
-                            message: "SignUp Failed"
+                            message: "Error while inserting flight data."
                         });
                     }
                 });
@@ -298,9 +302,9 @@ class Flight extends Component {
             API.deleteFlight(flightid)
                 .then((output) => {
                     if (output === 1) {
-                        console.log("Deleted");
+                        alert("Flight data deleted.");
                     } else {
-                        console.log("Cars not updated");
+                        alert("Error while deleting flight.");
                     }
                 });
 
@@ -399,9 +403,9 @@ class Flight extends Component {
 
         return (
             <div>
-                <div className="btn-group btn-group-sm" role="group">
+                {this.state.visible ? null:  <div className="btn-group btn-group-sm" role="group">
                     <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
-                </div>
+
 
                 <BootstrapTable  data={flightList} selectRow={ selectRowProp }  deleteRow={ true }  options={ options } pagination>
                     <TableHeaderColumn dataField='flight_id' isKey hidden>Flight ID</TableHeaderColumn>
@@ -421,6 +425,7 @@ class Flight extends Component {
 
 
                 </BootstrapTable>
+                </div>}
 
                 {this.state.visible ? <div id="fh5co-page">
                     <div className="container">
