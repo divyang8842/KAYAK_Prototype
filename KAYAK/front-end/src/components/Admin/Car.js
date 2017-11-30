@@ -194,16 +194,14 @@ class Car extends Component {
                // alert(JSON.stringify(status))
                 if (status.status == '201') {
                     this.setState({
-                        root:status.root,
-                        isLoggedIn: false,
                         message: "Inserted Car Data Successfully..!!",
                     });
-                    alert("Inserted Flight Data Successfully..!!");
+                    alert("Car Data Inserted Successfully..!!");
                     window.location.href = '/car';
                 } else if (status === 401) {
+                    alert("Error while inserting car data.");
                     this.setState({
-                        isLoggedIn: false,
-                        message: "SignUp Failed"
+                        message: "Error while inserting car data."
                     });
                 }
             });
@@ -213,11 +211,11 @@ class Car extends Component {
         API.updatecar(newdata)
             .then((output) => {
                 if (output === 1) {
-                    alert("Car updated");
+                    alert("Car updated Successfully.");
                     window.location.href = '/car';
 
                 } else {
-                    alert("Car not updated");
+                    alert("Error while updating Car data.");
                 }
             });
     };
@@ -263,11 +261,10 @@ class Car extends Component {
             API.updatecar(newdata)
                 .then((output) => {
                     if (output === 1) {
-                        alert("Car updated");
+                        alert("Car updated Successfully.");
                         window.location.href = '/car';
-
                     } else {
-                       alert("Car not updated");
+                       alert("Error while updating car data.");
                     }
                 });
         };
@@ -280,10 +277,9 @@ class Car extends Component {
                     if (status.status == '201') {
 
                         alert("Inserted Car Data Successfully..!!")
-                        this.componentWillMount();
+                        this.getCarDetails();
                     } else if (status === 401) {
                         this.setState({
-                            isLoggedIn: false,
                             message: "SignUp Failed"
                         });
                     }
@@ -297,9 +293,9 @@ class Car extends Component {
             API.deleteCar(carid)
                 .then((output) => {
                     if (output === 1) {
-                        console.log("Deleted");
+                        alert("Car deleted successfully");
                     } else {
-                        console.log("Cars not updated");
+                       alert("Error while deleting entry.");
                     }
                 });
 
@@ -399,9 +395,10 @@ var newdata={type:'car',id:obj.car_id};
 
         return (
             <div>
-                <div className="btn-group btn-group-sm" role="group">
+                {this.state.visible ?null :
+                    <div className="btn-group btn-group-sm" role="group">
                     <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
-                </div>
+
 
          <BootstrapTable  data={carList} selectRow={ selectRowProp }  deleteRow={ true }  options={ options } pagination>
                     <TableHeaderColumn dataField='car_id' isKey hidden>Car ID</TableHeaderColumn>
@@ -425,7 +422,7 @@ var newdata={type:'car',id:obj.car_id};
 
 
          </BootstrapTable>
-
+                </div>}
                 {this.state.visible ? <div id="fh5co-page">
 
                     <div className="container">
