@@ -14,6 +14,7 @@ var admin_Flight=require('./services/admin/Flights');
 var admin_Users=require('./services/admin/Users');
 var file_utils = require('./services/utils/FileUtils');
 var user_tracking = require('./services/UserTracking/UserTracking');
+var admin_Booking=require('./services/admin/Bookings');
 var chart = require('./services/admin/analytics/chartsData');
 
 var fs = require('fs');
@@ -577,6 +578,57 @@ consumer_HotelsOps.on('message', function (message) {
                     messages:JSON.stringify({
                         correlationId:data.correlationId,
                         data : res.value
+                    }),
+                    partition : 0
+                }];
+            producer.send(payloads, function(err, data){
+                console.log("Producer:-- ");
+            });
+            return;
+        });
+    }
+    else if(action==17){
+        admin_Booking.getHotelBookings(data.data, function(err,res){
+            //console.log('after handle'+res.value[0].count);
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res
+                    }),
+                    partition : 0
+                }];
+            producer.send(payloads, function(err, data){
+                console.log("Producer:-- ");
+            });
+            return;
+        });
+    }
+    else if(action==18){
+        admin_Booking.getFlightBookings(data.data, function(err,res){
+            //console.log('after handle'+res.value[0].count);
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res
+                    }),
+                    partition : 0
+                }];
+            producer.send(payloads, function(err, data){
+                console.log("Producer:-- ");
+            });
+            return;
+        });
+    }
+    else if(action==19){
+        admin_Booking.getCarBookings(data.data, function(err,res){
+            console.log('after handle'+JSON.stringify(res));
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res
                     }),
                     partition : 0
                 }];

@@ -10,6 +10,7 @@ var cors = require('cors');
 var adminHotel = require('./routes/admin/hotel');
 var adminCar = require('./routes/admin/car');
 var adminUsers=require('./routes/admin/users');
+var adminBookings=require('./routes/admin/bookings');
 
 var getFlights = require('./routes/Flights/GetFlights');
 var flightsBooking = require('./routes/Flights/FlightBooking');
@@ -112,6 +113,10 @@ app.post('/listhotels',security.authenticateAdmin,adminHotel.getHotelData);
 app.post('/listCarsData',security.authenticateAdmin,adminCar.getCarData);
 app.post('/listFlightsData',security.authenticateAdmin,adminFlight.getFlightData);
 app.post('/getChartsData',security.authenticateAdmin,adminCharts.getChartData);
+
+app.post('/getHotelBookings',security.authenticateAdmin,adminBookings.getHotelBookings);
+app.post('/getFlightBookings',security.authenticateAdmin,adminBookings.getFlightBookings);
+app.post('/getCarBookings',security.authenticateAdmin,adminBookings.getCarBookings);
 
 app.post('/validateLogin',security.getLoggedInInfoFromSession);
 
