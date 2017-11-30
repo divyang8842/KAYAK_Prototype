@@ -75,6 +75,7 @@ consumer_login.on('message', function (message) {
 
     else if(action==1){
       signup.afterSignUp(data.data, function(err,res){
+        console.log("SERVER CHECK: "+res.code);
           var payloads = [
               { topic: data.replyTo,
                   messages:JSON.stringify({
@@ -794,4 +795,3 @@ consumer_charts.on('message', function (message) {
         return;
     });
 });
-

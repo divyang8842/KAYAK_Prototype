@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Route, Link,Switch } from 'react-router-dom';
 import Login from './Login';
+import Signup from './Signup';
 import Search from './Search';
 import Account from './Account';
 import HotelsHome from './Hotels/HotelsHome';
@@ -16,7 +17,6 @@ import Flight from './Admin/Flight';
 import Flightbooking from './Flights/FlightBooking';
 import HotelBooking from './Hotels/HotelBooking';
 import Dialog from 'react-bootstrap-dialog';
-//import Modal from 'react-bootstrap-modal';
 
 import * as API from '../api/SigninSignup-API';
 import '../public/css/animate.css';
@@ -40,6 +40,7 @@ class Home extends Component {
   };
 
   logged = (id,ty,name) => {
+    //this.refs.closeButton.click();
     this.setState({islogged:'true',uid:id,firstname:name,type:ty});
     if(ty==1)
     this.setState({isAdmin:true});
@@ -51,6 +52,10 @@ class Home extends Component {
     this.setState({islogged:'false',uid:'',firstname:'',name:''});
   }
 
+  closeModal=()=>{
+      this.refs.closeLogin.click();
+      this.refs.closeSignup.click();
+  }
   componentDidMount()
   {
     if(localStorage.getItem('userid')){
@@ -107,9 +112,10 @@ class Home extends Component {
                     <li><Link to='/flightsearch'>Flight</Link></li>
                     <li><Link to='/hotelsearch'>Hotel</Link></li>
                     <li><Link to='/carsearch'>Car</Link></li>
-                  {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
+                  {this.state.islogged==='false' ? (<li><Link to='' onClick={e => e.preventDefault()}>My Account</Link> <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li>
+                                                                                                                                                       <li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#signupModal">Sign up</button></li></ul></li>)
                   : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
-      						</ul>
+                  </ul>
       					</nav>:<nav id="fh5co-menu-wrap" role="navigation">
                             <ul className="sf-menu" id="fh5co-primary-menu">
                                 <li className="active"><Link to='/'>AdminHome</Link></li>
@@ -118,11 +124,11 @@ class Home extends Component {
                                 <li><Link to='/car'>Car</Link></li>
                                 <li><Link to='/analytics'>Analytics</Link></li>
                                 <li><Link to='' onClick={e => e.preventDefault()}>Manage</Link> <ul className="fh5co-sub-menu"><li><Link to='/AdminUsers'>Users</Link></li><li><Link to='/AdminCreate'>Admin</Link></li></ul></li>
-                                {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
+                                {this.state.islogged==='false' ? (<li><Link to='' onClick={e => e.preventDefault()}>My Account</Link> <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li>
+                                                                                                                                                                     <li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#signupModal">Sign up</button></li></ul></li>)
                                     : (<li><Link to='' onClick={e => e.preventDefault()}>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                             </ul>
                         </nav>}
-
       				</div>
       			</div>
       		</header>
@@ -148,6 +154,36 @@ class Home extends Component {
              <Route exact path="/AdminCreate" component={() => <AdminCreate user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
              <Route exact path="/analytics" component={() => <Analytics/>}/>
          </Switch>
+
+         <div className="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+           <div className="modal-dialog" role="document">
+             <div className="modal-content">
+               <div className="modal-header">
+                 <button type="button" ref="closeLogin" className="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                 </button>
+               </div>
+               <div className="modal-body">
+                <Login handleClose={this.closeModal} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>
+               </div>
+             </div>
+           </div>
+         </div>
+
+         <div className="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+           <div className="modal-dialog" role="document">
+             <div className="modal-content">
+               <div className="modal-header">
+                 <button type="button" ref="closeSignup" className="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                 </button>
+               </div>
+               <div className="modal-body">
+                <Signup handleClose={this.closeModal}/>
+               </div>
+             </div>
+           </div>
+         </div>
 
 
           </div>
