@@ -153,7 +153,7 @@ function handle_request(msg, callback){
                                                                         year:new Date().getFullYear()},
                                                                     function(err, user){
                                                                     console.log("user"+JSON.stringify(user));
-                                                                       
+
                                                                     if(user && user.name)
                                                                     {
                                                                         new_total = user.revenue+msg.totalprice;
