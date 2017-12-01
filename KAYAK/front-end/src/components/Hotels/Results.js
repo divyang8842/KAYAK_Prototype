@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {getHotelsBooking} from '../../actions/Hotels/Hotels';
+import {getHotelsBooking, updateRoomtype} from '../../actions/Hotels/Hotels';
 import {Route, Link, Switch, withRouter} from 'react-router-dom';
 import '../../public/css/animate.css';
 import '../../public/css/bootstrap.css';
@@ -14,6 +14,7 @@ import '../../public/css/cs-skin-border.css';
 import '../../public/css/style.css';
 import '../../public/css/filter.css';
 import '../../public/css/star.css';
+import '../../public/css/radio.css';
 import * as HotelsAPI from '../../api/HotelsAPI';
 import SearchPanel from './SearchPanel';
 
@@ -33,7 +34,8 @@ class Results extends Component {
       chk_tennis: false,
       chk_airport: false
     },
-    filtered: false
+    filtered: false,
+    roomtype: 0 //0-King, 1-Queen, 2-Standard
   }
 
   componentWillMount() {
@@ -41,13 +43,15 @@ class Results extends Component {
   }
 
   handleBooking(hotelItem) {
-    this
-      .props
-      .getHotelsBooking(hotelItem);
-    this
-      .props
-      .history
-      .push("/hotelsbooking");
+      if(this.props.isLogged =='true'){
+      this
+        .props
+        .getHotelsBooking(hotelItem);
+      this
+        .props
+        .history
+        .push("/hotelsbooking");
+    }
 
     // var checkin = this.props.hotels.checkin; var checkout =
     // this.props.hotels.checkout; var roomtype = "0"; //0=King, 1=Queen, 2=Standard
@@ -57,6 +61,10 @@ class Results extends Component {
     // this.props.loadHotels(result);       //
     // this.props.loadFilteredHotels(result);       //
     // this.props.history.push("/Hotels");     } });
+  }
+
+  setRoomType(){
+    this.props.updateRoomtype(this.state.roomtype);
   }
 
   createHotelsList() {
@@ -101,7 +109,12 @@ class Results extends Component {
                   <h4 class="price">${hotelItem.standard_rates}</h4>
                   <br/>
                   {/* <button class="btn btn-primary" onClick={() => this.handleBooking(hotelItem)}>View Deal</button> */}
-                  <button type="button" class="searchbtn" data-toggle="modal" data-target="#myModal">View Deal</button>
+                  {this.props.isLogged=='false' ? 
+                    (<button type="button" class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
+                    :
+                    (<button type="button" class="searchbtn" data-toggle="modal" data-target="#myModal">View Deal</button>)
+                  }
+                  {/* <button type="button" class="searchbtn" data-toggle="modal" data-target="#myModal">View Deal</button> */}
                   
                   <div id="myModal" class="modal fade" role="dialog">
                     <div class="modal-dialog">
@@ -111,8 +124,46 @@ class Results extends Component {
                           <h4 class="modal-title">Select Room</h4>
                         </div>
                         <div class="modal-body">
-                          <p>Some text in the modal.</p>
-                        </div>
+                          {/* <p>Modal Body</p> */}
+
+                          <div class="container">
+                            <div>
+                              <input type="radio" id="f-option" name="selector"
+                                onClick={(event) => {
+                                  this.setState({
+                                    ...this.state,
+                                    roomtype: 0
+                                  }, this.setRoomType);
+                                }}/>
+                              <label style={{width:150, margin:4}} for="f-option">King Room</label>
+                              <label style={{width:50, margin:4}} for="f-option">${hotelItem.king_rates}</label>
+                            </div>
+                            <div>
+                              <input type="radio" id="s-option" name="selector"
+                              onClick={(event) => {
+                                this.setState({
+                                  ...this.state,
+                                  roomtype: 1
+                                }, this.setRoomType);
+                              }}/>
+                              <label style={{width:150, margin:4}} for="f-option">Queen Room</label>
+                              <label style={{width:50, margin:4}} for="f-option">${hotelItem.queen_rates}</label>
+                            </div>
+                            <div>
+                              <input type="radio" id="s-option" name="selector"
+                              onClick={(event) => {
+                                this.setState({
+                                  ...this.state,
+                                  roomtype: 2
+                                }, this.setRoomType);
+                              }}/>
+                              <label style={{width:150, margin:4}} for="f-option">Standard Room</label>
+                              <label style={{width:50, margin:4}} for="f-option">${hotelItem.standard_rates}</label>
+                            </div>
+                          </div>
+
+
+                        </div> 
                         <div class="modal-footer">
                           <button type="button" class="searchbtn" data-dismiss="modal" onClick={() => this.handleBooking(hotelItem)}>Continue</button>
                         </div>
@@ -530,7 +581,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    getHotelsBooking: getHotelsBooking
+    getHotelsBooking: getHotelsBooking,
+    updateRoomtype:updateRoomtype
   }, dispatch);
 }
 

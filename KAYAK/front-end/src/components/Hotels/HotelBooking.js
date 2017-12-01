@@ -37,9 +37,10 @@ class HotelBooking extends Component {
 
                                 var checkin = this.props.hotels.checkin;
                                 var checkout = this.props.hotels.checkout;
-                                var roomtype = "0"; //0=King, 1=Queen, 2=Standard
                                 var roomcount = this.props.hotels.roomcount;
+                                var roomtype = this.props.hotels.roomtype;
                                 var hotelItem = this.props.hotelsbooking;
+                                console.log(hotelItem);
                             
                                 HotelsAPI.doHotelBooking({hotelItem, checkin, checkout, roomtype, roomcount})
                                 .then((status) => {

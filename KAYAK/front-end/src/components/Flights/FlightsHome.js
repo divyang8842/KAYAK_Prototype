@@ -18,7 +18,7 @@ class FlightsHome extends Component {
                     {/*</h1>*/}
                 {/*</div>*/}
                 <div className="row">
-                     <FLightResults/>
+                     <FLightResults isLogged={this.props.isLogged}/>
 
                 </div>
             </div>
