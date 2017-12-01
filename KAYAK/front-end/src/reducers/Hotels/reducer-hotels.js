@@ -1,11 +1,13 @@
 import {LOAD_HOTELS} from '../../actions/Hotels/Hotels';
 import {LOAD_HOTELIMAGE} from '../../actions/Hotels/Hotels';
+import {LOAD_ROOMTYPE} from '../../actions/Hotels/Hotels';
 
 const initialState ={
     hotels:[],
     checkin:'',
     checkout:'',
-    roomcount: ''
+    roomcount:'',
+    roomtype:''
 };
 
 const Hotels = (state = initialState, action) => { 
@@ -15,7 +17,8 @@ const Hotels = (state = initialState, action) => {
             hotels: action.data.results.value,
             checkin: action.data.checkin,
             checkout: action.data.checkout,
-            roomcount: action.data.rooms
+            roomcount: action.data.rooms,
+            roomtype: state.roomtype
         };
         console.log(state);
         return state;
@@ -33,8 +36,21 @@ const Hotels = (state = initialState, action) => {
                 hotels: state.hotels,
                 checkin: state.checkin,
                 checkout: state.checkout,
-                roomcount: state.roomcount
+                roomcount: state.roomcount,
+                roomtype: state.roomtype
             };
+            return state;
+
+        case LOAD_ROOMTYPE :
+            state = {
+                roomtype: action.data,
+                hotels: state.hotels,
+                checkin: state.checkin,
+                checkout: state.checkout,
+                roomcount: state.roomcount
+                
+            };
+            console.log(state);
             return state;
 
         default :

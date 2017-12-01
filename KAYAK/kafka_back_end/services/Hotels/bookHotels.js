@@ -10,13 +10,13 @@ function handle_booking(msg, callback){
     var hotelid = msg.hotelitem.hotel_id;
     var checkin = msg.checkin;
     var checkout = msg.checkout;
-    var roomtype = msg.roomtype;
+    var roomtype = msg.roomtype.toString();
     var roomcount = msg.roomcount;
     var fetchQuery = "";
     var res={};
 
     console.log("roomcount:"+roomcount);
-
+    console.log("roomcount:"+hotelid);
     switch(roomtype){
         case "0":{
             fetchQuery="UPDATE hotel_availability SET king_rooms = king_rooms-? WHERE hotel_id=? AND date>=? AND date<=?";
