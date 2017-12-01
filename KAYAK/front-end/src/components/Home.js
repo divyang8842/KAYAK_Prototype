@@ -105,10 +105,8 @@ class Home extends Component {
                 <header id="fh5co-header-section" className="sticky-banner">
                     <div className="container">
                         <div className="nav-header">
-                            <div><h1 id="fh5co-logo"><a href="http://localhost:3000/"></a></h1></div>
 
-
-                               <a> <img style={{width:160,height:40,paddingTop:12}}
+                               <a href="http://localhost:3000/"> <img style={{width:160,height:40,paddingTop:12}}
 
                                     src={require('../public/images/KAYAK_LOGO.png')}
                                /></a>
