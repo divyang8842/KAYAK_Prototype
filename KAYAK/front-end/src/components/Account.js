@@ -20,6 +20,7 @@ class Account extends Component {
     password:'',
     userEmail:'',
     visible:false,
+    visible1:false,
     srcdata:'',
 
     formErrors: {email:'',password:'',firstname: '',lastname: '',addr: '',city:'',state:'',phone:'',credit:'',zip:'',userEmail:''},
@@ -39,7 +40,11 @@ class Account extends Component {
   };
 
   changePwd() {
-    this.setState({visible: !this.state.visible});
+    this.setState({visible: !this.state.visible,visible1: false});
+  }
+
+  changeUsername() {
+    this.setState({visible1: !this.state.visible,visible: false});
   }
 
 /*
@@ -330,29 +335,32 @@ handleDetails = (details) => {
                                            type:true}, () => { this.validateField(name, value)});}}/>
             </div>
             </div>
-            {/*<div className="col-xxs-12 col-xs-6 mt">
+            <div className="col-xxs-12 col-xs-6 mt">
             <div className="input-field">
             <div className={'form-group ${this.errorClass(this.state.formErrors1.email)}'}>
             <label>Email:</label>
-            <input type="text" ref="em" value={this.state.email} className="form-control" onChange={(event)=>{const name="email"
-                                        const value=event.target.value
-                                       this.setState({email: event.target.value,type:true}, () => { this.validateField(name, value) });}} onInput={(event)=>{const name="check"
-                                                         const value=event.target.value
-                                                         this.setState({email: event.target.value,type:true}, () => { this.validateField(name, value) });}}/>
+            <input type="text" ref="em" value={this.state.email} className="form-control" readonly/>
           </div>
         </div>
-      </div>*/}
+      </div>
                   <div className="col-xxs-12 col-xs-12 mt"></div>
                   <div className="col-xs-2">
                   <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleDetails(this.state)}>Submit</button>
                   </div>
                   <div className="col-xxs-12 col-xs-12 mt"></div>
                   <div className="col-xxs-12 col-xs-12 mt"></div>
-                  <div className="ol-xxs-12 col-xs-3">
+                  <div className="col-xxs-12 col-xs-3 mt">
                   <button type="button" className="btn btn-primary btn-block" value="Change Password" onClick={() => this.changePwd()}>Change Password</button>
                   </div>
                   </div>
                   </form>
+                  <div>
+                    {
+                      this.state.visible1
+                        ? <Changeusername id={this.state.uid}/>
+                        : null
+                    }
+                  </div>
                   <div>
                     {
                       this.state.visible
@@ -363,10 +371,77 @@ handleDetails = (details) => {
       </div>
 </div>
 </div>
-</div>):(<Login handleLogged={this.props.handleLogged} handleNotLogged={this.props.handleNotLogged}/>)}
+</div>):null}
 </div>
 );}}
 
+class Changeusername extends Component {
+  state={
+    password:'',
+    formErrors: {password: ''},
+    validPassword:false
+  };
+
+  handleEmail = (pwd) => {
+              API.updatePwd(pwd)
+                  .then((output) => {
+                      if (output === 0) {
+                          console.log("Failed pwd update");
+                      } else {
+                          console.log("Success pwd update");
+                      }
+                  });
+          };
+
+  validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.formErrors;
+      let passwordValid = this.state.passwordValid;
+      switch(fieldName) {
+          case 'password':
+              passwordValid = value.length >= 3;
+              fieldValidationErrors.password = passwordValid ? '': ' is too short';
+              break;
+          default:
+              break;
+      }
+      this.setState({formErrors: fieldValidationErrors,
+          passwordValid: passwordValid,
+      }, this.validateForm);
+  }
+
+  validateForm() {
+      this.setState({formValid: this.state.passwordValid});
+  }
+
+  render() {
+console.log("ID: "+this.props.id);
+      return (
+        <div>
+        <div id="fh5co-page">
+        <div className="container">
+          <div className="row">
+          <form>
+          <div className="row">
+          <FormErrors formErrors={this.state.formErrors} />
+          <div className="col-xxs-12 col-xs-4 mt">
+          <div className="input-field">
+            <label>New Password:</label>
+            <input type="password" ref="pwd" className="form-control" onChange={(event)=>{const name="password"
+                                      const value=event.target.value
+                                          this.setState({password: event.target.value,type:true}, () => { this.validateField(name, value) });}} required/>
+          </div>
+          </div><br/><br/><br/><br/>
+          <div className="col-xxs-12 col-xs-12 mt"></div>
+                <div className="col-xxs-3 col-xs-3 mt">
+                <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.handlePassword(this.state)}>Submit</button>
+                </div>
+                </div>
+                </form>
+        </div>
+        </div>
+        </div>
+</div>
+);}}
 
 class Changepassword extends Component {
   state={
@@ -435,5 +510,7 @@ console.log("ID: "+this.props.id);
         </div>
 </div>
 );}}
+
+
 
 export default Account;

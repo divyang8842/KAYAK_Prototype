@@ -44,7 +44,7 @@ class Analytics extends Component {
               }
               for(var i=0;i<hotel_count_len;i++){
                 hotel_count_label.push(result.hotel_count.title[i]);
-                hotel_count_data.push(result.hotel_data.data[i]);
+                hotel_count_data.push(result.hotel_count.data[i]);
               }
               for(var i=0;i<hotel_revenue_len;i++){
                 hotel_revenue_label.push(result.hotel_revenue.title[i]);
@@ -103,7 +103,7 @@ class Analytics extends Component {
                     hotelCount:{
                       labels: hotel_count_label,
                       datasets:[{ label:'Hotel Count',
-                                  data:hotel_count_label,
+                                  data:hotel_count_data,
                                   backgroundColor:[
                                             'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
                                             'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
@@ -326,7 +326,7 @@ class Analytics extends Component {
         <div className="w3-bar">
         <div className="col-xxs-3 col-xs-3 mt"></div>
         <div className="col-xxs-7 col-xs-7 mt">
-        <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 car agency" onClick={() => this.showDiv(1)}>Top 10 car agency</button>
+            <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 car agency" onClick={() => this.showDiv(1)}>Top 10 car agency</button>
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 flights" onClick={() => this.showDiv(2)}>Top 10 flights</button>
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 hotels" onClick={() => this.showDiv(3)}>Top 10 hotels</button>
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 cities" onClick={() => this.showDiv(4)}>Top 10 cities</button>
