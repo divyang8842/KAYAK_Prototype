@@ -326,7 +326,7 @@ class Analytics extends Component {
         <div className="w3-bar">
         <div className="col-xxs-3 col-xs-3 mt"></div>
         <div className="col-xxs-7 col-xs-7 mt">
-        <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 car agency" onClick={() => this.showDiv(1)}>Top 10 car agency</button>
+            <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 car agency" onClick={() => this.showDiv(1)}>Top 10 car agency</button>
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 flights" onClick={() => this.showDiv(2)}>Top 10 flights</button>
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 hotels" onClick={() => this.showDiv(3)}>Top 10 hotels</button>
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 cities" onClick={() => this.showDiv(4)}>Top 10 cities</button>

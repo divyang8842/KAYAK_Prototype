@@ -14,20 +14,9 @@ var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
 class Bookings extends Component {
 
     state={
-        user:'',
-        carid:'',
-        cartype: '',
-        carclass: '',
-        carmodel:'',
-        carcity:'',
-        car_dropoffcity:'',
-        passengers:'',
-        doors:'',
-        bags:'',
-        availableplace:'',
-        carrent:'',
-        cardistance:'',
-        caragency:'',
+        flightBooking:true,
+        hotelBooking:false,
+        carBooking:false,
         carBookingData:[],
         hotelBookingData:[],
         flightBookingData:[],
@@ -38,10 +27,8 @@ class Bookings extends Component {
     };
 
     componentWillMount(){
+        this.getFlightBookings();
 
-       this.getCarBookings();
-       this.getHotelBookings();
-       this.getFlightBookings();
 
     }
 
@@ -93,6 +80,25 @@ class Bookings extends Component {
             });
     }
 
+     showDiv(n) {
+        if(n===1){
+            this.getFlightBookings();
+            this.setState({flightBooking: true,hotelBooking: false,carBooking: false});
+        }
+        else if(n===2){
+            this.getHotelBookings();
+            this.setState({flightBooking: false,hotelBooking: true,carBooking: false});
+
+        }
+        else if(n===3){
+            this.getCarBookings();
+            this.setState({flightBooking: false,hotelBooking: false,carBooking: true});
+
+        }
+
+    }
+
+
 
 
 
@@ -106,9 +112,36 @@ class Bookings extends Component {
 
 
         return (
-            <div>
 
-                <h3>Car Bookings</h3>
+            <div>
+                <div>
+                    <div id="fh5co-page">
+                        <div className="container">
+                            <h3 style={{fontWeight:"bold",textAlign:"center"}}>Bookings</h3>
+                            <div className="col-xxs-12 col-xs-12 mt"></div>
+
+                            <div className="row">
+
+                                <div className="w3-bar">
+                                    <div className="col-xxs-3 col-xs-3 mt"></div>
+                                    <div className="col-xxs-7 col-xs-7 mt" style={{marginLeft: 60}}>
+                                        <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 car agency" onClick={() => this.showDiv(1)}>Flight Bookings</button>
+                                        <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 flights" onClick={() => this.showDiv(2)}>Hotel Bookings</button>
+                                        <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 hotels" onClick={() => this.showDiv(3)}>Car Bookings</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-xxs-12 col-xs-12 mt"></div>
+                            <div className="col-xxs-12 col-xs-12 mt"></div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+                {this.state.carBooking? (<div>  <h3>Car Bookings</h3>
                 <BootstrapTable  data={carBookings} pagination>
                     <TableHeaderColumn dataField='_id' isKey hidden>Car ID</TableHeaderColumn>
                     <TableHeaderColumn dataField='car_type'  filter={ { type: 'TextFilter', delay: 1000 } }>Car Type</TableHeaderColumn>
@@ -130,9 +163,9 @@ class Bookings extends Component {
                     <TableHeaderColumn dataField='car_agency' width='150'  >Car Agency</TableHeaderColumn>
 
 
-                </BootstrapTable>
+                </BootstrapTable></div>):
 
-                <h3>Flight Bookings</h3>
+                    (this.state.flightBooking ? (<div>   <h3>Flight Bookings</h3>
                 <BootstrapTable  data={flightBookings} pagination>
                     <TableHeaderColumn dataField='car_id' isKey hidden>Car ID</TableHeaderColumn>
                     <TableHeaderColumn dataField='car_type'  filter={ { type: 'TextFilter', delay: 1000 } }>Car Type</TableHeaderColumn>
@@ -154,9 +187,9 @@ class Bookings extends Component {
                     <TableHeaderColumn dataField='car_agency' width='150'  >Car Agency</TableHeaderColumn>
 
 
-                </BootstrapTable>
+                </BootstrapTable></div>):
 
-                <h3>Hotel Bookings</h3>
+                        (this.state.hotelBooking ? (<div>  <h3>Hotel Bookings</h3>
                 <BootstrapTable  data={hotelBookings}  pagination>
                     <TableHeaderColumn dataField='car_id' isKey hidden>Car ID</TableHeaderColumn>
                     <TableHeaderColumn dataField='car_type'  filter={ { type: 'TextFilter', delay: 1000 } }>Car Type</TableHeaderColumn>
@@ -178,7 +211,7 @@ class Bookings extends Component {
                     <TableHeaderColumn dataField='car_agency' width='150'  >Car Agency</TableHeaderColumn>
 
 
-                </BootstrapTable>
+                </BootstrapTable></div>): null))}
 
 
             </div>

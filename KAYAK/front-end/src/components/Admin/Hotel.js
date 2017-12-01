@@ -151,9 +151,8 @@ class Hotel extends Component {
                         message: "Inserted Hotel Data Successfully..!!",
                         hotelid:status.hotelid
                     });
-
-                    alert("Inserted Hotel Data Successfully..!!")
                     this.viewHotelDetails();
+                    alert("Inserted Hotel Data Successfully..!!")
                     this.setState({visible: !this.state.visible});
                 } else if (status === 401) {
                     this.setState({

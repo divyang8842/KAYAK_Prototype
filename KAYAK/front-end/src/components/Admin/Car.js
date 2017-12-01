@@ -284,6 +284,9 @@ class Car extends Component {
                 .then((status) => {
                    // alert(JSON.stringify(status))
                     if (status.status == '201') {
+                        this.setState({
+                            message: "Inserted Car   Data Successfully..!!",
+                        });
                         this.getCarDetails();
                         this.setState({visible: !this.state.visible});
                         alert("Inserted Car Data Successfully..!!");
@@ -525,9 +528,9 @@ var newdata={type:'car',id:obj.car_id};
                                     <div className="col-xxs-12 col-xs-6 mt">
                                         <div className="input-field">
                                             <label>Car Bags::</label>
-                                            <input type="text" placeholder="Enter Car Bags:" value={this.state.doors} className="form-control" onChange={(event)=>{const name="doors"
+                                            <input type="text" placeholder="Enter Car Bags:" value={this.state.bags} className="form-control" onChange={(event)=>{const name="bags"
                                                 const value=event.target.value
-                                                this.setState({doors: event.target.value,
+                                                this.setState({bags: event.target.value,
                                                     type:true}, () => { this.validateField(name, value)});}}/>
                                         </div>
                                     </div>
