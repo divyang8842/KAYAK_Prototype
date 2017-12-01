@@ -171,22 +171,22 @@ class Car extends Component {
 
 
 
+      getCarDetails=()=>{
+        API.viewCarDetails()
+            .then((data)=>{
+                if(data){
+                    this.setState({
+                        carData:data.value
+                    });
 
-    getCarDetails=()=>{
-            API.viewCarDetails()
-                .then((data)=>{
-                    if(data){
-                        this.setState({
-                            carData:data.value
-                        });
+                }
+                else
+                {
 
-                    }
-                    else
-                    {
+                }
+            });
+    }
 
-                    }
-                });
-        }
 
     insertCarDetails = (userdata) => {
         API.insertCarData(userdata)
@@ -197,9 +197,8 @@ class Car extends Component {
                         message: "Inserted Car Data Successfully..!!",
                     });
                     this.getCarDetails();
-                    alert("Car Data Inserted Successfully..!!");
                     this.setState({visible: !this.state.visible});
-                    //window.location.href = '/car';
+                    alert("Car Data Inserted Successfully..!!");
                 } else if (status === 401) {
                     alert("Error while inserting car data.");
                     this.setState({
@@ -263,6 +262,8 @@ class Car extends Component {
 
         var carList=this.state.carData;
 
+
+
        var updateCarData= (newdata) => {
           //  alert("CARID: "+JSON.stringify(newdata));
             API.updatecar(newdata)
@@ -285,7 +286,7 @@ class Car extends Component {
                     if (status.status == '201') {
                         this.getCarDetails();
                         this.setState({visible: !this.state.visible});
-                        alert("Inserted Car Data Successfully..!!")
+                        alert("Inserted Car Data Successfully..!!");
 
                     } else if (status === 401) {
                         alert("Error while inserting car data.");
@@ -296,7 +297,7 @@ class Car extends Component {
                 });
         };
 
-        function deleteCar(data) {
+        var deleteCar=(data) =>{
             //alert(data);
             var carid={carid:data};
 
@@ -304,6 +305,7 @@ class Car extends Component {
                 .then((output) => {
                     if (output === 1) {
                         alert("Car deleted successfully..!");
+
                     } else {
                        alert("Error while deleting entry.");
                     }
