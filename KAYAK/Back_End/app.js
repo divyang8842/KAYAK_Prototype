@@ -132,12 +132,13 @@ app.post('/logout', function(req,res) {
     //req.body.path
     //req.pagename
     //req.time
+    var userid = req.session.user.id;
     console.log(req.session.user);
     kafka.make_request('user_tracking_chart',
         {"path":req.body.path,
             "pagename":req.pagename,
-            "time":req.body.Depart,
-            "userid":req.time
+            "time":req.time,
+            "userid":userid
         },
         function(err,results){
             console.log('in result');
@@ -148,14 +149,14 @@ app.post('/logout', function(req,res) {
             else
             {
                 console.log("Logout Success: "+results);
-                res.status(201).json({output:1});
 
+                req.session.user=undefined;
+                req.session.destroy();
+                console.log('Session Destroyed');
+                res.status(201).json({status:201});
             }
         });
-req.session.user=undefined;
-    req.session.destroy();
-    console.log('Session Destroyed');
-    res.status(201).json({status:201});
+
 
 });
 
