@@ -142,11 +142,11 @@ class Home extends Component {
           <Route exact path="/carsearch" component={() => <Search temp={3}/>}/>
            <Route exact path="/hotelsearch" component={() => <Search temp={2}/>}/>
 
-          <Route exact path="/Hotels" component={() => <HotelsHome/>}/>
+          <Route exact path="/Hotels" component={() => <HotelsHome isLogged={this.state.islogged}/>}/>
           <Route exact path="/hotelsbooking" component={() => <HotelBooking/>}/>
-          <Route exact path="/flights" component={() => <FlightsHome/>}/>
+          <Route exact path="/flights" component={() => <FlightsHome isLogged={this.state.islogged}/>}/>
            <Route exact path="/flightsbooking" component={() => <Flightbooking/>}/>
-             <Route exact path="/cars" component={() => <CarHome/>}/>
+             <Route exact path="/cars" component={() => <CarHome isLogged={this.state.islogged}/>}/>
           {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>):(<Route exact path="/login" component={Search}/>)}
           <Route exact path="/account" component={() => <Account user={this.state.islogged} id={this.state.uid} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
           <Route exact path="/hotel" component={() => <Hotel/>}/>

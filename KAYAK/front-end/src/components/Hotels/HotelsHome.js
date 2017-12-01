@@ -18,7 +18,7 @@ class HotelsHome extends Component {
                     <LeftPanel/>
                 </div> */}
                     <div className="col-lg-12">
-                        <Results/>
+                        <Results isLogged={this.props.isLogged}/>
                     </div>
                 </div>
             </div>

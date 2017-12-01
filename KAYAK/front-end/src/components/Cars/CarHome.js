@@ -18,7 +18,7 @@ class CarsHome extends Component {
                     </h1>
                 </div> */}
                 <div className="row">
-                    <CarsResults/>
+                    <CarsResults isLogged={this.props.isLogged}/>
 
                 </div>
 
