@@ -105,7 +105,13 @@ class Home extends Component {
                 <header id="fh5co-header-section" className="sticky-banner">
                     <div className="container">
                         <div className="nav-header">
-                            <div><h1 id="fh5co-logo"><a href="http://localhost:3000/">Kayak</a></h1></div>
+
+                               <a href="http://localhost:3000/"> <img style={{width:160,height:40,paddingTop:12}}
+
+                                    src={require('../public/images/KAYAK_LOGO.png')}
+                               /></a>
+
+
 
                             {this.state.isAdmin===false ?<nav id="fh5co-menu-wrap" role="navigation">
                                 <ul className="sf-menu" id="fh5co-primary-menu">
@@ -113,9 +119,7 @@ class Home extends Component {
                                     <li><Link to='/flightsearch'>Flight</Link></li>
                                     <li><Link to='/hotelsearch'>Hotel</Link></li>
                                     <li><Link to='/carsearch'>Car</Link></li>
-                                    {this.state.islogged==='false' ? (<li><Link to='' onClick={e => e.preventDefault()}>My Account</Link>
-                                    <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li>
-                                                                    <li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#signupModal">Sign up</button></li></ul></li>)
+                                    {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
                                         : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                                 </ul>
                             </nav>:<nav id="fh5co-menu-wrap" role="navigation">
@@ -126,8 +130,7 @@ class Home extends Component {
                                     <li><Link to='/car'>Car</Link></li>
                                     <li><Link to='/analytics'>Analytics</Link></li>
                                     <li><Link to='' onClick={e => e.preventDefault()}>Manage</Link> <ul className="fh5co-sub-menu"><li><Link to='/AdminUsers'>Users</Link></li><li><Link to='/AdminCreate'>Admin</Link></li><li><Link to='/Bookings'>Bookings</Link></li></ul></li>
-                                    {this.state.islogged==='false' ? (<li><Link to='' onClick={e => e.preventDefault()}>My Account</Link>
-                                    <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li></ul></li>)
+                                    {this.state.islogged==='false' ? (<li><Link to='/login'>Login | Signup</Link></li>)
                                         : (<li><Link to='' onClick={e => e.preventDefault()}>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                                 </ul>
                             </nav>}
@@ -157,7 +160,7 @@ class Home extends Component {
              <Route exact path="/AdminCreate" component={() => <AdminCreate user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
              <Route exact path="/analytics" component={() => <Analytics/>}/>
              <Route exact path="/bookings" component={() => <Bookings/>}/>
-
+             <Route path='*' component={ Search } onEnter={function(){alert();}}/>
          </Switch>
 
          <div className="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">

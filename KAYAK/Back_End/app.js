@@ -98,6 +98,7 @@ app.post('/deleteCar',security.authenticateAdmin,adminCar.deleteCar);
 app.post('/updatecar',security.authenticateAdmin,adminCar.updateCar);
 app.post('/deleteFlight',security.authenticateAdmin,adminFlight.deleteFlight);
 app.post('/updateflight',security.authenticateAdmin,adminFlight.updateFlight);
+app.post('/updatehotel',security.authenticateAdmin,adminHotel.updateHotel);
 
 
 app.post('/flightsbooking',flightsBooking.fLightsBooking);

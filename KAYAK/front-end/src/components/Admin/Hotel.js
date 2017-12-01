@@ -169,6 +169,7 @@ class Hotel extends Component {
             .then((output) => {
                 if (output === 1) {
                     alert("Hotel updated successfully.");
+                    window.location.href = '/hotel';
                     this.viewHotelDetails();
                     this.setState({visible: !this.state.visible});
                 } else {
