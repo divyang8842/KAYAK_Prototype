@@ -162,7 +162,7 @@ class Home extends Component {
              <Route exact path="/AdminCreate" component={() => <AdminCreate user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
              <Route exact path="/analytics" component={() => <Analytics/>}/>
              <Route exact path="/bookings" component={() => <Bookings/>}/>
-
+             <Route path='*' component={ Search } onEnter={function(){alert();}}/>
          </Switch>
 
          <div className="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">

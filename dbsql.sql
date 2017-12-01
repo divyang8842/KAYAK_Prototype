@@ -273,8 +273,8 @@ CREATE TABLE `car_availibility` (
  
  /*Adding flight_number in flight mapping table*/
   ALTER TABLE `kayak_18`.`flight_mapping` 
- ADD COLUMN `flight_number` VARCHAR(45) NOT NULL BEFORE `deleteflag`;
+ ADD COLUMN `flight_number` VARCHAR(45) NOT NULL ;
 /* ALTER datatype of credit_card column in user table*/
-ALTER TABLE `kayak_18`.`hotels`  CHANGE COLUMN `hotel_locaion` `hotel_location` BIGINT(8) VARCHAR(100) DEFAULT NULL, ; 
+ALTER TABLE `kayak_18`.`hotels`  CHANGE COLUMN `hotel_locaion` `hotel_location` VARCHAR(100) DEFAULT NULL, ; 
  
  

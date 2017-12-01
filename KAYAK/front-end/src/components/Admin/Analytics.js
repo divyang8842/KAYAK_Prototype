@@ -260,21 +260,22 @@ class Analytics extends Component {
   showDiv(n) {
     if(n===1){
       this.setState({visible1: true,visible2: false,visible3: false,visible4: false,visible5: false,
-        flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: false});
+        flag1: false,flag2: true,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: false});
     }
     else if(n===2){
       this.setState({visible2: true,visible1:false,visible3: false,visible4: false,visible5: false,
-        flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: false});
+        flag1: false,flag2: false,flag3: false,flag4: true,flag5: false,flag6: false,flag7: false,flag8: false});
     }
     else if(n===3){
       this.setState({visible3: true,visible1:false,visible2: false,visible4: false,visible5: false,
-        flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: false});
+        flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: true,flag7: false,flag8: false});
     }
     else if(n===4){
       this.setState({visible4: true,visible1:false,visible2: false,visible3: false,visible5: false,
-        flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: false});
+        flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: true});
     }
   }
+
 
   showSubDiv(n) {
     if(n===1){
