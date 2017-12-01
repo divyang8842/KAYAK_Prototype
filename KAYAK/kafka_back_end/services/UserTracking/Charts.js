@@ -20,7 +20,14 @@ function handle_Request(msg, callback) {
                 response.code = "200";
                 console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
                 callback(null, response);
-            }}
+            }
+        else {
+                response.code = "400";
+                console.log("Fail--- inside Tracking User- HOTEL_PAGE"+response);
+                callback(null, response);
+
+            }
+        }
             );
     });
 
