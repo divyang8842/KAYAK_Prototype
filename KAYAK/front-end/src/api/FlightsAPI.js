@@ -16,6 +16,7 @@ export const getFlights = (payload) =>
         credentials:'include'
     }).then(res => res.json())
         .then(res=>{
+            console.log(payload);
             return res;
         })
         .catch(error => {

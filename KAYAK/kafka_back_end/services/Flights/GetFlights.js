@@ -26,6 +26,7 @@ function handle_request(msg, callback){
     var mappingquery;
     var dataArry = [];
     var source = msg.source;
+    console.log("source------------------------"+source);
     var des = msg.Destination;
     dataArry.push('%'+source+'%');
     dataArry.push('%'+des+'%');

@@ -18,33 +18,68 @@ function handle_Request(msg, callback) {
 
         coll.findOne({"userid": msg.userid}, function (err, searchuser) {
             if (searchuser) {
-                counter = searchuser.count+1;
 
-                coll.update({userid: msg.userid
-                }, {
-                    $set: {
-                        count: counter
-                    }
-                },
-                    function (err, user2) {
-                    if(!err)
-                    {
+                if (JSON.stringify(searchuser.path)===JSON.stringify(msg.path))
+                {
+                    counter = searchuser.count+1;
 
-                        response.code = "200";
-                        console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
-                        callback(null, response);
+                    coll.update({userid: msg.userid
+                        }, {
+                            $set: {
+                                count: counter
+                            }
+                        },
+                        function (err, user2) {
+                            if(!err)
+                            {
 
-                    }
-                    else
-                    {
-                        response.code = "400";
-                        console.log("Fail--- inside Tracking User- HOTEL_PAGE"+response);
-                        callback(null, response);
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
 
-                    }
+                            }
+                            else
+                            {
+                                response.code = "400";
+                                console.log("Fail--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
 
 
-                    });
+                        });
+
+                }
+                else
+                {
+
+                    coll.insert({userid: msg.userid,
+                            path:msg.path,
+                            city:msg.city,
+                            count: 1
+                        }
+                        ,
+                        function (err, user2) {
+                            if(!err)
+                            {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+                            }
+                            else
+                            {
+                                response.code = "400";
+                                console.log("Fail--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+
+
+                        });
+
+                }
+
+
 
             }
         else {
