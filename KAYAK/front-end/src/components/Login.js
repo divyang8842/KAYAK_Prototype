@@ -425,6 +425,7 @@ componentDidMount()
                       localStorage.setItem('userid', output.id);
                       ReactDOM.findDOMNode(this.refs.em).value = "";
                       ReactDOM.findDOMNode(this.refs.pwd).value = "";
+                      this.setState({username:'',password:'',formValid:false});
                         this.props.handleLogged(output.id,output.type,output.firstname);
                         this.props.handleClose();
                     }

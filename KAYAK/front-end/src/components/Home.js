@@ -129,11 +129,10 @@ class Home extends Component {
                                         </ul>
                                     </nav>:<nav id="fh5co-menu-wrap" role="navigation">
                                         <ul className="sf-menu" id="fh5co-primary-menu">
-                                            <li className="active"><Link to='/'>AdminHome</Link></li>
+                                            <li className="active"><Link to='/'>Analytics</Link></li>
                                             <li><Link to='/flight'>Flight</Link></li>
                                             <li><Link to='/hotel'>Hotel</Link></li>
                                             <li><Link to='/car'>Car</Link></li>
-                                            <li><Link to='/analytics'>Analytics</Link></li>
                                             <li><Link to='' onClick={e => e.preventDefault()}>Manage</Link> <ul className="fh5co-sub-menu"><li><Link to='/AdminUsers'>Users</Link></li><li><Link to='/AdminCreate'>Admin</Link></li><li><Link to='/Bookings'>Bookings</Link></li></ul></li>
                                             {this.state.islogged==='false' ? (<li><Link to='' onClick={e => e.preventDefault()}>My Account</Link>
                                                     <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li></ul></li>)
@@ -147,7 +146,7 @@ class Home extends Component {
                         </header>
 
                         <Switch>
-                            <Route exact path="/" component={Search}/>
+                            {this.state.isAdmin===false ? (<Route exact path="/" component={Search}/>) : (<Route exact path="/" component={Analytics}/>)}
                             <Route exact path="/flightsearch" component={() => <Search temp={1}/>}/>
                             <Route exact path="/carsearch" component={() => <Search temp={3}/>}/>
                             <Route exact path="/hotelsearch" component={() => <Search temp={2}/>}/>
