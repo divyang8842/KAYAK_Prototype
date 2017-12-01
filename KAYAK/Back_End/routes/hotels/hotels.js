@@ -34,6 +34,9 @@ exports.getHotels= function(req,res) {
 };
 
 exports.doBooking= function(req,res) {
+
+    var userid = req.session.user.id;
+    var room_rent =220;
     
         console.log("Inside doBooking");
         console.log(req.body.hotelItem);
@@ -45,7 +48,15 @@ exports.doBooking= function(req,res) {
         var hotelItem = req.body.hotelItem;
         var roomcount = req.body.roomcount;
         kafka.make_request('hotels_topic',
-            {"action":"doBooking","checkin":checkin,"checkout":checkout,"hotelitem":hotelItem, "roomtype":roomtype, "roomcount":roomcount},
+            {"action":"doBooking",
+             "checkin":checkin,
+                "checkout":checkout,
+                "hotelitem":hotelItem,
+                "roomtype":roomtype,
+                "roomcount":roomcount,
+                "userid":userid,
+                "room_rent":room_rent
+            },
             function(err,results){
                 console.log(results);
                 

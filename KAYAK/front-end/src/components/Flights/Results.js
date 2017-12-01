@@ -363,8 +363,10 @@ class Results extends Component {
                                     </h3>
                                 </div>
                                 <div className="row">
-
-                    <button className="btn btn-primary btn-block"
+                    {this.props.isLogged=='false' ? 
+                    (<button type="button" class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
+                        :
+                    (<button className="btn btn-primary btn-block"
                             onClick={() => {
 
                                 var payload = {};
@@ -387,7 +389,7 @@ class Results extends Component {
                                 this.props.history.push("/flightsbooking");
                             }
                             }>View Deal
-                    </button>
+                    </button>)}
                                 </div>
                             </div>
                         </div>
@@ -503,7 +505,10 @@ class Results extends Component {
                                         </h3>
                                     </div>
                                     <div className="row">
-                                        <button className="btn btn-primary btn-block"
+                                    {this.props.isLogged=='false' ? 
+                                        (<button type="button" class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
+                                        :
+                                        (<button className="btn btn-primary btn-block"
                                                 onClick={() => {
 
                                                     var payload = {flights:flights};
@@ -526,7 +531,7 @@ class Results extends Component {
                                                     this.props.history.push("/flightsbooking");
                                                 }
                                                 }>View Deal
-                                        </button>
+                                        </button>)}
                                     </div>
                                 </div>
                             </div>
@@ -600,7 +605,10 @@ class Results extends Component {
                                            </h3>
                                        </div>
                                        <div className="row">
-                                           <button className="btn btn-primary btn-block"
+                                       {this.props.isLogged=='false' ? 
+                                            (<button type="button" class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
+                                            :
+                                            (<button className="btn btn-primary btn-block"
                                                    onClick={() => {
 
                                                        var payload = {flights:flights};
@@ -623,7 +631,7 @@ class Results extends Component {
                                                        this.props.history.push("/flightsbooking");
                                                    }
                                                    }>View Deal
-                                           </button>
+                                           </button>)}
                                        </div>
                                    </div>
                                </div>

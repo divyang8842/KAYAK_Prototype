@@ -14,7 +14,7 @@ import '../../public/css/cs-skin-border.css';
 import '../../public/css/style.css';
 import '../../public/css/filter.css';
 import '../../public/css/star.css';
-import '../../public/css/radio.css';
+//import '../../public/css/radio.css';
 import * as HotelsAPI from '../../api/HotelsAPI';
 import SearchPanel from './SearchPanel';
 
@@ -43,13 +43,15 @@ class Results extends Component {
   }
 
   handleBooking(hotelItem) {
-    this
-      .props
-      .getHotelsBooking(hotelItem);
-    this
-      .props
-      .history
-      .push("/hotelsbooking");
+      if(this.props.isLogged =='true'){
+      this
+        .props
+        .getHotelsBooking(hotelItem);
+      this
+        .props
+        .history
+        .push("/hotelsbooking");
+    }
 
     // var checkin = this.props.hotels.checkin; var checkout =
     // this.props.hotels.checkout; var roomtype = "0"; //0=King, 1=Queen, 2=Standard
@@ -107,7 +109,12 @@ class Results extends Component {
                   <h4 class="price">${hotelItem.standard_rates}</h4>
                   <br/>
                   {/* <button class="btn btn-primary" onClick={() => this.handleBooking(hotelItem)}>View Deal</button> */}
-                  <button type="button" class="searchbtn" data-toggle="modal" data-target="#myModal">View Deal</button>
+                  {this.props.isLogged=='false' ? 
+                    (<button type="button" class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
+                    :
+                    (<button type="button" class="searchbtn" data-toggle="modal" data-target="#myModal">View Deal</button>)
+                  }
+                  {/* <button type="button" class="searchbtn" data-toggle="modal" data-target="#myModal">View Deal</button> */}
                   
                   <div id="myModal" class="modal fade" role="dialog">
                     <div class="modal-dialog">

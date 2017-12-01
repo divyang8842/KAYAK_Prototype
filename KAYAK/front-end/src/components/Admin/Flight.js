@@ -411,7 +411,7 @@ class Flight extends Component {
         return (
             <div>
                 {this.state.visible ? null:  <div className="btn-group btn-group-sm" role="group">
-                    <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
+                    <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i className="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
 
 
                 <BootstrapTable  data={flightList} selectRow={ selectRowProp }  deleteRow={ true }  options={ options } pagination>

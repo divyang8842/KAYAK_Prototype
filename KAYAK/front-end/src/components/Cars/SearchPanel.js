@@ -16,16 +16,26 @@ import '../../public/css/style.css';
 
 class SearchPanel extends Component {
   state={
-    Cars:{
-      City:'',
-      Destination:'',
-      Pickup:'',
-      Dropoff:''
-    }
-  }
+      Cars:{
+          City:'',
+          destination:'',
+          Pickup:'',
+          Dropoff:'',
+          different_drop_off:false
+      }
+  };
+
 
   handleCarSearch(){
     console.log(this.state.Cars);
+
+      if (typeof(Storage) !== "undefined") {
+          localStorage.car_City = this.state.Cars.City;
+          localStorage.car_destination = this.state.Cars.destination;
+          localStorage.car_Pickup = this.state.Cars.Pickup;
+          localStorage.car_Dropoff = this.state.Cars.Dropoff;
+          localStorage.car_different_drop_off = this.state.Cars.different_drop_off;
+      }
     CarsAPI.getCars(this.state.Cars)
     .then((output) => {
         this.props.getCars(output);
@@ -62,7 +72,7 @@ class SearchPanel extends Component {
                       this.setState({
                           Cars: {
                               ...this.state.Cars,
-                              Destination: event.target.value
+                              destination: event.target.value
                           }
                       });}
                       }/>

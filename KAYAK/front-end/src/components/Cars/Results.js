@@ -132,13 +132,24 @@ class Results extends Component {
 
                     {cars.cars.doors}
                     <img ref={"base64img"} style={{display: 'block', width: 100, height: 100}} alt={"Please select image"} src={"data:image/png;base64,"+cars.cars.srcdata}></img>
-                    <button className="btn btn-primary btn-block"
+                    {this.props.isLogged=='false' ? 
+                        (<button type="button" class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
+                        :
+                        (<button className="searchbtn"
+                        onClick={() =>{
+                            var payload = {};
+                            this.props.getCarsBooking(cars);
+                            this.props.history.push("/carsbooking");
+                        }
+                        }>View Deal</button>)
+                    }
+                    {/* <button className="btn btn-primary btn-block"
                             onClick={() =>{
                                 var payload = {};
                                 this.props.getCarsBooking(cars);
                                 this.props.history.push("/carsbooking");
                             }
-                            }>View Deal</button>
+                            }>View Deal</button> */}
 
                 </tr>
             )
