@@ -14,6 +14,7 @@ var admin_Flight=require('./services/admin/Flights');
 var admin_Users=require('./services/admin/Users');
 var file_utils = require('./services/utils/FileUtils');
 var user_tracking = require('./services/UserTracking/UserTracking');
+var user_tracking_charts = require('./services/UserTracking/Charts');
 var admin_Booking=require('./services/admin/Bookings');
 var chart = require('./services/admin/analytics/chartsData');
 
@@ -45,6 +46,9 @@ var consumer_user_tracking = connection.getConsumer(tracking_topic);
 
 var charts_topic = "charts_data";
 var consumer_charts = connection.getConsumer(charts_topic);
+
+var user_tracking_chart = "user_tracking_chart";
+var consumeruser_tracking_chart = connection.getConsumer(user_tracking_chart);
 
 var producer = connection.getProducer();
 
@@ -847,3 +851,33 @@ consumer_charts.on('message', function (message) {
         return;
     });
 });
+
+
+consumeruser_tracking_chart.on('message', function (message) {
+    console.log('message received in User Tracking Charts');
+    console.log(JSON.stringify(message.value));
+    var data = JSON.parse(message.value);
+    var type = data.data.type;
+    console.log("TYPE-----" + type);
+
+
+    user_tracking_charts.handle_Request(data.data, function (err, res) {
+        console.log('after handle get chart data---');
+        var payloads = [
+            {
+                topic: data.replyTo,
+                messages: JSON.stringify({
+                    correlationId: data.correlationId,
+                    data: res
+                }),
+                partition: 0
+            }
+        ];
+
+        producer.send(payloads, function (err, data) {
+            console.log("PRODUCER CHECK:---");
+        });
+        return;
+    });
+});
+

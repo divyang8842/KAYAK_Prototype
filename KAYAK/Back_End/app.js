@@ -38,6 +38,8 @@ var mongoStore = require("connect-mongo/es5")(expressSessions);
 var uploadFile=require('./routes/fileoperations/uploadfile');
 var downloadFile=require('./routes/fileoperations/downloadFiles');
 
+var kafka = require('./routes/kafka/client');
+
 var app = express();
 
 // view engine setup
@@ -131,6 +133,25 @@ app.post('/logout', function(req,res) {
     //req.pagename
     //req.time
     console.log(req.session.user);
+    kafka.make_request('user_tracking_chart',
+        {"path":req.body.path,
+            "pagename":req.pagename,
+            "time":req.body.Depart,
+            "userid":req.time
+        },
+        function(err,results){
+            console.log('in result');
+            console.log(results);
+            if(err){
+                res.status(401).json({output:0});
+            }
+            else
+            {
+                console.log("Logout Success: "+results);
+                res.status(201).json({output:1});
+
+            }
+        });
 req.session.user=undefined;
     req.session.destroy();
     console.log('Session Destroyed');
