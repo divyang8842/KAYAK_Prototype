@@ -44,7 +44,7 @@ class Analytics extends Component {
               }
               for(var i=0;i<hotel_count_len;i++){
                 hotel_count_label.push(result.hotel_count.title[i]);
-                hotel_count_data.push(result.hotel_data.data[i]);
+                hotel_count_data.push(result.hotel_count.data[i]);
               }
               for(var i=0;i<hotel_revenue_len;i++){
                 hotel_revenue_label.push(result.hotel_revenue.title[i]);
