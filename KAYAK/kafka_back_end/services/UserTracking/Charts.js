@@ -7,7 +7,7 @@ var mongoURL = "mongodb://localhost:27017/kayak_18";
 // mongo DB Inclusion
 var ObjectID = require('mongodb').ObjectID;
 
-function handle_request(msg, callback) {
+function handle_Request(msg, callback) {
 
     var response =[];
 
@@ -17,4 +17,4 @@ function handle_request(msg, callback) {
 
 }
 
-exports.handle_request = handle_request;
+exports.handle_Request = handle_Request;
