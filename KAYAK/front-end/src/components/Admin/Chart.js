@@ -13,50 +13,37 @@ class Chart extends Component{
   render(){
     return (
       <div className="chart">
-        <Bar
-          data={this.props.chartData}
+      <div className="row">
+      <div className="col-lg-3 col-md-3 col-sm-12"></div>
+              <div className="col-lg-6 col-md-6 col-sm-12">
+              <Pie data={this.props.chartData}
+                options={{
+                  title:{
+                    display:this.props.displayTitle, text:this.props.chartTitle,fontSize:25},
+                  legend:{display:this.props.displayLegend, position:this.props.legendPosition}
+                }}/>
+                </div>
+        </div>
+
+<div className="row">
+<div className="col-lg-6 col-md-6 col-sm-12">
+         <Bar data={this.props.chartData}
           options={{
             title:{
-              display:this.props.displayTitle,
-              text:this.props.chartTitle,
-              fontSize:25
-            },
-            legend:{
-              display:false,
-              position:this.props.legendPosition
-            }
-          }}
-        />
-<br /><br />
-        <Line
-          data={this.props.chartData}
+              display:this.props.displayTitle, text:this.props.chartTitle, fontSize:25},
+            legend:{display:false, position:this.props.legendPosition}}}/>
+</div>
+
+<div className="col-lg-6 col-md-6 col-sm-12">
+        <Line data={this.props.chartData}
           options={{
             title:{
-              display:this.props.displayTitle,
-              text:this.props.chartTitle,
-              fontSize:25
-            },
+              display:this.props.displayTitle, text:this.props.chartTitle, fontSize:25},
             legend:{
-              display:this.props.displayLegend,
-              position:this.props.legendPosition
-            }
-          }}
-        />
-<br /><br />
-        <Pie
-          data={this.props.chartData}
-          options={{
-            title:{
-              display:this.props.displayTitle,
-              text:this.props.chartTitle,
-              fontSize:25
-            },
-            legend:{
-              display:this.props.displayLegend,
-              position:this.props.legendPosition
-            }
-          }}
-        />
+              display:this.props.displayLegend, position:this.props.legendPosition}}}/>
+        </div>
+</div>
+
       </div>
     )
   }

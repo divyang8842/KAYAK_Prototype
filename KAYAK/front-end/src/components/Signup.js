@@ -3,6 +3,7 @@ import * as API from '../api/SigninSignup-API';
 import ReactDOM from 'react-dom';
 import Search from './Home';
 import FormErrors from "./FormErrors";
+import * as UserTracking from '../api/UserTracking';
 
 class Signup extends Component {
   state={
@@ -125,6 +126,18 @@ handleSignup = (user) => {
                         this.setState({messageSignup:"Signup failed!"});
                     } else {
                         console.log("Success signup");
+                        var tracking_object = {};
+                        tracking_object.current_page = "SIGNUP_PAGE";
+                        tracking_object.previous_page = "SEARCH_PAGE";
+                        tracking_object.user_id = "jay";
+                        tracking_object.session_id = "1";
+
+                        UserTracking.userTracking(tracking_object)
+                            .then((status) => {
+                                console.log("Tracking status:" + status);
+
+
+                            });
                         ReactDOM.findDOMNode(this.refs.fn).value = "";
                         ReactDOM.findDOMNode(this.refs.ln).value = "";
                         ReactDOM.findDOMNode(this.refs.em).value = "";

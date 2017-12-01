@@ -17,6 +17,7 @@ import '../../public/css/star.css';
 //import '../../public/css/radio.css';
 import * as HotelsAPI from '../../api/HotelsAPI';
 import SearchPanel from './SearchPanel';
+import * as UserTracking from '../../api/UserTracking';
 
 class Results extends Component {
   state = {
@@ -47,6 +48,18 @@ class Results extends Component {
       this
         .props
         .getHotelsBooking(hotelItem);
+          var tracking_object = {};
+          tracking_object.current_page = "BILLING_HOTEL";
+          tracking_object.previous_page = "HOTEL_PAGE";
+          tracking_object.user_id = "jay";
+          tracking_object.session_id = "1";
+
+          UserTracking.userTracking(tracking_object)
+              .then((status) => {
+                  console.log("Tracking status:" + status);
+
+
+              });
       this
         .props
         .history
@@ -165,7 +178,10 @@ class Results extends Component {
 
                         </div> 
                         <div class="modal-footer">
-                          <button type="button" class="searchbtn" data-dismiss="modal" onClick={() => this.handleBooking(hotelItem)}>Continue</button>
+                          <button type="button" class="searchbtn" data-dismiss="modal" onClick={() =>
+                          {
+
+                              this.handleBooking(hotelItem)} }>Continue</button>
                         </div>
                       </div>
 

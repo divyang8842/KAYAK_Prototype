@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Route, Link,Switch } from 'react-router-dom';
+import { Route, Link,Switch,Redirect } from 'react-router-dom';
 import Login from './Login';
 import Signup from './Signup';
 import Search from './Search';
@@ -31,6 +31,9 @@ import '../public/css/magnific-popup.css';
 import '../public/css/cs-select.css';
 import '../public/css/cs-skin-border.css';
 import '../public/css/style.css';
+
+
+
 
 class Home extends Component {
 
@@ -70,7 +73,6 @@ class Home extends Component {
                     if (output.status === "501") {
                         console.log("Incorrect");
                         this.isNotlogged();
-
                     } else {
                         console.log("Correct ");
                         localStorage.setItem('userid', output.userid);
@@ -134,11 +136,10 @@ class Home extends Component {
                                         </ul>
                                     </nav>:<nav id="fh5co-menu-wrap" role="navigation">
                                         <ul className="sf-menu" id="fh5co-primary-menu">
-                                            <li className="active"><Link to='/'>AdminHome</Link></li>
+                                            <li className="active"><Link to='/'>Analytics</Link></li>
                                             <li><Link to='/flight'>Flight</Link></li>
                                             <li><Link to='/hotel'>Hotel</Link></li>
                                             <li><Link to='/car'>Car</Link></li>
-                                            <li><Link to='/analytics'>Analytics</Link></li>
                                             <li><Link to='' onClick={e => e.preventDefault()}>Manage</Link> <ul className="fh5co-sub-menu"><li><Link to='/AdminUsers'>Users</Link></li><li><Link to='/AdminCreate'>Admin</Link></li><li><Link to='/Bookings'>Bookings</Link></li></ul></li>
                                             {this.state.islogged==='false' ? (<li><Link to='' onClick={e => e.preventDefault()}>My Account</Link>
                                                     <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li></ul></li>)
@@ -152,27 +153,27 @@ class Home extends Component {
                         </header>
 
                         <Switch>
-                            <Route exact path="/" component={Search}/>
+                            {this.state.isAdmin===false ? (<Route exact path="/" component={Search}/>) : (<Route exact path="/" component={Analytics}/>)}
                             <Route exact path="/flightsearch" component={() => <Search temp={1}/>}/>
                             <Route exact path="/carsearch" component={() => <Search temp={3}/>}/>
                             <Route exact path="/hotelsearch" component={() => <Search temp={2}/>}/>
-
                             <Route exact path="/Hotels" component={() => <HotelsHome isLogged={this.state.islogged}/>}/>
-                            <Route exact path="/hotelsbooking" component={() => <HotelBooking/>}/>
+                            <Route exact path="/hotelsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> :  <HotelBooking/>}/>
                             <Route exact path="/flights" component={() => <FlightsHome isLogged={this.state.islogged}/>}/>
-                            <Route exact path="/flightsbooking" component={() => <Flightbooking/>}/>
+                            <Route exact path="/flightsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> : <Flightbooking/>}/>
                             <Route exact path="/cars" component={() => <CarHome isLogged={this.state.islogged}/>}/>
                             {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>):(<Route exact path="/login" component={Search}/>)}
                             <Route exact path="/account" component={() => <Account user={this.state.islogged} id={this.state.uid} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
-                            <Route exact path="/hotel" component={() => <Hotel/>}/>
-                            <Route exact path="/car" component={() => <Car/>}/>
-                            <Route exact path="/carsbooking" component={() => <CarBooking/>}/>
-                            <Route exact path="/flight" component={() => <Flight/>}/>
-                            <Route exact path="/AdminUsers" component={() => <AdminUsers user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
-                            <Route exact path="/AdminCreate" component={() => <AdminCreate user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
-                            <Route exact path="/analytics" component={() => <Analytics/>}/>
-                            <Route exact path="/bookings" component={() => <Bookings/>}/>
-                            <Route path='*' component={ Search } onEnter={function(){alert();}}/>
+                            <Route exact path="/hotel" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> : <Hotel/>}  />
+                            <Route exact path="/car"   render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> : <Car/>}/>
+                            <Route exact path="/carsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> : <CarBooking/>}/>
+                            <Route exact path="/flight"  render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> : <Flight/>} />
+                            <Route exact path="/AdminUsers" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> : <AdminUsers user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>} />
+                            <Route exact path="/AdminCreate" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> :  <AdminCreate user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
+                            <Route exact path="/analytics" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> :  <Analytics/>}/>
+                            <Route exact path="/bookings" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> :  <Bookings/>}/>
+                            <Route path='*' render={() => <Redirect to="/" />} />
+
                         </Switch>
 
                         <div className="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
