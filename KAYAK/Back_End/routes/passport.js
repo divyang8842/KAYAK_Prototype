@@ -15,7 +15,7 @@ console.log("USERNAME CHANEK: "+username);
             else
             {
                 if(results){
-                	console.log("IN PASSPORT: "+results);
+                	console.log("IN PASSPORT: "+results.code);
                     done(null,results);
                 }
                 else {
