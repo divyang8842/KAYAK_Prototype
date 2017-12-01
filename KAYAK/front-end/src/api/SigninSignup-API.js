@@ -65,7 +65,7 @@ fetch(`${api}/checkuser/checkuser`, {
 
 
 //logout
-export const logout = () =>
+export const logout = (payload) =>
     fetch(`${api}/logout`, {
       method: 'POST',
       headers: {
@@ -73,6 +73,7 @@ export const logout = () =>
           'Content-Type': 'application/json'
       },
       credentials:'include',
+      body: JSON.stringify(payload)
             }).then(res => {
                 return res.status;
             }).catch(error => {

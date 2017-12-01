@@ -125,6 +125,9 @@ app.post('/validateLogin',security.getLoggedInInfoFromSession);
 
 
 app.post('/logout', function(req,res) {
+    //req.body.path
+    //req.pagename
+    //req.time
     console.log(req.session.user);
 req.session.user=undefined;
     req.session.destroy();

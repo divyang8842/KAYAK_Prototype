@@ -8,6 +8,7 @@ import HotelsHome from './Hotels/HotelsHome';
 import FlightsHome from './Flights/FlightsHome';
 import CarHome from './Cars/CarHome';
 import CarBooking from './Cars/CarBooking';
+import {connect} from 'react-redux';
 import Hotel from './Admin/Hotel';
 import Car from './Admin/Car';
 import AdminUsers from './Admin/AdminUsers';
@@ -18,7 +19,8 @@ import Flightbooking from './Flights/FlightBooking';
 import HotelBooking from './Hotels/HotelBooking';
 import Bookings from './Admin/Bookings';
 import Dialog from 'react-bootstrap-dialog';
-
+import {bindActionCreators} from 'redux';
+import {updateTracking} from '../actions/Analytics/Tracking';
 import * as API from '../api/SigninSignup-API';
 import '../public/css/animate.css';
 import '../public/css/bootstrap.css';
@@ -82,7 +84,12 @@ class Home extends Component {
     handleLogout = () => {
         //this.setState({islogged:'false'});
         console.log("Logout: "+this.state.islogged);
-        API.logout()
+        var payload = {
+            path: this.props.tracking.path,
+            pagename:this.props.tracking.pagename,
+            time:this.props.tracking.time
+        }
+        API.logout(payload)
             .then((status) => {
                 if(status === 201){
                     this.setState({islogged:'false',isAdmin:false});
@@ -207,5 +214,20 @@ class Home extends Component {
         );
     }
 }
+function mapStateToProps(state){
+    return {
+        tracking: state.tracking
+    }
+}
 
-export default Home;
+function mapDispatchToProps(dispatch) {
+
+    return bindActionCreators({
+        updateTracking: updateTracking}, dispatch);
+
+
+}
+
+//export default Search;
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

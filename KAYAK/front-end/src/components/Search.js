@@ -11,7 +11,7 @@ import * as API from '../api/fileOperation';
 import {getReturnFlights} from '../actions/Flights/Flights';
 
 import {getCars, getCarImage} from '../actions/Cars/Cars';
-
+import {updateTracking} from '../actions/Analytics/Tracking';
 import {loadHotels, loadFilteredHotels, getHotelImage} from '../actions/Hotels/Hotels';
 
 import '../public/css/bootstrap-datepicker.min.css';
@@ -75,6 +75,12 @@ class Search extends Component {
                     }
                 });
             // this.props.loadFilteredHotels(result);
+            //Tracking userpath
+            var currentpath = this.props.tracking.path;
+            var timenow = Date.now();
+            var currentpage = "HOTEL_PAGE";
+            currentpath.push("HOTEL_PAGE");
+            this.props.updateTracking({currentpath, currentpage, timenow});
             this.props.history.push("/Hotels");
             }
         }
@@ -100,6 +106,12 @@ class Search extends Component {
 
 
                   });
+                  //Tracking userpath
+            var currentpath = this.props.tracking.path;
+            var timenow = Date.now();
+            var currentpage = "FLIGHT_PAGE";
+            currentpath.push("FLIGHT_PAGE");
+            this.props.updateTracking({currentpath, currentpage, timenow});
 
               if(this.state.Flights.Return !== null)
               {
@@ -170,6 +182,13 @@ class Search extends Component {
                     .then((status) => {
                         console.log("Tracking status:"+status);
                         });
+            //Tracking userpath
+            var currentpath = this.props.tracking.path;
+            var timenow = Date.now();
+            var currentpage = "CAR_PAGE";
+            currentpath.push("CAR_PAGE");
+            this.props.updateTracking({currentpath, currentpage, timenow});
+            this.props.history.push("/Hotels");
                 this.props.history.push("/Cars");
 
             });
@@ -1550,7 +1569,8 @@ class Search extends Component {
 function mapStateToProps(state){
     return {
         cars: state.getcars,
-        hotels: state.hotels
+        hotels: state.hotels,
+        tracking: state.tracking
         // filteredHotels: state.filteredHotels
     }
 }
@@ -1568,7 +1588,13 @@ function mapDispatchToProps(dispatch) {
     // };
 
 
-    return bindActionCreators({loadHotels : loadHotels, getFlights: getFlights,getCars:getCars,getReturnFlights:getReturnFlights, getCarImage:getCarImage,getHotelImage:getHotelImage}, dispatch);
+    return bindActionCreators({loadHotels : loadHotels, 
+        getFlights: getFlights,
+        getCars:getCars,
+        getReturnFlights:getReturnFlights, 
+        getCarImage:getCarImage,
+        getHotelImage:getHotelImage,
+        updateTracking: updateTracking}, dispatch);
 
 
 }

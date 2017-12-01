@@ -8,6 +8,7 @@ import FilteredHotelsReducer from './Hotels/reducer-hotels-filtered';
 import FlightsBooking from './Flights/FlightsBooking-reducers';
 import HotelBookingReducer from './Hotels/reducer-hotelsBooking';
 import CarsBooking from './Cars/CarsBooking- reducers';
+import TrackingReducer from './Analytics/tracking-reducer';
 
 
 
@@ -22,7 +23,9 @@ const allReducers = combineReducers({
     // filteredHotels : FilteredHotelsReducer,
     flightbooking:FlightsBooking,
     carsbooking:CarsBooking,
-    getreturnflights:GetReturnFlights
+    getreturnflights:GetReturnFlights,
+
+    tracking : TrackingReducer
 });
 
 export default allReducers;
