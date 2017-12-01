@@ -14,7 +14,7 @@ import '../../public/css/cs-skin-border.css';
 import '../../public/css/style.css';
 import '../../public/css/filter.css';
 import '../../public/css/star.css';
-import '../../public/css/radio.css';
+//import '../../public/css/radio.css';
 import * as HotelsAPI from '../../api/HotelsAPI';
 import SearchPanel from './SearchPanel';
 
