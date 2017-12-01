@@ -133,12 +133,14 @@ app.post('/logout', function(req,res) {
     //req.pagename
     //req.time
     var userid = req.session.user.id;
+    var city = req.session.user.city;
     console.log(req.session.user);
     kafka.make_request('user_tracking_chart',
         {"path":req.body.path,
             "pagename":req.pagename,
             "time":req.time,
-            "userid":userid
+            "userid":userid,
+            "city":city
         },
         function(err,results){
             console.log('in result');
