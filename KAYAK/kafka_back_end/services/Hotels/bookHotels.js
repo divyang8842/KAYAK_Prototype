@@ -2,6 +2,11 @@ var security = require('../utils/security');
 var mysql=require('./../database/mysql');
 //var errorHandler = require('./../utils/errorLogging');
 
+var mongo = require("../database/mongo_connect");
+var mongoURL = "mongodb://localhost:27017/kayak_18";
+var ObjectID = require('mongodb').ObjectID;
+
+
 function handle_booking(msg, callback){
 
     console.log("In Book hotels handle Booking:"+ JSON.stringify(msg));
@@ -49,13 +54,283 @@ function handle_booking(msg, callback){
         if(err){
             console.log(err);
             res.code = 400;
+            callback(null, res);
         }
         else{
-            console.log('Hotel Booked');
-            res.code = 200;
-            res.value = results;
+
+
+            mongo.connect(mongoURL, function() {
+
+                console.log('Connected to mongo at: ' + mongoURL);
+                console.log("msg.hotelItem"+msg.hotelitem);
+                console.log("msg.hotelItem.hotel_city"+msg.hotelitem.hotel_city);
+                var coll = mongo.collection('Billing');
+
+                coll.findOne({"userid" : msg.userid},function (err, searchuser) {
+                    if(searchuser)
+                    {
+
+                        var hotel_total_new = searchuser.hotel_total+msg.room_rent;
+                        var number_of_hotel_bookings = searchuser.hotel.length ;
+                        number_of_hotel_bookings = number_of_hotel_bookings +1;
+
+                        coll.update({userid:msg.userid}, {
+                            $push: {
+                                hotel: {
+                                    billid:new ObjectID(),
+                                    checkin:msg.checkin,
+                                    checkout:msg.checkout,
+                                    hotelcity:msg.hotelitem.hotel_city,
+                                    hotel_id:msg.hotelitem.hotel_id,
+                                    hotel_name:msg.hotelitem.hotel_name,
+                                    hotel_state:msg.hotelitem.hotel_state,
+                                    roomtype:msg.roomtype,
+                                    roomcount:msg.roomcount,
+                                    room_rent:msg.room_rent
+                                }
+                            }
+                        }, function (err, user) {
+
+                            if(user){
+                                coll.update({"userid" : msg.userid},{ $set:{hotel_total:hotel_total_new,
+                                                                            hotel_count:number_of_hotel_bookings}},
+                                    function (err, user2) {
+                                    if(!err)
+                                    {
+                                        // console.log('Hotel Booked');
+
+
+                                        var new_total;
+                                        var new_counter;
+                                        coll = mongo.collection('hotel_analytics');
+
+                                        coll.findOne({name: msg.hotelitem.hotel_name,
+                                                year:new Date().getFullYear()},
+                                            function(err, user) {
+
+                                                console.log("user" + JSON.stringify(user));
+                                                if(user && user.name)
+                                                {
+                                                    new_total = user.revenue+msg.room_rent;
+                                                    new_counter = user.count+1;
+
+                                                    console.log("Inside Hotel Analytics - Update part - 1");
+
+                                                    coll.update({name: msg.hotelitem.hotel_name,
+                                                            year:new Date().getFullYear()
+                                                        }, {
+                                                            $set: {
+                                                                revenue: new_total,
+                                                                count: new_counter
+                                                            }
+                                                        },
+                                                        function (err, user2) {
+                                                            if(!err)
+                                                            {
+                                                                // City wise update
+
+                                                                var new_total_city;
+                                                                var new_counter_city;
+                                                                coll = mongo.collection('city_analytics');
+
+                                                                console.log("Inside Hotel Analytics - Update part - 1 -- city analytics");
+                                                                coll.findOne({name: msg.hotelitem.hotel_city,
+                                                                                year:new Date().getFullYear()},
+                                                                    function(err, user){
+                                                                        if(user && user.name)
+                                                                        {
+                                                                            new_total_city = user.revenue+msg.room_rent;
+                                                                            new_counter_city = user.count+1;
+
+                                                                            console.log("Inside City Analytics - update / Hotel Update part");
+
+                                                                            coll.update({name: msg.hotelitem.hotel_city,
+                                                                                    year:new Date().getFullYear()
+                                                                                }, {
+                                                                                    $set: {
+                                                                                        revenue: new_total_city,
+                                                                                        count: new_counter_city
+                                                                                    }
+                                                                                },
+                                                                                function (err, user2) {
+
+                                                                                    if(!err)
+                                                                                    {
+                                                                                        res.code = 200;
+                                                                                        res.value = results;
+                                                                                        callback(null, res);
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        console.log(err);
+                                                                                        res.code = 400;
+                                                                                        callback(null, res);
+                                                                                    }
+
+                                                                                });
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            coll.insert({name: msg.hotelitem.hotel_city,
+                                                                                    year:new Date().getFullYear(),
+                                                                                    revenue: msg.room_rent,
+                                                                                    count: 1
+                                                                                }
+                                                                                ,
+                                                                                function (err, user2) {
+                                                                                    if(!err)
+                                                                                    {
+                                                                                        res.code = 200;
+                                                                                        res.value = results;
+                                                                                        callback(null, res);
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        console.log(err);
+                                                                                        res.code = 400;
+                                                                                        callback(null, res);
+                                                                                    }
+
+                                                                                })
+                                                                        }
+
+                                                                    })
+
+                                                            }
+                                                            else
+                                                            {
+                                                                console.log(err);
+                                                                res.code = 400;
+                                                                callback(null, res);
+
+                                                            }
+
+                                                        });
+
+                                                }
+                                                else
+                                                {
+                                                    console.log("Inside Hotel Analytics - Insert part -1 ");
+                                                    coll.insert({name: msg.hotelitem.hotel_name,
+                                                            year:new Date().getFullYear(),
+                                                            revenue: msg.room_rent,
+                                                            count: 1
+                                                        }
+                                                        ,
+                                                        function (err, user2) {
+
+                                                            if(!err)
+                                                            {
+                                                                var new_total_city;
+                                                                var new_counter_city;
+                                                                coll = mongo.collection('city_analytics');
+
+                                                                // response.code = "200";
+                                                                // console.log("Success" + response);
+                                                                // callback(null, response);
+
+                                                                coll.findOne({name: msg.hotelitem.hotel_city,
+                                                                        year:new Date().getFullYear()},
+                                                                    function(err, user){
+                                                                        if(user && user.name)
+                                                                        {
+                                                                            new_total_city = user.revenue+msg.room_rent;
+                                                                            new_counter_city = user.count+1;
+
+                                                                            console.log("Inside City Analytics - update / Car Update part");
+
+                                                                            coll.update({name: msg.hotelitem.hotel_city,
+                                                                                    year:new Date().getFullYear()
+                                                                                }, {
+                                                                                    $set: {
+                                                                                        revenue: new_total_city,
+                                                                                        count: new_counter_city
+                                                                                    }
+                                                                                },
+                                                                                function (err, user2) {
+
+                                                                                    if(!err)
+                                                                                    {
+                                                                                        res.code = 200;
+                                                                                        res.value = results;
+                                                                                        callback(null, res);
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        console.log(err);
+                                                                                        res.code = 400;
+                                                                                        callback(null, res);
+                                                                                    }
+
+                                                                                });
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            coll.insert({name: msg.hotelitem.hotel_city,
+                                                                                    year:new Date().getFullYear(),
+                                                                                    revenue: msg.room_rent,
+                                                                                    count: 1
+                                                                                }
+                                                                                ,
+                                                                                function (err, user2) {
+                                                                                    if(!err)
+                                                                                    {
+                                                                                        res.code = 200;
+                                                                                        res.value = results;
+                                                                                        callback(null, res);
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        console.log(err);
+                                                                                        res.code = 400;
+                                                                                        callback(null, res);
+                                                                                    }
+
+                                                                                })
+                                                                        }
+
+                                                                    })
+
+                                                            }
+                                                            else
+                                                            {
+                                                                console.log(err);
+                                                                res.code = 400;
+                                                                callback(null, res);
+
+                                                            }
+
+                                                        });
+
+                                                }
+                                            })
+                                    }
+                                    else
+                                    {
+                                        console.log(err);
+                                        res.code = 400;
+                                        callback(null, res);
+
+                                    }
+
+                                    });
+                            }
+                            else
+                            {
+                                console.log(err);
+                                res.code = 400;
+                                callback(null, res);
+                            }
+                        });
+                    }});
+
+            });
         }
-        callback(null, res);
+        //callback(null, res);
     });
 }
 exports.handle_booking = handle_booking;

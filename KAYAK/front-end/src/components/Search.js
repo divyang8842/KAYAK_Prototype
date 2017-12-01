@@ -134,6 +134,14 @@ class Search extends Component {
   }
 
     handleCarsSearch(){
+        // if (typeof(Storage) !== "undefined") {
+        //     localStorage.car_City = this.state.Cars.City;
+        //     localStorage.car_destination = this.state.Cars.destination;
+        //     localStorage.car_Pickup = this.state.Cars.Pickup;
+        //     localStorage.car_Dropoff = this.state.Cars.Dropoff;
+        //     localStorage.car_different_drop_off = this.state.Cars.different_drop_off;
+        // }
+
         CarsAPI.getCars(this.state.Cars)
             .then((output) => {
 
