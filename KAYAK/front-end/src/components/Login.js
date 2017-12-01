@@ -332,6 +332,7 @@ import * as API from '../api/SigninSignup-API';
 import ReactDOM from 'react-dom';
 import Search from './Home';
 import FormErrors from "./FormErrors";
+import * as UserTracking from '../api/UserTracking';
 
 class Login extends Component {
   state={
@@ -421,6 +422,18 @@ componentDidMount()
                       this.setState({islogged: 'false', message:"Invalid credentials. Login again." });
                         console.log("Wrong login: "+this.state.islogged);
                     } else {
+                        var tracking_object = {};
+                        tracking_object.current_page = "SIGNIN_PAGE";
+                        tracking_object.previous_page = "SEARCH_PAGE";
+                        tracking_object.user_id = "jay";
+                        tracking_object.session_id = "1";
+
+                        UserTracking.userTracking(tracking_object)
+                            .then((status) => {
+                                console.log("Tracking status:" + status);
+
+
+                            });
                       this.setState({messageLogin: 'true', user: output, message:""});
                       localStorage.setItem('userid', output.id);
                       ReactDOM.findDOMNode(this.refs.em).value = "";

@@ -46,6 +46,20 @@ class HotelBooking extends Component {
                                 .then((status) => {
                                     if(status == 200){
                                       alert("Booking Done!");
+
+                                        var tracking_object = {};
+                                        tracking_object.current_page = "SEARCH_PAGE";
+                                        tracking_object.previous_page = "BILLING_HOTEL";
+                                        tracking_object.user_id = "jay";
+                                        tracking_object.session_id = "1";
+
+                                        UserTracking.userTracking(tracking_object)
+                                            .then((status) => {
+                                                console.log("Tracking status:" + status);
+
+
+                                            });
+
                                       this.props.history.push("/");
                                       // this.props.loadHotels(result);
                                       // this.props.loadFilteredHotels(result);

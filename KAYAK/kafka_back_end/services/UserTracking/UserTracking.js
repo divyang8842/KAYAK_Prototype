@@ -217,6 +217,256 @@ function handle_request(msg, callback){
             });
     }
 
+    else if(msg.current_page ==="HOTEL_PAGE")
+    {
+
+        coll.update({}, {
+                $push: {
+                    HOTEL_PAGE: {
+                        current_page: msg.current_page,
+                        previous_page:msg.previous_page,
+                        user_id:msg.user_id,
+                        session_id:msg.session_id,
+                        time:Date()
+
+                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+            , function (err, user) {
+
+                console.log("Inside Updated HOTEL_PAGE Entry");
+
+                if(!err){
+
+                    coll.update({},{$inc: { HOTEL_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
+                }
+                else
+                {
+                    response.code = "400";
+                    console.log("Fail"+response);
+                    callback(null, response);
+                }
+
+
+            });
+    }
+
+    else if(msg.current_page ==="BILLING_HOTEL")
+    {
+
+        coll.update({}, {
+                $push: {
+                    BILLING_HOTEL: {
+                        current_page: msg.current_page,
+                        previous_page:msg.previous_page,
+                        user_id:msg.user_id,
+                        session_id:msg.session_id,
+                        time:Date()
+
+                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+            , function (err, user) {
+
+                console.log("Inside Updated HOTEL_PAGE Entry");
+
+                if(!err){
+
+                    coll.update({},{$inc: { BILLING_HOTEL_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
+                }
+                else
+                {
+                    response.code = "400";
+                    console.log("Fail"+response);
+                    callback(null, response);
+                }
+
+
+            });
+    }
+
+    else if(msg.current_page ==="BILLING_CAR")
+    {
+
+        coll.update({}, {
+                $push: {
+                    BILLING_CAR: {
+                        current_page: msg.current_page,
+                        previous_page:msg.previous_page,
+                        user_id:msg.user_id,
+                        session_id:msg.session_id,
+                        time:Date()
+
+                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+            , function (err, user) {
+
+                console.log("Inside Updated HOTEL_PAGE Entry");
+
+                if(!err){
+
+                    coll.update({},{$inc: { BILLING_CAR_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
+                }
+                else
+                {
+                    response.code = "400";
+                    console.log("Fail"+response);
+                    callback(null, response);
+                }
+
+
+            });
+    }
+
+    else if(msg.current_page ==="SIGNIN_PAGE")
+    {
+
+        coll.update({}, {
+                $push: {
+                    SIGNIN_PAGE: {
+                        current_page: msg.current_page,
+                        previous_page:msg.previous_page,
+                        user_id:msg.user_id,
+                        session_id:msg.session_id,
+                        time:Date()
+
+                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+            , function (err, user) {
+
+                console.log("Inside Updated HOTEL_PAGE Entry");
+
+                if(!err){
+
+                    coll.update({},{$inc: { SIGNIN_PAGE_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
+                }
+                else
+                {
+                    response.code = "400";
+                    console.log("Fail"+response);
+                    callback(null, response);
+                }
+
+
+            });
+    }
+
+    else if(msg.current_page ==="SIGNUP_PAGE")
+    {
+
+        coll.update({}, {
+                $push: {
+                    SIGNUP_PAGE: {
+                        current_page: msg.current_page,
+                        previous_page:msg.previous_page,
+                        user_id:msg.user_id,
+                        session_id:msg.session_id,
+                        time:Date()
+
+                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+            , function (err, user) {
+
+                console.log("Inside Updated HOTEL_PAGE Entry");
+
+                if(!err){
+
+                    coll.update({},{$inc: { SIGNUP_PAGE_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
+                }
+                else
+                {
+                    response.code = "400";
+                    console.log("Fail"+response);
+                    callback(null, response);
+                }
+
+
+            });
+    }
+
 
 
     });

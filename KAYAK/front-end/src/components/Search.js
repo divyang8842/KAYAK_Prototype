@@ -57,6 +57,8 @@ class Search extends Component {
     }
     HotelsAPI.getHotels(this.state.Hotels)
     .then((result) => {
+        var tracking_object={};
+
         if(result.results){
             if(result.results.code == 200){
             Promise.resolve(this.props.loadHotels(result))
@@ -74,6 +76,16 @@ class Search extends Component {
                         });
                     }
                 });
+
+                tracking_object.current_page="HOTEL_PAGE";
+                tracking_object.previous_page="SEARCH_PAGE";
+                tracking_object.user_id="jay";
+                tracking_object.session_id="1";
+
+                UserTracking.userTracking(tracking_object)
+                    .then((status) => {
+                        console.log("Tracking status:"+status);
+                    });
             // this.props.loadFilteredHotels(result);
             this.props.history.push("/Hotels");
             }
