@@ -44,7 +44,7 @@ class Analytics extends Component {
               }
               for(var i=0;i<hotel_count_len;i++){
                 hotel_count_label.push(result.hotel_count.title[i]);
-                hotel_count_data.push(result.hotel_data.data[i]);
+                hotel_count_data.push(result.hotel_count.data[i]);
               }
               for(var i=0;i<hotel_revenue_len;i++){
                 hotel_revenue_label.push(result.hotel_revenue.title[i]);
@@ -103,7 +103,7 @@ class Analytics extends Component {
                     hotelCount:{
                       labels: hotel_count_label,
                       datasets:[{ label:'Hotel Count',
-                                  data:hotel_count_label,
+                                  data:hotel_count_data,
                                   backgroundColor:[
                                             'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
                                             'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
