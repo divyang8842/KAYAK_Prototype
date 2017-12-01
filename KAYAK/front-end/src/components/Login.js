@@ -417,30 +417,29 @@ componentDidMount()
           //console.log(input.loginemail);
             API.login(input)
                 .then((output) => {
-                    if (output === 0) {
+                    if (output.code === "200") {
+                      var tracking_object = {};
+                      tracking_object.current_page = "SIGNIN_PAGE";
+                      tracking_object.previous_page = "SEARCH_PAGE";
+                      tracking_object.user_id = "jay";
+                      tracking_object.session_id = "1";
+
+                      UserTracking.userTracking(tracking_object)
+                          .then((status) => {
+                              console.log("Tracking status:" + status);
+                          });
+                    this.setState({messageLogin: 'true', user: output, message:""});
+                    localStorage.setItem('userid', output.value.id);
+                    ReactDOM.findDOMNode(this.refs.em).value = "";
+                    ReactDOM.findDOMNode(this.refs.pwd).value = "";
+                    this.setState({username:'',password:'',formValid:false});
+                      this.props.handleLogged(output.value.id,output.value.type,output.value.firstname);
+                      this.props.handleClose();
+
+                    } else {
                       //console.log("OUPUT= "+output);
                       this.setState({islogged: 'false', message:"Invalid credentials. Login again." });
                         console.log("Wrong login: "+this.state.islogged);
-                    } else {
-                        var tracking_object = {};
-                        tracking_object.current_page = "SIGNIN_PAGE";
-                        tracking_object.previous_page = "SEARCH_PAGE";
-                        tracking_object.user_id = "jay";
-                        tracking_object.session_id = "1";
-
-                        UserTracking.userTracking(tracking_object)
-                            .then((status) => {
-                                console.log("Tracking status:" + status);
-
-
-                            });
-                      this.setState({messageLogin: 'true', user: output, message:""});
-                      localStorage.setItem('userid', output.id);
-                      ReactDOM.findDOMNode(this.refs.em).value = "";
-                      ReactDOM.findDOMNode(this.refs.pwd).value = "";
-                      this.setState({username:'',password:'',formValid:false});
-                        this.props.handleLogged(output.id,output.type,output.firstname);
-                        this.props.handleClose();
                     }
                 });
         };

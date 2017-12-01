@@ -66,7 +66,7 @@ consumer_login.on('message', function (message) {
             { topic: data.replyTo,
                 messages:JSON.stringify({
                     correlationId:data.correlationId,
-                    data : res.value
+                    data : res
                 }),
                 partition : 0
             }
@@ -880,4 +880,3 @@ consumeruser_tracking_chart.on('message', function (message) {
         return;
     });
 });
-

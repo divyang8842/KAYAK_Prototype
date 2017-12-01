@@ -47,28 +47,7 @@ class Account extends Component {
     this.setState({visible1: !this.state.visible,visible: false});
   }
 
-/*
-componentDidMount(){
-  if(localStorage.getItem('userid')){
-console.log("CHECK IN FUNC: "+localStorage.getItem('userid'));
-  var currentUser={id:localStorage.getItem('userid')};
-  localStorage.removeItem('userid');
-      API.checkLogged(currentUser)
-          .then((output) => {
-            console.log("CHECK THIS: "+output.status);
-              if (output.status === "501") {
-                console.log("Incorrect");
-                this.props.handleNotLogged();
 
-              } else {
-                  console.log("Correct ");
-                  localStorage.setItem('userid', output.userid);
-                  this.props.handleLogged(output.userid,output.type,output.firstname);
-              }
-          });
-  }
-
-}*/
 
 componentWillMount(){
   this.handleFileFetch();

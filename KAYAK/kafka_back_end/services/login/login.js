@@ -4,11 +4,11 @@ var errorHandler = require('./../utils/errorLogging');
 
 function handle_request(msg, callback){
   console.log("In handle request:"+ JSON.stringify(msg));
- var res=[];
+ var res={};
   var password=msg.password;
   var encrypwd=security.encrypt(password);
 
-  var fetchQuery="SELECT user_id,emailid,password,fname,user_type FROM user WHERE emailid=?";
+  var fetchQuery="SELECT user_id,emailid,password,fname,user_type,lname,city FROM user WHERE emailid=?";
   var dataArry =  [];
   dataArry.push(msg.username);
   //dataArry.push(encrypwd);
@@ -24,7 +24,7 @@ function handle_request(msg, callback){
     var compare=security.compareEncrypted(msg.password,results[0].password);
     if (compare){
         res.code = "200";
-        res.value={id:results[0].user_id,firstname:results[0].fname,type:results[0].user_type};
+        res.value={id:results[0].user_id,firstname:results[0].fname,lastname:results[0].lname,city:results[0].city,type:results[0].user_type};
           //res.value=results;
           console.log("Success---"+res);
           callback(null, res);

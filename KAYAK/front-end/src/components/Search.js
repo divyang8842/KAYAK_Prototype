@@ -105,6 +105,7 @@ class Search extends Component {
   }
 
   handleFlightSearch(){
+      console.log(this.state.Flights);
       FlightsAPI.getFlights(this.state.Flights)
           .then((output) => {
               var tracking_object={};
@@ -135,7 +136,7 @@ class Search extends Component {
             currentpath.push("FLIGHT_PAGE");
             this.props.updateTracking({currentpath, currentpage, timenow});
 
-              if(this.state.Flights.Return !== null)
+              if(this.state.Flights.Return !== null && this.state.Flights.Return !== "" )
               {
                     console.log("Please Book Return Ticket also");
                   console.log(this.state.Flights.Return);
