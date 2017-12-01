@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+/*import React, {Component} from 'react';
 import * as API from '../api/SigninSignup-API';
 import ReactDOM from 'react-dom';
 import Search from './Home';
@@ -143,7 +143,7 @@ componentDidMount()
 
   validateForm1() {
     //console.log("USER STATE IN VALIDATE:==== "+this.state.checkUsername+this.state.firstNameValid+this.state.lastNameValid + this.state.emailValid + this.state.passwordValid);
-      this.setState({formValid: this.state.checkUsername &&this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid});
+      this.setState({formValid1: this.state.checkUsername &&this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid});
   }
 
   errorClass(error) {
@@ -169,7 +169,7 @@ componentDidMount()
         };
 
         handleSignup = (user) => {
-          alert("CHECK: "+user.firstname);
+          //alert("CHECK: "+user.firstname);
             API.signup(user)
                 .then((output) => {
                     if (output === 0) {
@@ -247,7 +247,7 @@ componentDidMount()
             </div>
 
             <div className="col-xs-12">
-<input type="submit" className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleSignup(this.state)}/>
+<input type="submit" className="btn btn-primary btn-block" disabled={!this.state.formValid} value="Submit" onClick={() => this.handleSignup(this.state)}/>
             </div>
           </div>
           </form>
@@ -316,6 +316,167 @@ componentDidMount()
   </div>
 </div>
 </div>) :(<Search/>)}
+</div>
+        );
+    }
+}
+
+export default Login;
+
+
+*/
+
+
+import React, {Component} from 'react';
+import * as API from '../api/SigninSignup-API';
+import ReactDOM from 'react-dom';
+import Search from './Home';
+import FormErrors from "./FormErrors";
+
+class Login extends Component {
+  state={
+    user:'',
+    messageLogin:'false',
+    message:'',
+    username:'',
+    password:'',
+    formErrors: {email: '', password: ''},
+    emailValid: false,
+    passwordValid: false,
+    formValid: false,
+    type:false,
+    checkUsername:false
+  };
+
+componentDidMount()
+{
+  if(localStorage.getItem('userid')){
+  var currentUser={id:localStorage.getItem('userid')};
+  localStorage.removeItem('userid');
+      API.checkLogged(currentUser)
+          .then((output) => {
+            console.log("CHECK THIS: "+output.status);
+              if (output.status === "501") {
+                console.log("Incorrect");
+                this.props.handleNotLogged();
+
+              } else {
+                  console.log("Correct ");
+                  localStorage.setItem('userid', output.userid);
+                  this.props.handleLogged(output.userid,output.type,output.firstname);
+              }
+          });
+  }
+}
+  componentWillMount(){
+          this.setState({username:'',password:'',message:'',
+          formErrors: {email: '', password: ''},
+          formErrors1: {firstname: '',lastname: '',email: '', password: '',userEmail:''},
+          emailValid: false,
+          passwordValid: false,
+          formValid: false,
+          firstNameValid:false,
+          lastNameValid:false,
+          checkUsername:false,
+          type:false});
+        };
+
+  validateField(fieldName, value) {
+      let fieldValidationErrors = this.state.formErrors;
+      let emailValid = this.state.emailValid;
+      let passwordValid = this.state.passwordValid;
+      switch(fieldName) {
+          case 'email':
+              emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+              fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+              break;
+          case 'password':
+              passwordValid = value.length >= 3;
+              fieldValidationErrors.password = passwordValid ? '': ' is too short';
+              break;
+          default:
+              break;
+      }
+      this.setState({formErrors: fieldValidationErrors,
+          emailValid: emailValid,
+          passwordValid: passwordValid,
+      }, this.validateForm);
+  }
+
+  validateForm() {
+      this.setState({formValid: this.state.emailValid && this.state.passwordValid});
+  }
+
+
+  errorClass(error) {
+      return(error.length === 0 ? '' : 'has-error');
+  }
+
+     handleLogin = (input) => {
+          //console.log(input.loginemail);
+            API.login(input)
+                .then((output) => {
+                    if (output === 0) {
+                      //console.log("OUPUT= "+output);
+                      this.setState({islogged: 'false', message:"Invalid credentials. Login again." });
+                        console.log("Wrong login: "+this.state.islogged);
+                    } else {
+                      this.setState({messageLogin: 'true', user: output, message:""});
+                      localStorage.setItem('userid', output.id);
+                      ReactDOM.findDOMNode(this.refs.em).value = "";
+                      ReactDOM.findDOMNode(this.refs.pwd).value = "";
+                        this.props.handleLogged(output.id,output.type,output.firstname);
+                        this.props.handleClose();
+                    }
+                });
+        };
+
+    render() {
+        return (
+          <div>
+
+              <h3 style={{color:"rgba(0, 0, 0, 0.5)"}}>SIGN IN</h3>
+              <form>
+                <div className="row">
+                  <div className="col-xxs-12 col-xs-6 mt">
+                    <div className="input-field">
+              <div className={'form-group ${this.errorClass(this.state.formErrors.email)}'}>
+                      <label>Email:</label>
+                      <input type="text" ref="em" className="form-control" onChange={(event) => {
+                          const name="email"
+                          const value=event.target.value
+                          this.setState({
+                              username: event.target.value,
+                              type:true
+                          }, () => { this.validateField(name, value) });
+                      }} required/>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-xxs-12 col-xs-6 mt">
+                    <div className="input-field">
+                    <div className={'form-group ${this.errorClass(this.state.formErrors.password)}'}>
+                      <label>Password:</label>
+                      <input type="password" ref="pwd" className="form-control" onChange={(event) => {
+                          const name="password"
+                          const value=event.target.value
+                          this.setState({
+                              password: event.target.value,
+                              type:true
+                          }, () => { this.validateField(name, value) });
+                      }} required/>
+                    </div>
+                  </div>
+                  </div>
+
+                  <div className="col-xs-12">
+                  <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleLogin(this.state)}>Submit</button>
+                  </div>
+                </div>
+                </form>
+                <FormErrors formErrors={this.state.formErrors} />
+                <font color="red">{this.state.message}</font>
 </div>
         );
     }

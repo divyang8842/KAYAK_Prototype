@@ -30,14 +30,14 @@ function handle_request(msg, callback){
                 console.log('Connected to mongo at: ' + mongoURL);
                 var coll = mongo.collection('Billing');
 
-                coll.findOne({"userid" : "jay"},function (err, searchuser) {
+                coll.findOne({"userid" : msg.userid},function (err, searchuser) {
                     if(searchuser)
                     {
                         var car_total_new = searchuser.car_total+msg.car_rent;
                         var number_of_car_bookings = searchuser.car.length ;
                         number_of_car_bookings = number_of_car_bookings +1;
 
-                        coll.update({userid:'jay'}, {
+                        coll.update({userid:msg.userid}, {
                             $push: {
                                 car: {
                                     billid:new ObjectID(),
@@ -55,15 +55,224 @@ function handle_request(msg, callback){
 
                             if(user){
 
-                            coll.update({"userid" : "jay"},{ $set:{car_total:car_total_new,
+                            coll.update({"userid" : msg.userid},{ $set:{car_total:car_total_new,
                                     car_count:number_of_car_bookings}},
                                 function (err, user2) {
 
                                 if(user2)
                                 {
-                                    response.code = "200";
-                                    console.log("Success--- inside Car booking"+response);
-                                    callback(null, response);
+                                    var new_total;
+                                    var new_counter;
+                                    coll = mongo.collection('car_analytics');
+
+                                    coll.findOne({name: msg.car_agency,
+                                                  year:new Date().getFullYear()},
+                                                function(err, user) {
+
+                                                    console.log("user" + JSON.stringify(user));
+                                                    if(user && user.name)
+                                                    {
+                                                        new_total = user.revenue+msg.car_rent;
+                                                        new_counter = user.count+1;
+
+                                                        console.log("Inside Car Analytics - Update part");
+
+                                                        coll.update({name: msg.car_agency,
+                                                                year:new Date().getFullYear()
+                                                            }, {
+                                                                $set: {
+                                                                    revenue: new_total,
+                                                                    count: new_counter
+                                                                }
+                                                            },
+                                                            function (err, user2) {
+                                                            if(!err)
+                                                            {
+                                                                // City wise update
+
+                                                                var new_total_city;
+                                                                var new_counter_city;
+                                                                coll = mongo.collection('city_analytics');
+
+                                                                // response.code = "200";
+                                                                // console.log("Success" + response);
+                                                                // callback(null, response);
+
+                                                                coll.findOne({name: msg.car_city,
+                                                                        year:new Date().getFullYear()},
+                                                                    function(err, user){
+                                                                        if(user && user.name)
+                                                                        {
+                                                                            new_total_city = user.revenue+msg.car_rent;
+                                                                            new_counter_city = user.count+1;
+
+                                                                            console.log("Inside City Analytics - update / Car Update part");
+
+                                                                            coll.update({name: msg.car_city,
+                                                                                    year:new Date().getFullYear()
+                                                                                }, {
+                                                                                    $set: {
+                                                                                        revenue: new_total_city,
+                                                                                        count: new_counter_city
+                                                                                    }
+                                                                                },
+                                                                                function (err, user2) {
+
+                                                                                    if(!err)
+                                                                                    {
+                                                                                        response.code = "200";
+                                                                                        console.log("Success" + response);
+                                                                                        callback(null, response);
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        response.code = "400";
+                                                                                        console.log("Fail" + response);
+                                                                                        callback(null, response);
+                                                                                    }
+
+                                                                                });
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            coll.insert({name: msg.car_city,
+                                                                                    year:new Date().getFullYear(),
+                                                                                    revenue: msg.car_rent,
+                                                                                    count: 1
+                                                                                }
+                                                                                ,
+                                                                                function (err, user2) {
+                                                                                    if(!err)
+                                                                                    {
+                                                                                        response.code = "200";
+                                                                                        console.log("Success" + response);
+                                                                                        callback(null, response);
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        response.code = "400";
+                                                                                        console.log("Fail" + response);
+                                                                                        callback(null, response);
+                                                                                    }
+
+                                                                                })
+                                                                        }
+
+                                                                    })
+
+                                                            }
+                                                            else
+                                                            {
+                                                                response.code = "400";
+                                                                console.log("Fail"+response);
+                                                                callback(null, response);
+
+                                                            }
+
+                                                            });
+
+                                                    }
+                                                    else
+                                                    {
+                                                        console.log("Inside Car Analytics - Insert part");
+                                                        coll.insert({name: msg.car_agency,
+                                                                year:new Date().getFullYear(),
+                                                                revenue: msg.car_rent,
+                                                                count: 1
+                                                            }
+                                                            ,
+                                                            function (err, user2) {
+
+                                                                if(!err)
+                                                                {
+                                                                    var new_total_city;
+                                                                    var new_counter_city;
+                                                                    coll = mongo.collection('city_analytics');
+
+                                                                    // response.code = "200";
+                                                                    // console.log("Success" + response);
+                                                                    // callback(null, response);
+
+                                                                    coll.findOne({name: msg.car_city,
+                                                                            year:new Date().getFullYear()},
+                                                                        function(err, user){
+                                                                            if(user && user.name)
+                                                                            {
+                                                                                new_total_city = user.revenue+msg.car_rent;
+                                                                                new_counter_city = user.count+1;
+
+                                                                                console.log("Inside City Analytics - update / Car Update part");
+
+                                                                                coll.update({name: msg.car_city,
+                                                                                        year:new Date().getFullYear()
+                                                                                    }, {
+                                                                                        $set: {
+                                                                                            revenue: new_total_city,
+                                                                                            count: new_counter_city
+                                                                                        }
+                                                                                    },
+                                                                                    function (err, user2) {
+
+                                                                                        if(!err)
+                                                                                        {
+                                                                                            response.code = "200";
+                                                                                            console.log("Success" + response);
+                                                                                            callback(null, response);
+
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            response.code = "400";
+                                                                                            console.log("Fail" + response);
+                                                                                            callback(null, response);
+                                                                                        }
+
+                                                                                    });
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                coll.insert({name: msg.car_city,
+                                                                                        year:new Date().getFullYear(),
+                                                                                        revenue: msg.car_rent,
+                                                                                        count: 1
+                                                                                    }
+                                                                                    ,
+                                                                                    function (err, user2) {
+                                                                                        if(!err)
+                                                                                        {
+                                                                                            response.code = "200";
+                                                                                            console.log("Success" + response);
+                                                                                            callback(null, response);
+
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            response.code = "400";
+                                                                                            console.log("Fail" + response);
+                                                                                            callback(null, response);
+                                                                                        }
+
+                                                                                    })
+                                                                            }
+
+                                                                        })
+
+                                                                }
+                                                                else
+                                                                {
+                                                                    response.code = "400";
+                                                                    console.log("Fail"+response);
+                                                                    callback(null, response);
+
+                                                                }
+
+                                                            });
+
+                                                    }
+                                                })
+
                                 }
                                 else
                                 {

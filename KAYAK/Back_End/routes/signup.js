@@ -15,7 +15,7 @@ exports.signup= function(req,res) {
             }
             else
             {
-                if(results.code == 200){
+                if(results == "200"){
                 	res.status(201).json({output:1});
                 }
                 else {

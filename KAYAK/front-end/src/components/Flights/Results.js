@@ -358,7 +358,7 @@ class Results extends Component {
                             </div>
                             <div className="col-md-4 col-sm-4 ">
                                 <div className="row">
-                                    <h3>
+                                    <h3 align="center">
                                 {flights.flights.totalprice}
                                     </h3>
                                 </div>
@@ -443,62 +443,92 @@ class Results extends Component {
            if(this.state.array_for_sorting_result_return.length===0 && this.state.flag === 0)
             { return resuult_array.map((flights, index) => {
                 return (
-                    <div className="col-md-8 col-sm-8 " style={styles}>
+                    <div className="col-md-10 col-sm-10 " style={styles}>
                         <div className="row">
                             <div className="col-md-8 col-sm-8 ">
-                        <h3>
-                            {flights.airline_name}
-                        </h3>
-                        <br/>
+                                <div className="col-md-4 col-sm-4 ">
+                                    <div className="row">
+                                    <h2>
+                                        {flights.airline_name}
+                                    </h2>
+                                    </div>
+                                    <div className="row">
+                                    <h2>
+                                        {flights.airline_name_return}
+                                    </h2>
+                                    </div>
+                                </div>
+                                <div className="col-md-4 col-sm-4 ">
+                                    <div className="col-md-6 col-sm-6 ">
+                                        <div className="row">
+                                            <h3>
+                                                {flights.flight_departure}
+                                            </h3>
+                                        </div>
+                                        <div className="row">
+                                            {flights.origin_station}
+                                        </div>
+                                        <div className="row">
+                                            <h3>
+                                                {flights.flight_departure_return}
+                                            </h3>
+                                        </div>
+                                        <div className="row">
+                                            {flights.origin_station_return}
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6 col-sm-6 ">
+                                        <div className="row">
+                                            <h3>
+                                                {flights.flight_arrival}
+                                            </h3>
+                                        </div>
+                                        <div className="row">
+                                            {flights.destination_station}
+                                        </div>
+                                        <div className="row">
+                                            <h3>
+                                                {flights.flight_arrival_return}
+                                            </h3>
+                                        </div>
+                                        <div className="row">
+                                            {flights.destination_station_return}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-md-4 col-sm-4 ">
+                                    <div className="row">
+                                        <h3 align="center">
+                                            {flights.totalprice}
+                                        </h3>
+                                    </div>
+                                    <div className="row">
+                                        <button className="btn btn-primary btn-block"
+                                                onClick={() => {
 
-                        {flights.origin_station}
+                                                    var payload = {flights:flights};
+                                                    var tracking_object = {};
 
-                        {flights.destination_station}
+                                                    this.props.getFlightsBooking(payload);
 
-                        {flights.flight_departure}
+                                                    tracking_object.current_page = "BILLING_FLIGHT";
+                                                    tracking_object.previous_page = "FLIGHT_PAGE";
+                                                    tracking_object.user_id = "jay";
+                                                    tracking_object.session_id = "1";
 
-                        {flights.flight_arrival}
-
-                        {flights.totalprice}
-
-                        <h3>
-                            {flights.airline_name_return}
-                        </h3>
-                        <br/>
-
-                        {flights.origin_station_return}
-
-                        {flights.destination_station_return}
-
-                        {flights.flight_departure_return}
-
-                        {flights.flight_arrival_return}
-
-                        <button className="btn btn-primary btn-block"
-                                onClick={() => {
-
-                                    var payload = {flights:flights};
-                                    var tracking_object = {};
-
-                                    this.props.getFlightsBooking(payload);
-
-                                    tracking_object.current_page = "BILLING_FLIGHT";
-                                    tracking_object.previous_page = "FLIGHT_PAGE";
-                                    tracking_object.user_id = "jay";
-                                    tracking_object.session_id = "1";
-
-                                    UserTracking.userTracking(tracking_object)
-                                        .then((status) => {
-                                            console.log("Tracking status:" + status);
+                                                    UserTracking.userTracking(tracking_object)
+                                                        .then((status) => {
+                                                            console.log("Tracking status:" + status);
 
 
-                                        });
+                                                        });
 
-                                    this.props.history.push("/flightsbooking");
-                                }
-                                }>View Deal
-                        </button>
-
+                                                    this.props.history.push("/flightsbooking");
+                                                }
+                                                }>View Deal
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -510,62 +540,92 @@ class Results extends Component {
            {
                return this.state.array_for_sorting_result_return.map((flights, index) => {
                    return (
-                       <div className="col-md-8 col-sm-8 " style={styles}>
+                       <div className="col-md-10 col-sm-10 " style={styles}>
                            <div className="row">
                                <div className="col-md-8 col-sm-8 ">
-                           <h3>
-                               {flights.airline_name}
-                           </h3>
-                           <br/>
+                                   <div className="col-md-4 col-sm-4 ">
+                                       <div className="row">
+                                           <h2>
+                                               {flights.airline_name}
+                                           </h2>
+                                       </div>
+                                       <div className="row">
+                                           <h2>
+                                               {flights.airline_name_return}
+                                           </h2>
+                                       </div>
+                                   </div>
+                                   <div className="col-md-4 col-sm-4 ">
+                                       <div className="col-md-6 col-sm-6 ">
+                                           <div className="row">
+                                               <h3>
+                                                   {flights.flight_departure}
+                                               </h3>
+                                           </div>
+                                           <div className="row">
+                                               {flights.origin_station}
+                                           </div>
+                                           <div className="row">
+                                               <h3>
+                                                   {flights.flight_departure_return}
+                                               </h3>
+                                           </div>
+                                           <div className="row">
+                                               {flights.origin_station_return}
+                                           </div>
+                                       </div>
+                                       <div className="col-md-6 col-sm-6 ">
+                                           <div className="row">
+                                               <h3>
+                                                   {flights.flight_arrival}
+                                               </h3>
+                                           </div>
+                                           <div className="row">
+                                               {flights.destination_station}
+                                           </div>
+                                           <div className="row">
+                                               <h3>
+                                                   {flights.flight_arrival_return}
+                                               </h3>
+                                           </div>
+                                           <div className="row">
+                                               {flights.destination_station_return}
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div className="col-md-4 col-sm-4 ">
+                                       <div className="row">
+                                           <h3 align="center">
+                                               {flights.totalprice}
+                                           </h3>
+                                       </div>
+                                       <div className="row">
+                                           <button className="btn btn-primary btn-block"
+                                                   onClick={() => {
 
-                           {flights.origin_station}
+                                                       var payload = {flights:flights};
+                                                       var tracking_object = {};
 
-                           {flights.destination_station}
+                                                       this.props.getFlightsBooking(payload);
 
-                           {flights.flight_departure}
+                                                       tracking_object.current_page = "BILLING_FLIGHT";
+                                                       tracking_object.previous_page = "FLIGHT_PAGE";
+                                                       tracking_object.user_id = "jay";
+                                                       tracking_object.session_id = "1";
 
-                           {flights.flight_arrival}
-
-                           {flights.totalprice}
-
-                           <h3>
-                               {flights.airline_name_return}
-                           </h3>
-                           <br/>
-
-                           {flights.origin_station_return}
-
-                           {flights.destination_station_return}
-
-                           {flights.flight_departure_return}
-
-                           {flights.flight_arrival_return}
-
-                           <button className="btn btn-primary btn-block"
-                                   onClick={() => {
-
-                                       var payload = {flights:flights};
-                                       var tracking_object = {};
-
-                                       this.props.getFlightsBooking(payload);
-
-                                       tracking_object.current_page = "BILLING_FLIGHT";
-                                       tracking_object.previous_page = "FLIGHT_PAGE";
-                                       tracking_object.user_id = "jay";
-                                       tracking_object.session_id = "1";
-
-                                       UserTracking.userTracking(tracking_object)
-                                           .then((status) => {
-                                               console.log("Tracking status:" + status);
+                                                       UserTracking.userTracking(tracking_object)
+                                                           .then((status) => {
+                                                               console.log("Tracking status:" + status);
 
 
-                                           });
+                                                           });
 
-                                       this.props.history.push("/flightsbooking");
-                                   }
-                                   }>View Deal
-                           </button>
-
+                                                       this.props.history.push("/flightsbooking");
+                                                   }
+                                                   }>View Deal
+                                           </button>
+                                       </div>
+                                   </div>
                                </div>
                            </div>
                        </div>
@@ -576,6 +636,37 @@ class Results extends Component {
         }
     }
 
+    constructor(props) {
+        super(props)
+
+        this.handler = this.handler.bind(this)
+    }
+    handler(){
+        // this.forceUpdate();
+        // this.setFreebies();
+        // this.filterHotels();
+        // this.setState(this.state);
+        // window.location.reload();
+        var array_flights = this.props.flights;
+        var array_flights_return = this.props.flights_return;
+        console.log(array_flights);
+        this.setState({
+            array_for_sorting:array_flights
+
+        });
+
+        this.setState({
+            array_for_sorting_return:array_flights_return
+
+        });
+        this.setState({
+            array_for_sorting_result:array_flights
+
+        });
+
+
+    }
+
     render()
     {
         var styles={
@@ -584,7 +675,7 @@ class Results extends Component {
         return(
             <div>
             <div>
-                <FLightSerachPanel/>
+                <FLightSerachPanel handler = {this.handler}/>
             </div>
             <div className="container-fluid">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>

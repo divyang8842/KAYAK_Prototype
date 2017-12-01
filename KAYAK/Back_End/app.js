@@ -10,6 +10,7 @@ var cors = require('cors');
 var adminHotel = require('./routes/admin/hotel');
 var adminCar = require('./routes/admin/car');
 var adminUsers=require('./routes/admin/users');
+var adminBookings=require('./routes/admin/bookings');
 
 var getFlights = require('./routes/Flights/GetFlights');
 var flightsBooking = require('./routes/Flights/FlightBooking');
@@ -76,7 +77,7 @@ app.use('/signup', signup.signup);
 app.use('/checkuser', checkuser.checkuser);
 app.use('/account',security.authenticate, account.account);
 app.use('/update', security.authenticate,account.update);
-app.use('/password', account.password);
+app.use('/password',security.authenticate, account.password);
 app.use('/listrooms',security.authenticateAdmin, adminHotel.getHotelRooms);
 app.use('/updateroom',security.authenticateAdmin, adminHotel.updateRoom);
 app.use('/deleteroom',security.authenticateAdmin, adminHotel.deleteRoom);
@@ -85,9 +86,9 @@ app.post('/setRoomData',security.authenticateAdmin,adminHotel.setRoomData);
 app.post('/setCarData',security.authenticateAdmin,adminCar.setCarData);
 app.post('/setFlightData',security.authenticateAdmin,adminFlight.setFlightData);
 
-app.post('/listusers',adminUsers.getUsers);
-app.post('/deleteuser',adminUsers.deleteUser);
-app.post('/newadmin',adminUsers.newAdmin);
+app.post('/listusers',security.authenticateAdmin,adminUsers.getUsers);
+app.post('/deleteuser',security.authenticateAdmin,adminUsers.deleteUser);
+app.post('/newadmin',security.authenticateAdmin,adminUsers.newAdmin);
 
 app.post('/getflights',getFlights.getFLights);
 app.post('/getHotels',hotels.getHotels);
@@ -111,7 +112,11 @@ app.post('/getFile',downloadFile.fileDownload);
 app.post('/listhotels',security.authenticateAdmin,adminHotel.getHotelData);
 app.post('/listCarsData',security.authenticateAdmin,adminCar.getCarData);
 app.post('/listFlightsData',security.authenticateAdmin,adminFlight.getFlightData);
-app.post('/getChartData',security.authenticateAdmin,adminCharts.getChartData);
+app.post('/getChartsData',security.authenticateAdmin,adminCharts.getChartData);
+
+app.post('/getHotelBookings',security.authenticateAdmin,adminBookings.getHotelBookings);
+app.post('/getFlightBookings',security.authenticateAdmin,adminBookings.getFlightBookings);
+app.post('/getCarBookings',security.authenticateAdmin,adminBookings.getCarBookings);
 
 app.post('/validateLogin',security.getLoggedInInfoFromSession);
 

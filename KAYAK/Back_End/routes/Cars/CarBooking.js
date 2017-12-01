@@ -5,6 +5,8 @@ var kafka = require('../kafka/client');
 
 exports.carsbooking= function(req,res) {
 
+    var userid = req.session.user.id;
+
     console.log("Inside Cars Booking");
 
     kafka.make_request('get_cars',
@@ -16,7 +18,9 @@ exports.carsbooking= function(req,res) {
             "start_date":req.body.Pickup,
             "end_date":req.body.Dropoff,
             "car_rent":req.body.car_rent,
-            "action":3
+            "action":3,
+            "userid":userid,
+            "car_agency":"Santa Clara"
         },
         function(err,results){
 

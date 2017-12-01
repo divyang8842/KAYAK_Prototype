@@ -1,8 +1,7 @@
 var mongo = require("../../database/mongo_connect");
 var mongoURL = "mongodb://localhost:27017/kayak_18";
 
-
-
+var mongo_data = require("../../database/mongo");
 // top 10 AIr Lines Query
 // Result will be an array of Object
 // Example
@@ -28,7 +27,6 @@ var mongoURL = "mongodb://localhost:27017/kayak_18";
 // {count:20, revenue:900,name:atlanta, year:'2018'},
 // {count:19, revenue:890,name:emirates, year:'2018'}
 // ]
-
 
 function handle_Request(msg,callback){
     var year = msg.year;
@@ -57,11 +55,12 @@ function handle_Request(msg,callback){
                                 var data = {year:year,type:"city",action:"revenue"};
                                 getTop10Numbers(data,function(err,result){
                                     returnData.city_revenue = result;
-                                    clicksPerPage(function(err,result){
-                                        returnData.clicks_per_page = result;
+                                   // clicksPerPage(function(err,result){
+                                   //     returnData.clicks_per_page = result;
                                         // more calls to be added
+                                        console.log("returnData for charts is :"+JSON.stringify(returnData));
                                         callback(false,returnData);
-                                    })
+                                   // })
                                 });
 
                             });
@@ -80,7 +79,6 @@ function handle_Request(msg,callback){
 }
 
 function getTop10Numbers(msg, callback) {
-
     var response = [];
     var responseData = {"title":[],"data":[]};
     var year = new Date().getFullYear();
@@ -94,11 +92,12 @@ function getTop10Numbers(msg, callback) {
     }
 
     var column = year+'.'+action;
+    var collectionName =
     mongo.connect(mongoURL, function () {
         var resultData = [];
         var coll;
         if(msg.type == "cars"){
-           coll = mongo.collection('car_analytics');
+            coll = mongo.collection('car_analytics');
         }else if(msg.type=="flights"){
             coll = mongo.collection('flight_analytics');
         }else if(msg.type=="hotels"){
@@ -109,49 +108,59 @@ function getTop10Numbers(msg, callback) {
             callback(true,responseData);
         }
 
-        coll.find({}).sort({'2017.count':-1}).limit(10).toArray(function(err, result) {  //'2017.count' can be switched with column variable
-            if(!err)
-            {
-                console.log("Success--- inside top 10 hotel ana");
-                console.log(result);
-                console.log(result.length);
-                resultData = result;
-                //callback(null, result);
-            }
-        });
-
-        var titles = [];
-        var data = [];
-        if(resultData!=[]){
-            var length = resultData.length;
-            while(length>0){
-               titles.push(resultData[--length].name);
-               data.push(resultData[--length].count);
-            }
+        if(action=='count') {
+            coll.find({'year': year}).sort({'count': -1}).limit(10).toArray(function (err, result) {
+                if (!err) {
+                    resultData = result;
+                    var titles = [];
+                    var data = [];
+                    if(resultData!=[]){
+                        var length = resultData.length;
+                        while(length>0){
+                            titles.push(resultData[--length].name);
+                            data.push(resultData[length].count);
+                        }
+                    }
+                    responseData = {"title":titles,"data":data};
+                    callback(null,responseData);
+                }
+            });
+        }else{
+            coll.find({'year': year}).sort({'revenue': -1}).limit(10).toArray(function (err, result) {
+                if (!err) {
+                    resultData = result;
+                    var titles = [];
+                    var data = [];
+                    if(resultData!=[]){
+                        var length = resultData.length;
+                        while(length>0){
+                            titles.push(resultData[--length].name);
+                            data.push(resultData[--length].count);
+                        }
+                    }
+                    responseData = {"title":titles,"data":data};
+                    callback(null,responseData);
+                }
+            });
         }
-        responseData = {"title":titles,"data":data};
-        callback(null,responseData);
     });
 };
-
 
 var clicksPerPage = function(callback){
     var responseData = {"title":[],"data":[]};
     mongo.connect(mongoURL, function () {
-    var coll = mongo.collection('car_analytics');
-    coll.find({}, function (err, pages) {
-         if (!err) {
-             var length = pages.length;
-             var titles = ["FLIGHT_SEARCH","CAR_SEARCH","HOTEL_SEARCH","FLIGHT_PAYMENT","CAR_PAYMENT","HOTEL_PAYMENT","SEARCH","SIGNIN","SIGNUP"];
-             var data = [];
-              if(length>0){
-                  data = [10,10,10,15,16,17,5,1,9];
-              }
-             responseData = {"title":titles,"data":data};
-         }
-
-        callback(null, responseData);
-
+        var coll = mongo.collection('userTracking');
+        coll.findOne({},function (err, pages) {
+            if (!err) {
+                var length = pages.length;
+                var titles = ["FLIGHT_PAGE","CAR_PAGE","HOTEL_PAGE","BILLING_FLIGHT","BILLING_CAR","BILLING_HOTEL","SEARCH_PAGE","SIGNIN_PAGE","SIGNUP_PAGE"];
+                var data = [0,0,0,0,0,0,0,0,0,0];
+                if(pages && pages.FLIGHT_PAGE){
+                    data = [pages.FLIGHT_PAGE, pages.CAR_PAGE, pages.HOTEL_PAGE, pages.BILLING_FLIGHT, pages.BILLING_CAR, pages.BILLING_HOTEL, pages.SEARCH_PAGE, pages.SIGNIN_PAGE, pages.SIGNUP_PAGE];
+                }
+                responseData = {"title":titles,"data":data};
+            }
+            callback(null, responseData);
         });
     });
 };

@@ -101,8 +101,9 @@ class Hotel extends Component {
                 hotelStateValid = value.length !== 0;
                 fieldValidationErrors.hotelstate = hotelStateValid ? '': ' is required';
                 break;
-            case 'hotelzipcode':
-                hotelZipcodeValid = value.length !== 0 && value.length ===5 && value.match('^[0-9]+$');
+
+             case 'hotelzipcode':
+                hotelZipcodeValid = value.length !== 0 && ((value.length ===5 && value.match('^[0-9]+$')) || (value.length ===10 && value.match('^\\d{5}(-\\d{4})?$')));
                 fieldValidationErrors.hotelzipcode = hotelZipcodeValid ? '': ' is invalid';
                 break;
             case 'hoteldesc':
@@ -147,15 +148,15 @@ class Hotel extends Component {
             .then((status) => {
                 if (status.status == '201') {
                     this.setState({
-                        root:status.root,
-                        isLoggedIn: false,
                         message: "Inserted Hotel Data Successfully..!!",
                         hotelid:status.hotelid
                     });
-                    alert("Inserted Hotel Data Successfully..!!"+status.hotelid)
+
+                    alert("Inserted Hotel Data Successfully..!!")
+                    this.viewHotelDetails();
+                    this.setState({visible: !this.state.visible});
                 } else if (status === 401) {
                     this.setState({
-                        isLoggedIn: false,
                         message: "SignUp Failed"
                     });
                 }
@@ -167,9 +168,11 @@ class Hotel extends Component {
         API.updateHotel(newdata)
             .then((output) => {
                 if (output === 1) {
-                    alert("Hotel updated");
+                    alert("Hotel updated successfully.");
+                    this.viewHotelDetails();
+                    this.setState({visible: !this.state.visible});
                 } else {
-                    alert("Hotel not updated");
+                    alert("Error while updating Hotel data.");
                 }
             });
     };
@@ -238,6 +241,10 @@ class Hotel extends Component {
             });
 
     };
+
+    toggleVisible = (event) =>{
+        this.setState({update:true,visible: !this.state.visible});
+    }
 
     render() {
         var hoteldata=this.state.hotelData;
@@ -321,7 +328,6 @@ class Hotel extends Component {
                         });
                     });
 
-                this.setState({update:true,visible: !this.state.visible});
 
 
 
@@ -330,7 +336,9 @@ class Hotel extends Component {
         const options = {
             afterInsertRow: onAfterInsertRow,
             afterDeleteRow: onAfterDeleteRow,  // A hook for after droping rows.
-            handleConfirmDeleteRow: customConfirm
+            handleConfirmDeleteRow: customConfirm,
+            onRowDoubleClick:this.toggleVisible
+
         };
         const cellEditProp = {
             mode: 'click',
@@ -348,10 +356,10 @@ class Hotel extends Component {
 
         return (
             <div>
-
+                {this.state.visible ?null :
                 <div className="btn-group btn-group-sm" role="group">
                     <button type="button" className="btn btn-info react-bs-table-add-btn "  onClick={() => this.showInsert()}><i class="fa glyphicon glyphicon-plus fa-plus"></i>New</button>
-                </div>
+
 
                 <BootstrapTable data={hoteldata}  selectRow={ selectRowProp }  deleteRow={ true }  options={ options } pagination>
                     <TableHeaderColumn dataField='hotel_id' isKey hidden>Hotel ID</TableHeaderColumn>
@@ -370,7 +378,7 @@ class Hotel extends Component {
                 </BootstrapTable>
 
 
-
+</div>}
 
                 {this.state.visible ? <div id="fh5co-page">
                         <div className="container">
