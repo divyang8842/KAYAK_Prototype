@@ -1,9 +1,11 @@
-    import React, {Component} from 'react';
+import React, {Component} from 'react';
 //import * as API from '../api/api';
+import {bindActionCreators} from 'redux';
 import { Route, Link,Switch,withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {carsbooking} from '../../api/CarsAPI'
-    import * as UserTracking from '../../api/UserTracking';
+import * as UserTracking from '../../api/UserTracking';
+import {updateTracking} from '../../actions/Analytics/Tracking';
 
 
 class CarBooking extends Component {
@@ -84,6 +86,11 @@ class CarBooking extends Component {
                                             tracking_object.previous_page = "BILLING_CAR";
                                             tracking_object.user_id = "jay";
                                             tracking_object.session_id = "1";
+                                            var prev_time = this.props.tracking.time;
+                                            var current_time = Date.now();
+                                            var diff= Math.abs(current_time-prev_time);
+                                            console.log("Time on page:"+diff);
+                                            tracking_object.timeonpage= diff;
 
                                             UserTracking.userTracking(tracking_object)
                                                 .then((status) => {
@@ -91,6 +98,13 @@ class CarBooking extends Component {
 
 
                                                 });
+
+                                                //Tracking userpath
+                                                var currentpath = this.props.tracking.path;
+                                                var timenow = Date.now();
+                                                var currentpage = "SEARCH_PAGE";
+                                                currentpath.push(currentpage);
+                                                this.props.updateTracking({currentpath, currentpage, timenow});
 
                                             this.props.history.push("/");
                                         });
@@ -114,12 +128,21 @@ class CarBooking extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    const carsbooking = state.carsbooking;
+function mapDispatchToProps(dispatch) {
+    
+        return bindActionCreators({
+            updateTracking: updateTracking}, dispatch);
+    
+    
+    }
 
-    return {carsbooking};
+function mapStateToProps(state) {
+    return {
+        carsbooking: state.carsbooking,
+        tracking: state.tracking
+    }
 }
 
 
-export default withRouter(connect(mapStateToProps, null)(CarBooking)) ;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CarBooking)) ;
 

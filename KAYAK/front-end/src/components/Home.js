@@ -91,6 +91,11 @@ class Home extends Component {
             pagename:this.props.tracking.pagename,
             time:this.props.tracking.time
         }
+        var timenow = Date.now();
+        var currentpath = [];
+        var currentpage = "SEARCH_PAGE";
+        currentpath.push("SEARCH_PAGE");
+        this.props.updateTracking({currentpath, currentpage, timenow});
         API.logout(payload)
             .then((status) => {
                 if(status === 201){
@@ -104,6 +109,15 @@ class Home extends Component {
                 }
             });
     };
+
+    trackHome(){
+        //Tracking userpath
+        var currentpath = this.props.tracking.path;
+        var timenow = Date.now();
+        var currentpage = "SEARCH_PAGE";
+        currentpath.push(currentpage);
+        this.props.updateTracking({currentpath, currentpage, timenow});
+    }
 
     render() {
         return (
@@ -124,7 +138,7 @@ class Home extends Component {
 
                                     {this.state.isAdmin===false ?<nav id="fh5co-menu-wrap" role="navigation">
                                         <ul className="sf-menu" id="fh5co-primary-menu">
-                                            <li className="active"><Link to='/'>Home</Link></li>
+                                            <li className="active"><Link to='/' onClick={()=>this.trackHome()}>Home</Link></li>
                                             <li><Link to='/flightsearch'>Flight</Link></li>
                                             <li><Link to='/hotelsearch'>Hotel</Link></li>
                                             <li><Link to='/carsearch'>Car</Link></li>

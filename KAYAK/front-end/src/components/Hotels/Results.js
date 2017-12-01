@@ -18,6 +18,7 @@ import '../../public/css/star.css';
 import * as HotelsAPI from '../../api/HotelsAPI';
 import SearchPanel from './SearchPanel';
 import * as UserTracking from '../../api/UserTracking';
+import {updateTracking} from '../../actions/Analytics/Tracking';
 
 class Results extends Component {
   state = {
@@ -53,6 +54,11 @@ class Results extends Component {
           tracking_object.previous_page = "HOTEL_PAGE";
           tracking_object.user_id = "jay";
           tracking_object.session_id = "1";
+          var prev_time = this.props.tracking.time;
+          var current_time = Date.now();
+          var diff= Math.abs(current_time-prev_time);
+          console.log("Time on page:"+diff);
+          tracking_object.timeonpage= diff;
 
           UserTracking.userTracking(tracking_object)
               .then((status) => {
@@ -60,6 +66,12 @@ class Results extends Component {
 
 
               });
+           //Tracking userpath
+           var currentpath = this.props.tracking.path;
+           var timenow = Date.now();
+           var currentpage = "BILLING_HOTEL";
+           currentpath.push(currentpage);
+           this.props.updateTracking({currentpath, currentpage, timenow});
       this
         .props
         .history
@@ -590,7 +602,8 @@ class Results extends Component {
 
 function mapStateToProps(state) {
   return {
-    hotels: state.hotels
+    hotels: state.hotels,
+    tracking: state.tracking
     // filteredHotels: state.filteredHotels
   }
 }
@@ -598,7 +611,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getHotelsBooking: getHotelsBooking,
-    updateRoomtype:updateRoomtype
+    updateRoomtype:updateRoomtype,
+    updateTracking:updateTracking
   }, dispatch);
 }
 
