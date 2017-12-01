@@ -168,7 +168,7 @@ app.post('/login',function(req, res) {
         	res.status(201).json({output:0});
         }
         else{
-        req.session.user = user;
+        req.session.user = user.value;
         req.session.save();
         res.status(201).send({output:user});}
 

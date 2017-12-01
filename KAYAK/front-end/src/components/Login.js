@@ -439,7 +439,7 @@ componentDidMount()
                       ReactDOM.findDOMNode(this.refs.em).value = "";
                       ReactDOM.findDOMNode(this.refs.pwd).value = "";
                       this.setState({username:'',password:'',formValid:false});
-                        this.props.handleLogged(output.id,output.type,output.firstname);
+                        this.props.handleLogged(output.value.id,output.value.type,output.value.firstname);
                         this.props.handleClose();
                     }
                 });
