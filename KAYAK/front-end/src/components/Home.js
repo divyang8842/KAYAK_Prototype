@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Route, Link,Switch,Redirect } from 'react-router-dom';
+import { Route, Link,Switch,Redirect ,withRouter} from 'react-router-dom';
 import Login from './Login';
 import Signup from './Signup';
 import Search from './Search';
@@ -231,4 +231,4 @@ function mapDispatchToProps(dispatch) {
 
 //export default Search;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
