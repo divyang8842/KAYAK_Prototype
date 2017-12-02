@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Route, Link,Switch,Redirect ,withRouter} from 'react-router-dom';
+import ReactDOM from 'react-dom'
 import Login from './Login';
 import Signup from './Signup';
 import Search from './Search';
@@ -15,6 +16,7 @@ import AdminUsers from './Admin/AdminUsers';
 import AdminCreate from './Admin/AdminCreate';
 import Analytics from './Admin/Analytics';
 import Flight from './Admin/Flight';
+import AddRemoveLayout from './Admin/extraCredit/AdminHome';
 import Flightbooking from './Flights/FlightBooking';
 import HotelBooking from './Hotels/HotelBooking';
 import Bookings from './Admin/Bookings';
@@ -36,6 +38,7 @@ import '../public/css/style.css';
 
 
 
+//const gridProps = window.gridProps || {};
 class Home extends Component {
 
     state={
@@ -43,8 +46,21 @@ class Home extends Component {
         uid:'',
         isAdmin:false,
         firstname:'',
-        type:''
+        type:'',
+        layout: []
     };
+
+    onLayoutChange = (layout) => {
+        //alert('changes');
+        this.setState({layout: layout});
+    };
+
+    /* stringifyLayout() {
+         return this.state.layout.map(function(l) {
+             return <div className="layoutItem" key={l.i}><b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]</div>;
+         });
+     }*/
+
 
     logged = (id,ty,name) => {
         //this.refs.closeButton.click();
@@ -65,6 +81,12 @@ class Home extends Component {
     }
     componentDidMount()
     {
+
+
+        /* const contentDiv = document.getElementById('content');
+         const gridProps = window.gridProps || {};*/
+        // ReactDOM.render(React.createElement(Home, gridProps), contentDiv);
+
         if(localStorage.getItem('userid')){
             var currentUser={id:localStorage.getItem('userid')};
             localStorage.removeItem('userid');
@@ -110,6 +132,13 @@ class Home extends Component {
                 }
             });
     };
+
+    stringifyLayout() {
+        return this.state.layout.map(function(l) {
+            return <div className="layoutItem" key={l.i}><b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]</div>;
+        });
+    }
+
 
     trackHome(){
         //Tracking userpath
@@ -188,6 +217,17 @@ class Home extends Component {
                             <Route exact path="/AdminCreate" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> :  <AdminCreate user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
                             <Route exact path="/analytics" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> :  <Analytics/>}/>
                             <Route exact path="/bookings" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> :  <Bookings/>}/>
+                            <Route exact path="/extracredit" render={()=>
+                                <div>
+                                    <div className="layoutJSON">
+                                        Displayed as <code>[x, y, w, h]</code>:
+                                        <div className="columns">
+                                            {this.stringifyLayout()}
+                                        </div>
+                                    </div>
+                                    <AddRemoveLayout onLayoutChange={this.onLayoutChange} />
+                                </div>  } />
+
                             <Route path='*' render={() => <Redirect to="/" />} />
 
                         </Switch>
@@ -230,7 +270,10 @@ class Home extends Component {
 
         );
     }
+
+
 }
+
 function mapStateToProps(state){
     return {
         tracking: state.tracking
