@@ -16,8 +16,10 @@ import '../../public/css/filter.css';
 import '../../public/css/star.css';
 //import '../../public/css/radio.css';
 import * as HotelsAPI from '../../api/HotelsAPI';
+import star from '../../public/images/starfilled.svg';
 import SearchPanel from './SearchPanel';
 import * as UserTracking from '../../api/UserTracking';
+import {updateTracking} from '../../actions/Analytics/Tracking';
 
 class Results extends Component {
   state = {
@@ -53,6 +55,11 @@ class Results extends Component {
           tracking_object.previous_page = "HOTEL_PAGE";
           tracking_object.user_id = "jay";
           tracking_object.session_id = "1";
+          var prev_time = this.props.tracking.time;
+          var current_time = Date.now();
+          var diff= Math.abs(current_time-prev_time);
+          console.log("Time on page:"+diff);
+          tracking_object.timeonpage= diff;
 
           UserTracking.userTracking(tracking_object)
               .then((status) => {
@@ -60,6 +67,12 @@ class Results extends Component {
 
 
               });
+           //Tracking userpath
+           var currentpath = this.props.tracking.path;
+           var timenow = Date.now();
+           var currentpage = "BILLING_HOTEL";
+           currentpath.push(currentpage);
+           this.props.updateTracking({currentpath, currentpage, timenow});
       this
         .props
         .history
@@ -80,6 +93,18 @@ class Results extends Component {
     this.props.updateRoomtype(this.state.roomtype);
   }
 
+  renderStars(hotelItem){
+    var indents = [];
+    for (var i = 0; i < hotelItem.hotel_star; i++) {
+      indents.push(<img type="image/svg+xml" src={star} height="15px" style={{margin:2}} key={i} alt={hotelItem.hotel_star}/>);
+    }
+    return (
+      <span>
+       {indents}
+      </span>
+   );
+  }
+
   createHotelsList() {
     var hotel_array = [];
     if (this.state.filtered) 
@@ -90,42 +115,60 @@ class Results extends Component {
       return hotel_array.map((hotelItem) => {
         var styles = {
           background: 'white',
-          'margin-bottom': '8px'
+          'margin-bottom': '8px',
+          height: 175,
+          padding: 0
         };
 
         return (
-          <div className="col-md-8 col-sm-8 " style={styles}>
+          <div style={styles}>
             <div className="row">
               <div className="col-md-3 col-sm-3 ">
                 <img
                   ref={"base64img"}
                   style={{
                   display: 'block',
-                  width: 150,
-                  height: 150
+                  width: 160,
+                  height: 175
                 }}
-                  alt={"Please select image"}
+                  alt={"Image will appear here"}
                   src={"data:image/png;base64," + hotelItem.srcdata}></img>
               </div>
-              <div className="row col-md-9 col-sm-9 ">
-                <div className="col-md-8 col-sm-8 ">
-                  <h3>{hotelItem.hotel_name}</h3>
-                  <span>
-                    <h4>{hotelItem.hotel_star}
-                      star</h4>
-                    <h4>{hotelItem.hotel_location}</h4>
-                  </span>
-                  <br/>
-                  <h4>Review: {hotelItem.review_overall}/10</h4>
+              <div className="row col-md-6 col-sm-6 " style={{padding:0}}>
+                <div style={{marginLeft:20}}>
+                  <h3 style={{marginBottom:0}}>{hotelItem.hotel_name}</h3>
+                  <div className="row">
+                    <div className="col-lg-8" style={{width:125}}>
+                      {this.renderStars(hotelItem)}
+                    </div>
+                    <div className="col-lg-4" style={{marginLeft:-20, marginTop:5}}>
+                      <p style={{color:'black', fontSize:12}}>{hotelItem.hotel_locaion}</p>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6 col-sm-6" style={{height:30, marginLeft:13, width:30, 'border-radius':5, background:'#333333', paddingTop:5}}>
+                      <p style={{color:'#ffffff', fontSize:12, fontWeight:'bold', textAlign:'center', marginLeft:-8}}>{hotelItem.review_overall}</p>
+                    </div>
+                    <div className="col-md-6 col-sm-6" style={{marginTop:5}}>
+                      <p style={{color:'black', fontSize:12}}>{hotelItem.review_count} reviews</p>
+                    </div>
+                  </div>
+                  <div>
+                    <ul style={{listStyle:'none', padding:0}}>
+                      <li style={{color:'#000000', fontSize:12}}>{hotelItem.hotel_description}</li>
+                      <li style={{color:'#3071a9', fontSize:12, fontWeight:'bold'}}>{hotelItem.hotel_amenities}</li>
+                    </ul>
+                  </div>
                 </div>
-                <div className="col-md-4 col-sm-4 ">
-                  <h4 class="price">${hotelItem.standard_rates}</h4>
+              </div>
+              <div className="col-md-3 col-sm-3 " style={{background:'#f2f6fc', height:165, width:140, 'margin-top':5, 'margin-left':55}}>
+                  <h3 style={{'margin-left':30, 'margin-top':30}}>${hotelItem.standard_rates}</h3>
                   <br/>
                   {/* <button class="btn btn-primary" onClick={() => this.handleBooking(hotelItem)}>View Deal</button> */}
                   {this.props.isLogged=='false' ? 
-                    (<button type="button" class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
+                    (<button type="button" class="searchbtn" style={{'font-size':12, marginLeft:13, marginTop:10}} data-toggle="modal" data-target="#loginModal">VIEW DEAL</button>)
                     :
-                    (<button type="button" class="searchbtn" data-toggle="modal" data-target="#myModal">View Deal</button>)
+                    (<button type="button" class="searchbtn" style={{'font-size':12, marginLeft:13, marginTop:10}} data-toggle="modal" data-target="#myModal">View Deal</button>)
                   }
                   {/* <button type="button" class="searchbtn" data-toggle="modal" data-target="#myModal">View Deal</button> */}
                   
@@ -188,10 +231,6 @@ class Results extends Component {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div>
-                <h4>{hotelItem.hotel_description}</h4>
-              </div>
             </div>
 
           </div>
@@ -348,218 +387,224 @@ class Results extends Component {
           <SearchPanel handler={this.handler}/>
         </div>
         <div className="row">
-          <div className="col-lg-2" id="divfilter">
-            <div id="divleftpanel">
-              <h4 id="h4filter">Star</h4>
-              <hr/>
-              <span class="rating">
-                <input
-                  type="radio"
-                  class="rating-input"
-                  value="1"
-                  id="rating-input-1-5"
-                  name="rating-input-1"
-                  onClick={(event) => {
-                  this.setState({
-                    ...this.state,
-                    filterparams: {
-                      ...this.state.filterparams,
-                      star: event.target.value
-                    }
-                  }, this.filterHotels);
-                }}/>
-                <label for="rating-input-1-5" class="rating-star">
-                  <p id="parstar">1</p>
-                </label>
-                <input
-                  type="radio"
-                  class="rating-input"
-                  value="2"
-                  id="rating-input-1-4"
-                  name="rating-input-1"
-                  onClick={(event) => {
-                  this.setState({
-                    ...this.state,
-                    filterparams: {
-                      ...this.state.filterparams,
-                      star: event.target.value
-                    }
-                  }, this.filterHotels);
-                }}/>
-                <label for="rating-input-1-4" class="rating-star">
-                  <p id="parstar">2</p>
-                </label>
-                <input
-                  type="radio"
-                  class="rating-input"
-                  value="3"
-                  id="rating-input-1-3"
-                  name="rating-input-1"
-                  onClick={(event) => {
-                  this.setState({
-                    ...this.state,
-                    filterparams: {
-                      ...this.state.filterparams,
-                      star: event.target.value
-                    }
-                  }, this.filterHotels);
-                }}/>
-                <label for="rating-input-1-3" class="rating-star">
-                  <p id="parstar">3</p>
-                </label>
-                <input
-                  type="radio"
-                  class="rating-input"
-                  value="4"
-                  id="rating-input-1-2"
-                  name="rating-input-1"
-                  onClick={(event) => {
-                  this.setState({
-                    ...this.state,
-                    filterparams: {
-                      ...this.state.filterparams,
-                      star: event.target.value
-                    }
-                  }, this.filterHotels);
-                }}/>
-                <label for="rating-input-1-2" class="rating-star">
-                  <p id="parstar">4</p>
-                </label>
-                <input
-                  type="radio"
-                  class="rating-input"
-                  value="5"
-                  id="rating-input-1-1"
-                  name="rating-input-1"
-                  onClick={(event) => {
-                  this.setState({
-                    ...this.state,
-                    filterparams: {
-                      ...this.state.filterparams,
-                      star: event.target.value
-                    }
-                  }, this.filterHotels);
-                }}/>
-                <label for="rating-input-1-1" class="rating-star">
-                  <p id="parstar">5</p>
-                </label>
-              </span>
-              <br/>
-              <br/>
-              <h4 id="h4filter">Price</h4>
-              <hr/>
-              <div>
-                <h6 id="sliderh6">${this.state.filterparams.price}</h6>
+          <div className="col-lg-3 col-md-3 col-sm-3" id="divfilter">
+            <div className="row">
+              <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">
               </div>
-              <input
-                type="range"
-                min="50"
-                max="500"
-                step="10"
-                defaultValue="500"
-                onChange={(event) => {
-                this.setState({
-                  ...this.state,
-                  filterparams: {
-                    ...this.state.filterparams,
-                    price: event.target.value
-                  }
-                }, this.filterHotels);
-              }}/>
-              <br/>
-              <br/>
+              <div id="divleftpanel" className="col-sm-10 col-lg-10 col-md-10 col-xs-10">
+                <h4 id="h4filter">Star</h4>
+                <hr/>
+                <span class="rating">
+                  <input
+                    type="radio"
+                    class="rating-input"
+                    value="1"
+                    id="rating-input-1-5"
+                    name="rating-input-1"
+                    onClick={(event) => {
+                    this.setState({
+                      ...this.state,
+                      filterparams: {
+                        ...this.state.filterparams,
+                        star: event.target.value
+                      }
+                    }, this.filterHotels);
+                  }}/>
+                  <label for="rating-input-1-5" class="rating-star">
+                    <p id="parstar">1</p>
+                  </label>
+                  <input
+                    type="radio"
+                    class="rating-input"
+                    value="2"
+                    id="rating-input-1-4"
+                    name="rating-input-1"
+                    onClick={(event) => {
+                    this.setState({
+                      ...this.state,
+                      filterparams: {
+                        ...this.state.filterparams,
+                        star: event.target.value
+                      }
+                    }, this.filterHotels);
+                  }}/>
+                  <label for="rating-input-1-4" class="rating-star">
+                    <p id="parstar">2</p>
+                  </label>
+                  <input
+                    type="radio"
+                    class="rating-input"
+                    value="3"
+                    id="rating-input-1-3"
+                    name="rating-input-1"
+                    onClick={(event) => {
+                    this.setState({
+                      ...this.state,
+                      filterparams: {
+                        ...this.state.filterparams,
+                        star: event.target.value
+                      }
+                    }, this.filterHotels);
+                  }}/>
+                  <label for="rating-input-1-3" class="rating-star">
+                    <p id="parstar">3</p>
+                  </label>
+                  <input
+                    type="radio"
+                    class="rating-input"
+                    value="4"
+                    id="rating-input-1-2"
+                    name="rating-input-1"
+                    onClick={(event) => {
+                    this.setState({
+                      ...this.state,
+                      filterparams: {
+                        ...this.state.filterparams,
+                        star: event.target.value
+                      }
+                    }, this.filterHotels);
+                  }}/>
+                  <label for="rating-input-1-2" class="rating-star">
+                    <p id="parstar">4</p>
+                  </label>
+                  <input
+                    type="radio"
+                    class="rating-input"
+                    value="5"
+                    id="rating-input-1-1"
+                    name="rating-input-1"
+                    onClick={(event) => {
+                    this.setState({
+                      ...this.state,
+                      filterparams: {
+                        ...this.state.filterparams,
+                        star: event.target.value
+                      }
+                    }, this.filterHotels);
+                  }}/>
+                  <label for="rating-input-1-1" class="rating-star">
+                    <p id="parstar">5</p>
+                  </label>
+                </span>
+                <br/>
+                <br/>
+                <h4 id="h4filter">Price</h4>
+                <hr/>
+                <div>
+                  <h6 id="sliderh6">${this.state.filterparams.price}</h6>
+                </div>
+                <input
+                  type="range"
+                  min="50"
+                  max="500"
+                  step="10"
+                  defaultValue="500"
+                  onChange={(event) => {
+                  this.setState({
+                    ...this.state,
+                    filterparams: {
+                      ...this.state.filterparams,
+                      price: event.target.value
+                    }
+                  }, this.filterHotels);
+                }}/>
+                <br/>
+                <br/>
 
-              <h4 id="h4filter">Freebies</h4>
-              <hr/>
-              <div class="control-group">
-                <label class="control control--checkbox">Free Parking
-                  <input
-                    type="checkbox"
-                    onChange={(event) => {
-                    this.setState({
-                      ...this.state,
-                      filterparams: {
-                        ...this.state.filterparams,
-                        chk_parking: event.target.checked
-                      }
-                    }, this.setFreebies);
-                  }}/>
-                  <div class="control__indicator"></div>
-                </label>
-                <label class="control control--checkbox">Fitness Center
-                  <input
-                    type="checkbox"
-                    onChange={(event) => {
-                    this.setState({
-                      ...this.state,
-                      filterparams: {
-                        ...this.state.filterparams,
-                        chk_fitness: event.target.checked
-                      }
-                    }, this.setFreebies);
-                  }}/>
-                  <div class="control__indicator"></div>
-                </label>
-                <label class="control control--checkbox">Free Breakfast
-                  <input
-                    type="checkbox"
-                    onChange={(event) => {
-                    this.setState({
-                      ...this.state,
-                      filterparams: {
-                        ...this.state.filterparams,
-                        chk_breakfast: event.target.checked
-                      }
-                    }, this.setFreebies);
-                  }}/>
-                  <div class="control__indicator"></div>
-                </label>
-                <label class="control control--checkbox">Swimming Pool
-                  <input
-                    type="checkbox"
-                    onChange={(event) => {
-                    this.setState({
-                      ...this.state,
-                      filterparams: {
-                        ...this.state.filterparams,
-                        chk_pool: event.target.checked
-                      }
-                    }, this.setFreebies);
-                  }}/>
-                  <div class="control__indicator"></div>
-                </label>
-                <label class="control control--checkbox">Tennis Court
-                  <input
-                    type="checkbox"
-                    onChange={(event) => {
-                    this.setState({
-                      ...this.state,
-                      filterparams: {
-                        ...this.state.filterparams,
-                        chk_tennis: event.target.checked
-                      }
-                    }, this.setFreebies);
-                  }}/>
-                  <div class="control__indicator"></div>
-                </label>
-                <label class="control control--checkbox">Airport Pick-up
-                  <input
-                    type="checkbox"
-                    onChange={(event) => {
-                    this.setState({
-                      ...this.state,
-                      filterparams: {
-                        ...this.state.filterparams,
-                        chk_airport: event.target.checked
-                      }
-                    }, this.setFreebies);
-                  }}/>
-                  <div class="control__indicator"></div>
-                </label>
+                <h4 id="h4filter">Freebies</h4>
+                <hr/>
+                <div class="control-group">
+                  <label class="control control--checkbox">Free Parking
+                    <input
+                      type="checkbox"
+                      onChange={(event) => {
+                      this.setState({
+                        ...this.state,
+                        filterparams: {
+                          ...this.state.filterparams,
+                          chk_parking: event.target.checked
+                        }
+                      }, this.setFreebies);
+                    }}/>
+                    <div class="control__indicator"></div>
+                  </label>
+                  <label class="control control--checkbox">Fitness Center
+                    <input
+                      type="checkbox"
+                      onChange={(event) => {
+                      this.setState({
+                        ...this.state,
+                        filterparams: {
+                          ...this.state.filterparams,
+                          chk_fitness: event.target.checked
+                        }
+                      }, this.setFreebies);
+                    }}/>
+                    <div class="control__indicator"></div>
+                  </label>
+                  <label class="control control--checkbox">Free Breakfast
+                    <input
+                      type="checkbox"
+                      onChange={(event) => {
+                      this.setState({
+                        ...this.state,
+                        filterparams: {
+                          ...this.state.filterparams,
+                          chk_breakfast: event.target.checked
+                        }
+                      }, this.setFreebies);
+                    }}/>
+                    <div class="control__indicator"></div>
+                  </label>
+                  <label class="control control--checkbox">Swimming Pool
+                    <input
+                      type="checkbox"
+                      onChange={(event) => {
+                      this.setState({
+                        ...this.state,
+                        filterparams: {
+                          ...this.state.filterparams,
+                          chk_pool: event.target.checked
+                        }
+                      }, this.setFreebies);
+                    }}/>
+                    <div class="control__indicator"></div>
+                  </label>
+                  <label class="control control--checkbox">Tennis Court
+                    <input
+                      type="checkbox"
+                      onChange={(event) => {
+                      this.setState({
+                        ...this.state,
+                        filterparams: {
+                          ...this.state.filterparams,
+                          chk_tennis: event.target.checked
+                        }
+                      }, this.setFreebies);
+                    }}/>
+                    <div class="control__indicator"></div>
+                  </label>
+                  <label class="control control--checkbox">Airport Pick-up
+                    <input
+                      type="checkbox"
+                      onChange={(event) => {
+                      this.setState({
+                        ...this.state,
+                        filterparams: {
+                          ...this.state.filterparams,
+                          chk_airport: event.target.checked
+                        }
+                      }, this.setFreebies);
+                    }}/>
+                    <div class="control__indicator"></div>
+                  </label>
+                </div>
+              </div>
+              <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">
               </div>
             </div>
           </div>
-          <div className="col-lg-10">
+          <div className="col-lg-9 col-md-9 col-sm-9">
             <div className="row">
               <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6">
                 <label
@@ -576,10 +621,16 @@ class Results extends Component {
                 </label>
               </div>
             </div>
-            <div>
-              <span>
-                {this.createHotelsList()}
-              </span>
+            <div className="row">
+              <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">
+              </div>
+              <div className="col-sm-9 col-lg-9 col-md-9 col-xs-9" style={{marginLeft:50, width:750}}>
+                <div>
+                  {this.createHotelsList()}
+                </div>
+              </div>
+              <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">
+              </div>
             </div>
           </div>
         </div>
@@ -590,7 +641,8 @@ class Results extends Component {
 
 function mapStateToProps(state) {
   return {
-    hotels: state.hotels
+    hotels: state.hotels,
+    tracking: state.tracking
     // filteredHotels: state.filteredHotels
   }
 }
@@ -598,7 +650,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getHotelsBooking: getHotelsBooking,
-    updateRoomtype:updateRoomtype
+    updateRoomtype:updateRoomtype,
+    updateTracking:updateTracking
   }, dispatch);
 }
 

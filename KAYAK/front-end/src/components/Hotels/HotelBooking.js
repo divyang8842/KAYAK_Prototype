@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 //import * as API from '../api/api';
+import {bindActionCreators} from 'redux';
 import { Route, Link,Switch,withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as HotelsAPI from '../../api/HotelsAPI';
 import * as UserTracking from '../../api/UserTracking';
+import {updateTracking} from '../../actions/Analytics/Tracking';
 
 
 class HotelBooking extends Component {
@@ -52,6 +54,11 @@ class HotelBooking extends Component {
                                         tracking_object.previous_page = "BILLING_HOTEL";
                                         tracking_object.user_id = "jay";
                                         tracking_object.session_id = "1";
+                                        var prev_time = this.props.tracking.time;
+                                        var current_time = Date.now();
+                                        var diff= Math.abs(current_time-prev_time);
+                                        console.log("Time on page:"+diff);
+                                        tracking_object.timeonpage= diff;
 
                                         UserTracking.userTracking(tracking_object)
                                             .then((status) => {
@@ -59,7 +66,12 @@ class HotelBooking extends Component {
 
 
                                             });
-
+                                         //Tracking userpath
+                                        var currentpath = this.props.tracking.path;
+                                        var timenow = Date.now();
+                                        var currentpage = "SEARCH_PAGE";
+                                        currentpath.push(currentpage);
+                                        this.props.updateTracking({currentpath, currentpage, timenow});
                                       this.props.history.push("/");
                                       // this.props.loadHotels(result);
                                       // this.props.loadFilteredHotels(result);
@@ -77,9 +89,17 @@ class HotelBooking extends Component {
 function mapStateToProps(state) {
     return{
         hotels: state.hotels,
-        hotelsbooking: state.hotelbooking
+        hotelsbooking: state.hotelbooking,
+        tracking: state.tracking
     }
 }
 
+function mapDispatchToProps(dispatch) {
+    
+        return bindActionCreators({
+            updateTracking: updateTracking}, dispatch);
+    
+    
+    }
 
-export default withRouter(connect(mapStateToProps)(HotelBooking)) ;
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(HotelBooking)) ;

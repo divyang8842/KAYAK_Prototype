@@ -3,12 +3,13 @@ var kafka = require('../kafka/client');
 
 
 exports.getHotelBookings= function(req,res) {
-
+    var session = req.session;
+console.log("USERTYPE"+session.user.type);
     console.log("Inside Hotel Bookings");
 
     kafka.make_request('admin_topic',
         {
-            "action":17
+            "action":17,"user_type":session.user.type
         },
         function(err,results){
             console.log('in result');

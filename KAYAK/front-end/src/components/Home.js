@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Route, Link,Switch,Redirect ,withRouter} from 'react-router-dom';
+import ReactDOM from 'react-dom'
 import Login from './Login';
 import Signup from './Signup';
 import Search from './Search';
@@ -15,13 +16,16 @@ import AdminUsers from './Admin/AdminUsers';
 import AdminCreate from './Admin/AdminCreate';
 import Analytics from './Admin/Analytics';
 import Flight from './Admin/Flight';
+import AddRemoveLayout from './Admin/extraCredit/AdminHome';
 import Flightbooking from './Flights/FlightBooking';
 import HotelBooking from './Hotels/HotelBooking';
 import Bookings from './Admin/Bookings';
+import UserBookings from './Hotels/UserBookings';
 import Dialog from 'react-bootstrap-dialog';
 import {bindActionCreators} from 'redux';
 import {updateTracking} from '../actions/Analytics/Tracking';
 import * as API from '../api/SigninSignup-API';
+import * as UserTracking from '../api/UserTracking';
 import '../public/css/animate.css';
 import '../public/css/bootstrap.css';
 import '../public/css/magnific-popup.css';
@@ -35,6 +39,7 @@ import '../public/css/style.css';
 
 
 
+//const gridProps = window.gridProps || {};
 class Home extends Component {
 
     state={
@@ -42,8 +47,21 @@ class Home extends Component {
         uid:'',
         isAdmin:false,
         firstname:'',
-        type:''
+        type:'',
+        layout: []
     };
+
+    onLayoutChange = (layout) => {
+        //alert('changes');
+        this.setState({layout: layout});
+    };
+
+    /* stringifyLayout() {
+         return this.state.layout.map(function(l) {
+             return <div className="layoutItem" key={l.i}><b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]</div>;
+         });
+     }*/
+
 
     logged = (id,ty,name) => {
         //this.refs.closeButton.click();
@@ -64,6 +82,12 @@ class Home extends Component {
     }
     componentDidMount()
     {
+
+
+        /* const contentDiv = document.getElementById('content');
+         const gridProps = window.gridProps || {};*/
+        // ReactDOM.render(React.createElement(Home, gridProps), contentDiv);
+
         if(localStorage.getItem('userid')){
             var currentUser={id:localStorage.getItem('userid')};
             localStorage.removeItem('userid');
@@ -91,6 +115,11 @@ class Home extends Component {
             pagename:this.props.tracking.pagename,
             time:this.props.tracking.time
         }
+        var timenow = Date.now();
+        var currentpath = [];
+        var currentpage = "SEARCH_PAGE";
+        currentpath.push("SEARCH_PAGE");
+        this.props.updateTracking({currentpath, currentpage, timenow});
         API.logout(payload)
             .then((status) => {
                 if(status === 201){
@@ -104,6 +133,66 @@ class Home extends Component {
                 }
             });
     };
+
+    stringifyLayout() {
+        return this.state.layout.map(function(l) {
+            return <div className="layoutItem" key={l.i}><b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]</div>;
+        });
+    }
+
+
+    trackHome(){
+        //Tracking userpath
+        var currentpath = this.props.tracking.path;
+        var timenow = Date.now();
+        var currentpage = "SEARCH_PAGE";
+        currentpath.push(currentpage);
+        this.props.updateTracking({currentpath, currentpage, timenow});
+    }
+
+    // trackLogin(){
+    //     var tracking_object={};
+    //     tracking_object.current_page="LOGIN_PAGE";
+    //     tracking_object.previous_page="";
+    //     var prev_time = this.props.tracking.time;
+    //     var current_time = Date.now();
+    //     var diff= Math.abs(current_time-prev_time);
+    //     console.log("Time on page:"+diff);
+    //     tracking_object.timeonpage= diff;
+
+    //     UserTracking.userTracking(tracking_object)
+    //         .then((status) => {
+    //             console.log("Tracking status:"+status);
+    //             });
+    //     //Tracking userpath
+    //     var currentpath = this.props.tracking.path;
+    //     var timenow = Date.now();
+    //     var currentpage = "LOGIN_PAGE";
+    //     currentpath.push(currentpage);
+    //     this.props.updateTracking({currentpath, currentpage, timenow});
+    // }
+
+    trackAccount(){
+        var tracking_object={};
+        tracking_object.current_page="ACCOUNT_PAGE";
+        tracking_object.previous_page="";
+        var prev_time = this.props.tracking.time;
+        var current_time = Date.now();
+        var diff= Math.abs(current_time-prev_time);
+        console.log("Time on page:"+diff);
+        tracking_object.timeonpage= diff;
+
+        UserTracking.userTracking(tracking_object)
+            .then((status) => {
+                console.log("Tracking status:"+status);
+                });
+        //Tracking userpath
+        var currentpath = this.props.tracking.path;
+        var timenow = Date.now();
+        var currentpage = "ACCOUNT_PAGE";
+        currentpath.push(currentpage);
+        this.props.updateTracking({currentpath, currentpage, timenow});
+    }
 
     render() {
         return (
@@ -124,7 +213,7 @@ class Home extends Component {
 
                                     {this.state.isAdmin===false ?<nav id="fh5co-menu-wrap" role="navigation">
                                         <ul className="sf-menu" id="fh5co-primary-menu">
-                                            <li className="active"><Link to='/'>Home</Link></li>
+                                            <li className="active"><Link to='/' onClick={()=>this.trackHome()}>Home</Link></li>
                                             <li><Link to='/flightsearch'>Flight</Link></li>
                                             <li><Link to='/hotelsearch'>Hotel</Link></li>
                                             <li><Link to='/carsearch'>Car</Link></li>
@@ -132,7 +221,7 @@ class Home extends Component {
                                                     <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li>
                                                         <li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#signupModal">Sign up</button></li></ul></li>)
 
-                                                : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                                                : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account' onClick={()=>this.trackAccount()}>My Account</Link></li><li><Link to='/userBookings'>My Bookings</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                                         </ul>
                                     </nav>:<nav id="fh5co-menu-wrap" role="navigation">
                                         <ul className="sf-menu" id="fh5co-primary-menu">
@@ -144,7 +233,7 @@ class Home extends Component {
                                             {this.state.islogged==='false' ? (<li><Link to='' onClick={e => e.preventDefault()}>My Account</Link>
                                                     <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li></ul></li>)
 
-                                                : (<li><Link to='' onClick={e => e.preventDefault()}>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                                                : (<li><Link to='' onClick={e => e.preventDefault()}>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account' onClick={()=>this.trackAccount()}>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                                         </ul>
                                     </nav>}
 
@@ -159,6 +248,7 @@ class Home extends Component {
                             <Route exact path="/hotelsearch" component={() => <Search temp={2}/>}/>
                             <Route exact path="/Hotels" component={() => <HotelsHome isLogged={this.state.islogged}/>}/>
                             <Route exact path="/hotelsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> :  <HotelBooking/>}/>
+                            <Route exact path="/userBookings" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> :  <UserBookings/>}/>
                             <Route exact path="/flights" component={() => <FlightsHome isLogged={this.state.islogged}/>}/>
                             <Route exact path="/flightsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> : <Flightbooking/>}/>
                             <Route exact path="/cars" component={() => <CarHome isLogged={this.state.islogged}/>}/>
@@ -172,6 +262,17 @@ class Home extends Component {
                             <Route exact path="/AdminCreate" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> :  <AdminCreate user={this.state.islogged} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
                             <Route exact path="/analytics" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> :  <Analytics/>}/>
                             <Route exact path="/bookings" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> :  <Bookings/>}/>
+                            <Route exact path="/extracredit" render={()=>
+                                <div>
+                                    <div className="layoutJSON">
+                                        Displayed as <code>[x, y, w, h]</code>:
+                                        <div className="columns">
+                                            {this.stringifyLayout()}
+                                        </div>
+                                    </div>
+                                    <AddRemoveLayout onLayoutChange={this.onLayoutChange} />
+                                </div>  } />
+
                             <Route path='*' render={() => <Redirect to="/" />} />
 
                         </Switch>
@@ -214,7 +315,10 @@ class Home extends Component {
 
         );
     }
+
+
 }
+
 function mapStateToProps(state){
     return {
         tracking: state.tracking

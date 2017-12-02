@@ -81,6 +81,11 @@ class Search extends Component {
                 tracking_object.previous_page="SEARCH_PAGE";
                 tracking_object.user_id="jay";
                 tracking_object.session_id="1";
+                var prev_time = this.props.tracking.time;
+                var current_time = Date.now();
+                var diff= Math.abs(current_time-prev_time);
+                console.log("Time on page:"+diff);
+                tracking_object.timeonpage= diff;
 
                 UserTracking.userTracking(tracking_object)
                     .then((status) => {
@@ -111,6 +116,11 @@ class Search extends Component {
               tracking_object.previous_page="SEARCH_PAGE";
               tracking_object.user_id="jay";
               tracking_object.session_id="1";
+              var prev_time = this.props.tracking.time;
+              var current_time = Date.now();
+              var diff= Math.abs(current_time-prev_time);
+              console.log("Time on page:"+diff);
+              tracking_object.timeonpage= diff;
 
 
               UserTracking.userTracking(tracking_object)
@@ -190,6 +200,11 @@ class Search extends Component {
                 tracking_object.previous_page="SEARCH_PAGE";
                 tracking_object.user_id="jay";
                 tracking_object.session_id="1";
+                var prev_time = this.props.tracking.time;
+                var current_time = Date.now();
+                var diff= Math.abs(current_time-prev_time);
+                console.log("Time on page:"+diff);
+                tracking_object.timeonpage= diff;
 
                 UserTracking.userTracking(tracking_object)
                     .then((status) => {
@@ -201,7 +216,7 @@ class Search extends Component {
             var currentpage = "CAR_PAGE";
             currentpath.push("CAR_PAGE");
             this.props.updateTracking({currentpath, currentpage, timenow});
-                this.props.history.push("/Cars");
+            this.props.history.push("/Cars");
 
             });
     }

@@ -13,20 +13,28 @@ function getHotelBookings(msg, callback){
 
         console.log('Connected to mongo at: ' + mongoURL);
         var res = {};
+        var user_type=msg.user_type;
+        console.log("ZZZ"+user_type);
 
         console.log('Connected to mongo at: ' + mongoURL);
         var coll = mongo.collection('Billing');
         coll.find({ hotel : { $exists : true } }).toArray(function (err, user) {
 
             if (!err) {
-                console.log(user);
-                var list=[];
-                for(var i=0;i<user.length;i++)
-                {
-                    list.push(user[i].hotel);
+                console.log("LOL"+JSON.stringify(user));
+                if(user_type==1) {
+                    var list = [];
+                    for (var i = 0; i < user.length; i++) {
+                        list.push(user[i].hotel);
+                    }
+                    res.code = "200";
+                    res.bookinglist = list;
                 }
-                res.code = "200";
-                res.bookinglist = list;
+                else
+                {
+                    res.code = "200";
+                    res.bookinglist = user;
+                }
 
             }
             else
@@ -51,20 +59,28 @@ function getFlightBookings(msg, callback){
 
         console.log('Connected to mongo at: ' + mongoURL);
         var res = {};
-
+        var user_type=msg.user_type;
+        console.log("ZZZ"+user_type);
         console.log('Connected to mongo at: ' + mongoURL);
         var coll = mongo.collection('Billing');
         coll.find({ flight : { $exists : true } }).toArray(function (err, user) {
 
             if (!err) {
                 console.log(user);
-                var list=[];
-                for(var i=0;i<user.length;i++)
-                {
-                    list.push(user[i].flight);
+                if(user_type==1) {
+                    var list = [];
+                    for (var i = 0; i < user.length; i++) {
+                        list.push(user[i].flight);
+                    }
+
+                    res.code = "200";
+                    res.bookinglist = list;
                 }
-                res.code = "200";
-                res.bookinglist = list;
+                else
+                {
+                    res.code = "200";
+                    res.bookinglist = user;
+                }
 
             }
             else

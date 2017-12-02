@@ -4,6 +4,8 @@ import { Route, Link,Switch,withRouter } from 'react-router-dom';
 import {getCarsBooking} from '../../actions/Cars/CarBooking';
 import SearchPanel from './SearchPanel';
 import * as UserTracking from '../../api/UserTracking';
+import {bindActionCreators} from 'redux';
+import {updateTracking} from '../../actions/Analytics/Tracking';
 
 class Results extends Component {
 
@@ -146,6 +148,11 @@ class Results extends Component {
                             tracking_object.previous_page = "CAR_PAGE";
                             tracking_object.user_id = "jay";
                             tracking_object.session_id = "1";
+                            var prev_time = this.props.tracking.time;
+                            var current_time = Date.now();
+                            var diff= Math.abs(current_time-prev_time);
+                            console.log("Time on page:"+diff);
+                            tracking_object.timeonpage= diff;
 
                             UserTracking.userTracking(tracking_object)
                                 .then((status) => {
@@ -153,7 +160,14 @@ class Results extends Component {
 
 
                                 });
+
+                            //Tracking userpath
+                            var currentpath = this.props.tracking.path;
+                            var timenow = Date.now();
+                            var currentpage = "BILLING_CAR";
+                            currentpath.push(currentpage);
                             this.props.history.push("/carsbooking");
+                            this.props.updateTracking({currentpath, currentpage, timenow});
                         }
                         }>View Deal</button>)
                     }
@@ -632,14 +646,16 @@ function mapStateToProps(state) {
 
             }
         ));
+        const tracking = state.tracking
 
-        return {cars};
+        return {cars, tracking};
     }
 
 function mapDispatchToProps(dispatch) {
 
     return {
-        getCarsBooking : (data) => dispatch(getCarsBooking(data))
+        getCarsBooking : (data) => dispatch(getCarsBooking(data)),
+        updateTracking: updateTracking
     };
 }
 

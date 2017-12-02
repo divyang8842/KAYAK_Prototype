@@ -169,6 +169,26 @@ console.log("TRUE: "+res.value);
         });
         return;
     });}
+
+    else if(action==7){
+      console.log("ACTION-----"+data.data.action);
+    account.update_email(data.data, function(err,res){
+        console.log('after email change---');
+        var payloads = [
+            { topic: data.replyTo,
+                messages:JSON.stringify({
+                    correlationId:data.correlationId,
+                    data : res.code
+                }),
+                partition : 0
+            }
+        ];
+console.log("TRUE: "+res.value);
+        producer.send(payloads, function(err, data){
+            console.log("PRODUCER CHECK");
+        });
+        return;
+    });}
 });
 
 consumer_get_flights.on('message', function (message) {
@@ -726,6 +746,24 @@ consumer_hotels.on('message', function (message) {
         });}
     else if(action=="doBooking"){
         bookHotels.handle_booking(data.data, function(err,res){
+            console.log('after handle---');
+            var payloads = [
+                { topic: data.replyTo,
+                    messages:JSON.stringify({
+                        correlationId:data.correlationId,
+                        data : res
+                    }),
+                    partition : 0
+                }
+            ];
+
+            producer.send(payloads, function(err, data){
+                console.log("PRODUCER CHECK:---");
+            });
+            return;
+        });}
+    else if(action=="setReviews"){
+        bookHotels.setHotelReviews(data.data, function(err,res){
             console.log('after handle---');
             var payloads = [
                 { topic: data.replyTo,

@@ -3,7 +3,7 @@ import {UPDATE_TRACKING} from '../../actions/Analytics/Tracking.js';
 const initialstate ={
     path:['SEARCH_PAGE'],
     pagename:'',
-    time:''
+    time:Date.now()
 };
 
 const tracking=(state=initialstate,action)=>
