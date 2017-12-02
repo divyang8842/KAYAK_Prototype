@@ -110,7 +110,7 @@ componentDidMount()
 
   validateForm1() {
     //console.log("USER STATE IN VALIDATE:==== "+this.state.checkUsername+this.state.firstNameValid+this.state.lastNameValid + this.state.emailValid + this.state.passwordValid);
-      this.setState({formValid1: this.state.checkUsername &&this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid});
+      this.setState({formValid1: this.state.checkUsername===false &&this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid});
   }
 
   errorClass(error) {

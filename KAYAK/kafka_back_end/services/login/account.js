@@ -55,7 +55,7 @@ var handle_update = function(msg,callback){
 var update_password = function(msg,callback){
   var res = [];
   var dataArry =  [];
-  var insertQuery="UPDATE user SET password=? WHERE user_id="+msg.uid.id;
+  var insertQuery="UPDATE user SET password=? WHERE user_id="+msg.uid;
   var encrypwd=security.encrypt(msg.password);
   dataArry.push(encrypwd);
   mysql.setData(insertQuery,dataArry,function (err,results){
@@ -74,6 +74,28 @@ var update_password = function(msg,callback){
 });
 }
 
+var update_email = function(msg,callback){
+  var res = [];
+  var dataArry =  [];
+  var insertQuery="UPDATE user SET emailid=? WHERE user_id="+msg.uid;
+  dataArry.push(msg.email);
+  mysql.setData(insertQuery,dataArry,function (err,results){
+    if (err){
+      res.code = "0";
+            console.log("Failed update---");
+            errorHandler.logError("account.js","change_username",err);
+            callback(null, res);
+    }
+    else{
+          res.code = "1";
+            res.value=results;
+            console.log("Success---");
+            callback(null, res);
+    }
+});
+}
+
 exports.handle_request = handle_request;
 exports.handle_update = handle_update;
 exports.update_password = update_password;
+exports.update_email = update_email;

@@ -41,9 +41,32 @@ exports.update= function(req,res) {
 };
 
 exports.password= function(req,res) {
-      var uid=req.session.user;
+      var uid=req.session.user.id;
+      console.log("Password change: "+uid);
       var pwd=req.param("password");
       kafka.make_request('login_topic',{"uid":uid,"password":pwd,"action":6}, function(err,results){
+            console.log('in result');
+            console.log(results);
+            if(err){
+              res.status(201).json({output:0});
+            }
+            else
+            {
+                if(results == "1"){
+                  res.status(201).json({output:1});
+                }
+                else {
+                  res.status(201).json({output:0});
+                }
+            }
+        });
+};
+
+exports.updateusername= function(req,res) {
+      var uid=req.session.user.id;
+      console.log("Username change: "+uid);
+      var em=req.param("email");
+      kafka.make_request('login_topic',{"uid":uid,"email":em,"action":7}, function(err,results){
             console.log('in result');
             console.log(results);
             if(err){

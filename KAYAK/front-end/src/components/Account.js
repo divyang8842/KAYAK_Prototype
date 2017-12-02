@@ -44,7 +44,7 @@ class Account extends Component {
   }
 
   changeUsername() {
-    this.setState({visible1: !this.state.visible,visible: false});
+    this.setState({visible1: !this.state.visible1,visible: false});
   }
 
 
@@ -216,6 +216,7 @@ handleDetails = (details) => {
                         console.log("Failed update");
                     } else {
                         console.log("Success update");
+                        alert("Data updated");
                     }
                 });
         };
@@ -314,22 +315,31 @@ handleDetails = (details) => {
                                            type:true}, () => { this.validateField(name, value)});}}/>
             </div>
             </div>
-            <div className="col-xxs-12 col-xs-6 mt">
-            <div className="input-field">
-            <div className={'form-group ${this.errorClass(this.state.formErrors1.email)}'}>
-            <label>Email:</label>
-            <input type="text" ref="em" value={this.state.email} className="form-control" readonly/>
-          </div>
-        </div>
-      </div>
+
                   <div className="col-xxs-12 col-xs-12 mt"></div>
                   <div className="col-xs-2">
                   <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleDetails(this.state)}>Submit</button>
                   </div>
                   <div className="col-xxs-12 col-xs-12 mt"></div>
                   <div className="col-xxs-12 col-xs-12 mt"></div>
+
+                  <div className="col-xxs-12 col-xs-6 mt">
+                  <div className="input-field">
+                  <label>Email:</label>
+                  <input type="text" ref="em" value={this.state.email} className="form-control" readonly/>
+
+              </div>
+            </div>
+
+<div className="col-xxs-12 col-xs-12 mt"></div>
+
+
                   <div className="col-xxs-12 col-xs-3 mt">
+                  <button type="button" className="btn btn-primary btn-block" value="Change Username" onClick={() => this.changeUsername()}>Update Email</button>
+<div className="col-xxs-12 col-xs-12 mt"></div>
                   <button type="button" className="btn btn-primary btn-block" value="Change Password" onClick={() => this.changePwd()}>Change Password</button>
+                  <div className="col-xxs-12 col-xs-12 mt"></div>
+                  <button type="button" className="btn btn-primary btn-block" value="Delete Account" onClick={() => this.deleteAcc()}>Delete Account</button>
                   </div>
                   </div>
                   </form>
@@ -354,74 +364,6 @@ handleDetails = (details) => {
 </div>
 );}}
 
-class Changeusername extends Component {
-  state={
-    password:'',
-    formErrors: {password: ''},
-    validPassword:false
-  };
-
-  handleEmail = (pwd) => {
-              API.updatePwd(pwd)
-                  .then((output) => {
-                      if (output === 0) {
-                          console.log("Failed pwd update");
-                      } else {
-                          console.log("Success pwd update");
-                      }
-                  });
-          };
-
-  validateField(fieldName, value) {
-    let fieldValidationErrors = this.state.formErrors;
-      let passwordValid = this.state.passwordValid;
-      switch(fieldName) {
-          case 'password':
-              passwordValid = value.length >= 3;
-              fieldValidationErrors.password = passwordValid ? '': ' is too short';
-              break;
-          default:
-              break;
-      }
-      this.setState({formErrors: fieldValidationErrors,
-          passwordValid: passwordValid,
-      }, this.validateForm);
-  }
-
-  validateForm() {
-      this.setState({formValid: this.state.passwordValid});
-  }
-
-  render() {
-console.log("ID: "+this.props.id);
-      return (
-        <div>
-        <div id="fh5co-page">
-        <div className="container">
-          <div className="row">
-          <form>
-          <div className="row">
-          <FormErrors formErrors={this.state.formErrors} />
-          <div className="col-xxs-12 col-xs-4 mt">
-          <div className="input-field">
-            <label>New Password:</label>
-            <input type="password" ref="pwd" className="form-control" onChange={(event)=>{const name="password"
-                                      const value=event.target.value
-                                          this.setState({password: event.target.value,type:true}, () => { this.validateField(name, value) });}} required/>
-          </div>
-          </div><br/><br/><br/><br/>
-          <div className="col-xxs-12 col-xs-12 mt"></div>
-                <div className="col-xxs-3 col-xs-3 mt">
-                <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.handlePassword(this.state)}>Submit</button>
-                </div>
-                </div>
-                </form>
-        </div>
-        </div>
-        </div>
-</div>
-);}}
-
 class Changepassword extends Component {
   state={
     password:'',
@@ -436,6 +378,7 @@ class Changepassword extends Component {
                           console.log("Failed pwd update");
                       } else {
                           console.log("Success pwd update");
+                          alert("Password updated");
                       }
                   });
           };
@@ -469,15 +412,17 @@ console.log("ID: "+this.props.id);
           <div className="row">
           <form>
           <div className="row">
-          <FormErrors formErrors={this.state.formErrors} />
+
           <div className="col-xxs-12 col-xs-4 mt">
           <div className="input-field">
             <label>New Password:</label>
             <input type="password" ref="pwd" className="form-control" onChange={(event)=>{const name="password"
                                       const value=event.target.value
                                           this.setState({password: event.target.value,type:true}, () => { this.validateField(name, value) });}} required/>
+<FormErrors formErrors={this.state.formErrors} />
           </div>
-          </div><br/><br/><br/><br/>
+          </div>
+          <br/><br/><br/><br/>
           <div className="col-xxs-12 col-xs-12 mt"></div>
                 <div className="col-xxs-3 col-xs-3 mt">
                 <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.handlePassword(this.state)}>Submit</button>
@@ -491,5 +436,95 @@ console.log("ID: "+this.props.id);
 );}}
 
 
+class Changeusername extends Component {
+  state={
+    email:'',
+    formErrors: {email: ''},
+    emailValid:false,
+    checkUsername:false
+  };
+
+  handleEmail = (em) => {
+              API.updateEmail(em)
+                  .then((output) => {
+                      if (output === 0) {
+                          console.log("Failed email update");
+                      } else {
+                          console.log("Success email update");
+                          alert("Email updated");
+                      }
+                  });
+          };
+
+  validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.formErrors;
+      let emailValid = this.state.emailValid;
+      let checkUsername = this.state.checkUsername;
+      switch(fieldName) {
+        case 'email':
+            emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+            fieldValidationErrors.email = emailValid ? '' : ' is invalid';
+            break;
+        case 'check':
+             var x={uname:value}
+             API.checkuser(x)
+                 .then((output) => {
+                   checkUsername= output===1;
+                   fieldValidationErrors.userEmail = checkUsername ? '': ' already exists';
+                   this.setState({checkUsername:checkUsername});
+                 });
+                 //this.setState({checkUsername:!checkUsername});
+                 break;
+          default:
+              break;
+      }
+      this.setState({formErrors: fieldValidationErrors,
+          emailValid: emailValid,
+      }, this.validateForm);
+  }
+
+  validateForm() {
+    console.log("Email check2: "+this.state.checkUsername);
+      this.setState({formValid: this.state.emailValid && this.state.checkUsername===false});
+  }
+
+  render() {
+console.log("ID: "+this.props.id);
+      return (
+        <div>
+        <div id="fh5co-page">
+        <div className="container">
+          <div className="row">
+          <form>
+          <div className="row">
+          <div className="col-xxs-12 col-xs-6 mt">
+          <div className="input-field">
+          <label>Email:</label>
+          <input type="text" ref="em" className="form-control" onChange={(event) => {
+              const name="email"
+              const value=event.target.value
+              this.setState({
+                  email: event.target.value,
+                  type:true }, () => { this.validateField(name, value)});}} onInput={(event)=>{const name="check"
+                                    const value=event.target.value
+                                    this.setState({email: event.target.value,type:true}, () => { this.validateField(name, value) });}} required/>
+<FormErrors formErrors={this.state.formErrors} />
+          </div>
+          </div>
+
+          <br/><br/><br/><br/>
+
+          <div className="col-xxs-12 col-xs-12 mt"></div>
+                <div className="col-xxs-3 col-xs-3 mt">
+                <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.handleEmail(this.state)}>Submit</button>
+          </div>
+
+        </div>
+        </form>
+        </div>
+        </div>
+        </div>
+</div>
+);}}
 
 export default Account;
