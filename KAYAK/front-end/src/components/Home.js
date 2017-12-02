@@ -18,6 +18,7 @@ import Flight from './Admin/Flight';
 import Flightbooking from './Flights/FlightBooking';
 import HotelBooking from './Hotels/HotelBooking';
 import Bookings from './Admin/Bookings';
+import UserBookings from './Hotels/UserBookings';
 import Dialog from 'react-bootstrap-dialog';
 import {bindActionCreators} from 'redux';
 import {updateTracking} from '../actions/Analytics/Tracking';
@@ -146,7 +147,7 @@ class Home extends Component {
                                                     <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li>
                                                         <li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#signupModal">Sign up</button></li></ul></li>)
 
-                                                : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                                                : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/userBookings'>My Bookings</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                                         </ul>
                                     </nav>:<nav id="fh5co-menu-wrap" role="navigation">
                                         <ul className="sf-menu" id="fh5co-primary-menu">
@@ -173,6 +174,7 @@ class Home extends Component {
                             <Route exact path="/hotelsearch" component={() => <Search temp={2}/>}/>
                             <Route exact path="/Hotels" component={() => <HotelsHome isLogged={this.state.islogged}/>}/>
                             <Route exact path="/hotelsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> :  <HotelBooking/>}/>
+                            <Route exact path="/userBookings" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> :  <UserBookings/>}/>
                             <Route exact path="/flights" component={() => <FlightsHome isLogged={this.state.islogged}/>}/>
                             <Route exact path="/flightsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> : <Flightbooking/>}/>
                             <Route exact path="/cars" component={() => <CarHome isLogged={this.state.islogged}/>}/>

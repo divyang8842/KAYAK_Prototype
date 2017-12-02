@@ -22,6 +22,24 @@ export const getHotelBookings = (payload) =>
             console.log("This is list error");
             return error;
         });
+export const getHotelBooking = (payload) =>
+    fetch(`${api}/getHotelBooking`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        credentials:'include',
+
+    }).then(res=>res.json())
+        .then(res => {
+            return res;
+        })
+        .catch(error => {
+            console.log("This is list error");
+            return error;
+        });
 export const getCarBookings = (payload) =>
     fetch(`${api}/getCarBookings`, {
         method: 'POST',
@@ -42,6 +60,25 @@ export const getCarBookings = (payload) =>
         });
 export const getFlightBookings = (payload) =>
     fetch(`${api}/getFlightBookings`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        credentials:'include',
+
+    }).then(res=>res.json())
+        .then(res => {
+            return res;
+        })
+        .catch(error => {
+            console.log("This is list error");
+            return error;
+        });
+
+export const insertReviewData = (payload) =>
+    fetch(`${api}/setHotelReview`, {
         method: 'POST',
         headers: {
             ...headers,

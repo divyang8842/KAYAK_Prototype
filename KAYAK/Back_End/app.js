@@ -121,11 +121,13 @@ app.post('/listFlightsData',security.authenticateAdmin,adminFlight.getFlightData
 app.post('/getChartsData',security.authenticateAdmin,adminCharts.getChartData);
 
 app.post('/getHotelBookings',security.authenticateAdmin,adminBookings.getHotelBookings);
+app.post('/getHotelBooking',security.authenticate,adminBookings.getHotelBookings);
 app.post('/getFlightBookings',security.authenticateAdmin,adminBookings.getFlightBookings);
 app.post('/getCarBookings',security.authenticateAdmin,adminBookings.getCarBookings);
 
 app.post('/validateLogin',security.getLoggedInInfoFromSession);
 
+app.post('/setHotelReview',security.authenticate,hotels.setHotelReviewData);
 
 
 
