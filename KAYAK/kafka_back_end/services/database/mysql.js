@@ -4,7 +4,7 @@ var dbType = pool.TYPE_MYSQL;
 var jsesc = require('jsesc');
 
 //var dataKeys = [];
-var timeForValidCache = 60*0.5;
+var timeForValidCache = 60*1;
 
 var redis = require("redis"),
     client = redis.createClient();
