@@ -86,7 +86,8 @@ function handle_booking(msg, callback){
                                     hotel_state:msg.hotelitem.hotel_state,
                                     roomtype:msg.roomtype,
                                     roomcount:msg.roomcount,
-                                    room_rent:msg.room_rent
+                                    room_rent:msg.room_rent,
+                                    city:msg.city
                                 }
                             }
                         }, function (err, user) {

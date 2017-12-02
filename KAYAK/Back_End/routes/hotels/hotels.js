@@ -36,6 +36,7 @@ exports.getHotels= function(req,res) {
 exports.doBooking= function(req,res) {
 
     var userid = req.session.user.id;
+    var city = req.session.user.city;
     var room_rent =220;
     
         console.log("Inside doBooking");
@@ -55,7 +56,8 @@ exports.doBooking= function(req,res) {
                 "roomtype":roomtype,
                 "roomcount":roomcount,
                 "userid":userid,
-                "room_rent":room_rent
+                "room_rent":room_rent,
+                "city":city
             },
             function(err,results){
                 console.log(results);

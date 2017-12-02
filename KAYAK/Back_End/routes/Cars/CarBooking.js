@@ -6,6 +6,7 @@ var kafka = require('../kafka/client');
 exports.carsbooking= function(req,res) {
 
     var userid = req.session.user.id;
+    var city = req.session.user.city;
 
     console.log("Inside Cars Booking");
 
@@ -20,7 +21,8 @@ exports.carsbooking= function(req,res) {
             "car_rent":req.body.car_rent,
             "action":3,
             "userid":userid,
-            "car_agency":"Santa Clara"
+            "car_agency":"Santa Clara",
+            "city":city
         },
         function(err,results){
 
