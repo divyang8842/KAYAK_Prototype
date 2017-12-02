@@ -438,7 +438,10 @@ componentDidMount()
 
                     } else {
                       //console.log("OUPUT= "+output);
-                      this.setState({islogged: 'false', message:"Invalid credentials. Login again." });
+                      ReactDOM.findDOMNode(this.refs.em).value = "";
+                      ReactDOM.findDOMNode(this.refs.pwd).value = "";
+                      this.setState({islogged: 'false', message:'',formValid:false});
+                      alert("Invalid credentials. Login again.");
                         console.log("Wrong login: "+this.state.islogged);
                     }
                 });
@@ -490,6 +493,7 @@ componentDidMount()
                 </form>
                 <FormErrors formErrors={this.state.formErrors} />
                 <font color="red">{this.state.message}</font>
+
 </div>
         );
     }

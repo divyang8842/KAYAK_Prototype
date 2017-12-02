@@ -75,3 +75,49 @@ exports.doBooking= function(req,res) {
                 }
         });
     };
+
+
+exports.setHotelReviewData= function(req,res) {
+
+    var userid = req.session.user.id;
+
+    console.log("Inside setReview");
+    var hotelid=req.body.hotelid;
+    var reviewoverall = req.body.reviewoverall;
+    var reviewcount = req.body.reviewcount;
+    var reviewlocation = req.body.reviewlocation;
+    var reviewvibe = req.body.reviewvibe;
+    var reviewservice = req.body.reviewservice;
+    var reviewameneties = req.body.reviewameneties;
+    var reviewroom = req.body.reviewroom;
+    var reviewfood = req.body.reviewfood;
+    kafka.make_request('hotels_topic',
+        {"action":"setReviews",
+            "hotelid":hotelid,
+            "reviewoverall":reviewoverall,
+            "reviewcount":reviewcount,
+            "reviewlocation":reviewlocation,
+            "reviewvibe":reviewvibe,
+            "reviewservice":reviewservice,
+            "reviewameneties":reviewameneties,
+            "reviewroom":reviewroom,
+            "reviewfood":reviewfood
+        },
+        function(err,results){
+            console.log(results);
+
+            if(results.code == 400)
+            {
+                console.log("Unable to set review");
+                res.status(400).json({message:"Unable to set review"});
+            }
+            else if(results.code == 200){
+                console.log("Review Inserted!");
+                res.status(200).json({message:"Inserted Hotel Review Data Successfully..!!"});
+            }
+            else{
+                console.log("ERROR");
+                res.status(400).json({message:"Error while inserting review"});
+            }
+        });
+};

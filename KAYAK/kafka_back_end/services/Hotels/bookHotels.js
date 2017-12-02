@@ -64,6 +64,7 @@ function handle_booking(msg, callback){
                 console.log('Connected to mongo at: ' + mongoURL);
                 console.log("msg.hotelItem"+msg.hotelitem);
                 console.log("msg.hotelItem.hotel_city"+msg.hotelitem.hotel_city);
+                console.log("msg.hotelItem.userid"+msg.userid);
                 var coll = mongo.collection('Billing');
 
                 coll.findOne({"userid" : msg.userid},function (err, searchuser) {
@@ -73,7 +74,7 @@ function handle_booking(msg, callback){
                         var hotel_total_new = searchuser.hotel_total+msg.room_rent;
                         var number_of_hotel_bookings = searchuser.hotel.length ;
                         number_of_hotel_bookings = number_of_hotel_bookings +1;
-
+                        console.log("inside user find");
                         coll.update({userid:msg.userid}, {
                             $push: {
                                 hotel: {
@@ -333,4 +334,45 @@ function handle_booking(msg, callback){
         //callback(null, res);
     });
 }
+
+var setHotelReviews = function(msg,callback){
+    var res = {};
+    console.log("In handle request:"+ JSON.stringify(msg));
+
+    var insertQuery="INSERT INTO hotel_reviews (hotel_id,review_overall,review_count,review_location,review_vibe,review_service,review_amenities,review_room,review_food) values(?,?,?,?,?,?,?,?,?)";
+    var dataArry =  [];
+
+    dataArry.push(msg.hotelid);
+    dataArry.push(msg.reviewoverall);
+    dataArry.push(msg.reviewcount);
+    dataArry.push(msg.reviewlocation);
+    dataArry.push(msg.reviewvibe);
+    dataArry.push(msg.reviewservice);
+    dataArry.push(msg.reviewameneties);
+    dataArry.push(msg.reviewroom);
+    dataArry.push(msg.reviewfood);
+
+    console.log("DATA: "+dataArry);
+
+    mysql.setData(insertQuery,dataArry,function (err,results){
+        console.log("CHECK RES: "+results);
+        if (err){
+            //res.code = "401";
+            res = "Failed Insertion";
+            console.log("Failed signup---");
+            errorHandler.logError("HotelReview","HotelReview",err);
+            // callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            console.log("Successfully Hotel Review Inserted");
+        }
+        callback(null, res);
+
+    });
+
+};
+
 exports.handle_booking = handle_booking;
+exports.setHotelReviews=setHotelReviews;

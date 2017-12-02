@@ -80,6 +80,7 @@ app.use('/checkuser', checkuser.checkuser);
 app.use('/account',security.authenticate, account.account);
 app.use('/update', security.authenticate,account.update);
 app.use('/password',security.authenticate, account.password);
+app.use('/updateusername',account.updateusername);
 app.use('/listrooms',security.authenticateAdmin, adminHotel.getHotelRooms);
 app.use('/updateroom',security.authenticateAdmin, adminHotel.updateRoom);
 app.use('/deleteroom',security.authenticateAdmin, adminHotel.deleteRoom);
@@ -120,11 +121,13 @@ app.post('/listFlightsData',security.authenticateAdmin,adminFlight.getFlightData
 app.post('/getChartsData',security.authenticateAdmin,adminCharts.getChartData);
 
 app.post('/getHotelBookings',security.authenticateAdmin,adminBookings.getHotelBookings);
+app.post('/getHotelBooking',security.authenticate,adminBookings.getHotelBookings);
 app.post('/getFlightBookings',security.authenticateAdmin,adminBookings.getFlightBookings);
 app.post('/getCarBookings',security.authenticateAdmin,adminBookings.getCarBookings);
 
 app.post('/validateLogin',security.getLoggedInInfoFromSession);
 
+app.post('/setHotelReview',security.authenticate,hotels.setHotelReviewData);
 
 
 
