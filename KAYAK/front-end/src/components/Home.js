@@ -22,6 +22,7 @@ import Dialog from 'react-bootstrap-dialog';
 import {bindActionCreators} from 'redux';
 import {updateTracking} from '../actions/Analytics/Tracking';
 import * as API from '../api/SigninSignup-API';
+import * as UserTracking from '../api/UserTracking';
 import '../public/css/animate.css';
 import '../public/css/bootstrap.css';
 import '../public/css/magnific-popup.css';
@@ -119,6 +120,50 @@ class Home extends Component {
         this.props.updateTracking({currentpath, currentpage, timenow});
     }
 
+    // trackLogin(){
+    //     var tracking_object={};
+    //     tracking_object.current_page="LOGIN_PAGE";
+    //     tracking_object.previous_page="";
+    //     var prev_time = this.props.tracking.time;
+    //     var current_time = Date.now();
+    //     var diff= Math.abs(current_time-prev_time);
+    //     console.log("Time on page:"+diff);
+    //     tracking_object.timeonpage= diff;
+
+    //     UserTracking.userTracking(tracking_object)
+    //         .then((status) => {
+    //             console.log("Tracking status:"+status);
+    //             });
+    //     //Tracking userpath
+    //     var currentpath = this.props.tracking.path;
+    //     var timenow = Date.now();
+    //     var currentpage = "LOGIN_PAGE";
+    //     currentpath.push(currentpage);
+    //     this.props.updateTracking({currentpath, currentpage, timenow});
+    // }
+
+    trackAccount(){
+        var tracking_object={};
+        tracking_object.current_page="ACCOUNT_PAGE";
+        tracking_object.previous_page="";
+        var prev_time = this.props.tracking.time;
+        var current_time = Date.now();
+        var diff= Math.abs(current_time-prev_time);
+        console.log("Time on page:"+diff);
+        tracking_object.timeonpage= diff;
+
+        UserTracking.userTracking(tracking_object)
+            .then((status) => {
+                console.log("Tracking status:"+status);
+                });
+        //Tracking userpath
+        var currentpath = this.props.tracking.path;
+        var timenow = Date.now();
+        var currentpage = "ACCOUNT_PAGE";
+        currentpath.push(currentpage);
+        this.props.updateTracking({currentpath, currentpage, timenow});
+    }
+
     render() {
         return (
             <div style={{backgroundImage: "url(../public/images/Cover_pic.jpg)"}}>
@@ -146,7 +191,7 @@ class Home extends Component {
                                                     <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li>
                                                         <li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#signupModal">Sign up</button></li></ul></li>)
 
-                                                : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                                                : (<li><Link to='' onClick={e => e.preventDefault()}>{this.state.firstname}</Link> <ul className="fh5co-sub-menu"><li><Link to='/account' onClick={()=>this.trackAccount()}>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                                         </ul>
                                     </nav>:<nav id="fh5co-menu-wrap" role="navigation">
                                         <ul className="sf-menu" id="fh5co-primary-menu">
@@ -158,7 +203,7 @@ class Home extends Component {
                                             {this.state.islogged==='false' ? (<li><Link to='' onClick={e => e.preventDefault()}>My Account</Link>
                                                     <ul className="fh5co-sub-menu"><li><button type="button" style={{color:"#F78536",background:"white"}} className="btn btn-primary" data-toggle="modal" data-target="#loginModal">Sign in</button></li></ul></li>)
 
-                                                : (<li><Link to='' onClick={e => e.preventDefault()}>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account'>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
+                                                : (<li><Link to='' onClick={e => e.preventDefault()}>Admin</Link> <ul className="fh5co-sub-menu"><li><Link to='/account' onClick={()=>this.trackAccount()}>My Account</Link></li><li><Link to='/' onClick={this.handleLogout}>Logout</Link></li></ul></li>)}
                                         </ul>
                                     </nav>}
 
