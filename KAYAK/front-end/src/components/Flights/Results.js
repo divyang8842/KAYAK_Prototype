@@ -444,12 +444,17 @@ class Results extends Component {
         });
         return (
             <div>
+            <div>
               <ul>
                 {items}
               </ul>
+            </div>
+                <br/>
+            <div>
               <ul id="page-numbers">
                 {renderPageNumbers}
               </ul>
+            </div>
             </div>
           );
     }
@@ -624,14 +629,19 @@ class Results extends Component {
               });
         
               return (
-                <div>
-                  <ul>
-                    {items}
-                  </ul>
-                  <ul id="page-numbers">
-                    {renderPageNumbers}
-                  </ul>
-                </div>
+                  <div>
+                      <div>
+                          <ul>
+                              {items}
+                          </ul>
+                      </div>
+                      <br/>
+                      <div>
+                          <ul id="page-numbers">
+                              {renderPageNumbers}
+                          </ul>
+                      </div>
+                  </div>
               );
 
             
@@ -766,14 +776,19 @@ class Results extends Component {
               });
         
               return (
-                <div>
-                  <ul>
-                    {items}
-                  </ul>
-                  <ul id="page-numbers">
-                    {renderPageNumbers}
-                  </ul>
-                </div>
+                  <div>
+                      <div className="row">
+                          <ul>
+                              {items}
+                          </ul>
+                      </div>
+                      <br/>
+                      <div className="row">
+                          <ul id="page-numbers">
+                              {renderPageNumbers}
+                          </ul>
+                      </div>
+                  </div>
               );
 
            }
