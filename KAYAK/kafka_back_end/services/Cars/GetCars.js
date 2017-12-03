@@ -22,12 +22,14 @@ function handle_request(msg, callback){
 
 
 
-    if (msg.different_dropoff)
+    if (msg.destination !=="")
     {
         fetchQuery ="SELECT *,COUNT(*) AS COUNT FROM car_availibility ca INNER JOIN car c ON ca.car_id = c.car_id WHERE car_city=? and car_dropoff_city=? AND dates >= ? AND dates <= ? AND available = 1 GROUP BY c.car_id";
 
         dataArry.push(msg.City);
         dataArry.push(msg.destination);
+        dataArry.push(msg.Pickup);
+        dataArry.push(msg.Dropoff);
     }
 
     else
@@ -40,6 +42,8 @@ function handle_request(msg, callback){
         console.log("msg.City"+msg.Pickup);
         console.log("msg.City"+msg.Dropoff);
     }
+
+    console.log("fetchQuery"+fetchQuery);
 
     mysql.fetchData(fetchQuery,dataArry,function (err,results){
         if(results.length >0){

@@ -581,22 +581,12 @@ class Results extends Component {
 
                     <br/>
                     <br/>
-                    <h4 id="h4filter">Duration</h4>
-                    <hr/>
+
+
                     <div>
                         {/* <h6 id="sliderh6">${this.state.filterparams.price}</h6> */}
                     </div>
-                    <input type="text"
-                           className="form-control"
-                           id="from-place"
-                           placeholder="Price"
-                           value={this.state.duration_filter}
-                           onChange={(event) => {
-                               this.setState({
-                                   duration_filter: event.target.value
-                               },this.flights(null,null));}
-                           }
-                    />
+
 
 
                 </div>
@@ -610,6 +600,12 @@ class Results extends Component {
                                 PRICE
                             </label>
                         </div>
+                        <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
+                                                        <label className="sortbtn btn-block"
+                                                                onClick={() => this.flights(null,true)}>
+                                                            DURATION
+                                                        </label>
+                                                </div>
 
                     </div>
                     <div className="row">
