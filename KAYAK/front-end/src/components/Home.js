@@ -253,7 +253,7 @@ class Home extends Component {
                             <Route exact path="/flightsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> : <Flightbooking/>}/>
                             <Route exact path="/cars" component={() => <CarHome isLogged={this.state.islogged}/>}/>
                             {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>):(<Route exact path="/login" component={Search}/>)}
-                            <Route exact path="/account"  render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> :<Account user={this.state.islogged} id={this.state.uid} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
+                            <Route exact path="/account"  render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> :<Account user={this.state.islogged} id={this.state.uid} handleLogged={this.logged} handleNotLogged={this.handleLogout}/>}/>
                             <Route exact path="/hotel" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> : <Hotel/>}  />
                             <Route exact path="/car"   render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> : <Car/>}/>
                             <Route exact path="/carsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> : <CarBooking/>}/>

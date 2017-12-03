@@ -6,7 +6,7 @@ var errorHandler = require('./../utils/errorLogging');
 function getUsers(msg, callback){
   console.log("In getRoomData:"+ JSON.stringify(msg));
  var res=[];
-  var fetchQuery="SELECT user_id,fname,lname,emailid FROM user where deleteflag=0";
+  var fetchQuery="SELECT user_id,fname,lname,emailid,city FROM user where deleteflag=0";
   var dataArry =  [];
   mysql.fetchData(fetchQuery,dataArry,function (err,results){
     console.log("LIST ROOMS: "+results);

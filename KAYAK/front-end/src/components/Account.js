@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import * as API from '../api/SigninSignup-API';
+
 import ReactDOM from 'react-dom';
 import Login from './Login';
 import FormErrors from "./FormErrors";
@@ -87,6 +88,20 @@ componentWillMount(){
         });
 }
 
+
+deleteAcc= (id) => {
+  var x={userid:id};
+    API.deleteaccount(x)
+        .then((output) => {
+            if (output === 1) {
+                console.log("Deleted");
+                alert("Account deleted. Please logout");
+                this.props.handleNotLogged();
+            } else {
+                console.log("Not deleted");
+            }
+        });
+};
 
 handleFileUpload = (event) => {
     const payload = new FormData();
@@ -332,15 +347,13 @@ handleDetails = (details) => {
             </div>
 
 <div className="col-xxs-12 col-xs-12 mt"></div>
-
-
-                  <div className="col-xxs-12 col-xs-3 mt">
-                  <button type="button" className="btn btn-primary btn-block" value="Change Username" onClick={() => this.changeUsername()}>Update Email</button>
+<div className="col-xxs-12 col-xs-12 mt">
+<div className="col-xxs-12 col-xs-3 mt"><button type="button" className="btn btn-primary btn-block" value="Change Username" onClick={() => this.changeUsername()}>Update Email</button></div>
+<div className="col-xxs-12 col-xs-3 mt"><button type="button" className="btn btn-primary btn-block" value="Change Password" onClick={() => this.changePwd()}>Change Password</button></div>
+<div className="col-xxs-12 col-xs-3 mt"><button type="button" className="btn btn-primary btn-block" value="Delete Account" onClick={() => this.deleteAcc(this.state.uid)}>Delete Account</button></div>
+</div>
 <div className="col-xxs-12 col-xs-12 mt"></div>
-                  <button type="button" className="btn btn-primary btn-block" value="Change Password" onClick={() => this.changePwd()}>Change Password</button>
-                  <div className="col-xxs-12 col-xs-12 mt"></div>
-                  <button type="button" className="btn btn-primary btn-block" value="Delete Account" onClick={() => this.deleteAcc()}>Delete Account</button>
-                  </div>
+
                   </div>
                   </form>
                   <div>
@@ -473,7 +486,7 @@ class Changeusername extends Component {
                    fieldValidationErrors.userEmail = checkUsername ? '': ' already exists';
                    this.setState({checkUsername:checkUsername});
                  });
-                 //this.setState({checkUsername:!checkUsername});
+                 this.setState({checkUsername:!checkUsername});
                  break;
           default:
               break;
