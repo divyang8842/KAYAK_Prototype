@@ -85,9 +85,9 @@ class Results extends Component {
 
             if (flight_flag) {
                 flight_flag = false;
-                if(Number(cars.cars.car_distance) < this.state.duration_filter)
+                if(Number(cars.cars.car_distance) <= this.state.duration_filter)
                 {
-                if (cars.cars.car_rent < this.state.price_filter) {
+                if (cars.cars.car_rent <= this.state.price_filter) {
                     array_used_for_sorting.push(cars.cars);
                     if (price_flag) {
 

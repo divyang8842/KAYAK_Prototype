@@ -83,12 +83,11 @@ var insertHotelData = function(msg,callback){
     var res = {};
     console.log("In handle request:"+ JSON.stringify(msg));
 
-    var insertQuery="INSERT INTO hotels (hotel_name,hotel_star,hotel_location,hotel_city,hotel_state,hotel_zipcode,hotel_description) values(?,?,?,?,?,?,?)";
-    var query= "INSERT INTO hotel_availability (date,king_rooms,queen_rooms,standard_rooms) values(NOW(),?,?,?)";
+    var insertQuery="INSERT INTO hotels (hotel_name,hotel_star,hotel_location,hotel_city,hotel_state,hotel_zipcode,hotel_description,hotel_amenities) values(?,?,?,?,?,?,?,?)";
+    var query= "INSERT INTO hotel_availability (hotel_id,date,king_rooms,queen_rooms,standard_rooms) VALUES(?,?,?,?,?) ";
+    var query1 = "INSERT INTO room_rates (hotel_id,king_rates,queen_rates,standard_rates,deleteflag) VALUES(?,?,?,?,0)";
     var array=[];
-    array.push(msg.kingrooms);
-    array.push(msg.queenrooms);
-    array.push(msg.standardrooms);
+
     var dataArry =  [];
     dataArry.push(msg.hotelname);
     dataArry.push(msg.hotelstar);
@@ -97,13 +96,14 @@ var insertHotelData = function(msg,callback){
     dataArry.push(msg.hotelstate);
     dataArry.push(msg.hotelzipcode);
     dataArry.push(msg.hoteldesc);
-    console.log("DATA: "+dataArry);
+    dataArry.push(msg.hotelameneties);
+    //console.log("DATA: "+dataArry);
     mysql.setData(insertQuery,dataArry,function (err,results,id){
-        console.log("CHECK RES: "+results);
+        //console.log("CHECK RES: "+results);
         if (err){
             //res.code = "401";
             res = "Failed Insertion";
-            console.log("Failed signup---");
+            //console.log("Failed signup---");
             errorHandler.logError("Signup.js","afterSignUp",err);
         }
         else{
@@ -111,22 +111,78 @@ var insertHotelData = function(msg,callback){
             res.value=results;
             res.id=id;
             console.log("Successfully Hotel Data Inserted: ",id);
+            var hotelid = id;
+
+            var array = [];
+            array.push(id);
+            var tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate());
+            var dateToInsert =   tomorrow.getFullYear()+"-"+(tomorrow.getMonth()+1)+"-"+tomorrow.getDate()
+            array.push(dateToInsert);
+            array.push(msg.kingrooms);
+            array.push(msg.queenrooms);
+            array.push(msg.standardrooms);
+
+            for(var i=0;i<60;i++){
+
+            }
 
             mysql.setData(query,array,function (err,results,id) {
                 if (err){
                     //res.code = "401";
                     res = "Failed Insertion";
-                    console.log("Failed signup---");
+                    console.log(err);
+                   // console.log("Failed signup---");
                     errorHandler.logError("Signup.js","afterSignUp",err);
                 }
                 else
                 {
+
+                for(var i=1;i<60;i++){
+                    var arrData = [];
+                    arrData.push(hotelid);
+                    var tomorrow = new Date();
+                    tomorrow.setDate(tomorrow.getDate()+i);
+                    var dateToInsert =   tomorrow.getFullYear()+"-"+(tomorrow.getMonth()+1)+"-"+tomorrow.getDate();
+                    console.log("dateToInsert is : "+dateToInsert);
+                    arrData.push(dateToInsert);
+                    arrData.push(msg.kingrooms);
+                    arrData.push(msg.queenrooms);
+                    arrData.push(msg.standardrooms);
+                    mysql.setData(query,arrData,function (err,results,id) {});
+                }
+
+
+                    array = [];
+                    array.push(hotelid);
+                    var rate = 150 + parseInt(hotelid);
+
+                    console.log("rate is "+rate);
+                    rate = rate+rate;
+
+                    if(rate/500 > 0){
+                        rate = rate%500;
+                    }
+                    if(rate<60){
+                        rate = rate+150;
+                    }}
+
+                    console.log("rate is "+rate);
+                    array.push(rate);
+                    array.push(rate-10>50?rate-10:rate);
+                    array.push(rate-20>50?rate-20:rate);
+
+                    mysql.setData(query1,array,function (err,results,id) {
+
+                        console.log("error in hotel is "+err);
+                    });
+
                     res.code = "200";
                     res.value=results;
                     res.id=id;
                     console.log("Successfully Room Data Inserted: ",id);
-                }
-            });
+                })
+
             }
 
 

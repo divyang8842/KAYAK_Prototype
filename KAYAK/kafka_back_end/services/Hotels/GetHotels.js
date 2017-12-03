@@ -6,7 +6,7 @@ function handle_request(msg, callback){
 
     console.log("In Get hotels handle request:"+ JSON.stringify(msg));
 
-    var fetchQuery="SELECT *, count(*) as cnt FROM hotels JOIN hotel_reviews ON hotels.hotel_id = hotel_reviews.hotel_id"+
+    var fetchQuery="SELECT *, count(*) as cnt FROM hotels LEFT OUTER JOIN hotel_reviews ON hotels.hotel_id = hotel_reviews.hotel_id"+
     " JOIN hotel_availability on hotels.hotel_id = hotel_availability.hotel_id"+
     " JOIN room_rates on hotels.hotel_id = room_rates.hotel_id"+ 
     " WHERE hotel_city = ? AND date >= ? AND date <= ? AND (king_rooms >= ? OR queen_rooms >= ? OR standard_rooms >= ?)"+
@@ -32,7 +32,7 @@ function handle_request(msg, callback){
     var hotelsResult = [];
 
     console.log("DATA: "+dataArry);
-
+    console.log('fetchQuery is '+fetchQuery);
     mysql.fetchData(fetchQuery,dataArry,function (err,results){
         if(results.length > 0){
             console.log('Hotels fetched');

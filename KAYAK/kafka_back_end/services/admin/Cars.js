@@ -5,7 +5,7 @@ var errorHandler = require('./../utils/errorLogging');
 var insertCarData = function(msg,callback){
     var res = {};
     console.log("In handle request:"+ JSON.stringify(msg));
-
+    var query = "INSERT INTO car_availibility(car_id,dates,available) VALUES(?,?,?)";
     var insertQuery="INSERT INTO car (car_type,car_class,car_model,car_city,car_dropoff_city,passengers,doors,bags,available_place,car_rent,car_distance,car_agency) values(?,?,?,?,?,?,?,?,?,?,?,?)";
     var dataArry =  [];
     dataArry.push(msg.car_type);
@@ -23,7 +23,7 @@ var insertCarData = function(msg,callback){
 
 
     console.log("DATA: "+dataArry);
-    mysql.setData(insertQuery,dataArry,function (err,results){
+    mysql.setData(insertQuery,dataArry,function (err,results,id){
         console.log("CHECK RES: "+results);
         if (err){
             //res.code = "401";
@@ -33,13 +33,31 @@ var insertCarData = function(msg,callback){
            // callback(null, res);
         }
         else{
+            for(var i=0;i<60;i++){
+                    var arrData = [];
+                    arrData.push(id);
+                    var tomorrow = new Date();
+                    tomorrow.setDate(tomorrow.getDate()+i);
+                    var dateToInsert =   tomorrow.getFullYear()+"-"+(tomorrow.getMonth()+1)+"-"+tomorrow.getDate();
+                   // console.log("dateToInsert is : "+dateToInsert);
+                    arrData.push(dateToInsert);
+                    arrData.push(1);
+
+                mysql.setData(query,arrData,function(err,data){
+                    if(err){
+                        console.log(err);
+                    }
+
+                });
+            }
+
             res.code = "200";
             res.value=results;
             console.log("Successfully Car Data Inserted");
         }
         callback(null, res);
 
-    });
+    },true);
 
 };
 
