@@ -637,12 +637,7 @@ class Results extends Component {
                                 PRICE
                             </label>
                         </div>
-                        <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
-                            <label className="sortbtn btn-block"
-                                    onClick={() => this.flights(null,true)}>
-                                DURATION
-                            </label>
-                        </div>
+
                     </div>
                     <div className="row">
                         <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">

@@ -2,7 +2,15 @@ var kafka = require('../kafka/client');
 
 
 exports.usertracking= function(req,res) {
-    var userid = req.session.user.id;
+    var userid;
+    if(req.session.user)
+    {
+        userid = req.session.user.id;
+    }
+    else
+    {
+        userid = "";
+    }
     var sessionid = req.sessionID;
 
     console.log("Inside User Tracking");
@@ -11,7 +19,8 @@ exports.usertracking= function(req,res) {
         {"current_page":req.body.current_page,
             "previous_page":req.body.previous_page,
             "user_id":userid,
-            "session_id":sessionid
+            "session_id":sessionid,
+            "timeonpage":req.body.timeonpage
         },
         function(err,results){
             console.log('in result');

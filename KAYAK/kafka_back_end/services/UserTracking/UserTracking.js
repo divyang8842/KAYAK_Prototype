@@ -23,14 +23,14 @@ function handle_request(msg, callback){
     if(msg.current_page ==="FLIGHT_PAGE")
     {
 
-        coll.update({}, {
+        coll.update({user_id:msg.user_id}, {
                 $push: {
-                    FLIGHT_PAGE: {
+                    TRACKING_ARRAY: {
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:Date()
+                        time:msg.timeonpage
 
                     }}}
             , function (err, user) {
@@ -60,9 +60,25 @@ function handle_request(msg, callback){
                 }
                 else
                 {
-                    response.code = "400";
-                    console.log("Fail"+response);
-                    callback(null, response);
+                    coll.update({},{$inc: { FLIGHT_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- FLIGHT_PAGE_COUNT"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
                 }
             });
     }
@@ -70,14 +86,14 @@ function handle_request(msg, callback){
        else if(msg.current_page ==="CAR_PAGE")
         {
 
-            coll.update({}, {
+            coll.update({user_id:msg.user_id}, {
                     $push: {
-                        CAR_PAGE: {
+                        TRACKING_ARRAY: {
                             current_page: msg.current_page,
                             previous_page:msg.previous_page,
                             user_id:msg.user_id,
                             session_id:msg.session_id,
-                            time:Date()
+                            time:msg.timeonpage
 
                         }}}  //,{ $inc: { CAR_COUNT: 1} }
                 , function (err, user) {
@@ -108,9 +124,25 @@ function handle_request(msg, callback){
                     }
                     else
                     {
-                        response.code = "400";
-                        console.log("Fail"+response);
-                        callback(null, response);
+                        coll.update({},{$inc: { CAR_COUNT: 1 }},
+                            function (err, user) {
+
+                                console.log("inside call back" + user);
+                                if (user) {
+                                    response.code = "200";
+                                    console.log("Success--- inside Tracking User- CAR_PAGE_COUNT"+response);
+                                    callback(null, response);
+
+                                }
+                                else {
+                                    response.code = "400";
+                                    console.log("Fail"+response);
+                                    callback(null, response);
+                                }
+
+                            }
+
+                        );
                     }
 
 
@@ -120,14 +152,14 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="BILLING_FLIGHT")
     {
 
-        coll.update({}, {
+        coll.update({user_id:msg.user_id}, {
                 $push: {
-                    BILLING_FLIGHT: {
+                    TRACKING_ARRAY: {
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:Date()
+                        time:msg.timeonpage
 
                     }}}  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
@@ -158,9 +190,25 @@ function handle_request(msg, callback){
                 }
                 else
                 {
-                    response.code = "400";
-                    console.log("Fail"+response);
-                    callback(null, response);
+                    coll.update({},{$inc: { BILLING_FLIGHT_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- BILLING_FLIGHT_COUNT"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
                 }
 
 
@@ -170,14 +218,14 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="SEARCH_PAGE")
     {
 
-        coll.update({}, {
+        coll.update({user_id:msg.user_id}, {
                 $push: {
-                    SEARCH_PAGE: {
+                    TRACKING_ARRAY: {
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:Date()
+                        time:msg.timeonpage
 
                     }}}  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
@@ -208,9 +256,25 @@ function handle_request(msg, callback){
                 }
                 else
                 {
-                    response.code = "400";
-                    console.log("Fail"+response);
-                    callback(null, response);
+                    coll.update({},{$inc: { SEARCH_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- SEARCH_COUNT"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
                 }
 
 
@@ -220,14 +284,14 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="HOTEL_PAGE")
     {
 
-        coll.update({}, {
+        coll.update({user_id:msg.user_id}, {
                 $push: {
-                    HOTEL_PAGE: {
+                    TRACKING_ARRAY: {
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:Date()
+                        time:msg.timeonpage
 
                     }}}  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
@@ -258,9 +322,25 @@ function handle_request(msg, callback){
                 }
                 else
                 {
-                    response.code = "400";
-                    console.log("Fail"+response);
-                    callback(null, response);
+                    coll.update({},{$inc: { HOTEL_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
                 }
 
 
@@ -270,14 +350,14 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="BILLING_HOTEL")
     {
 
-        coll.update({}, {
+        coll.update({user_id:msg.user_id}, {
                 $push: {
-                    BILLING_HOTEL: {
+                    TRACKING_ARRAY: {
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:Date()
+                        time:msg.timeonpage
 
                     }}}  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
@@ -308,9 +388,25 @@ function handle_request(msg, callback){
                 }
                 else
                 {
-                    response.code = "400";
-                    console.log("Fail"+response);
-                    callback(null, response);
+                    coll.update({},{$inc: { BILLING_HOTEL_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
                 }
 
 
@@ -320,14 +416,14 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="BILLING_CAR")
     {
 
-        coll.update({}, {
+        coll.update({user_id:msg.user_id}, {
                 $push: {
-                    BILLING_CAR: {
+                    TRACKING_ARRAY: {
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:Date()
+                        time:msg.timeonpage
 
                     }}}  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
@@ -358,9 +454,25 @@ function handle_request(msg, callback){
                 }
                 else
                 {
-                    response.code = "400";
-                    console.log("Fail"+response);
-                    callback(null, response);
+                    coll.update({},{$inc: { BILLING_CAR_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
                 }
 
 
@@ -370,14 +482,14 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="SIGNIN_PAGE")
     {
 
-        coll.update({}, {
+        coll.update({user_id:msg.user_id}, {
                 $push: {
-                    SIGNIN_PAGE: {
+                    TRACKING_ARRAY: {
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:Date()
+                        time:msg.timeonpage
 
                     }}}  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
@@ -408,9 +520,25 @@ function handle_request(msg, callback){
                 }
                 else
                 {
-                    response.code = "400";
-                    console.log("Fail"+response);
-                    callback(null, response);
+                    coll.update({},{$inc: { SIGNIN_PAGE_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
                 }
 
 
@@ -420,14 +548,14 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="SIGNUP_PAGE")
     {
 
-        coll.update({}, {
+        coll.update({user_id:msg.user_id}, {
                 $push: {
-                    SIGNUP_PAGE: {
+                    TRACKING_ARRAY: {
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:Date()
+                        time:msg.timeonpage
 
                     }}}  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
@@ -458,9 +586,25 @@ function handle_request(msg, callback){
                 }
                 else
                 {
-                    response.code = "400";
-                    console.log("Fail"+response);
-                    callback(null, response);
+                    coll.update({},{$inc: { SIGNUP_PAGE_COUNT: 1 }},
+                        function (err, user) {
+
+                            console.log("inside call back" + user);
+                            if (user) {
+                                response.code = "200";
+                                console.log("Success--- inside Tracking User- HOTEL_PAGE"+response);
+                                callback(null, response);
+
+                            }
+                            else {
+                                response.code = "400";
+                                console.log("Fail"+response);
+                                callback(null, response);
+                            }
+
+                        }
+
+                    );
                 }
 
 

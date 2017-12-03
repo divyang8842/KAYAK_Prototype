@@ -48,7 +48,8 @@ function handle_request(msg, callback){
                                     car_city:msg.car_city,
                                     start_date:msg.start_date,
                                     end_date:msg.end_date,
-                                    car_rent:msg.car_rent
+                                    car_rent:msg.car_rent,
+                                    city:msg.city``
                                 }
                             }
                         }, function (err, user) {

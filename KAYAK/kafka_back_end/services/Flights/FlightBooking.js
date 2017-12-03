@@ -125,7 +125,17 @@ function handle_request(msg, callback){
                                                         flight_arrival: msg.flight_arrival,
                                                         totalprice: msg.totalprice,
                                                         noofseats: msg.noofseats,
-                                                        class: msg.class
+                                                        class: msg.class,
+                                                        city:msg.city,
+                                                        flight_id_return:msg.flight_id_return,
+                                                        airline_name_return:msg.airline_name_return,
+                                                        origin_station_return:msg.origin_station_return,
+                                                        destination_station_return:msg.destination_station_return,
+                                                        flight_departure_return:msg.flight_departure_return,
+                                                        flight_arrival_return:msg.flight_arrival_return,
+                                                        date_return:msg.date_return,
+                                                        class_return:msg.class_return,
+                                                        noofseats_return:msg.noofseats_return
                                                     }
                                                 }
                                             }, function (err, user) {

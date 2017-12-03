@@ -196,6 +196,7 @@ class Home extends Component {
 
     render() {
         return (
+
             <div style={{backgroundImage: "url(../public/images/Cover_pic.jpg)"}}>
                 <div id="fh5co-wrapper">
                     <div id="fh5co-page">
@@ -242,7 +243,7 @@ class Home extends Component {
                         </header>
 
                         <Switch>
-                            {this.state.isAdmin===false ? (<Route exact path="/" component={Search}/>) : (<Route exact path="/" component={Analytics}/>)}
+                            {this.state.isAdmin===false ? (<Route exact path="/"  component={Search}/>) : (<Route exact path="/" component={Analytics}/>)}
                             <Route exact path="/flightsearch" component={() => <Search temp={1}/>}/>
                             <Route exact path="/carsearch" component={() => <Search temp={3}/>}/>
                             <Route exact path="/hotelsearch" component={() => <Search temp={2}/>}/>
@@ -252,7 +253,7 @@ class Home extends Component {
                             <Route exact path="/flights" component={() => <FlightsHome isLogged={this.state.islogged}/>}/>
                             <Route exact path="/flightsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> : <Flightbooking/>}/>
                             <Route exact path="/cars" component={() => <CarHome isLogged={this.state.islogged}/>}/>
-                            {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>):(<Route exact path="/login" component={Search}/>)}
+                            {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>):(<Route exact path="/login" component={() => <Search temp={1}/>}/>)}
                             <Route exact path="/account"  render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> :<Account user={this.state.islogged} id={this.state.uid} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
                             <Route exact path="/hotel" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> : <Hotel/>}  />
                             <Route exact path="/car"   render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> : <Car/>}/>
@@ -332,7 +333,5 @@ function mapDispatchToProps(dispatch) {
 
 
 }
-
-//export default Search;
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
