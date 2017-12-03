@@ -129,6 +129,7 @@ app.post('/getCarBookings',security.authenticateAdmin,adminBookings.getCarBookin
 app.post('/validateLogin',security.getLoggedInInfoFromSession);
 
 app.post('/setHotelReview',security.authenticate,hotels.setHotelReviewData);
+app.post('/isHotelReviewDone',security.authenticate,hotels.isHotelReviewPresent);
 
 
 

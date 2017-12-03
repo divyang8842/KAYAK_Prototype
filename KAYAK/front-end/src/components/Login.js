@@ -333,7 +333,10 @@ import ReactDOM from 'react-dom';
 import Search from './Home';
 import FormErrors from "./FormErrors";
 import * as UserTracking from '../api/UserTracking';
-
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {updateTracking} from '../actions/Analytics/Tracking';
+import {Route, Link, Switch, withRouter} from 'react-router-dom';
 class Login extends Component {
   state={
     user:'',
@@ -419,6 +422,26 @@ componentDidMount()
                 .then((output) => {
                     if (output.code === "200") {
 
+                            var tracking_object={};
+                            tracking_object.current_page="LOGIN_PAGE";
+                            tracking_object.previous_page="";
+                            var prev_time = this.props.tracking.time;
+                            var current_time = Date.now();
+                            var diff= Math.abs(current_time-prev_time);
+                            console.log("Time on page:"+diff);
+                            tracking_object.timeonpage= diff;
+
+                            UserTracking.userTracking(tracking_object)
+                                .then((status) => {
+                                    console.log("Tracking status:"+status);
+                                    });
+                            //Tracking userpath
+                            var currentpath = this.props.tracking.path;
+                            var timenow = Date.now();
+                            var currentpage = "LOGIN_PAGE";
+                            currentpath.push(currentpage);
+                            this.props.updateTracking({currentpath, currentpage, timenow});
+
                     this.setState({messageLogin: 'true', user: output, message:""});
                     localStorage.setItem('userid', output.value.id);
                     ReactDOM.findDOMNode(this.refs.em).value = "";
@@ -489,5 +512,20 @@ componentDidMount()
         );
     }
 }
+function mapStateToProps(state) {
+    return {
+        tracking: state.tracking
+        // filteredHotels: state.filteredHotels
+    }
+}
 
-export default Login;
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+
+        updateTracking:updateTracking
+    }, dispatch);
+}
+
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

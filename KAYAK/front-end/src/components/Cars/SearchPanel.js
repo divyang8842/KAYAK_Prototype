@@ -25,6 +25,32 @@ class SearchPanel extends Component {
       }
   };
 
+    componentWillMount(){
+        //cars
+        if(this.props.cars){
+            if(!(this.props.cars.length>0)){
+                var cars = {
+                    City:localStorage.car_City,
+                    destination:localStorage.car_destination,
+                    Pickup:localStorage.car_Pickup,
+                    Dropoff:localStorage.car_Dropoff,
+                    different_drop_off:localStorage.car_different_drop_off
+                };
+
+                CarsAPI.getCars(cars)
+                    .then((output) => {
+                        this.props.getCars(output);
+                        this.props.handler();
+                    });
+
+
+            }
+
+
+            }
+
+        }
+
 
   handleCarSearch(){
     console.log(this.state.Cars);
@@ -125,7 +151,19 @@ class SearchPanel extends Component {
 function mapDispatchToProps(dispatch) {
       return bindActionCreators({getCars:getCars}, dispatch);
   }
+
+function mapStateToProps(state) {
+    const cars = Object.keys(state.getcars.results).map((items) => (
+        {
+            'cars' : state.getcars.results[items]
+
+
+        }
+    ));
+
+    return {cars};
+}
   
   //export default Search;
   
-  export default connect(null, mapDispatchToProps)(SearchPanel);
+  export default connect(mapStateToProps, mapDispatchToProps)(SearchPanel);

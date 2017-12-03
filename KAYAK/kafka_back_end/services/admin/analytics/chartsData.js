@@ -86,14 +86,15 @@ function handle_Request(msg,callback){
     }
 };
 
-var getUserTrackingData = function(message,callback) {
+var getUserTrackingData = function(msg,callback) {
     var data = 0;
-    var type = 'userid';
+    var type = 'user';
     var bProceed = true;
     var returnData = {};
-    if (msg.userid) {
+    console.log("userid: "+msg.userid);
+    if (msg.userid!=undefined) {
         data = msg.userid;
-    } else if (msg.city) {
+    } else if (msg.city!=undefined && msg.city!='') {
         type = 'city';
         data = msg.city;
     } else {
@@ -108,6 +109,8 @@ var getUserTrackingData = function(message,callback) {
             console.log("returnData for charts at line 105 is :" + JSON.stringify(returnData));
             callback(false, returnData);
         })
+    }else {
+      callback(false, returnData);
     }
 }
 function getTop10Numbers(msg, callback) {
@@ -244,16 +247,20 @@ var leastSeenArea = function(callback){
 
 
 var getUserTrackingInfo = function(idtype,idtoCheck,callback){
+
     var responseData = {"title":[],"data":[]};
     var query = {};
     var userid = 0;
     if(idtype=='user'){
-        userid = idtoCheck;
-        query = {'userid': idtoCheck};
+        userid = makeSafeInt(idtoCheck);
+        if(userid>0){
+          query = {'userid': userid};
+        }
     }else if(idtype=='city'){
         userid = idtoCheck.length;
         query = {'city': idtoCheck};
     }
+    console.log('query is '+JSON.stringify(query));
     mongo.connect(mongoURL, function () {
         var coll = mongo.collection('usertrackingcharts');
         coll.find(query).sort({'count': -1}).limit(5).toArray(function (err, pages) {
@@ -321,19 +328,31 @@ var getPercentageOfPages=function(pageArr,returnData,callback){
 
             //var nLength =  pageArr.length;
             //
-            var total = pages.FLIGHT_COUNT + pages.BILLING_FLIGHT_COUNT + pages.CAR_COUNT + pages.BILLING_CAR_COUNT + pages.HOTEL_COUNT + pages.BILLING_HOTEL_COUNT + pages.SIGNUP_PAGE_COUNT + pages.SIGNIN_PAGE_COUNT + pages.SEARCH_COUNT;
+            console.log("pages: "+JSON.stringify(pages));
+            var total = makeSafeInt(pages.FLIGHT_COUNT)
+            + makeSafeInt(pages.BILLING_FLIGHT_COUNT) +
+            makeSafeInt(pages.CAR_COUNT) +
+            makeSafeInt(pages.BILLING_CAR_COUNT) +
+            makeSafeInt(pages.HOTEL_COUNT) +
+            makeSafeInt(pages.BILLING_HOTEL_COUNT) +
+            makeSafeInt(pages.SIGNUP_PAGE_COUNT) +
+            makeSafeInt(pages.SIGNIN_PAGE_COUNT) +
+            makeSafeInt(pages.SEARCH_COUNT);
+console.log("total: "+total);
             pages =
                 [
-                    {'_id': 'FLIGHT_PAGE', 'count': ((pages.FLIGHT_COUNT / total) * 100)},
-                    {'_id': 'BILLING_FLIGHT', 'count': ((pages.BILLING_FLIGHT_COUNT / total) * 100)},
-                    {'_id': 'CAR_PAGE', 'count': ((pages.CAR_COUNT / total) * 100)},
-                    {'_id': 'BILLING_CAR', 'count': ((pages.BILLING_CAR_COUNT / total) * 100)},
-                    {'_id': 'HOTEL_PAGE', 'count': ((pages.HOTEL_COUNT / total) * 100)},
-                    {'_id': 'BILLING_HOTEL', 'count': ((pages.BILLING_HOTEL_COUNT / total) * 100)},
-                    {'_id': 'SIGNUP_PAGE', 'count': ((pages.SIGNUP_PAGE_COUNT / total) * 100)},
-                    {'_id': 'SIGNIN_PAGE', 'count': ((pages.SIGNIN_PAGE_COUNT / total) * 100)},
-                    {'_id': 'SEARCH_PAGE', 'count': ((pages.SEARCH_COUNT / total) * 100)}
+                    {'_id': 'FLIGHT_PAGE', 'count': ((makeSafeInt(pages.FLIGHT_COUNT) / total) * 100)},
+                    {'_id': 'BILLING_FLIGHT', 'count': ((makeSafeInt(pages.BILLING_FLIGHT_COUNT) / total) * 100)},
+                    {'_id': 'CAR_PAGE', 'count': ((makeSafeInt(pages.CAR_COUNT) / total) * 100)},
+                    {'_id': 'BILLING_CAR', 'count': ((makeSafeInt(pages.BILLING_CAR_COUNT) / total) * 100)},
+                    {'_id': 'HOTEL_PAGE', 'count': ((makeSafeInt(pages.HOTEL_COUNT) / total) * 100)},
+                    {'_id': 'BILLING_HOTEL', 'count': ((makeSafeInt(pages.BILLING_HOTEL_COUNT) / total) * 100)},
+                    {'_id': 'SIGNUP_PAGE', 'count': ((makeSafeInt(pages.SIGNUP_PAGE_COUNT) / total) * 100)},
+                    {'_id': 'SIGNIN_PAGE', 'count': ((makeSafeInt(pages.SIGNIN_PAGE_COUNT) / total) * 100)},
+                    {'_id': 'SEARCH_PAGE', 'count': ((makeSafeInt(pages.SEARCH_COUNT) / total) * 100)}
                 ];
+
+                console.log("pages: "+JSON.stringify(pages));
             var nLength = pageArr.length;
             var pageCount = pages.length;
             var k = 0;
@@ -364,6 +383,20 @@ var getPercentageOfPages=function(pageArr,returnData,callback){
             callback(null,returnData);
         });
     });
+}
+
+var makeSafeInt = function(data){
+  try{
+    data = parseInt(data);
+    if(isNaN(data)){
+    data=0;
+  }
+  }catch(e){
+    console.log(e);
+    data = 0;
+  }
+console.log("Check number: "+data);
+  return data;
 }
 
 //exports.getTop10Numbers = getTop10Numbers;
