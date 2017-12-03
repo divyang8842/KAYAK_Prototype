@@ -333,7 +333,10 @@ import ReactDOM from 'react-dom';
 import Search from './Home';
 import FormErrors from "./FormErrors";
 import * as UserTracking from '../api/UserTracking';
-
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {updateTracking} from '../actions/Analytics/Tracking';
+import {Route, Link, Switch, withRouter} from 'react-router-dom';
 class Login extends Component {
   state={
     user:'',
@@ -509,5 +512,20 @@ componentDidMount()
         );
     }
 }
+function mapStateToProps(state) {
+    return {
+        tracking: state.tracking
+        // filteredHotels: state.filteredHotels
+    }
+}
 
-export default Login;
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+
+        updateTracking:updateTracking
+    }, dispatch);
+}
+
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
