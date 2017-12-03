@@ -157,8 +157,10 @@ validateField(fieldName, value) {
               fieldValidationErrors.city = cityValid ? '': ' is required';
               break;
       case 'state':
-                  stateValid = value.length !== 0;
-                  fieldValidationErrors.state = stateValid ? '': ' is required';
+
+          stateValid = value.length !== 0 && value.match('^(?:(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|P[AR]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY]))$');
+
+          fieldValidationErrors.state = stateValid ? '': ' is invalid';
                   break;
       case 'zip':
                   zipValid = value.length !== 0 && ((value.length ===5 && value.match('^[0-9]+$')) || (value.length ===10 && value.match('^\\d{5}(-\\d{4})?$')));
