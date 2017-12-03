@@ -253,13 +253,13 @@ class Home extends Component {
                             <Route exact path="/flights" component={() => <FlightsHome isLogged={this.state.islogged}/>}/>
                             <Route exact path="/flightsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> : <Flightbooking/>}/>
                             <Route exact path="/cars" component={() => <CarHome isLogged={this.state.islogged}/>}/>
-<<<<<<< HEAD
+
                             {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>):(<Route exact path="/login" component={Search}/>)}
                             <Route exact path="/account"  render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> :<Account user={this.state.islogged} id={this.state.uid} handleLogged={this.logged} handleNotLogged={this.handleLogout}/>}/>
-=======
+
                             {this.state.islogged==='false' ? (<Route exact path="/login" component={() => <Login handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>):(<Route exact path="/login" component={() => <Search temp={1}/>}/>)}
                             <Route exact path="/account"  render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> :<Account user={this.state.islogged} id={this.state.uid} handleLogged={this.logged} handleNotLogged={this.isNotlogged}/>}/>
->>>>>>> 37f144827eb4e008259c0331ac754768de80a137
+
                             <Route exact path="/hotel" render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> : <Hotel/>}  />
                             <Route exact path="/car"   render={() => (this.state.islogged=='false' || this.state.islogged==false || !this.state.isAdmin)? <Redirect to="/" /> : <Car/>}/>
                             <Route exact path="/carsbooking" render={() => (this.state.islogged=='false' || this.state.islogged==false)? <Redirect to="/" /> : <CarBooking/>}/>
