@@ -14,6 +14,7 @@ import '../../public/css/cs-skin-border.css';
 import '../../public/css/style.css';
 import '../../public/css/filter.css';
 import '../../public/css/star.css';
+import '../../public/css/pages.css';
 //import '../../public/css/radio.css';
 import * as HotelsAPI from '../../api/HotelsAPI';
 import star from '../../public/images/starfilled.svg';
@@ -38,7 +39,15 @@ class Results extends Component {
       chk_airport: false
     },
     filtered: false,
-    roomtype: 0 //0-King, 1-Queen, 2-Standard
+    roomtype: 0, //0-King, 1-Queen, 2-Standard
+    currentPage: 1,
+    itemsPerPage: 5
+  }
+
+  handleClick(event) {
+    this.setState({
+      currentPage: Number(event.target.id)
+    });
   }
 
   componentWillMount() {
@@ -67,12 +76,12 @@ class Results extends Component {
 
 
               });
-           //Tracking userpath
-           var currentpath = this.props.tracking.path;
-           var timenow = Date.now();
-           var currentpage = "BILLING_HOTEL";
-           currentpath.push(currentpage);
-           this.props.updateTracking({currentpath, currentpage, timenow});
+          //Tracking userpath
+          var currentpath = this.props.tracking.path;
+          var timenow = Date.now();
+          var currentpage = "BILLING_HOTEL";
+          currentpath.push(currentpage);
+          this.props.updateTracking({currentpath, currentpage, timenow});
       this
         .props
         .history
@@ -112,7 +121,18 @@ class Results extends Component {
     else 
       hotel_array = this.props.hotels.hotels;
     if(hotel_array){
-      return hotel_array.map((hotelItem) => {
+       // Logic for displaying current todos
+       const indexOfLastTodo = this.state.currentPage * this.state.itemsPerPage;
+       const indexOfFirstTodo = indexOfLastTodo - this.state.itemsPerPage;
+       const currentItems = hotel_array.slice(indexOfFirstTodo, indexOfLastTodo);
+
+       const pageNumbers = [];
+       for (let i = 1; i <= Math.ceil(hotel_array.length / this.state.itemsPerPage); i++) {
+         pageNumbers.push(i);
+       }
+
+
+      const items= currentItems.map((hotelItem, index) => {
         var styles = {
           background: 'white',
           'margin-bottom': '8px',
@@ -236,6 +256,29 @@ class Results extends Component {
           </div>
         );
       });
+
+      const renderPageNumbers = pageNumbers.map(number => {
+        return (
+          <li
+            key={number}
+            id={number}
+            onClick={this.handleClick}
+          >
+            {number}
+          </li>
+        );
+      });
+
+      return (
+        <div>
+          <ul>
+            {items}
+          </ul>
+          <ul id="page-numbers">
+            {renderPageNumbers}
+          </ul>
+        </div>
+      );
     }
   }
 
@@ -370,7 +413,8 @@ class Results extends Component {
 
     this.handler = this
       .handler
-      .bind(this)
+      .bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handler() {
