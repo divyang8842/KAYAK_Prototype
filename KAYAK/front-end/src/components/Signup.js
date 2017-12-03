@@ -127,6 +127,27 @@ handleSignup = (user) => {
                     } else {
                         console.log("Success signup");
 
+                        var tracking_object={};
+                        tracking_object.current_page="SIGNUP_PAGE";
+                        tracking_object.previous_page="";
+                        var prev_time = this.props.tracking.time;
+                        var current_time = Date.now();
+                        var diff= Math.abs(current_time-prev_time);
+                        console.log("Time on page:"+diff);
+                        tracking_object.timeonpage= diff;
+
+                        UserTracking.userTracking(tracking_object)
+                            .then((status) => {
+                                console.log("Tracking status:"+status);
+                            });
+                        //Tracking userpath
+                        var currentpath = this.props.tracking.path;
+                        var timenow = Date.now();
+                        var currentpage = "SIGNUP_PAGE";
+                        currentpath.push(currentpage);
+                        this.props.updateTracking({currentpath, currentpage, timenow});
+
+
                         ReactDOM.findDOMNode(this.refs.fn).value = "";
                         ReactDOM.findDOMNode(this.refs.ln).value = "";
                         ReactDOM.findDOMNode(this.refs.em).value = "";
