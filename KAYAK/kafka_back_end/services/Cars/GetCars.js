@@ -24,7 +24,8 @@ function handle_request(msg, callback){
 
     if (msg.different_dropoff)
     {
-        fetchQuery ="select * from car where car_city =? and car_dropoff_city=?";
+        fetchQuery ="SELECT *,COUNT(*) AS COUNT FROM car_availibility ca INNER JOIN car c ON ca.car_id = c.car_id WHERE car_city=? and car_dropoff_city=? AND dates >= ? AND dates <= ? AND available = 1 GROUP BY c.car_id";
+
         dataArry.push(msg.City);
         dataArry.push(msg.destination);
     }
