@@ -222,7 +222,7 @@ class Search extends Component {
     }
 
   render() {
-
+//alert(this.props.temp);
       var blackColor = {
           color: 'black'
 
@@ -262,7 +262,7 @@ class Search extends Component {
                                               <div style={bgnone} className="col-sm-4 col-md-4">&nbsp;</div>
                                               <div className="col-sm-4 col-md-4">
                                             <ul className="nav nav-tabs" role="tablist">
-                                                <li role="presentation" className={(this.props.temp===1)?"active":""}>
+                                                <li role="presentation" className={(this.props.temp===1 || this.props.temp==undefined)?"active":""}>
                                                   <a href="#flights" aria-controls="flights" role="tab" data-toggle="tab">
                                                     <span>  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M16.79 7.83l-3.93 3.93 4.51 7.05.76-.76-1.34-10.22M12.24 3.15L1.62 1.76l-.75.76 7.32 4.69 4.05-4.06"></path><path d="M10.73 11.94l1.3-1.3 4.28-4.28 2.8-2.8s1.54-2.12.46-3.17-3.17.47-3.17.47l-2.62 2.62-4.4 4.4L8 9.24a20 20 0 0 0-2.23 3.2l-4.67-.89L0 12.62l3.79 2.65.92.92L7.41 20l1.07-1.1-.91-4.76a20.06 20.06 0 0 0 3.16-2.2z"></path></svg>
                                                       Flights</span></a>
@@ -282,7 +282,7 @@ class Search extends Component {
                                           </div>
                                               <div className="tabulation animate-box " style={mrt}>
                                             <div className="tab-content" style={bgcolor}>
-                                            <div role="tabpanel" className={this.props.temp===1 ?"active tab-pane":"tab-pane"} id="flights">
+                                            <div role="tabpanel" className={(this.props.temp===1 || this.props.temp==undefined) ?"active tab-pane":"tab-pane"} id="flights">
                                               <div className="row">
                                                   <div className="col-sm-3 col-md-3" >
                                                 <div className="col-xxs-12 col-xs-6 mt">
