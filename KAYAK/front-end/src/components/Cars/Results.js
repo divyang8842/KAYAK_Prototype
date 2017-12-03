@@ -30,7 +30,9 @@ class Results extends Component {
 
 
         duration_filter:100,
-        filtered: false
+        filtered: false,
+        price_asc:1,
+        duration_asc:1
 
     };
 
@@ -69,16 +71,52 @@ class Results extends Component {
                 if (cars.cars.car_rent < this.state.price_filter) {
                     array_used_for_sorting.push(cars.cars);
                     if (price_flag) {
-                        array_used_for_sorting.sort(function (a, b) {
-                            return parseFloat(a.car_rent) - parseFloat(b.car_rent);
-                        });
+
+                        if(this.state.price_asc === 1) {
+                            array_used_for_sorting.sort(function (a, b) {
+                                return parseFloat(a.car_rent) - parseFloat(b.car_rent);
+                            });
+
+                            this.setState({
+                                price_asc: 0
+                            });
+                        }
+                        else
+                        {
+                            array_used_for_sorting.sort(function (a, b) {
+                                return parseFloat(b.car_rent) - parseFloat(a.car_rent);
+                            });
+
+                            this.setState({
+                                price_asc: 1
+                            });
+
+                        }
 
                     }
 
                     if (duration_flag) {
-                        array_used_for_sorting.sort(function (a, b) {
-                            return parseFloat(a.car_distance) - parseFloat(b.car_distance);
-                        });
+
+                        if(this.state.duration_asc === 1) {
+                            array_used_for_sorting.sort(function (a, b) {
+                                return parseFloat(a.car_distance) - parseFloat(b.car_distance);
+                            });
+
+                            this.setState({
+                                duration_asc: 0
+                            });
+                        }
+                        else
+                        {
+                            array_used_for_sorting.sort(function (a, b) {
+                                return parseFloat(b.car_distance) - parseFloat(a.car_distance);
+                            });
+
+                            this.setState({
+                                duration_asc: 1
+                            });
+
+                        }
 
 
                     }
@@ -643,8 +681,16 @@ class Results extends Component {
                                     PRICE
                                 </label>
                             </div>
+                            <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
+                                <label className="sortbtn btn-block"
+                                       onClick={() => this.flights(null,true)}
+                                >
+                                    DISTANCE
+                                </label>
+                            </div>
 
                         </div>
+
                         <div className="row">
                             <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">
                             </div>
