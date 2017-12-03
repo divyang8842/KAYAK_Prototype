@@ -521,87 +521,95 @@ class Search extends Component {
                                               </div>
                                             </div>
 
-                <div role="tabpanel" className={this.props.temp===3 ?"active tab-pane":"tab-pane"} id="cars">
-                                              <div className="row">
-                                                <div className="col-xxs-2 col-xs-2 mt">
-                                                  <div className="input-field">
-                                                    <label>City:</label>
-                                                    <input type="text"
-                                                           className="form-control"
-                                                           id="City"
-                                                           placeholder="Los Angeles, USA"
-                                                           onChange={(event) => {
-                                                               this.setState({
-                                                                   Cars: {
-                                                                       ...this.state.Cars,
-                                                                       City: event.target.value
-                                                                   }
-                                                               });}
-                                                           }/>
-                                                  </div>
+                                                <div role="tabpanel" className={this.props.temp===3 ?"active tab-pane":"tab-pane"} id="cars">
+                                                    <div className="row">
+                                                        <div className="col-sm-4 col-md-4" >
+                                                            <div className="col-xxs-12 col-xs-6 mt">
+                                                                <div className="input-field">
+                                                                    <label>City:</label>
+                                                                    <input type="text"
+                                                                           className="form-control"
+                                                                           id="City"
+                                                                           placeholder="Los Angeles, USA"
+                                                                           onChange={(event) => {
+                                                                               this.setState({
+                                                                                   Cars: {
+                                                                                       ...this.state.Cars,
+                                                                                       City: event.target.value
+                                                                                   }
+                                                                               });}
+                                                                           }/>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-xxs-12 col-xs-6 mt">
+                                                                <div className="input-field">
+                                                                    <label>Destination:</label>
+                                                                    <input type="text"
+                                                                           className="form-control"
+                                                                           id="destination"
+                                                                           placeholder="Tokyo, Japan"
+                                                                           onChange={(event) => {
+                                                                               this.setState({
+                                                                                   Cars: {
+                                                                                       ...this.state.Cars,
+                                                                                       destination: event.target.value
+                                                                                   }
+                                                                               });}
+                                                                           }/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-sm-2 col-md-2" >
+                                                            <div className="col-xxs-24 col-xs-12 mt alternate"  style={mrr1}>
+                                                                <div className="input-field">
+                                                                    <label>Departs:</label>
+                                                                    <input type="date"
+                                                                           className="datecss"
+                                                                           id="Pickup"
+                                                                           placeholder="mm/dd/yyyy"
+                                                                           onChange={(event) => {
+                                                                               this.setState({
+                                                                                   Cars: {
+                                                                                       ...this.state.Cars,
+                                                                                       Pickup: event.target.value
+                                                                                   }
+                                                                               });}
+                                                                           }
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-sm-2 col-md-2" >
+                                                            <div className="col-xxs-24 col-xs-12 mt alternate">
+                                                                <div className="input-field">
+                                                                    <label>Return:</label>
+                                                                    <input type="date"
+                                                                           className="datecss"
+                                                                           id="Dropoff"
+                                                                           placeholder="mm/dd/yyyy"
+                                                                           onChange={(event) => {
+                                                                               this.setState({
+                                                                                   Cars: {
+                                                                                       ...this.state.Cars,
+                                                                                       Dropoff: event.target.value
+                                                                                   }
+                                                                               });}
+                                                                           }
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-sm-1 col-md-1" >
+                                                            <div className="col-xs-12">
+                                                                <label></label>
+                                                                <button className="btn btn-primary btn-block" style={divStyle}
+                                                                        onClick={() => this.handleCarsSearch()}>=></button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-sm-2 col-md-2" >&nbsp;</div>
+                                                        <div className="col-sm-2 col-md-2" >&nbsp;</div>
+                                                    </div>
                                                 </div>
-
-                                                <div className="col-xxs-2 col-xs-2 mt">
-                                                  <div className="input-field">
-                                                    <label>Destination:</label>
-                                                    <input type="text"
-                                                           className="form-control"
-                                                           id="destination"
-                                                           placeholder="Tokyo, Japan"
-                                                           onChange={(event) => {
-                                                               this.setState({
-                                                                   Cars: {
-                                                                       ...this.state.Cars,
-                                                                       destination: event.target.value
-                                                                   }
-                                                               });}
-                                                           }/>
-                                                  </div>
-                                                </div>
-                                                <div className="col-xxs-2 col-xs-2 mt alternate"  style={mrr1}>
-                                                  <div className="input-field">
-                                                    <label>Departs:</label>
-                                                    <input type="date"
-                                                           className="datecss"
-                                                           id="Pickup"
-                                                           placeholder="mm/dd/yyyy"
-                                                           onChange={(event) => {
-                                                               this.setState({
-                                                                   Cars: {
-                                                                       ...this.state.Cars,
-                                                                       Pickup: event.target.value
-                                                                   }
-                                                               });}
-                                                           }
-                                                    />
-                                                  </div>
-                                                </div>
-                                                <div className="col-xxs-2 col-xs-2 mt alternate">
-                                                  <div className="input-field">
-                                                    <label>Return:</label>
-                                                    <input type="date"
-                                                           className="datecss"
-                                                           id="Dropoff"
-                                                           placeholder="mm/dd/yyyy"
-                                                           onChange={(event) => {
-                                                               this.setState({
-                                                                   Cars: {
-                                                                       ...this.state.Cars,
-                                                                       Dropoff: event.target.value
-                                                                   }
-                                                               });}
-                                                           }
-                                                    />
-                                                  </div>
-                                                </div>
-                                                  <div className="col-xs-1"></div>
-                                                <div className="col-xs-1">
-                                                    <label></label>
-                                                    <button className="btn btn-primary btn-block" style={divStyle}
-                                                            onClick={() => this.handleCarsSearch()}>=></button>
-                                                </div>
-                                              </div>
-                                            </div>
                                             </div>
                                           </div>
                                         </div>
