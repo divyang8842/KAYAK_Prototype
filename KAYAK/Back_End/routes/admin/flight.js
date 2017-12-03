@@ -12,9 +12,15 @@ var setFlightData = function (req, res, next) {
     var firstClassFare=req.param("firstClassFare");
     var businessClassFare=req.param("businessClassFare");
     var premiumEcoFare=req.param("premiumEcoFare");
+    var stops=req.param("stops");
+    var date=req.param("date");
+    var ecoseats=req.param("economyseats");
+    var firstseats=req.param("firstseats");
+    var businessseats=req.param("businessseats");
+    var premecoseats=req.param("premiumseats");
 
 
-    kafka.make_request('admin_topic',{"flightnumber":flightnumber,"airlinename":airlinename,"stationname":stationname,"departuretime":departuretime,"arrivaltime":arrivaltime,"flightduration":flightduration,"economyClassFare":economyClassFare,"firstClassFare":firstClassFare,"businessClassFare":businessClassFare,"premiumEcoFare":premiumEcoFare,"action":7 }, function(err,results){
+    kafka.make_request('admin_topic',{"flightnumber":flightnumber,"airlinename":airlinename,"stationname":stationname,"departuretime":departuretime,"arrivaltime":arrivaltime,"flightduration":flightduration,"economyClassFare":economyClassFare,"firstClassFare":firstClassFare,"businessClassFare":businessClassFare,"premiumEcoFare":premiumEcoFare,"stops":stops,"date":date,"ecoseats":ecoseats,"firstseats":firstseats,"businessseats":businessseats,"premecoseats":premecoseats,"action":7 }, function(err,results){
         console.log('in result');
         console.log(results);
         if(err){

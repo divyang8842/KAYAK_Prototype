@@ -8,7 +8,18 @@ var insertFlightData = function(msg,callback){
     console.log("In handle request:"+ JSON.stringify(msg));
 
     var insertQuery="INSERT INTO flight_mapping (flight_number,airline_name,station_name,flight_departure,flight_arrival,flight_duration,economy_class,first_class,business_class,premiumeconomy_class) values(?,?,?,?,?,?,?,?,?,?)";
+    var query1="INSERT INTO flight (flight_id,airline_name,stops) values (?,?,?)";
+    var query2="INSERT INTO flight_availibility(flight_id,dates,economy_seates,first_seates,business_seates,premium_seates) values (?,?,?,?,?,?)";
+/*    var query3 ="Select * from flight where flight_id=(?)";
+    var query4 ="Select * from flight_availibility where flight_id=(?)";*/
+
+
+
+
     var dataArry =  [];
+    var array1=[];
+    var array2=[];
+
     dataArry.push(msg.flightnumber);
     dataArry.push(msg.airlinename);
     dataArry.push(msg.stationname);
@@ -19,6 +30,18 @@ var insertFlightData = function(msg,callback){
     dataArry.push(msg.firstClassFare);
     dataArry.push(msg.businessClassFare);
     dataArry.push(msg.premiumEcoFare);
+
+    array1.push(msg.flightnumber);
+    array1.push(msg.airlinename);
+    array1.push(msg.stationname);
+
+    array2.push(msg.flightnumber);
+    array2.push(msg.dates);
+    array2.push(msg.economyseats);
+    array2.push(msg.firstseats);
+    array2.push(msg.businessseats);
+    array2.push(msg.premiumseats);
+
 
     mongo.findOneDoc("flight_analytics",{"name":msg.airlinename},function(data,err){
         var currentyear = new Date().getFullYear();
@@ -40,6 +63,8 @@ var insertFlightData = function(msg,callback){
             res.code = "200";
             res.value=results;
             console.log("Successfully Flight Data Inserted");
+
+
         }
         callback(null, res);
 

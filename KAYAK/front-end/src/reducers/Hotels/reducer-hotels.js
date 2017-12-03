@@ -66,7 +66,7 @@ export default Hotels;
 // hotel_city:"Mumbai"
 // hotel_description:"The taj mahal"
 // hotel_id:1
-// hotel_locaion:"Marine Drive"
+// hotel_location:"Marine Drive"
 // hotel_name:"Taj"
 // hotel_star:5
 // hotel_state:"CAL"
