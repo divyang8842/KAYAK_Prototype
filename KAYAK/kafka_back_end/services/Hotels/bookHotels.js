@@ -388,18 +388,19 @@ var checkHotelReviews = function(msg,callback){
 
     mysql.setData(insertQuery,dataArry,function (err,results){
         console.log("CHECK RES: "+results);
-        if (err){
-            //res.code = "401";
-            res = "Failed Insertion";
-            console.log("Failed signup---");
-            errorHandler.logError("HotelReview","HotelReview",err);
-            // callback(null, res);
-        }
-        else{
+        if(results!='')
+        {
             res.code = "200";
             res.value=results;
             console.log(results);
         }
+        else if(results==''){
+            res.code = "401";
+            res = "Failed Insertion";
+            console.log("Failed signup---");
+            // callback(null, res);
+        }
+
         callback(null, res);
 
     });

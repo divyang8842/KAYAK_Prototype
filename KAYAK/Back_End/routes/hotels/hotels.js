@@ -138,9 +138,9 @@ exports.isHotelReviewPresent= function(req,res) {
         function(err,results){
             console.log(results);
 
-            if(results.code == 400)
+            if(results.code == 401)
             {
-                console.log("Unable to set review");
+                res.status(401).json({status:"401",message:"Inserted Hotel Review Data Successfully..!!"});
             }
             else if(results.code == 200){
                 console.log("Review Inserted!");

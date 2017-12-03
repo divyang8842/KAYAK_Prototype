@@ -194,7 +194,7 @@ var abc=hotelBookings.hotel;
                         alert("Review already submitted for this particular hotel");
                         this.setState({update:true,visible: !this.state.visible});
 
-                    } else if (status === 401) {
+                    } else if (status.status == '401') {
 
                     }
                 });
