@@ -185,7 +185,7 @@ class Results extends Component {
          pageNumbers.push(i);
        }
 
-        const items= car_array.map((cars,index) => {
+        const items= currentItems.map((cars,index) => {
             var styles = {
                 background: 'white',
                 'margin-bottom': '8px',
