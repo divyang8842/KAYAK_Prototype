@@ -13,9 +13,12 @@ var setHotelData = function (req, res, next) {
     var kingrooms=req.param("kingrooms");
     var queenrooms=req.param("queenrooms");
     var standardrooms=req.param("standardrooms");
+    var kingrate = req.param("king_rates");
+    var queenrate = req.param("queen_rates");
+    var standardrate = req.param("standard_rates");
 
 
-    kafka.make_request('admin_topic',{"hotelname":hotelname,"hoteladdress":hoteladdress,"hotelcity":hotelcity,"hotelstate":hotelstate,"hotelzipcode":hotelzip,"hoteldesc":hoteldesc,"hotelameneties":hotelameneties,"hotelstar":hotelstar,"kingrooms":kingrooms,"queenrooms":queenrooms,"standardrooms":standardrooms,"action":1}, function(err,results){
+    kafka.make_request('admin_topic',{"hotelname":hotelname,"hoteladdress":hoteladdress,"hotelcity":hotelcity,"hotelstate":hotelstate,"hotelzipcode":hotelzip,"hoteldesc":hoteldesc,"hotelameneties":hotelameneties,"hotelstar":hotelstar,"kingrooms":kingrooms,"queenrooms":queenrooms,"standardrooms":standardrooms,"action":1, "kingrate":kingrate, "queenrate":queenrate, "standardrate":standardrate}, function(err,results){
         console.log('in result');
         console.log(results);
         if(err){

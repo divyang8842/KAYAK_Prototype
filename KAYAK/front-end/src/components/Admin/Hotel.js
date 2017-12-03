@@ -41,7 +41,9 @@ class Hotel extends Component {
         hotelData:[],
         hname:'',
         hcity:'',
-
+        standard_rates:'',
+        queen_rates:'',
+        king_rates:'',
         formErrors: {hotelname:'',hoteladdress:'',hotelcity: '',hotelstate: '',hotelzipcode: '',hoteldesc:'',hotelameneties:'',hotelstar:''  },
         type:false,
         hotelNameValid:false,
@@ -316,6 +318,12 @@ class Hotel extends Component {
                     hoteldesc:obj.hotel_description,
                     hotelameneties:obj.hotel_ameneties,
                     hotelstar:obj.hotel_star,
+                    kingrooms:obj.king_rooms,
+                    queenrooms:obj.queen_rooms,
+                    standardrooms:obj.standard_rooms,
+                    king_rates:obj.king_rates,
+                    queen_rates:obj.queen_rates,
+                    standard_rates:obj.standard_rates,
                     srcdata:''
                 });
 
@@ -497,6 +505,36 @@ class Hotel extends Component {
                                                 <input type="text" placeholder="Enter Standard Rooms" value={this.state.standardrooms} className="form-control" onChange={(event)=>{const name="standardrooms"
                                                     const value=event.target.value
                                                     this.setState({standardrooms: event.target.value,
+                                                        type:true}, () => { this.validateField(name, value)});}}/>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-xxs-12 col-xs-6 mt">
+                                            <div className="input-field">
+                                                <label>King Rooms Rate:</label>
+                                                <input type="text" placeholder="Enter Standard Rooms" value={this.state.king_rates} className="form-control" onChange={(event)=>{const name="standardrooms"
+                                                    const value=event.target.value
+                                                    this.setState({king_rates: event.target.value,
+                                                        type:true}, () => { this.validateField(name, value)});}}/>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-xxs-12 col-xs-6 mt">
+                                            <div className="input-field">
+                                                <label>Queen Rooms Rate:</label>
+                                                <input type="text" placeholder="Enter Standard Rooms" value={this.state.queen_rates} className="form-control" onChange={(event)=>{const name="standardrooms"
+                                                    const value=event.target.value
+                                                    this.setState({queen_rates: event.target.value,
+                                                        type:true}, () => { this.validateField(name, value)});}}/>
+                                            </div>
+                                        </div>
+
+                                        <div className="col-xxs-12 col-xs-6 mt">
+                                            <div className="input-field">
+                                                <label>Standard Rooms Rate:</label>
+                                                <input type="text" placeholder="Enter Standard Rooms" value={this.state.standard_rates} className="form-control" onChange={(event)=>{const name="standardrooms"
+                                                    const value=event.target.value
+                                                    this.setState({standard_rates: event.target.value,
                                                         type:true}, () => { this.validateField(name, value)});}}/>
                                             </div>
                                         </div>

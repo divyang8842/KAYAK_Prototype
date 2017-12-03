@@ -168,9 +168,9 @@ var insertHotelData = function(msg,callback){
                     }}
 
                     console.log("rate is "+rate);
-                    array.push(rate);
-                    array.push(rate-10>50?rate-10:rate);
-                    array.push(rate-20>50?rate-20:rate);
+                    array.push(msg.kingrate);
+                    array.push(msg.queenrate);
+                    array.push(msg.standardrate);
 
                     mysql.setData(query1,array,function (err,results,id) {
 
@@ -230,7 +230,7 @@ var insertRoomData = function(msg,callback){
 function getHotelData(msg, callback){
     console.log("In getHotel:"+ JSON.stringify(msg));
     var res={};
-    var fetchQuery="SELECT * FROM hotels WHERE deleteflag=0";
+    var fetchQuery="SELECT * FROM hotels LEFT OUTER JOIN hotel_availability on hotels.hotel_id = hotel_availability.hotel_id JOIN room_rates on hotels.hotel_id = room_rates.hotel_id WHERE hotels.deleteflag=0 GROUP BY hotels.hotel_id";
     console.log("SELECT QUERY: "+fetchQuery);
     var dataArry =  [];
 
