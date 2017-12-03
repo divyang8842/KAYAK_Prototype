@@ -9,6 +9,18 @@ import {updateTracking} from '../../actions/Analytics/Tracking';
 import personimage from '../../public/images/user.svg';
 import doorimage from '../../public/images/door.svg';
 import bagimage from '../../public/images/bag.svg';
+import '../../public/css/animate.css';
+import '../../public/css/bootstrap.css';
+import '../../public/css/magnific-popup.css';
+import '../../public/css/superfish.css';
+import '../../public/css/bootstrap-datepicker.min.css';
+import '../../public/css/magnific-popup.css';
+import '../../public/css/cs-select.css';
+import '../../public/css/cs-skin-border.css';
+import '../../public/css/style.css';
+import '../../public/css/filter.css';
+import '../../public/css/star.css';
+import '../../public/css/pages.css';
 
 class Results extends Component {
 
@@ -25,7 +37,8 @@ class Results extends Component {
         array_for_sorting_result:[],
         flag:0,
         check_boxes:[],
-
+        currentPage: 1,
+        itemsPerPage: 2,
         price_filter:500,
        
 
@@ -33,6 +46,12 @@ class Results extends Component {
         filtered: false
 
     };
+
+    handleClick(event) {
+        this.setState({
+          currentPage: Number(event.target.id)
+        });
+      }
 
     componentWillMount(){
         this.state.array_for_sorting = this.props.cars;
@@ -118,7 +137,18 @@ class Results extends Component {
         var car_array = [];
         if(this.state.filtered) car_array = this.state.array_for_sorting_result;
         else car_array = this.props.cars;
-        return car_array.map((cars,index) => {
+
+        // Logic for displaying current todos
+       const indexOfLastTodo = this.state.currentPage * this.state.itemsPerPage;
+       const indexOfFirstTodo = indexOfLastTodo - this.state.itemsPerPage;
+       const currentItems = car_array.slice(indexOfFirstTodo, indexOfLastTodo);
+
+       const pageNumbers = [];
+       for (let i = 1; i <= Math.ceil(car_array.length / this.state.itemsPerPage); i++) {
+         pageNumbers.push(i);
+       }
+
+        const items= car_array.map((cars,index) => {
             var styles = {
                 background: 'white',
                 'margin-bottom': '8px',
@@ -205,13 +235,37 @@ class Results extends Component {
                 </div>
             )
 
-        })
+        });
+
+        const renderPageNumbers = pageNumbers.map(number => {
+            return (
+              <li
+                key={number}
+                id={number}
+                onClick={this.handleClick}
+              >
+                {number}
+              </li>
+            );
+          });
+
+          return (
+            <div>
+              <ul>
+                {items}
+              </ul>
+              <ul id="page-numbers">
+                {renderPageNumbers}
+              </ul>
+            </div>
+          );
     }
 
     constructor(props) {
         super(props)
     
-        this.handler = this.handler.bind(this)
+        this.handler = this.handler.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     handler(){
