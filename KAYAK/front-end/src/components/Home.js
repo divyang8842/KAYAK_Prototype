@@ -242,7 +242,7 @@ class Home extends Component {
                         </header>
 
                         <Switch>
-                            {this.state.isAdmin===false ? (<Route exact path="/" component={Search}/>) : (<Route exact path="/" component={Analytics}/>)}
+                            {this.state.isAdmin===false ? (<Route exact path="/"  component={() => <Search temp={1}/>}/>) : (<Route exact path="/" component={Analytics}/>)}
                             <Route exact path="/flightsearch" component={() => <Search temp={1}/>}/>
                             <Route exact path="/carsearch" component={() => <Search temp={3}/>}/>
                             <Route exact path="/hotelsearch" component={() => <Search temp={2}/>}/>
@@ -332,7 +332,5 @@ function mapDispatchToProps(dispatch) {
 
 
 }
-
-//export default Search;
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home));
