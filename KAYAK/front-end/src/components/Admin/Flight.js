@@ -18,35 +18,9 @@ class Flight extends Component {
         super();
 
         this.filterState = this.filterState.bind(this);
-        this.handleTimeChange = this.handleTimeChange.bind(this);
-
-        this.state = {
-            format: 12,
-            initialValue: "00:00",
-            start: "00:00",
-            end: "23:59",
-            step: 1,
-            onChange: this.handleTimeChange,
-            departuretime:'',
-            arrivaltime:'',
-            flightData:[],
-            type:'',
-            visible:false
-        };
-    }
-
-    handleTimeChange(value) {
-        //alert(this.state.type)
-        if(this.state.type=='d'){
-            this.setState({ value ,
-                "departuretime":value
-            });
-        }else if(this.state.type=='a'){
-            this.setState({ value ,
-                "arrivaltime":value});
-        }
 
     }
+
 
     state={
         user:'',
@@ -54,16 +28,14 @@ class Flight extends Component {
         flightnumber: '',
         airlinename: '',
         stationname:'',
-        destination:'',
         arrivaltime:'',
-
+        departuretime:'',
         flightduration:'',
         flightclasses:'',
         economyClassFare:'',
         firstClassFare:'',
         businessClassFare:'',
         premiumEcoFare:'',
-        stops:'',
         date:'',
         economyseats:'',
         firstseats:'',
@@ -477,8 +449,8 @@ class Flight extends Component {
                                     </div>
                                     <div className="col-xxs-12 col-xs-6 mt">
                                         <div className="input-field">
-                                            <label>Station Name:</label>
-                                            <input type="text" placeholder="Enter Station Name" value={this.state.stationname} className="form-control" onChange={(event)=>{const name="stationname"
+                                            <label>Route:</label>
+                                            <input type="text" placeholder="Enter Route" value={this.state.stationname} className="form-control" onChange={(event)=>{const name="stationname"
                                                 const value=event.target.value
                                                 this.setState({stationname: event.target.value,
                                                     type:true}, () => { this.validateField(name, value)});}}/>
@@ -487,12 +459,10 @@ class Flight extends Component {
                                     <div className="col-xxs-12 col-xs-6 mt">
                                         <div className="input-field">
                                             <label>Departure Time:</label>
-                                            {/* <input type="time" placeholder="Enter Departure Time" value={this.state.departuretime} className="form-control" onChange={(event)=>{const name="departuretime"
+                                            <input type="text" placeholder="Enter Departure Time" value={this.state.departuretime} className="form-control" onChange={(event)=>{const name="departuretime"
                                                 const value=event.target.value
                                                 this.setState({departuretime: event.target.value,
-                                                    type:true}, () => { this.validateField(name, value)});}}/>*/}
-                                            <TimePicker value={this.state.departuretime}  onClick ={()=>this.setState({type:'d',departuretime:this.state.departuretime})}  {...this.filterState(this.state)}   />
-
+                                                    type:true}, () => { this.validateField(name, value)});}}/>
                                         </div>
                                     </div>
 
@@ -500,8 +470,10 @@ class Flight extends Component {
                                     <div className="col-xxs-12 col-xs-6 mt">
                                         <div className="input-field">
                                             <label>Arrival Time:</label>
-                                            <TimePicker1 value={this.state.arrivaltime} onClick ={()=>this.setState({type:'a',arrivaltime:this.state.arrivaltime})}  {...this.filterState(this.state)}   />
-
+                                            <input type="text" placeholder="Enter Arrival Time" value={this.state.arrivaltime} className="form-control" onChange={(event)=>{const name="arrivaltime"
+                                                const value=event.target.value
+                                                this.setState({arrivaltime: event.target.value,
+                                                    type:true}, () => { this.validateField(name, value)});}}/>
                                         </div>
                                     </div>
 
@@ -551,15 +523,7 @@ class Flight extends Component {
                                                     type:true}, () => { this.validateField(name, value)});}}/>
                                         </div>
                                     </div>
-                                    <div className="col-xxs-12 col-xs-6 mt">
-                                        <div className="input-field">
-                                            <label>Stops:</label>
-                                            <input type="text" placeholder="Enter Stops" value={this.state.premiumEcoFare} className="form-control" onChange={(event)=>{const name="premiumEcoFare"
-                                                const value=event.target.value
-                                                this.setState({premiumEcoFare: event.target.value,
-                                                    type:true}, () => { this.validateField(name, value)});}}/>
-                                        </div>
-                                    </div>
+
                                     <div className="col-xxs-12 col-xs-6 mt">
                                         <div className="input-field">
                                             <label>Date:</label>
