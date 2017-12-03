@@ -27,14 +27,79 @@ class SearchPanel extends Component {
         }
     };
 
+    componentWillMount(){
+
+        if(this.props.flights){
+            if(!(this.props.flights.length>0)){
+                var flights = {
+                    Source:localStorage.flight_Source,
+                    Destination:localStorage.flight_Destination,
+                    Depart:localStorage.flight_Depart,
+                    Return:localStorage.flight_Return,
+                    Class:localStorage.flight_Class,
+                    Adult:localStorage.flight_Adult
+                };
+
+                FlightsAPI.getFlights(flights)
+                    .then((output) => {
+                        this.props.getFlights(output);
+
+                        if(flights.Return !== null && flights.Return !== "")
+                        {
+                            var flights_return = {
+                                Source:localStorage.flight_Source_return,
+                                Destination:localStorage.flight_Destination_return,
+                                Depart:localStorage.flight_Depart_return,
+                                Return:localStorage.flight_Return_return,
+                                Class:localStorage.flight_Class_return,
+                                Adult:localStorage.flight_Adult_return
+                            };
+
+                            FlightsAPI.getFlights(flights_return)
+                                .then((output) => {
+
+                                    this.props.getReturnFlights(output);
+                                    this.props.handler();
+
+                                });
+
+                        }
+                        else
+                            {
+                                this.props.handler();
+
+                        }
+
+                })
+
+            }}
+    }
     handleFlightSearch(){
+        if (typeof(Storage) !== "undefined") {
+            localStorage.flight_Source = this.state.Flights.Source;
+            localStorage.flight_Destination = this.state.Flights.Destination;
+            localStorage.flight_Depart = this.state.Flights.Depart;
+            localStorage.flight_Return = this.state.Flights.Return;
+            localStorage.flight_Class = this.state.Flights.Class;
+            localStorage.flight_Adult  = this.state.Flights.Adult;
+        }
+
         FlightsAPI.getFlights(this.state.Flights)
             .then((output) => {
                 this.props.getFlights(output);
 
 
-                if(this.state.Flights.Return !== null)
+                if(this.state.Flights.Return !== null && this.state.Flights.Return !== "")
                 {
+                    if (typeof(Storage) !== "undefined") {
+                        localStorage.flight_Source_return = this.state.Flights.Destination;
+                        localStorage.flight_Destination_return = this.state.Flights.Source;
+                        localStorage.flight_Depart_return = this.state.Flights.Return;
+                        localStorage.flight_Return_return = '';
+                        localStorage.flight_Class_return = this.state.Flights.Class;
+                        localStorage.flight_Adult_return  = this.state.Flights.Adult;
+                    }
+
                     console.log("Please Book Return Ticket also");
                     console.log(this.state.Flights.Return);
                     var return_payload ={};
@@ -216,4 +281,24 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(null, mapDispatchToProps)(SearchPanel);
+function mapStateToProps(state) {
+    const flights = Object.keys(state.getflights).map((items) => (
+        {
+            'flights' : state.getflights[items]
+
+
+        }
+    ));
+
+    const flights_return = Object.keys(state.getreturnflights).map((items) => (
+        {
+            'flights_return' : state.getreturnflights[items]
+
+
+        }
+    ));
+
+    return {flights,flights_return};
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPanel);

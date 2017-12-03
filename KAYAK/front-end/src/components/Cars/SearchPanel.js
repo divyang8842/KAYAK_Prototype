@@ -27,8 +27,8 @@ class SearchPanel extends Component {
 
     componentWillMount(){
         //cars
-        if(this.props.cars.cars){
-            if(!(this.props.cars.cars.length>0)){
+        if(this.props.cars){
+            if(!(this.props.cars.length>0)){
                 var cars = {
                     City:localStorage.car_City,
                     destination:localStorage.car_destination,

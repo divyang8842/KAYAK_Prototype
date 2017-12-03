@@ -41,8 +41,16 @@ class Results extends Component {
         price_filter:500,
         duration_filter:20,
         price_asc:1,
-        duration_asc:1
+        duration_asc:1,
+        currentPage: 1,
+        itemsPerPage: 3
     };
+
+    handleClick(event) {
+        this.setState({
+          currentPage: Number(event.target.id)
+        });
+      }
 
 
     flights(price_flag,duration_flag)
@@ -322,8 +330,20 @@ class Results extends Component {
             'margin-left':'10px'
         };
         if(this.state.array_for_sorting_return.length === 0 ){
+            // Logic for displaying current todos
+            const indexOfLastTodo = this.state.currentPage * this.state.itemsPerPage;
+            const indexOfFirstTodo = indexOfLastTodo - this.state.itemsPerPage;
+            const currentItems = this.state.array_for_sorting_result.slice(indexOfFirstTodo, indexOfLastTodo);
 
-        return this.state.array_for_sorting_result.map((flights,index) => {
+            const pageNumbers = [];
+            for (let i = 1; i <= Math.ceil(this.state.array_for_sorting_result.length / this.state.itemsPerPage); i++) {
+                pageNumbers.push(i);
+            }
+
+
+
+
+        const items= currentItems.map((flights,index) => {
             return (
                 <div className="col-md-10 col-sm-10 " style={styles}>
                     <div className="row">
@@ -410,12 +430,39 @@ class Results extends Component {
 
 
             )
-        })
+        });
+        const renderPageNumbers = pageNumbers.map(number => {
+            return (
+              <li
+                key={number}
+                id={number}
+                onClick={this.handleClick}
+              >
+                {number}
+              </li>
+            );
+        });
+        return (
+            <div>
+            <div>
+              <ul>
+                {items}
+              </ul>
+            </div>
+                <br/>
+            <div>
+              <ul id="page-numbers">
+                {renderPageNumbers}
+              </ul>
+            </div>
+            </div>
+          );
     }
 
     else {
             var result = {};
             var resuult_array = [];
+          
 
             this.state.array_for_sorting.map((flights, index) => {
 
@@ -455,7 +502,19 @@ class Results extends Component {
             console.log(resuult_array);
 
            if(this.state.array_for_sorting_result_return.length===0 && this.state.flag === 0)
-            { return resuult_array.map((flights, index) => {
+            {
+                // Logic for displaying current todos
+                const indexOfLastTodo = this.state.currentPage * this.state.itemsPerPage;
+                const indexOfFirstTodo = indexOfLastTodo - this.state.itemsPerPage;
+                const currentItems = resuult_array.slice(indexOfFirstTodo, indexOfLastTodo);
+
+                const pageNumbers = [];
+                for (let i = 1; i <= Math.ceil(resuult_array.length / this.state.itemsPerPage); i++) {
+                    pageNumbers.push(i);
+                }
+
+
+                const items= currentItems.map((flights, index) => {
                 return (
                     <div className="col-md-10 col-sm-10 " style={styles}>
                         <div className="row">
@@ -555,12 +614,54 @@ class Results extends Component {
                         </div>
                     </div>
                 )
-            })
+            });
+
+            const renderPageNumbers = pageNumbers.map(number => {
+                return (
+                  <li
+                    key={number}
+                    id={number}
+                    onClick={this.handleClick}
+                  >
+                    {number}
+                  </li>
+                );
+              });
+        
+              return (
+                  <div>
+                      <div>
+                          <ul>
+                              {items}
+                          </ul>
+                      </div>
+                      <br/>
+                      <div>
+                          <ul id="page-numbers">
+                              {renderPageNumbers}
+                          </ul>
+                      </div>
+                  </div>
+              );
+
+            
         }
 
         else
            {
-               return this.state.array_for_sorting_result_return.map((flights, index) => {
+            // Logic for displaying current todos
+            const indexOfLastTodo = this.state.currentPage * this.state.itemsPerPage;
+            const indexOfFirstTodo = indexOfLastTodo - this.state.itemsPerPage;
+            const currentItems = this.state.array_for_sorting_result_return.slice(indexOfFirstTodo, indexOfLastTodo);
+
+            const pageNumbers = [];
+            for (let i = 1; i <= Math.ceil(this.state.array_for_sorting_result_return.length / this.state.itemsPerPage); i++) {
+                pageNumbers.push(i);
+            }
+
+
+
+               const items = currentItems.map((flights, index) => {
                    return (
                        <div className="col-md-10 col-sm-10 " style={styles}>
                            <div className="row">
@@ -660,7 +761,36 @@ class Results extends Component {
                            </div>
                        </div>
                    )
-               })
+               });
+
+               const renderPageNumbers = pageNumbers.map(number => {
+                return (
+                  <li
+                    key={number}
+                    id={number}
+                    onClick={this.handleClick}
+                  >
+                    {number}
+                  </li>
+                );
+              });
+        
+              return (
+                  <div>
+                      <div className="row">
+                          <ul>
+                              {items}
+                          </ul>
+                      </div>
+                      <br/>
+                      <div className="row">
+                          <ul id="page-numbers">
+                              {renderPageNumbers}
+                          </ul>
+                      </div>
+                  </div>
+              );
+
            }
 
         }
@@ -669,7 +799,8 @@ class Results extends Component {
     constructor(props) {
         super(props)
 
-        this.handler = this.handler.bind(this)
+        this.handler = this.handler.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
     handler(){
         // this.forceUpdate();

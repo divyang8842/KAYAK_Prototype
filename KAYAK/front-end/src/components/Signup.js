@@ -4,6 +4,10 @@ import ReactDOM from 'react-dom';
 import Search from './Home';
 import FormErrors from "./FormErrors";
 import * as UserTracking from '../api/UserTracking';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import {updateTracking} from '../actions/Analytics/Tracking';
+import {Route, Link, Switch, withRouter} from 'react-router-dom';
 
 class Signup extends Component {
   state={
@@ -84,7 +88,6 @@ componentDidMount()
               break;
          case 'check':
           var x={uname:value}
-
           API.checkuser(x)
               .then((output) => {
                 checkUsername= output===1;
@@ -92,7 +95,7 @@ componentDidMount()
                 //console.log("USER STATE IN API:==== "+checkUsername);
                 this.setState({checkUsername:checkUsername});
               });
-              this.setState({checkUsername:checkUsername});
+              this.setState({checkUsername:!checkUsername});
               break;
           default:
               break;
@@ -110,7 +113,7 @@ componentDidMount()
 
   validateForm1() {
     //console.log("USER STATE IN VALIDATE:==== "+this.state.checkUsername+this.state.firstNameValid+this.state.lastNameValid + this.state.emailValid + this.state.passwordValid);
-      this.setState({formValid1: this.state.checkUsername===false &&this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid});
+      this.setState({formValid1: this.state.checkUsername &&this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid && this.state.passwordValid});
   }
 
   errorClass(error) {
@@ -223,4 +226,22 @@ handleSignup = (user) => {
         );
     }
 }
-export default Signup;
+
+function mapStateToProps(state) {
+    return {
+        tracking: state.tracking
+        // filteredHotels: state.filteredHotels
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+
+        updateTracking:updateTracking
+    }, dispatch);
+}
+
+
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Signup));
+

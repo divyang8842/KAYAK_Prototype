@@ -106,6 +106,15 @@ class Search extends Component {
 
   handleFlightSearch(){
       console.log(this.state.Flights);
+
+      if (typeof(Storage) !== "undefined") {
+          localStorage.flight_Source = this.state.Flights.Source;
+          localStorage.flight_Destination = this.state.Flights.Destination;
+          localStorage.flight_Depart = this.state.Flights.Depart;
+          localStorage.flight_Return = this.state.Flights.Return;
+          localStorage.flight_Class = this.state.Flights.Class;
+          localStorage.flight_Adult  = this.state.Flights.Adult;
+      }
       FlightsAPI.getFlights(this.state.Flights)
           .then((output) => {
               var tracking_object={};
@@ -139,6 +148,14 @@ class Search extends Component {
               if(this.state.Flights.Return !== null && this.state.Flights.Return !== "" )
               {
                     console.log("Please Book Return Ticket also");
+                  if (typeof(Storage) !== "undefined") {
+                      localStorage.flight_Source_return = this.state.Flights.Destination;
+                      localStorage.flight_Destination_return = this.state.Flights.Source;
+                      localStorage.flight_Depart_return = this.state.Flights.Return;
+                      localStorage.flight_Return_return = '';
+                      localStorage.flight_Class_return = this.state.Flights.Class;
+                      localStorage.flight_Adult_return  = this.state.Flights.Adult;
+                  }
                   console.log(this.state.Flights.Return);
                   var return_payload ={};
                   return_payload.Source =this.state.Flights.Destination;
