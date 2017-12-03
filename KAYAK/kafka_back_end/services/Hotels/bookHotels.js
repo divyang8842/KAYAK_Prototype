@@ -375,5 +375,37 @@ var setHotelReviews = function(msg,callback){
 
 };
 
+var checkHotelReviews = function(msg,callback){
+    var res = {};
+    console.log("In handle request:"+ JSON.stringify(msg));
+
+    var insertQuery="Select * from hotel_reviews where hotel_id=(?)";
+    var dataArry =  [];
+
+    dataArry.push(msg.hotelid);
+
+    console.log("DATA: "+dataArry);
+
+    mysql.setData(insertQuery,dataArry,function (err,results){
+        console.log("CHECK RES: "+results);
+        if (err){
+            //res.code = "401";
+            res = "Failed Insertion";
+            console.log("Failed signup---");
+            errorHandler.logError("HotelReview","HotelReview",err);
+            // callback(null, res);
+        }
+        else{
+            res.code = "200";
+            res.value=results;
+            console.log(results);
+        }
+        callback(null, res);
+
+    });
+
+};
+
 exports.handle_booking = handle_booking;
 exports.setHotelReviews=setHotelReviews;
+exports.checkHotelReviews=checkHotelReviews;

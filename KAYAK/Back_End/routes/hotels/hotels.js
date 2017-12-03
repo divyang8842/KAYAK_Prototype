@@ -123,3 +123,33 @@ exports.setHotelReviewData= function(req,res) {
             }
         });
 };
+
+exports.isHotelReviewPresent= function(req,res) {
+
+    var userid = req.body.hotelid;
+
+    console.log("Inside setReview");
+    var hotelid=userid;
+
+    kafka.make_request('hotels_topic',
+        {"action":"checkReviews",
+            "hotelid":hotelid,
+        },
+        function(err,results){
+            console.log(results);
+
+            if(results.code == 400)
+            {
+                console.log("Unable to set review");
+            }
+            else if(results.code == 200){
+                console.log("Review Inserted!");
+                res.status(200).json({status:"200",message:"Inserted Hotel Review Data Successfully..!!"});
+            }
+            else{
+                console.log("ERROR");
+                res.status(400).json({message:"Error while inserting review"});
+            }
+        });
+};
+

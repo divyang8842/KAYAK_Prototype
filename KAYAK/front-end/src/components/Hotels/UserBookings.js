@@ -29,7 +29,8 @@ class Bookings extends Component {
         reviewservice:'',
         reviewameneties:'',
         reviewroom:'',
-        reviewfood:''
+        reviewfood:'',
+        formValid:false
 
     };
 
@@ -140,6 +141,8 @@ var abc=hotelBookings.hotel;
         var onRowSelect =(row, isSelected, e) => {
             this.setState({update:true,visible: !this.state.visible});
 
+
+
             let rowStr = '';
             var obj = {};
             var myJsonString = JSON.stringify(row);
@@ -149,7 +152,7 @@ var abc=hotelBookings.hotel;
             obj = JSON.parse(myJsonString);
             // alert('The new row is:' + JSON.stringify(obj));
             // alert(obj.car_type);
-
+            checkIfReviewDone(obj.hotel_id);
             this.setState({
                 hotelid:obj.hotel_id,
                 cartype: obj.car_type,
@@ -177,6 +180,25 @@ var abc=hotelBookings.hotel;
             onRowDoubleClick:onRowSelect
 
         };
+
+        var checkIfReviewDone=(data)=>{
+            var abc={hotelid:data};
+            API.checkIfReviewDone(abc)
+                .then((status) => {
+                    //  alert(JSON.stringify(status))
+                    if (status.status == '200') {
+                        this.setState({
+
+                            message: "Inserted Hotel Review Data Successfully..!!",
+                        });
+                        alert("Review already submitted for this particular hotel");
+                        this.setState({update:true,visible: !this.state.visible});
+
+                    } else if (status === 401) {
+
+                    }
+                });
+        }
 
 
         return (
@@ -418,7 +440,7 @@ var abc=hotelBookings.hotel;
 
 
                                     <div className="col-xs-2">
-                                        <button type="button"  className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertRevieweDetails(this.state)}>Submit</button>
+                                        <button type="button" disabled={!this.state.formValid} className="btn btn-primary btn-block" value="Submit" onClick={() => this.insertRevieweDetails(this.state)}>Submit</button>
                                     </div>
 
 

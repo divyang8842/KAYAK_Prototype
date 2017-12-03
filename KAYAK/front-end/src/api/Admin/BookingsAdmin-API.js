@@ -95,3 +95,23 @@ export const insertReviewData = (payload) =>
             console.log("This is list error");
             return error;
         });
+
+
+export const checkIfReviewDone = (payload) =>
+    fetch(`${api}/isHotelReviewDone`, {
+        method: 'POST',
+        headers: {
+            ...headers,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+        credentials:'include',
+
+    }).then(res=>res.json())
+        .then(res => {
+            return res;
+        })
+        .catch(error => {
+            console.log("This is list error");
+            return error;
+        });

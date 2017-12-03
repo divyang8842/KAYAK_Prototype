@@ -98,8 +98,8 @@ class Hotel extends Component {
                 fieldValidationErrors.hotelcity = hotelCityValid ? '': ' is required';
                 break;
             case 'hotelstate':
-                hotelStateValid = value.length !== 0;
-                fieldValidationErrors.hotelstate = hotelStateValid ? '': ' is required';
+                hotelStateValid = value.length !== 0 && value.match('^(?:(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|P[AR]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY]))$');
+                fieldValidationErrors.hotelstate = hotelStateValid ? '': ' is invalid';
                 break;
 
              case 'hotelzipcode':
@@ -152,6 +152,7 @@ class Hotel extends Component {
                         hotelid:status.hotelid
                     });
                     this.viewHotelDetails();
+
                     alert("Inserted Hotel Data Successfully..!!")
                     this.setState({visible: !this.state.visible});
                 } else if (status === 401) {
