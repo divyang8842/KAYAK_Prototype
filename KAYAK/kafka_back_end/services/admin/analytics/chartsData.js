@@ -254,7 +254,7 @@ var getUserTrackingInfo = function(idtype,idtoCheck,callback){
     if(idtype=='user'){
         userid = makeSafeInt(idtoCheck);
         if(userid>0){
-          query = {'userid': userid};
+          query = {$or:[{'userid': userid},{'userid': userid.toString()}]};
         }
     }else if(idtype=='city'){
         userid = idtoCheck.length;
@@ -277,7 +277,7 @@ var getUserTrackingInfo = function(idtype,idtoCheck,callback){
                         titles.push(pages[i++].path);
                     }
                     //titles = pages.path;
-                    getPercentageOfPages(titles,responseData,callback);
+                    getPercentageOfPages(titles,responseData,idtype,idtoCheck,callback);
                     //data = [pages.FLIGHT_PAGE, pages.CAR_PAGE, pages.HOTEL_PAGE, pages.BILLING_FLIGHT, pages.BILLING_CAR, pages.BILLING_HOTEL, pages.SEARCH_PAGE, pages.SIGNIN_PAGE, pages.SIGNUP_PAGE];
                 }else{
                     responseData = {"title":titles,"data":data};
@@ -290,9 +290,9 @@ var getUserTrackingInfo = function(idtype,idtoCheck,callback){
     });
 };
 
-var getPercentageOfPages=function(pageArr,returnData,callback){
+var getPercentageOfPages=function(pageArr,returnData,type,id,callback){
 
-    /*mongo.connect(mongoURL, function () {
+  /*  mongo.connect(mongoURL, function () {
         var coll = mongo.collection('UserTracking');
         coll.aggregate([
             { "$match": { "user_id": userid } },
@@ -324,9 +324,18 @@ var getPercentageOfPages=function(pageArr,returnData,callback){
 
     mongo.connect(mongoURL, function () {
         var coll = mongo.collection('UserTracking');
-        coll.findOne({},function (err, pages) {
+        var query = {};
+        if(type='user'){
+            query = {$or:[{'userid': id},{'userid': id.toString()}]};
+        }else if(type='city'){
+            query = {'city': id};
+        }
+        coll.aggregate([
+            { "$match": query },
+            {"$group" : {_id:"$current_page", count:{$sum:1}}}
+        ]).toArray(function (err, pages) {
 
-            //var nLength =  pageArr.length;
+           /* //var nLength =  pageArr.length;
             //
             console.log("pages: "+JSON.stringify(pages));
             var total = makeSafeInt(pages.FLIGHT_COUNT)
@@ -350,7 +359,7 @@ console.log("total: "+total);
                     {'_id': 'SIGNUP_PAGE', 'count': ((makeSafeInt(pages.SIGNUP_PAGE_COUNT) / total) * 100)},
                     {'_id': 'SIGNIN_PAGE', 'count': ((makeSafeInt(pages.SIGNIN_PAGE_COUNT) / total) * 100)},
                     {'_id': 'SEARCH_PAGE', 'count': ((makeSafeInt(pages.SEARCH_COUNT) / total) * 100)}
-                ];
+                ];*/
 
                 console.log("pages: "+JSON.stringify(pages));
             var nLength = pageArr.length;
@@ -372,13 +381,18 @@ console.log("total: "+total);
                         j++;
                     }
                     i++;
-                    /*if (data.length != i) {
-                        userid = parseInt(userid);
-                        data.push(userid * i * 111 + 15 * 17);
-                    }*/
+                    if(data.length!=i){
+                        data.push()
+                    }
                 }
                 dataArry.push(data);
         }
+
+        while(nLength<=5){
+            dataArry.push([]);
+            pageArr.push([]);
+        }
+
             returnData={"title":pageArr,"data":dataArry};
             callback(null,returnData);
         });
