@@ -110,6 +110,7 @@ class Search extends Component {
             var currentpath = this.props.tracking.path;
             var timenow = Date.now();
             var currentpage = "HOTEL_PAGE";
+            if(currentpath[currentpath.length-1] != currentpage)
             currentpath.push("HOTEL_PAGE");
             this.props.updateTracking({currentpath, currentpage, timenow});
             this.props.history.push("/Hotels");
@@ -183,6 +184,7 @@ class Search extends Component {
                   var currentpath = this.props.tracking.path;
                   var timenow = Date.now();
                   var currentpage = "FLIGHT_PAGE";
+                  if(currentpath[currentpath.length-1] != currentpage)
                   currentpath.push("FLIGHT_PAGE");
                   this.props.updateTracking({currentpath, currentpage, timenow});
 
@@ -292,6 +294,7 @@ class Search extends Component {
             var currentpath = this.props.tracking.path;
             var timenow = Date.now();
             var currentpage = "CAR_PAGE";
+            if(currentpath[currentpath.length-1] != currentpage)
             currentpath.push("CAR_PAGE");
             this.props.updateTracking({currentpath, currentpage, timenow});
             this.props.history.push("/Cars");

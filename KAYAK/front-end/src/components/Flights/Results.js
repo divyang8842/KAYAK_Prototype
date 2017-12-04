@@ -416,6 +416,7 @@ class Results extends Component {
                                 var currentpath = this.props.tracking.path;
                                 var timenow = Date.now();
                                 var currentpage = "BILLING_FLIGHT";
+                                if(currentpath[currentpath.length-1] != currentpage)
                                 currentpath.push(currentpage);
                                 this.props.updateTracking({currentpath, currentpage, timenow});
                                 this.props.history.push("/flightsbooking");
