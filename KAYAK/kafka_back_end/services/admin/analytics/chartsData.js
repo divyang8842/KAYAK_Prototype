@@ -144,7 +144,7 @@ function getTop10Numbers(msg, callback) {
             }
 
             if(action=='count') {
-                coll.find({'year': year}).sort({'count': -1}).limit(10).toArray(function (err, result) {
+                coll.find({$or:[{'year': year.toString()},{'year': parseInt(year)}]}).sort({'count': -1}).limit(10).toArray(function (err, result) {
                     if (!err) {
                         resultData = result;
                         var titles = [];
@@ -161,7 +161,7 @@ function getTop10Numbers(msg, callback) {
                     }
                 });
             }else{
-                coll.find({'year': year}).sort({'revenue': -1}).limit(10).toArray(function (err, result) {
+                coll.find({$or:[{'year': year.toString()},{'year': parseInt(year)}]}).sort({'revenue': -1}).limit(10).toArray(function (err, result) {
                     if (!err) {
                         resultData = result;
                         var titles = [];

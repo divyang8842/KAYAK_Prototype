@@ -23,16 +23,14 @@ function handle_request(msg, callback){
     if(msg.current_page ==="FLIGHT_PAGE")
     {
 
-        coll.update({user_id:msg.user_id}, {
-                $push: {
-                    TRACKING_ARRAY: {
+        coll.insert( {
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
                         time:msg.timeonpage
 
-                    }}}
+                    }
             , function (err, user) {
                 console.log("Inside Updated FLIGHT_PAGE Entry");
 
