@@ -190,8 +190,9 @@ var clicksPerPage = function(callback){
                 //var length = pages;
                 var titles = ["Flights","Cars","Hotels","Flight booking","Car booking","Hotel Booking","Search"];
                 var data = [0,0,0,0,0,0,0,0];
-                if(pages && pages.FLIGHT_PAGE){
-                    data = [pages.FLIGHT_COUNT, pages.CAR_COUNT, pages.HOTEL_COUNT, pages.BILLING_FLIGHT_COUNT, pages.BILLING_CAR_COUNT, pages.BILLING_HOTEL_COUNT, pages.SEARCH_COUNT];
+                console.log("pages is "+JSON.stringify(pages));
+                if(pages){
+                    data = [pages.FLIGHT_COUNT?pages.FLIGHT_COUNT:0, pages.CAR_COUNT?pages.CAR_COUNT:0, pages.HOTEL_COUNT?pages.HOTEL_COUNT:0, pages.BILLING_FLIGHT_COUNT?pages.BILLING_FLIGHT_COUNT:0, pages.BILLING_CAR_COUNT?pages.BILLING_CAR_COUNT:0, pages.BILLING_HOTEL_COUNT?pages.BILLING_HOTEL_COUNT:0, pages.SEARCH_COUNT?pages.SEARCH_COUNT:0];
                 }
                 responseData = {"title":titles,"data":data};
             }
@@ -211,8 +212,8 @@ var leastSeenArea = function(callback){
                 var titles = ["FLIGHT_PAGE","CAR_PAGE","HOTEL_PAGE","BILLING_FLIGHT","BILLING_CAR","BILLING_HOTEL","SEARCH_PAGE"];
                 var data = [0,0,0,0,0,0,0,0];
 
-                if(pages && pages.FLIGHT_PAGE){
-                    data = [pages.FLIGHT_COUNT, pages.CAR_COUNT, pages.HOTEL_COUNT, pages.BILLING_FLIGHT_COUNT, pages.BILLING_CAR_COUNT, pages.BILLING_HOTEL_COUNT, pages.SEARCH_COUNT];
+                if(pages){
+                    data = [pages.FLIGHT_COUNT?pages.FLIGHT_COUNT:0, pages.CAR_COUNT?pages.CAR_COUNT:0, pages.HOTEL_COUNT?pages.HOTEL_COUNT:0, pages.BILLING_FLIGHT_COUNT?pages.BILLING_FLIGHT_COUNT:0, pages.BILLING_CAR_COUNT?pages.BILLING_CAR_COUNT:0, pages.BILLING_HOTEL_COUNT?pages.BILLING_HOTEL_COUNT:0, pages.SEARCH_COUNT?pages.SEARCH_COUNT:0];
                 }
 
                 var min = data[0];
