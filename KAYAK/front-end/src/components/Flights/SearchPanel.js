@@ -99,7 +99,7 @@ class SearchPanel extends Component {
                         localStorage.flight_Class_return = this.state.Flights.Class;
                         localStorage.flight_Adult_return  = this.state.Flights.Adult;
                     }
-                    
+
                     console.log("Please Book Return Ticket also");
                     console.log(this.state.Flights.Return);
                     var return_payload ={};
