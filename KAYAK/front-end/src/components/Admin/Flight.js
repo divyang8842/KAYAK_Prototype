@@ -54,6 +54,7 @@ class Flight extends Component {
         flightnumber: '',
         airlinename: '',
         stationname:'',
+        destination:'',
         arrivaltime:'',
 
         flightduration:'',
@@ -62,6 +63,12 @@ class Flight extends Component {
         firstClassFare:'',
         businessClassFare:'',
         premiumEcoFare:'',
+        stops:'',
+        date:'',
+        economyseats:'',
+        firstseats:'',
+        businessseats:'',
+        premiumseats:'',
 
         formErrors: {flightnumber:'',airlinename:'',stationname: '',flightduration:'', flightclasses:'',economyClassFare:'',firstClassFare:'',businessClassFare:'',premiumEcoFare:''},
         type:false,
@@ -541,6 +548,62 @@ class Flight extends Component {
                                             <input type="text" placeholder="Enter Premium Economy Class Fare" value={this.state.premiumEcoFare} className="form-control" onChange={(event)=>{const name="premiumEcoFare"
                                                 const value=event.target.value
                                                 this.setState({premiumEcoFare: event.target.value,
+                                                    type:true}, () => { this.validateField(name, value)});}}/>
+                                        </div>
+                                    </div>
+                                    <div className="col-xxs-12 col-xs-6 mt">
+                                        <div className="input-field">
+                                            <label>Stops:</label>
+                                            <input type="text" placeholder="Enter Stops" value={this.state.premiumEcoFare} className="form-control" onChange={(event)=>{const name="premiumEcoFare"
+                                                const value=event.target.value
+                                                this.setState({premiumEcoFare: event.target.value,
+                                                    type:true}, () => { this.validateField(name, value)});}}/>
+                                        </div>
+                                    </div>
+                                    <div className="col-xxs-12 col-xs-6 mt">
+                                        <div className="input-field">
+                                            <label>Date:</label>
+                                            <input type="text" placeholder="Enter Date" value={this.state.date} className="form-control" onChange={(event)=>{const name="premiumEcoFare"
+                                                const value=event.target.value
+                                                this.setState({date: event.target.value,
+                                                    type:true}, () => { this.validateField(name, value)});}}/>
+                                        </div>
+                                    </div>
+                                    <div className="col-xxs-12 col-xs-6 mt">
+                                        <div className="input-field">
+                                            <label>Economy Seats:</label>
+                                            <input type="text" placeholder="Enter Economy Seats" value={this.state.economyseats} className="form-control" onChange={(event)=>{const name="premiumEcoFare"
+                                                const value=event.target.value
+                                                this.setState({economyseats: event.target.value,
+                                                    type:true}, () => { this.validateField(name, value)});}}/>
+                                        </div>
+                                    </div>
+                                    <div className="col-xxs-12 col-xs-6 mt">
+                                        <div className="input-field">
+                                            <label>First Seats:</label>
+                                            <input type="text" placeholder="Enter First Seats" value={this.state.firstseats} className="form-control" onChange={(event)=>{const name="premiumEcoFare"
+                                                const value=event.target.value
+                                                this.setState({firstseats: event.target.value,
+                                                    type:true}, () => { this.validateField(name, value)});}}/>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-xxs-12 col-xs-6 mt">
+                                        <div className="input-field">
+                                            <label>Business Seats:</label>
+                                            <input type="text" placeholder="Enter Business Seats" value={this.state.businessseats} className="form-control" onChange={(event)=>{const name="premiumEcoFare"
+                                                const value=event.target.value
+                                                this.setState({businessseats: event.target.value,
+                                                    type:true}, () => { this.validateField(name, value)});}}/>
+                                        </div>
+                                    </div>
+
+                                    <div className="col-xxs-12 col-xs-6 mt">
+                                        <div className="input-field">
+                                            <label>Premium Seats:</label>
+                                            <input type="text" placeholder="Enter Premium Seats" value={this.state.premiumseats} className="form-control" onChange={(event)=>{const name="premiumEcoFare"
+                                                const value=event.target.value
+                                                this.setState({premiumseats: event.target.value,
                                                     type:true}, () => { this.validateField(name, value)});}}/>
                                         </div>
                                     </div>
