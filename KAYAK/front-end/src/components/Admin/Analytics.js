@@ -10,7 +10,7 @@ class Analytics extends Component {
   state = {
     carCount:[], carRevenue:{}, flightCount:[], flightRevenue:[], pageClicks:{},tracking1:[],tracking2:[],tracking3:[],
     hotelCount:{}, hotelRevenue:{}, cityCount:{}, cityRevenue:{},leastSeen:{},UTtitles:[],UTdata:[],tracking4:[],tracking5:[],
-    visible1:false, visible2:false, visible3:false, visible4:false, visible5:false,visible6:false,visible7:true,
+    visible1:false, visible2:false, visible3:false, visible4:false, visible5:false,visible6:false,visible7:true,pageTime:[],
     flag1:false, flag2:false, flag3:false, flag4:false, flag5:false,users: [],cities:[], count:0,userTitles:[],userData:[]
   };
 
@@ -52,6 +52,14 @@ class Analytics extends Component {
               if (result) {
 this.setState({userTitles:result.user_tracting.title,userData:result.user_tracting.data});
                 this.setState({
+                  pageTime:{
+                      labels: result.user_tracting.timeTitle[0],
+                      datasets:[{ label:'Time Per Page',
+                          data:result.user_tracting.timeData[0],
+                          backgroundColor:[
+                              'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                              'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                              'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
                   tracking1:{
                       labels: result.user_tracting.title[0],
                       datasets:[{ label:'Tracking',
@@ -109,6 +117,14 @@ this.setState({userTitles:result.user_tracting.title,userData:result.user_tracti
               if (result) {
                 this.setState({userTitles:result.user_tracting.title,userData:result.user_tracting.data});
                 this.setState({
+                  pageTime:{
+                      labels: result.user_tracting.timeTitle[0],
+                      datasets:[{ label:'Time Per Page',
+                          data:result.user_tracting.timeData[0],
+                          backgroundColor:[
+                              'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                              'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                              'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
                   tracking1:{
                       labels: result.user_tracting.title[0],
                       datasets:[{ label:'Tracking',
@@ -163,6 +179,14 @@ this.setState({userTitles:result.user_tracting.title,userData:result.user_tracti
               if (result) {
 this.setState({userTitles:result.user_tracting.title,userData:result.user_tracting.data});
                 this.setState({
+                  pageTime:{
+                      labels: result.user_tracting.timeTitle[0],
+                      datasets:[{ label:'Time Per Page',
+                          data:result.user_tracting.timeData[0],
+                          backgroundColor:[
+                              'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                              'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                              'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
                   tracking1:{
                       labels: result.user_tracting.title[0],
                       datasets:[{ label:'Tracking',
@@ -315,31 +339,35 @@ this.setState({userTitles:result.user_tracting.title,userData:result.user_tracti
 
   showDiv(n) {
     if(n===1){
-      this.setState({visible1: true,visible2: false,visible3: false,visible4: false,visible5: false,visible6: false,visible7: false,
+      this.setState({visible1: true,visible2: false,visible3: false,visible4: false,visible5: false,visible6: false,visible7: false,visible8: false,
         flag1: false,flag2: true,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: false});
     }
     else if(n===2){
-      this.setState({visible1:false,visible2: true,visible3: false,visible4: false,visible5: false,visible6: false,visible7: false,
+      this.setState({visible1:false,visible2: true,visible3: false,visible4: false,visible5: false,visible6: false,visible7: false,visible8: false,
         flag1: false,flag2: false,flag3: false,flag4: true,flag5: false,flag6: false,flag7: false,flag8: false});
     }
     else if(n===3){
-      this.setState({visible1:false,visible2: false,visible3: true,visible4: false,visible5: false,visible6: false,visible7: false,
+      this.setState({visible1:false,visible2: false,visible3: true,visible4: false,visible5: false,visible6: false,visible7: false,visible8: false,
         flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: true,flag7: false,flag8: false});
     }
     else if(n===4){
-      this.setState({visible1:false,visible2: false,visible3: false,visible4: true,visible5: false,visible6: false,visible7: false,
+      this.setState({visible1:false,visible2: false,visible3: false,visible4: true,visible5: false,visible6: false,visible7: false,visible8: false,
         flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: true});
     }
     else if(n===5){
-      this.setState({visible1:false,visible2: false,visible3: false,visible4: false,visible5: true,visible6: false,visible7: false,
+      this.setState({visible1:false,visible2: false,visible3: false,visible4: false,visible5: true,visible6: false,visible7: false,visible8: false,
         flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: false});
     }
     else if(n===6){
-      this.setState({visible1:false,visible2: false,visible3: false,visible4: false,visible5: false,visible6: true,visible7: false,
+      this.setState({visible1:false,visible2: false,visible3: false,visible4: false,visible5: false,visible6: true,visible7: false,visible8: false,
         flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: false});
     }
     else if(n===7){
-      this.setState({visible1:false,visible2: false,visible3: false,visible4: false,visible5: false,visible6: false,visible7: true,
+      this.setState({visible1:false,visible2: false,visible3: false,visible4: false,visible5: false,visible6: false,visible7: true,visible8: false,
+        flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: false});
+    }
+    else if(n===8){
+      this.setState({visible1:false,visible2: false,visible3: false,visible4: false,visible5: false,visible6: false,visible7: false,visible8: true,
         flag1: false,flag2: false,flag3: false,flag4: false,flag5: false,flag6: false,flag7: false,flag8: false});
     }
   }
@@ -392,8 +420,8 @@ this.setState({userTitles:result.user_tracting.title,userData:result.user_tracti
         <div className="row">
 
         <div className="w3-bar">
-        <div className="col-xxs-1 col-xs-1 mt"></div>
-        <div className="col-xxs-11 col-xs-11 mt">
+
+        <div className="col-xxs-12 col-xs-12 mt">
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="User tracking" onClick={() => this.showDiv(7)}>User Tracking</button>
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 car agency" onClick={() => this.showDiv(1)}>Top 10 car agency</button>
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 flights" onClick={() => this.showDiv(2)}>Top 10 flights</button>
@@ -401,6 +429,7 @@ this.setState({userTitles:result.user_tracting.title,userData:result.user_tracti
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Top 10 cities" onClick={() => this.showDiv(4)}>Top 10 cities</button>
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Page clicks" onClick={() => this.showDiv(5)}>Page clicks</button>
         <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Least Seen" onClick={() => this.showDiv(6)}>Least Seen</button>
+        <button type="button" style={{color:"#F78536"}} className="w3-bar-item w3-button" value="Time per page" onClick={() => this.showDiv(8)}>Time per page</button>
         </div>
         </div>
         </div>
@@ -556,7 +585,32 @@ this.setState({userTitles:result.user_tracting.title,userData:result.user_tracti
                           </div>
                           </div>
                         )
-                        : null))))))
+                        : (this.state.visible8
+                          ? (<div>
+                            <div className="row">
+                            <div className="col-xxs-4 col-xs-4 mt"></div>
+                            <div className="col-xxs-2 col-xs-2 mt">
+                            <select onChange={(event)=>{this.getChartData({"year":"",type:"usertracking","userid":event.target.value})}}>
+                            <option value="" disabled selected>Select User</option>
+                            {this.state.users.map(id =>
+                              <option key={id.user_id} value={id.user_id}>{id.fname }</option>
+                            )};
+                            </select>
+                            </div>
+
+                            <div className="col-xxs-2 col-xs-2 mt">
+                            <select onChange={(event)=>{this.getChartData({"year":"",type:"usertracking","city":event.target.value})}}>
+                            <option value="" disabled selected>Select City</option>
+                            {this.state.cities.map(city =>
+                              <option key={city} value={city}>{city}</option>
+                            )};
+                            </select>
+                            </div>
+                            </div>
+                          <Chart chartData={this.state.pageTime} chartTitle="Page Time" legendPosition="bottom"/>
+                            </div>
+                          )
+                          : null)))))))
         }
       </div>
 
