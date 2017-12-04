@@ -9,8 +9,10 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 /**
  * This layout demonstrates how to use a grid with a dynamic number of elements.
  */
-var graphToShow = '';
+var graphToShow = "" ;
 class AddRemoveLayout extends React.PureComponent  {
+
+
     static defaultProps = {
         className: "layout",
         cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
@@ -181,9 +183,9 @@ class AddRemoveLayout extends React.PureComponent  {
 
 
             <div key={i} data-grid={el} >
-                {el.add ?
+                {/*{el.add ?
                     <span className="add text" onClick={this.onAddItem} title="You can add an item by clicking here, too.">Add +</span>
-                    : <span className="text">{i}</span>}
+                    : <span className="text">{i}</span>}*/}
                 <span className="remove" style={removeStyle} onClick={()=> this.onRemoveItem(i)}>delete</span>
 
                 {graphToShow=='CAR_COUNT'
@@ -245,12 +247,17 @@ class AddRemoveLayout extends React.PureComponent  {
     }
 
     onRemoveItem(i) {
-        //alert('deleting');
+        alert('deleting');
         console.log('removing', i);
         this.setState({items: _.reject(this.state.items, {i: i})});
     }
 
+    componentWillMount(){
+        this.getChartData({'year':2017});
+    }
+
     render() {
+
         return (
 
             <div class="container">
