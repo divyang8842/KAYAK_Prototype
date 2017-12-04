@@ -55,6 +55,20 @@ class Search extends Component {
         localStorage.Rooms = this.state.Hotels.Rooms;
         localStorage.Guests = this.state.Hotels.Guests;
     }
+
+      var fromDate= new Date(this.state.Hotels.Checkin);
+      var toDate = new Date(this.state.Hotels.Checkout);
+
+      if(this.state.Hotels.City==="" || this.state.Hotels.Checkin ==="" ||  this.state.Hotels.Checkout ==="" ||  this.state.Hotels.Rooms ==="" )
+      {
+          alert("Please enter valid Details");
+
+      }
+      else {
+      if(fromDate <= toDate)
+      {
+
+
     HotelsAPI.getHotels(this.state.Hotels)
     .then((result) => {
         var tracking_object={};
@@ -102,6 +116,13 @@ class Search extends Component {
             }
         }
     });
+
+      }
+      else {
+          alert("Please enter valid dates");
+
+      }
+      }
   }
 
   handleFlightSearch(){
@@ -115,72 +136,101 @@ class Search extends Component {
           localStorage.flight_Class = this.state.Flights.Class;
           localStorage.flight_Adult  = this.state.Flights.Adult;
       }
-      FlightsAPI.getFlights(this.state.Flights)
-          .then((output) => {
-              var tracking_object={};
 
-              this.props.getFlights(output);
-
-              tracking_object.current_page="FLIGHT_PAGE";
-              tracking_object.previous_page="SEARCH_PAGE";
-              tracking_object.user_id="jay";
-              tracking_object.session_id="1";
-              var prev_time = this.props.tracking.time;
-              var current_time = Date.now();
-              var diff= Math.abs(current_time-prev_time);
-              console.log("Time on page:"+diff);
-              tracking_object.timeonpage= diff;
+      var fromDate= new Date(this.state.Flights.Depart);
+      var toDate;
 
 
-              UserTracking.userTracking(tracking_object)
-                  .then((status) => {
-                  console.log("Tracking status:"+status);
+      if(this.state.Flights.Return ==="")
+      {
+          toDate = fromDate;
+      }
+      else {
+          toDate = new Date(this.state.Flights.Return);
+      }
+      if(this.state.Flights.Source ==="" || this.state.Flights.Destination ==="" || this.state.Flights.Depart==="" || this.state.Flights.Class ==="" || this.state.Flights.Adult ==="")
+      {
+          alert("Please enter valid Details");
+      }
+      else{
+
+      if (+fromDate <= +toDate)
+      {
+          FlightsAPI.getFlights(this.state.Flights)
+              .then((output) => {
+                  var tracking_object={};
+
+                  this.props.getFlights(output);
+
+                  tracking_object.current_page="FLIGHT_PAGE";
+                  tracking_object.previous_page="SEARCH_PAGE";
+                  tracking_object.user_id="jay";
+                  tracking_object.session_id="1";
+                  var prev_time = this.props.tracking.time;
+                  var current_time = Date.now();
+                  var diff= Math.abs(current_time-prev_time);
+                  console.log("Time on page:"+diff);
+                  tracking_object.timeonpage= diff;
 
 
-                  });
-                  //Tracking userpath
-            var currentpath = this.props.tracking.path;
-            var timenow = Date.now();
-            var currentpage = "FLIGHT_PAGE";
-            currentpath.push("FLIGHT_PAGE");
-            this.props.updateTracking({currentpath, currentpage, timenow});
+                  UserTracking.userTracking(tracking_object)
+                      .then((status) => {
+                          console.log("Tracking status:"+status);
 
-              if(this.state.Flights.Return !== null && this.state.Flights.Return !== "" )
-              {
-                    console.log("Please Book Return Ticket also");
-                  if (typeof(Storage) !== "undefined") {
-                      localStorage.flight_Source_return = this.state.Flights.Destination;
-                      localStorage.flight_Destination_return = this.state.Flights.Source;
-                      localStorage.flight_Depart_return = this.state.Flights.Return;
-                      localStorage.flight_Return_return = '';
-                      localStorage.flight_Class_return = this.state.Flights.Class;
-                      localStorage.flight_Adult_return  = this.state.Flights.Adult;
-                  }
-                  console.log(this.state.Flights.Return);
-                  var return_payload ={};
-                  return_payload.Source =this.state.Flights.Destination;
-                  return_payload.Destination=this.state.Flights.Source;
-                  return_payload.Depart=this.state.Flights.Return;
-                  return_payload.Return='';
-                  return_payload.Class=this.state.Flights.Class;
-                  return_payload.Adult=this.state.Flights.Adult;
-
-                  FlightsAPI.getFlights(return_payload)
-                      .then((output) => {
-
-                          this.props.getReturnFlights(output);
-                          this.props.history.push("/Flights");
 
                       });
+                  //Tracking userpath
+                  var currentpath = this.props.tracking.path;
+                  var timenow = Date.now();
+                  var currentpage = "FLIGHT_PAGE";
+                  currentpath.push("FLIGHT_PAGE");
+                  this.props.updateTracking({currentpath, currentpage, timenow});
 
-              }
-              else
-              {
-                  this.props.history.push("/Flights");
-              }
+                  if(this.state.Flights.Return !== null && this.state.Flights.Return !== "" )
+                  {
+                      console.log("Please Book Return Ticket also");
+                      if (typeof(Storage) !== "undefined") {
+                          localStorage.flight_Source_return = this.state.Flights.Destination;
+                          localStorage.flight_Destination_return = this.state.Flights.Source;
+                          localStorage.flight_Depart_return = this.state.Flights.Return;
+                          localStorage.flight_Return_return = '';
+                          localStorage.flight_Class_return = this.state.Flights.Class;
+                          localStorage.flight_Adult_return  = this.state.Flights.Adult;
+                      }
+                      console.log(this.state.Flights.Return);
+                      var return_payload ={};
+                      return_payload.Source =this.state.Flights.Destination;
+                      return_payload.Destination=this.state.Flights.Source;
+                      return_payload.Depart=this.state.Flights.Return;
+                      return_payload.Return='';
+                      return_payload.Class=this.state.Flights.Class;
+                      return_payload.Adult=this.state.Flights.Adult;
+
+                      FlightsAPI.getFlights(return_payload)
+                          .then((output) => {
+
+                              this.props.getReturnFlights(output);
+                              this.props.history.push("/Flights");
+
+                          });
+
+                  }
+                  else
+                  {
+                      this.props.history.push("/Flights");
+                  }
 
 
-          });
+              });
+
+      }
+      else
+          {
+              alert("Please enter valid dates");
+
+          }
+      }
+
 
 
   }
@@ -193,6 +243,17 @@ class Search extends Component {
             localStorage.car_Dropoff = this.state.Cars.Dropoff;
             localStorage.car_different_drop_off = this.state.Cars.different_drop_off;
         }
+
+        var fromDate= new Date(this.state.Cars.Pickup);
+        var toDate = new Date(this.state.Cars.Dropoff);
+
+        if(this.state.Cars.City ==="" || this.state.Cars.Dropoff === "" || this.state.Cars.Pickup==="" )
+        {
+            alert("Please enter valid Details");
+        }
+        else {
+            if(fromDate <= toDate){
+
 
         CarsAPI.getCars(this.state.Cars)
             .then((output) => {
@@ -236,6 +297,11 @@ class Search extends Component {
             this.props.history.push("/Cars");
 
             });
+            }
+            else {
+                alert("Please enter valid Dates");
+            }
+        }
     }
 
   render() {
