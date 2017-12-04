@@ -28,7 +28,8 @@ function handle_request(msg, callback){
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:msg.timeonpage
+                        time:msg.timeonpage,
+                        city:msg.city
 
                     }
             , function (err, user) {
@@ -84,16 +85,15 @@ function handle_request(msg, callback){
        else if(msg.current_page ==="CAR_PAGE")
         {
 
-            coll.update({user_id:msg.user_id}, {
-                    $push: {
-                        TRACKING_ARRAY: {
+            coll.insert( {
                             current_page: msg.current_page,
                             previous_page:msg.previous_page,
                             user_id:msg.user_id,
                             session_id:msg.session_id,
-                            time:msg.timeonpage
+                            time:msg.timeonpage,
+                    city:msg.city
 
-                        }}}  //,{ $inc: { CAR_COUNT: 1} }
+                        }  //,{ $inc: { CAR_COUNT: 1} }
                 , function (err, user) {
 
                     console.log("Inside Updated CAR_PAGE Entry");
@@ -150,16 +150,15 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="BILLING_FLIGHT")
     {
 
-        coll.update({user_id:msg.user_id}, {
-                $push: {
-                    TRACKING_ARRAY: {
+        coll.insert({
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:msg.timeonpage
+                        time:msg.timeonpage,
+                city:msg.city
 
-                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+                    }  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
 
                 console.log("Inside Updated BILLING_FLIGHT_PAGE Entry");
@@ -216,16 +215,15 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="SEARCH_PAGE")
     {
 
-        coll.update({user_id:msg.user_id}, {
-                $push: {
-                    TRACKING_ARRAY: {
+        coll.insert( {
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:msg.timeonpage
+                        time:msg.timeonpage,
+                city:msg.city
 
-                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+                    }  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
 
                 console.log("Inside Updated SEARCH_PAGE Entry");
@@ -282,16 +280,15 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="HOTEL_PAGE")
     {
 
-        coll.update({user_id:msg.user_id}, {
-                $push: {
-                    TRACKING_ARRAY: {
+        coll.insert({
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:msg.timeonpage
+                        time:msg.timeonpage,
+                city:msg.city
 
-                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+                    }  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
 
                 console.log("Inside Updated HOTEL_PAGE Entry");
@@ -348,16 +345,15 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="BILLING_HOTEL")
     {
 
-        coll.update({user_id:msg.user_id}, {
-                $push: {
-                    TRACKING_ARRAY: {
+        coll.insert({
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:msg.timeonpage
+                        time:msg.timeonpage,
+                city:msg.city
 
-                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+                    }  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
 
                 console.log("Inside Updated HOTEL_PAGE Entry");
@@ -414,16 +410,15 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="BILLING_CAR")
     {
 
-        coll.update({user_id:msg.user_id}, {
-                $push: {
-                    TRACKING_ARRAY: {
+        coll.insert({
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:msg.timeonpage
+                        time:msg.timeonpage,
+                city:msg.city
 
-                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+                    }  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
 
                 console.log("Inside Updated HOTEL_PAGE Entry");
@@ -480,16 +475,15 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="SIGNIN_PAGE")
     {
 
-        coll.update({user_id:msg.user_id}, {
-                $push: {
-                    TRACKING_ARRAY: {
+        coll.insert({
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:msg.timeonpage
+                        time:msg.timeonpage,
+                city:msg.city
 
-                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+                    }  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
 
                 console.log("Inside Updated HOTEL_PAGE Entry");
@@ -546,16 +540,15 @@ function handle_request(msg, callback){
     else if(msg.current_page ==="SIGNUP_PAGE")
     {
 
-        coll.update({user_id:msg.user_id}, {
-                $push: {
-                    TRACKING_ARRAY: {
+        coll.insert({
                         current_page: msg.current_page,
                         previous_page:msg.previous_page,
                         user_id:msg.user_id,
                         session_id:msg.session_id,
-                        time:msg.timeonpage
+                        time:msg.timeonpage,
+                city:msg.city
 
-                    }}}  //,{ $inc: { CAR_COUNT: 1} }
+                    }  //,{ $inc: { CAR_COUNT: 1} }
             , function (err, user) {
 
                 console.log("Inside Updated HOTEL_PAGE Entry");

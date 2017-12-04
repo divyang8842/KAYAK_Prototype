@@ -49,7 +49,7 @@ function handle_request(msg, callback){
                                     start_date:msg.start_date,
                                     end_date:msg.end_date,
                                     car_rent:msg.car_rent,
-                                    city:msg.city``
+                                    city:msg.city
                                 }
                             }
                         }, function (err, user) {
