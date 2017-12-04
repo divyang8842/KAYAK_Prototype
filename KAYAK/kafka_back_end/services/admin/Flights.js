@@ -70,12 +70,12 @@ var insertFlightData = function(msg,callback){
                 }
                 else
                 {
-                    dataArry.push('');
+                    dataArry.push(msg.departuretime);
 
                 }
                 if( i=== 0)
                 {
-                    dataArry.push('');
+                    dataArry.push(msg.arrivaltime);
                 }
                 else
                 {

@@ -43,7 +43,7 @@ class Results extends Component {
         price_asc:1,
         duration_asc:1,
         currentPage: 1,
-        itemsPerPage: 3
+        itemsPerPage: 5
     };
 
     handleClick(event) {
@@ -57,6 +57,8 @@ class Results extends Component {
     {
        // IF condition decides the flow for Single trip processing/ Round Trip processing
         //Single Trip Processing
+
+        var duration= this.state.duration_filter;
 
        if(this.state.array_for_sorting_return.length === 0 ){
 
@@ -197,7 +199,7 @@ class Results extends Component {
                        result.flight_arrival = flights.flights.flight_arrival;
                        result.duration=flights.flights.duration;
 
-                       result.totalprice = flights.flights.totalprice+ flightsreturn.flights_return.totalprice;
+                       result.totalprice = Number(flights.flights.totalprice)+ Number(flightsreturn.flights_return.totalprice);
 
                        result.airline_name_return = flightsreturn.flights_return.airline_name;
                        result.origin_station_return = flightsreturn.flights_return.origin_station;
@@ -231,7 +233,8 @@ class Results extends Component {
                //
                //     }
                // }
-
+                console.log(array.indexOf(flights.airline_name));
+               console.log(array.indexOf(flights.airline_name_return));
                if(array.indexOf(flights.airline_name) >=0 && array.indexOf(flights.airline_name_return) >=0)
                {
                    flight_flag= true;
@@ -240,7 +243,7 @@ class Results extends Component {
                if (flight_flag){
                    flight_flag= false;
 
-                   if( flights.duration< this.state.duration_filter && flights.duration_return < this.state.duration_filter)
+                   if( Number(flights.duration)<Number(duration) && Number(flights.duration_return) < Number(duration))
                    {
                        if(flights.totalprice < this.state.price_filter)
                        {
@@ -347,7 +350,7 @@ class Results extends Component {
             return (
                 <div className="col-md-10 col-sm-10 " style={styles}>
                     <div className="row">
-                        <div className="col-md-8 col-sm-8 ">
+                        <div className="col-md-12 col-sm-12 ">
                             <div className="col-md-4 col-sm-4 ">
                                 <h2>
                                     {flights.flights.airline_name}
@@ -380,14 +383,14 @@ class Results extends Component {
                             <div className="col-md-4 col-sm-4 ">
                                 <div className="row">
                                     <h3 align="center">
-                                {flights.flights.totalprice}
+                                ${flights.flights.totalprice}
                                     </h3>
                                 </div>
                                 <div className="row">
                     {this.props.isLogged=='false' ? 
-                    (<button type="button" class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
+                    (<button type="button" class="searchbtn" style={{marginLeft:70}} data-toggle="modal" data-target="#loginModal">View Deal</button>)
                         :
-                    (<button className="btn btn-primary btn-block"
+                    (<button className="btn btn-primary btn-block" style={{marginLeft:70}}
                             onClick={() => {
 
                                 var payload = {};
@@ -479,7 +482,7 @@ class Results extends Component {
                         result.flight_departure = flights.flights.flight_departure;
                         result.flight_arrival = flights.flights.flight_arrival;
 
-                        result.totalprice = flights.flights.totalprice + flightsreturn.flights_return.totalprice;
+                        result.totalprice = Number(flights.flights.totalprice) + Number(flightsreturn.flights_return.totalprice);
 
                         result.airline_name_return = flightsreturn.flights_return.airline_name;
                         result.origin_station_return = flightsreturn.flights_return.origin_station;
@@ -517,9 +520,9 @@ class Results extends Component {
 
                 const items= currentItems.map((flights, index) => {
                 return (
-                    <div className="col-md-10 col-sm-10 " style={styles}>
+                    <div className="col-lg-12 col-md-12 col-sm-12 " style={styles}>
                         <div className="row">
-                            <div className="col-md-8 col-sm-8 ">
+                            <div className="col-md-12 col-sm-12 ">
                                 <div className="col-md-4 col-sm-4 ">
                                     <div className="row">
                                     <h2>
@@ -570,17 +573,17 @@ class Results extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-md-4 col-sm-4 ">
-                                    <div className="row">
+                                <div className="row">
+
                                         <h3 align="center">
-                                            {flights.totalprice}
+                                            ${flights.totalprice}
                                         </h3>
-                                    </div>
-                                    <div className="row">
+                                    {/*</div>*/}
+                                    {/*<div className="row" >*/}
                                     {this.props.isLogged=='false' ? 
-                                        (<button type="button" class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
+                                        (<button type="button" style={{marginLeft:100}} class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
                                         :
-                                        (<button className="btn btn-primary btn-block"
+                                        (<button className="searchbtn"  style={{marginLeft:100}}
                                                 onClick={() => {
 
                                                     var payload = {flights:flights};
@@ -609,7 +612,6 @@ class Results extends Component {
                                                 }
                                                 }>View Deal
                                         </button>)}
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -664,9 +666,9 @@ class Results extends Component {
 
                const items = currentItems.map((flights, index) => {
                    return (
-                       <div className="col-md-10 col-sm-10 " style={styles}>
+                       <div className="col-md-12 col-sm-12 " style={styles}>
                            <div className="row">
-                               <div className="col-md-8 col-sm-8 ">
+                               <div className="col-md-12 col-sm-12 ">
                                    <div className="col-md-4 col-sm-4 ">
                                        <div className="row">
                                            <h2>
@@ -720,14 +722,14 @@ class Results extends Component {
                                    <div className="col-md-4 col-sm-4 ">
                                        <div className="row">
                                            <h3 align="center">
-                                               {flights.totalprice}
+                                               ${flights.totalprice}
                                            </h3>
                                        </div>
                                        <div className="row">
                                        {this.props.isLogged=='false' ? 
-                                            (<button type="button" class="searchbtn" data-toggle="modal" data-target="#loginModal">View Deal</button>)
+                                            (<button type="button" class="searchbtn" style={{marginLeft:100}} data-toggle="modal" data-target="#loginModal">View Deal</button>)
                                             :
-                                            (<button className="btn btn-primary btn-block"
+                                            (<button className="btn btn-primary btn-block" style={{marginLeft:100}}
                                                    onClick={() => {
 
                                                        var payload = {flights:flights};
@@ -839,12 +841,15 @@ class Results extends Component {
             <div>
                 <FLightSerachPanel handler = {this.handler}/>
             </div>
-            <div className="container-fluid">
+            <div className="container-fluid row">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
 
-                <div className="col-lg-2" id="divfilter" >
-                    <div id="divleftpanel">
+                <div className="col-lg-3" id="divfilter" >
+                    <div className="row">
+                        <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">
+                        </div>
+                    <div id="divleftpanel" className="col-sm-10 col-lg-10 col-md-10 col-xs-10">
                         <h4 id="h4filter">Air Lines</h4>
                         <hr />
                     <form>
@@ -1110,8 +1115,11 @@ class Results extends Component {
                     </div>
 
                 </div>
+                        <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">
+                        </div>
+                    </div>
                 </div>
-                <div className="col-lg-10" >
+                <div className="col-lg-9" >
                     <div className="row">
                     <div className="col-sm-6 col-lg-6 col-md-6 col-xs-6" >
                         <button className="sortbtn btn-block"
@@ -1128,17 +1136,20 @@ class Results extends Component {
                     </div>
                 </div>
                 <div className="row">
-
+                    <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">
+                    </div>
                     {/*<table >*/}
 
                         {/*<tbody>*/}
 
                         {/*{this.flights(null,null)}*/}
-                    <span>
+                    <div className="col-sm-9 col-lg-9 col-md-9 col-xs-9" style={{marginLeft:50, width:1000}}>
                         {this.temp()}
-                    </span>
+                    </div>
                         {/*</tbody>*/}
                     {/*</table>*/}
+                    <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">
+                    </div>
                 </div>
             </div>
             </div>

@@ -18,7 +18,7 @@ function getHotelBookings(msg, callback){
 
         console.log('Connected to mongo at: ' + mongoURL);
         var coll = mongo.collection('Billing');
-        coll.find({ hotel : { $exists : true } }).toArray(function (err, user) {
+        coll.distinct("hotel",function (err, user) {
 
             if (!err) {
                 console.log("LOL"+JSON.stringify(user));
@@ -63,11 +63,11 @@ function getFlightBookings(msg, callback){
         console.log("ZZZ"+user_type);
         console.log('Connected to mongo at: ' + mongoURL);
         var coll = mongo.collection('Billing');
-        coll.find({ flight : { $exists : true } }).toArray(function (err, user) {
+        coll.distinct("flight",function (err, user) {
 
             if (!err) {
                 console.log(user);
-                if(user_type==1) {
+                /*if(user_type==1) {
                     var list = [];
                     for (var i = 0; i < user.length; i++) {
                         list.push(user[i].flight);
@@ -77,10 +77,10 @@ function getFlightBookings(msg, callback){
                     res.bookinglist = list;
                 }
                 else
-                {
+                {*/
                     res.code = "200";
                     res.bookinglist = user;
-                }
+                /*}*/
 
             }
             else
@@ -105,17 +105,16 @@ function getCarBookings(msg, callback){
 
         console.log('Connected to mongo at: ' + mongoURL);
         var coll = mongo.collection('Billing');
-        coll.find({ car : { $exists : true } }).toArray(function (err, user) {
-
+        coll.distinct("flight",function (err, user) {
             if (!err) {
-                console.log(user);
+               /* console.log(user);
                 var list=[];
                 for(var i=0;i<user.length;i++)
                 {
                    list.push(user[i].car);
-                }
+                }*/
                 res.code = "200";
-                res.bookinglist = list;
+                res.bookinglist = user;
 
             }
             else

@@ -28,6 +28,8 @@ class Bookings extends Component {
 
     componentWillMount(){
         this.getFlightBookings();
+        this.getHotelBookings();
+        this.getCarBookings();
 
 
     }
@@ -109,7 +111,7 @@ class Bookings extends Component {
         var carBookings=this.state.carBookingData;
         var hotelBookings=this.state.hotelBookingData;
         var flightBookings=this.state.flightBookingData;
-
+//alert(JSON.stringify(flightBookings));
 
         return (
 
@@ -167,48 +169,39 @@ class Bookings extends Component {
 
                     (this.state.flightBooking ? (<div>   <h3>Flight Bookings</h3>
                 <BootstrapTable  data={flightBookings} pagination>
-                    <TableHeaderColumn dataField='car_id' isKey hidden>Car ID</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_type'  filter={ { type: 'TextFilter', delay: 1000 } }>Car Type</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_class'>Car Class</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_model' >Car Model</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_city'>Car City</TableHeaderColumn>
+                    <TableHeaderColumn dataField='flight_id' isKey hidden>Flight ID</TableHeaderColumn>
+                    <TableHeaderColumn dataField='airline_name'  filter={ { type: 'TextFilter', delay: 1000 } }>Airline Name</TableHeaderColumn>
+                    <TableHeaderColumn dataField='origin_station'>Flight Origin</TableHeaderColumn>
+                    <TableHeaderColumn dataField='destination_station' >Flight Destination</TableHeaderColumn>
+                    <TableHeaderColumn dataField='flight_departure'>Flight Departure</TableHeaderColumn>
 
-                    <TableHeaderColumn dataField='car_dropoff_city'  hidden>Car DropOff City</TableHeaderColumn>
+                    <TableHeaderColumn dataField='flight_arrival'  hidden>Flight Arrival</TableHeaderColumn>
 
-                    <TableHeaderColumn dataField='passengers'>Passengers Capacity</TableHeaderColumn>
+                    <TableHeaderColumn dataField='totalprice'>Total Price</TableHeaderColumn>
 
-                    <TableHeaderColumn dataField='doors' hidden>Car Doors</TableHeaderColumn>
-                    <TableHeaderColumn dataField='bags' hidden>Car Bags</TableHeaderColumn>
-                    <TableHeaderColumn dataField='available_place' width='150'  hidden>Car Available Place</TableHeaderColumn>
+                    <TableHeaderColumn dataField='noofseats' hidden>Seats</TableHeaderColumn>
+                    <TableHeaderColumn dataField='airline_name_return' >Airline Name Return</TableHeaderColumn>
 
-                    <TableHeaderColumn dataField='car_rent'>Car Rent</TableHeaderColumn>
+                    <TableHeaderColumn dataField='class'>Class</TableHeaderColumn>
 
-                    <TableHeaderColumn dataField='car_distance' width='150'  hidden>Car Distance</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_agency' width='150'  >Car Agency</TableHeaderColumn>
 
 
                 </BootstrapTable></div>):
 
                         (this.state.hotelBooking ? (<div>  <h3>Hotel Bookings</h3>
                 <BootstrapTable  data={hotelBookings}  pagination>
-                    <TableHeaderColumn dataField='car_id' isKey hidden>Car ID</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_type'  filter={ { type: 'TextFilter', delay: 1000 } }>Car Type</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_class'>Car Class</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_model' >Car Model</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_city'>Car City</TableHeaderColumn>
+                    <TableHeaderColumn dataField='checkin'  filter={ { type: 'TextFilter', delay: 1000 } }>Checkin date</TableHeaderColumn>
+                    <TableHeaderColumn dataField='checkout'>Check out</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotelcity' >Hotel City</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_name'>Hotel Name</TableHeaderColumn>
 
-                    <TableHeaderColumn dataField='car_dropoff_city'  hidden>Car DropOff City</TableHeaderColumn>
+                    <TableHeaderColumn dataField='hotel_state' >Hotel State</TableHeaderColumn>
 
-                    <TableHeaderColumn dataField='passengers'>Passengers Capacity</TableHeaderColumn>
+                    <TableHeaderColumn dataField='roomtype'>Room Type</TableHeaderColumn>
 
-                    <TableHeaderColumn dataField='doors' hidden>Car Doors</TableHeaderColumn>
-                    <TableHeaderColumn dataField='bags' hidden>Car Bags</TableHeaderColumn>
-                    <TableHeaderColumn dataField='available_place' width='150'  hidden>Car Available Place</TableHeaderColumn>
+                    <TableHeaderColumn dataField='room_rent' width='150'  hidden>Room Rent</TableHeaderColumn>
 
-                    <TableHeaderColumn dataField='car_rent'>Car Rent</TableHeaderColumn>
 
-                    <TableHeaderColumn dataField='car_distance' width='150'  hidden>Car Distance</TableHeaderColumn>
-                    <TableHeaderColumn dataField='car_agency' width='150'  >Car Agency</TableHeaderColumn>
 
 
                 </BootstrapTable></div>): null))}

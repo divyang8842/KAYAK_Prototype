@@ -38,7 +38,7 @@ class Results extends Component {
         flag:0,
         check_boxes:[],
         currentPage: 1,
-        itemsPerPage: 2,
+        itemsPerPage: 5,
         price_filter:500,
 
 
