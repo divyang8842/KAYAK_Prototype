@@ -284,7 +284,7 @@ var getUserTrackingInfo = function(idtype,idtoCheck,callback){
                     getPercentageOfPages(titles,responseData,idtype,idtoCheck,5,callback);
                     //data = [pages.FLIGHT_PAGE, pages.CAR_PAGE, pages.HOTEL_PAGE, pages.BILLING_FLIGHT, pages.BILLING_CAR, pages.BILLING_HOTEL, pages.SEARCH_PAGE, pages.SIGNIN_PAGE, pages.SIGNUP_PAGE];
                 }else{
-                    responseData = {"title":titles,"data":data};
+                    responseData = {"title":titles,"data":data,"timeTitle":[[]],"timeData":[[]]};
                     callback(null, responseData);
                 }
                 // responseData = {"title":titles,"data":data};
