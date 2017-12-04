@@ -107,10 +107,10 @@ app.post('/deleteHotel',security.authenticateAdmin,adminHotel.deleteHotel);
 
 
 
-app.post('/flightsbooking',flightsBooking.fLightsBooking);
-app.post('/carsbooking',carsbooking.carsbooking);
+app.post('/flightsbooking',security.authenticate,flightsBooking.fLightsBooking);
+app.post('/carsbooking',security.authenticate,carsbooking.carsbooking);
 app.post('/usertracking',userTracking.usertracking);
-app.post('/doHotelBooking',hotels.doBooking);
+app.post('/doHotelBooking',security.authenticate,hotels.doBooking);
 
 app.post('/uploadFile',security.authenticate,uploadFile);
 // app.post('/getFile',security.authenticate,downloadFile.fileDownload);
