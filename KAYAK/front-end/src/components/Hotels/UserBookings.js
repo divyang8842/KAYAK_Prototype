@@ -12,7 +12,6 @@ var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
 
 
 class Bookings extends Component {
-
     state={
         flightBooking:true,
         hotelBooking:false,
@@ -35,7 +34,7 @@ class Bookings extends Component {
     };
 
     componentWillMount(){
-        this.getHotelBookings();
+        this.getFlightBookings();
 
 
     }
@@ -43,10 +42,10 @@ class Bookings extends Component {
     getHotelBookings=()=>{
         API.getHotelBooking()
             .then((status)=>{
-           // alert(JSON.stringify(status));
+            //alert(JSON.stringify(status));
                 if(status){
                     this.setState({
-                        hotelBookingData:status.data[0]
+                        hotelBookingData:status.data
                     });
 
                 }
@@ -61,10 +60,10 @@ class Bookings extends Component {
         API.getCarBookings()
             .then((status)=>{
                 if(status){
+                   // alert(JSON.stringify(status));
                     this.setState({
                         carBookingData:status.data
                     });
-
                 }
                 else
                 {
@@ -77,6 +76,7 @@ class Bookings extends Component {
         API.getFlightBookings()
             .then((status)=>{
                 if(status){
+                    // /alert(JSON.stringify(status));
                     this.setState({
                         flightBookingData:status.data
                     });
@@ -134,9 +134,10 @@ class Bookings extends Component {
 
         var carBookings=this.state.carBookingData;
         var hotelBookings=this.state.hotelBookingData;
+        //alert("hotelBookings is "+JSON.stringify(hotelBookings));
         var flightBookings=this.state.flightBookingData;
 
-var abc=hotelBookings.hotel;
+var abc=hotelBookings;
 
         var onRowSelect =(row, isSelected, e) => {
             this.setState({update:true,visible: !this.state.visible});
@@ -169,18 +170,12 @@ var abc=hotelBookings.hotel;
                 caragency:obj.car_agency,
                 srcdata :''
             });
-
-
-
-
         }
-
         const options = {
 
             onRowDoubleClick:onRowSelect
 
         };
-
         var checkIfReviewDone=(data)=>{
             var abc={hotelid:data};
             API.checkIfReviewDone(abc)
@@ -188,7 +183,6 @@ var abc=hotelBookings.hotel;
                     //  alert(JSON.stringify(status))
                     if (status.status == '200') {
                         this.setState({
-
                             message: "Inserted Hotel Review Data Successfully..!!",
                         });
                         alert("Review already submitted for this particular hotel");
@@ -199,19 +193,14 @@ var abc=hotelBookings.hotel;
                     }
                 });
         }
-
-
         return (
-
             <div>
                 <div>
                     <div id="fh5co-page">
                         <div className="container">
                             <h3 style={{fontWeight:"bold",textAlign:"center"}}>Bookings & Reviews</h3>
                             <div className="col-xxs-12 col-xs-12 mt"></div>
-
                             <div className="row">
-
                                 <div className="w3-bar">
                                     <div className="col-xxs-3 col-xs-3 mt"></div>
                                     <div className="col-xxs-7 col-xs-7 mt" style={{marginLeft: 60}}>
@@ -223,14 +212,9 @@ var abc=hotelBookings.hotel;
                             </div>
                             <div className="col-xxs-12 col-xs-12 mt"></div>
                             <div className="col-xxs-12 col-xs-12 mt"></div>
-
-
-
-
                         </div>
                     </div>
                 </div>
-
                 {this.state.carBooking? (<div>  <h3>Car Bookings</h3>
                         <BootstrapTable  data={carBookings} pagination>
                             <TableHeaderColumn dataField='hotel_id' isKey hidden>Hotel ID</TableHeaderColumn>
@@ -241,7 +225,6 @@ var abc=hotelBookings.hotel;
 
                             <TableHeaderColumn dataField='car_dropoff_city'  hidden>Car DropOff City</TableHeaderColumn>
 
-                            <TableHeaderColumn dataField='passengers'>Passengers Capacity</TableHeaderColumn>
 
                             <TableHeaderColumn dataField='doors' hidden>Car Doors</TableHeaderColumn>
                             <TableHeaderColumn dataField='bags' hidden>Car Bags</TableHeaderColumn>
@@ -250,21 +233,18 @@ var abc=hotelBookings.hotel;
                             <TableHeaderColumn dataField='car_rent'>Car Rent</TableHeaderColumn>
 
                             <TableHeaderColumn dataField='car_distance' width='150'  hidden>Car Distance</TableHeaderColumn>
-                            <TableHeaderColumn dataField='car_agency' width='150'  >Car Agency</TableHeaderColumn>
-
-
                         </BootstrapTable></div>):
 
                     (this.state.flightBooking ? (<div>   <h3>Flight Bookings</h3>
                             <BootstrapTable  data={flightBookings} pagination>
-                                <TableHeaderColumn dataField='car_id' isKey hidden>Flight ID</TableHeaderColumn>
-                                <TableHeaderColumn dataField='car_type'  filter={ { type: 'TextFilter', delay: 1000 } }>Airline Name</TableHeaderColumn>
-                                <TableHeaderColumn dataField='car_class'>Flight Station</TableHeaderColumn>
-                                <TableHeaderColumn dataField='car_model' >Departure</TableHeaderColumn>
-                                <TableHeaderColumn dataField='car_city'>Arrival</TableHeaderColumn>
+                                <TableHeaderColumn dataField='flight_id' isKey hidden>Flight Id</TableHeaderColumn>
+                                <TableHeaderColumn dataField='airline_name'  filter={ { type: 'TextFilter', delay: 1000 } }>Airline Name</TableHeaderColumn>
+                                <TableHeaderColumn dataField='origin_station'>Flight Station</TableHeaderColumn>
+                                <TableHeaderColumn dataField='flight_departure' >Departure</TableHeaderColumn>
+                                <TableHeaderColumn dataField='flight_arrival'>Arrival</TableHeaderColumn>
 
 
-                                <TableHeaderColumn dataField='passengers'>Flight Class</TableHeaderColumn>
+                                <TableHeaderColumn dataField='class'>Seat Class</TableHeaderColumn>
 
 
 

@@ -20,6 +20,9 @@ var insertFlightData = function(msg,callback){
     var dataArry=[];
 
     array= msg.stationname.split(',');
+    console.log("Data Entry array"+array);
+    var source = array[0];
+    var des= array[1];
     dataArry1.push(msg.airlinename);
     dataArry1.push(msg.stationname);
 
@@ -63,13 +66,15 @@ var insertFlightData = function(msg,callback){
 
                 dataArry.push(results.insertId);
                 dataArry.push(msg.airlinename);
-                dataArry.push(array[i]);
+
                 if( i=== 0)
                 {
+                    dataArry.push(source);
                     dataArry.push(msg.departuretime);
                 }
                 else
                 {
+                    dataArry.push(des);
                     dataArry.push(msg.departuretime);
 
                 }

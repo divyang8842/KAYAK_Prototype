@@ -91,7 +91,7 @@ function handle_request(msg, callback){
 
         // Second Query to fetch data based on the flight ids
 
-        mappingquery=" select * from flight_mapping where flight_id in ("+ noofarguments+") and station_name in (?,?)";
+        mappingquery=" select * from flight_mapping where flight_id in ("+ noofarguments+") and station_name in (?,?) ORDER BY flight_id,flight_duration";
         console.log("mappingquery : "+ mappingquery);
 
         mysql.fetchData(mappingquery,resultforflights,function (err,results1) {

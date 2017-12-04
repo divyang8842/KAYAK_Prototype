@@ -9,7 +9,7 @@ console.log("USERTYPE"+session.user.type);
 
     kafka.make_request('admin_topic',
         {
-            "action":17,"user_type":session.user.type
+            "action":17,"user_type":session.user.type,"userid":session.user.id
         },
         function(err,results){
             console.log('in result');
@@ -18,7 +18,7 @@ console.log("USERTYPE"+session.user.type);
             }
             else
             {
-                console.log(results);
+                console.log("result is  : "+JSON.stringify(results));
                 res.status(201).json({data:results.bookinglist});
 
             }
@@ -27,12 +27,11 @@ console.log("USERTYPE"+session.user.type);
 };
 
 exports.getFlightBookings= function(req,res) {
-
     console.log("Inside Flight Bookings");
-
+    var session = req.session;
     kafka.make_request('admin_topic',
         {
-            "action":18
+            "action":18,"user_type":session.user.type,"userid":session.user.id
         },
         function(err,results){
             console.log('in result');
@@ -46,16 +45,15 @@ exports.getFlightBookings= function(req,res) {
 
             }
         });
-
 };
 
 exports.getCarBookings= function(req,res) {
 
     console.log("Inside Car Bookings");
-
+    var session = req.session;
     kafka.make_request('admin_topic',
         {
-            "action":19
+            "action":19,"user_type":session.user.type,"userid":session.user.id
         },
         function(err,results){
             console.log('in result');
