@@ -22,6 +22,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://npmcdn.com/react-bootstrap-table/dist/react-bootstrap-table.min.js" ></script>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/css/bootstrap-dialog.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.5/js/bootstrap-dialog.min.js"></script>
+
 <style>
 
   @media screen and (max-width: 480px) {
@@ -31,6 +34,18 @@
       float: right !important;
     }
   }
+
+
+  .alert
+  {
+    font-size: 1.3em;
+    padding: 1em;
+    text-align: center;
+    white-space: nowrap;
+    width: auto;
+    word-wrap: normal;
+  }
+
 /*  .tabulation input[type="date"] {
     background: rgba(0, 0, 0, 0.05);
     border: none;
@@ -50,6 +65,31 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="root" style="width: 100%;overflow-y: hidden" background="../src/public/images/Cover_pic.jpg" ></div>
+
+
+
+    <!-- Modal -->
+  <!--  <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+        &lt;!&ndash; Modal content&ndash;&gt;
+        <div class="modal-content">
+          <div class="modal-header" style="min-height:40px;">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Alert</h4>
+          </div>
+          <div class="modal-body">
+            <p></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>-->
+
+
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -65,6 +105,34 @@
         //$(this).find("label").val('').end();
         $('#modalbody').html('');
       });
+
+
+      window.old_alert = window.alert;
+
+      window.alert = function(message, fallback){
+          if(fallback)
+          {
+              old_alert(message);
+              return;
+          }
+
+          BootstrapDialog.show({
+              message: message,
+              title: 'Alert',
+              type: BootstrapDialog.TYPE_WARNING,
+              buttons: [ {
+                  label: 'Close',
+
+                  action: function(dialogItself){
+                      dialogItself.close();
+                  }
+              }]
+          });
+
+          /*//$("#myModal .modal-header h3").html("Alert..!");
+          $("#myModal .modal-body p").html(message);
+          $("#myModal").modal('show');*/
+      };
     </script>
   </body>
 </html>
