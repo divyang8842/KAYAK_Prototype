@@ -170,7 +170,7 @@ class Results extends Component {
                       {this.renderStars(hotelItem)}
                     </div>
                     <div className="col-lg-4" style={{marginLeft:-20, marginTop:5}}>
-                      <p style={{color:'black', fontSize:12}}>{hotelItem.hotel_locaion}</p>
+                      <p style={{color:'black', fontSize:12}}>{hotelItem.hotel_location}</p>
                     </div>
                   </div>
                   <div className="row">
