@@ -1,4 +1,3 @@
-
 var mysql=require('./../database/mysql');
 var errorHandler = require('./../utils/errorLogging');
 var mongo = require('./../database/mongo');
@@ -7,29 +6,24 @@ var insertFlightData = function(msg,callback){
     var res = {};
     console.log("In handle request:"+ JSON.stringify(msg));
 
-    var insertQuery="INSERT INTO flight_mapping (flight_number,airline_name,station_name,flight_departure,flight_arrival,flight_duration,economy_class,first_class,business_class,premiumeconomy_class) values(?,?,?,?,?,?,?,?,?,?)";
-    var query1="INSERT INTO flight (flight_id,airline_name,stops) values (?,?,?)";
+    var insertQuery="INSERT INTO flight_mapping (flight_id,airline_name,station_name,flight_departure,flight_arrival,flight_duration,economy_class,first_class,business_class,premiumeconomy_class,flight_number) values(?,?,?,?,?,?,?,?,?,?,?)";
+    var query1="INSERT INTO flight (airline_name,stops) values (?,?)";
     var query2="INSERT INTO flight_availibility(flight_id,dates,economy_seates,first_seates,business_seates,premium_seates) values (?,?,?,?,?,?)";
-/*    var query3 ="Select * from flight where flight_id=(?)";
-    var query4 ="Select * from flight_availibility where flight_id=(?)";*/
+    /*    var query3 ="Select * from flight where flight_id=(?)";
+        var query4 ="Select * from flight_availibility where flight_id=(?)";*/
 
 
-
-
-    var dataArry =  [];
+    var array=[];
     var array1=[];
     var array2=[];
+    var dataArry1=[];
+    var dataArry=[];
 
-    dataArry.push(msg.flightnumber);
-    dataArry.push(msg.airlinename);
-    dataArry.push(msg.stationname);
-    dataArry.push(msg.departuretime);
-    dataArry.push(msg.arrivaltime);
-    dataArry.push(msg.flightduration);
-    dataArry.push(msg.economyClassFare);
-    dataArry.push(msg.firstClassFare);
-    dataArry.push(msg.businessClassFare);
-    dataArry.push(msg.premiumEcoFare);
+    array= msg.stationname.split(',');
+    dataArry1.push(msg.airlinename);
+    dataArry1.push(msg.stationname);
+
+
 
     array1.push(msg.flightnumber);
     array1.push(msg.airlinename);
@@ -49,8 +43,8 @@ var insertFlightData = function(msg,callback){
             mongo.insertDoc("flight_analytics",{"name":msg.airlinename,currentyear: {count:0,revenue:0}},function(){})
         }
     });
-    console.log("DATA: "+dataArry);
-    mysql.setData(insertQuery,dataArry,function (err,results){
+    console.log("DATA: "+dataArry1);
+    mysql.setData(query1,dataArry1,function (err,results){
         console.log("CHECK RES: "+results);
         if (err){
             //res.code = "401";
@@ -64,6 +58,72 @@ var insertFlightData = function(msg,callback){
             res.value=results;
             console.log("Successfully Flight Data Inserted");
 
+            for(i=0;i<array.length;i++)
+            {
+
+                dataArry.push(results.insertId);
+                dataArry.push(msg.airlinename);
+                dataArry.push(array[i]);
+                if( i=== 0)
+                {
+                    dataArry.push(msg.departuretime);
+                }
+                else
+                {
+                    dataArry.push('');
+
+                }
+                if( i=== 0)
+                {
+                    dataArry.push('');
+                }
+                else
+                {
+                    dataArry.push(msg.arrivaltime);
+                }
+
+                if( i=== 0)
+                {
+                    dataArry.push(0);
+                }
+                else
+                {
+                    dataArry.push(msg.flightduration);
+                }
+
+                dataArry.push();
+                dataArry.push(msg.economyClassFare);
+                dataArry.push(msg.firstClassFare);
+                dataArry.push(msg.businessClassFare);
+                dataArry.push(msg.premiumEcoFare);
+                dataArry.push(msg.flightnumber);
+
+
+                mysql.setData(insertQuery,dataArry,function (err,results){});
+                dataArry=[];
+
+            }
+
+            for(var i=0;i<60;i++){
+                var arrData = [];
+                arrData.push(results.insertId);
+
+                var tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate()+i);
+                var dateToInsert =   tomorrow.getFullYear()+"-"+(tomorrow.getMonth()+1)+"-"+tomorrow.getDate();
+                // console.log("dateToInsert is : "+dateToInsert);
+                arrData.push(dateToInsert);
+                arrData.push(msg.ecoseats);
+                arrData.push(msg.firstseats);
+                arrData.push(msg.businessseats);
+                arrData.push(msg.premecoseats);
+                mysql.setData(query2,arrData,function(err,data){
+                    if(err){
+                        console.log(err);
+                    }
+
+                });
+            }
 
         }
         callback(null, res);
