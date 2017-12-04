@@ -326,7 +326,9 @@ var getPercentageOfPages=function(pageArr,returnData,type,id,callback){
         var coll = mongo.collection('UserTracking');
         var query = {};
         if(type='user'){
-            query = {$or:[{'userid': id},{'userid': id.toString()}]};
+            if(userid>0) {
+                query = {$or: [{'userid': id}, {'userid': id.toString()}]};
+            }
         }else if(type='city'){
             query = {'city': id};
         }
