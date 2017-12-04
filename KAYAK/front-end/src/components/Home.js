@@ -146,6 +146,7 @@ class Home extends Component {
         var currentpath = this.props.tracking.path;
         var timenow = Date.now();
         var currentpage = "SEARCH_PAGE";
+        if(currentpath[currentpath.length-1] != "SEARCH_PAGE")
         currentpath.push(currentpage);
         this.props.updateTracking({currentpath, currentpage, timenow});
     }
