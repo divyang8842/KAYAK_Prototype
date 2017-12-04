@@ -82,6 +82,13 @@ class Home extends Component {
     }
     componentDidMount()
     {
+         //Tracking userpath
+         var currentpath = this.props.tracking.path;
+         var timenow = Date.now();
+         var currentpage = "SEARCH_PAGE";
+         if(currentpath[currentpath.length-1] != "SEARCH_PAGE")
+         currentpath.push(currentpage);
+         this.props.updateTracking({currentpath, currentpage, timenow});
 
 
         /* const contentDiv = document.getElementById('content');
@@ -118,6 +125,7 @@ class Home extends Component {
         var timenow = Date.now();
         var currentpath = [];
         var currentpage = "SEARCH_PAGE";
+        if(currentpath[currentpath.length-1] != currentpage)
         currentpath.push("SEARCH_PAGE");
         this.props.updateTracking({currentpath, currentpage, timenow});
         API.logout(payload)
@@ -191,6 +199,7 @@ class Home extends Component {
         var currentpath = this.props.tracking.path;
         var timenow = Date.now();
         var currentpage = "ACCOUNT_PAGE";
+        if(currentpath[currentpath.length-1] != currentpage)
         currentpath.push(currentpage);
         this.props.updateTracking({currentpath, currentpage, timenow});
     }

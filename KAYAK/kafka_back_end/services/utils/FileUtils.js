@@ -10,7 +10,13 @@ var base64_encode =  function(file,callback) {
         // convert binary data to base64 encoded string
         bufferData =  new Buffer(bitmap).toString('base64');
     }catch(ex){
+        try{
+            var bitmap = fs.readFileSync("./public/uploads/image/no_image.jpeg");
+            // convert binary data to base64 encoded string
+            bufferData =  new Buffer(bitmap).toString('base64');
+        }catch(e){
 
+        }
     }
     callback(bufferData);
 

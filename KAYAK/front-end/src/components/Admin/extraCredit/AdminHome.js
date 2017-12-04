@@ -12,7 +12,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 var graphToShow = "" ;
 class AddRemoveLayout extends React.PureComponent  {
 
-
+state={flag1:true,flag2:true,flag3:true,flag4:true,flag5:true,flag6:true,flag7:true,flag8:true};
     static defaultProps = {
         className: "layout",
         cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
@@ -186,23 +186,23 @@ class AddRemoveLayout extends React.PureComponent  {
                 {/*{el.add ?
                     <span className="add text" onClick={this.onAddItem} title="You can add an item by clicking here, too.">Add +</span>
                     : <span className="text">{i}</span>}*/}
-                <span className="remove" style={removeStyle} onClick={()=> this.onRemoveItem(i)}>delete</span>
 
-                {graphToShow=='CAR_COUNT'
+                <span className="remove" style={removeStyle} onClick={this.onRemoveItem.bind(i)}>delete</span>
+                {i=='CAR_COUNT'
                     ? (<Chart chartData={this.state.carCount} chartTitle="Car Count" legendPosition="bottom"/>)
-                    : (graphToShow=='CAR_REVENUE'
+                    : (i=='CAR_REVENUE'
                         ? (<Chart chartData={this.state.carRevenue} chartTitle="Car Revenue" legendPosition="bottom"/>)
-                        : (graphToShow=='FLIGHT_COUNT'
+                        : (i=='FLIGHT_COUNT'
                             ? (<Chart chartData={this.state.flightCount} chartTitle="Flight Count" legendPosition="bottom"/>)
-                            : (graphToShow=='FLIGHT_REVENUE'
+                            : (i=='FLIGHT_REVENUE'
                                 ? (<Chart chartData={this.state.flightRevenue} chartTitle="Flight Revenue" legendPosition="bottom"/>)
-                                : (graphToShow=='HOTEL_COUNT'
+                                : (i=='HOTEL_COUNT'
                                     ? (<Chart chartData={this.state.hotelCount} chartTitle="Hotel Count" legendPosition="bottom"/>)
-                                    : (graphToShow=='HOTEL_REVENUE'
+                                    : (i=='HOTEL_REVENUE'
                                         ? (<Chart chartData={this.state.hotelRevenue} chartTitle="Hotel Revenue" legendPosition="bottom"/>)
-                                        : (graphToShow=='CITY_COUNT'
+                                        : (i=='CITY_COUNT'
                                             ? (<Chart chartData={this.state.cityCount} chartTitle="City Count" legendPosition="bottom"/>)
-                                            : (graphToShow=='CITY_REVENUE'
+                                            : (i=='CITY_REVENUE'
                                                 ? (<Chart chartData={this.state.cityRevenue} chartTitle="City Revenue" legendPosition="bottom"/>)
                                                 : null)))))))}
 
@@ -210,6 +210,26 @@ class AddRemoveLayout extends React.PureComponent  {
             </div>
         );
     }
+
+hideButton(n){
+  if(n==1)
+  this.setState({flag1:!this.state.flag1});
+  else if(n==2)
+  this.setState({flag2:!this.state.flag2});
+  else if(n==3)
+  this.setState({flag3:!this.state.flag3});
+  else if(n==4)
+  this.setState({flag4:!this.state.flag4});
+  else if(n==5)
+  this.setState({flag5:!this.state.flag5});
+  else if(n==6)
+  this.setState({flag6:!this.state.flag6});
+  else if(n==7)
+  this.setState({flag7:!this.state.flag7});
+  else if(n==8)
+  this.setState({flag8:!this.state.flag8});
+}
+
 
     onAddItem(data) {
         if(!data){
@@ -280,8 +300,21 @@ class AddRemoveLayout extends React.PureComponent  {
                         <div className="col-lg-12 col-md-12 col-sm-12">
 
 <table>
+    <tr><td><button onClick={function(){ this.onAddItem('CAR_COUNT'); this.hideButton(1); }.bind(this)} disabled={this.state.flag1}>Top 10 Car Count</button></td></tr>
+    <tr><td> <button onClick={function(){ this.onAddItem('CAR_REVENUE'); this.hideButton(2); }.bind(this)} disabled={this.state.flag2}> Top 10 Car Revenue </button></td></tr>
+    <tr><td> <button onClick={function(){ this.onAddItem('FLIGHT_COUNT'); this.hideButton(3); }.bind(this)} disabled={this.state.flag3}> Top 10 Airlines Count</button></td></tr>
+    <tr><td> <button onClick={function(){ this.onAddItem('FLIGHT_REVENUE'); this.hideButton(4); }.bind(this)} disabled={this.state.flag4}> Top 10 Airlines Revenue</button></td></tr>
+    <tr><td><button onClick={function(){ this.onAddItem('HOTEL_COUNT'); this.hideButton(5); }.bind(this)} disabled={this.state.flag5}> Top 10 Hotels Count</button></td></tr>
+    <tr><td><button onClick={function(){ this.onAddItem('HOTEL_REVENUE'); this.hideButton(6); }.bind(this)} disabled={this.state.flag6}> Top 10 Hotels Revenue</button></td></tr>
+    <tr><td> <button onClick={function(){ this.onAddItem('CITY_COUNT'); this.hideButton(7); }.bind(this)} disabled={this.state.flag7}> Top 10 CITY Count</button></td></tr>
+    <tr><td> <button onClick={function(){ this.onAddItem('CITY_REVENUE'); this.hideButton(8); }.bind(this)} disabled={this.state.flag8}> Top 10 City Revenue </button></td></tr>
+</table>
+
+
+{/*
+<table>
     <tr>
-        <td> <a href="#" onClick={()=>this.onAddItem('CAR_COUNT')}> Top 10 Rental Agencies : Number of cars rented</a></td>
+        <td><a href="#" onClick={()=>this.onAddItem('CAR_COUNT')}> Top 10 Rental Agencies : Number of cars rented</a></td>
     </tr>
 <tr>
     <td> <a href="#" onClick={()=>this.onAddItem('CAR_REVENUE')}> Top 10 Rental Agencies : Revenue </a></td>
@@ -308,18 +341,7 @@ class AddRemoveLayout extends React.PureComponent  {
     <tr>
         <td> <a href="#" onClick={()=>this.onAddItem('CITY_REVENUE')}> Top 10 City : Revenue </a></td>
     </tr>
-   {/* <tr>
-        <td> <a href="#" onClick={()=>this.onAddItem('CAR_COUNT')}> Top 10 Rental Agencies </a></td>
-    </tr>
-    <tr>
-        <td> <a href="#" onClick={()=>this.onAddItem('CAR_COUNT')}> Top 10 Rental Agencies </a></td>
-    </tr>
-    <tr>
-        <td> <a href="#" onClick={()=>this.onAddItem('CAR_COUNT')}> Top 10 Rental Agencies </a></td>
-    </tr>
-
-*/}
-</table>
+</table>*/}
                         </div>
                     </div>
                     <div class="col-xs-9">
