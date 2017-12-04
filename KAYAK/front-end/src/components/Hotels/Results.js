@@ -41,7 +41,8 @@ class Results extends Component {
     filtered: false,
     roomtype: 0, //0-King, 1-Queen, 2-Standard
     currentPage: 1,
-    itemsPerPage: 5
+    itemsPerPage: 5,
+    hotelitem:{}
   }
 
   handleClick(event) {
@@ -112,6 +113,12 @@ class Results extends Component {
        {indents}
       </span>
    );
+  }
+
+  handleModal(hotelItem){
+    this.setState({
+      hotelitem: hotelItem
+    })
   }
 
   createHotelsList() {
@@ -188,68 +195,11 @@ class Results extends Component {
                   {this.props.isLogged=='false' ? 
                     (<button type="button" class="searchbtn" style={{'font-size':12, marginLeft:13, marginTop:10}} data-toggle="modal" data-target="#loginModal">VIEW DEAL</button>)
                     :
-                    (<button type="button" class="searchbtn" style={{'font-size':12, marginLeft:13, marginTop:10}} data-toggle="modal" data-target="#myModal">View Deal</button>)
+                    (<button type="button" class="searchbtn" style={{'font-size':12, marginLeft:13, marginTop:10}} onClick={()=>{this.handleModal(hotelItem)}} data-toggle="modal" data-target="#myModal">View Deal</button>)
                   }
                   {/* <button type="button" class="searchbtn" data-toggle="modal" data-target="#myModal">View Deal</button> */}
                   
-                  <div id="myModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="close" data-dismiss="modal">&times;</button>
-                          <h4 class="modal-title">Select Room</h4>
-                        </div>
-                        <div class="modal-body">
-                          {/* <p>Modal Body</p> */}
-
-                          <div class="container">
-                            <div>
-                              <input type="radio" id="f-option" name="selector"
-                                onClick={(event) => {
-                                  this.setState({
-                                    ...this.state,
-                                    roomtype: 0
-                                  }, this.setRoomType);
-                                }}/>
-                              <label style={{width:150, margin:4}} for="f-option">King Room</label>
-                              <label style={{width:50, margin:4}} for="f-option">${hotelItem.king_rates}</label>
-                            </div>
-                            <div>
-                              <input type="radio" id="s-option" name="selector"
-                              onClick={(event) => {
-                                this.setState({
-                                  ...this.state,
-                                  roomtype: 1
-                                }, this.setRoomType);
-                              }}/>
-                              <label style={{width:150, margin:4}} for="f-option">Queen Room</label>
-                              <label style={{width:50, margin:4}} for="f-option">${hotelItem.queen_rates}</label>
-                            </div>
-                            <div>
-                              <input type="radio" id="s-option" name="selector"
-                              onClick={(event) => {
-                                this.setState({
-                                  ...this.state,
-                                  roomtype: 2
-                                }, this.setRoomType);
-                              }}/>
-                              <label style={{width:150, margin:4}} for="f-option">Standard Room</label>
-                              <label style={{width:50, margin:4}} for="f-option">${hotelItem.standard_rates}</label>
-                            </div>
-                          </div>
-
-
-                        </div> 
-                        <div class="modal-footer">
-                          <button type="button" class="searchbtn" data-dismiss="modal" onClick={() =>
-                          {
-
-                              this.handleBooking(hotelItem)} }>Continue</button>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
+                  
                 </div>
             </div>
 
@@ -675,6 +625,64 @@ class Results extends Component {
               </div>
               <div className="col-sm-1 col-lg-1 col-md-1 col-xs-1">
               </div>
+              <div id="myModal" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                          <h4 class="modal-title">Select Room</h4>
+                        </div>
+                        <div id="modalbody" class="modal-body">
+                          {/* <p>Modal Body</p> */}
+
+                          <div class="container">
+                            <div>
+                              <input type="radio" id="f-option" name="selector"
+                                onClick={(event) => {
+                                  this.setState({
+                                    ...this.state,
+                                    roomtype: 0
+                                  }, this.setRoomType);
+                                }}/>
+                              <label style={{width:150, margin:4}} for="f-option">King Room</label>
+                              <label style={{width:50, margin:4}} for="f-option">${this.state.hotelitem.king_rates}</label>
+                            </div>
+                            <div>
+                              <input type="radio" id="s-option" name="selector"
+                              onClick={(event) => {
+                                this.setState({
+                                  ...this.state,
+                                  roomtype: 1
+                                }, this.setRoomType);
+                              }}/>
+                              <label style={{width:150, margin:4}} for="f-option">Queen Room</label>
+                              <label style={{width:50, margin:4}} for="f-option">${this.state.hotelitem.queen_rates}</label>
+                            </div>
+                            <div>
+                              <input type="radio" id="s-option" name="selector"
+                              onClick={(event) => {
+                                this.setState({
+                                  ...this.state,
+                                  roomtype: 2
+                                }, this.setRoomType);
+                              }}/>
+                              <label style={{width:150, margin:4}} for="f-option">Standard Room</label>
+                              <label style={{width:50, margin:4}} for="f-option">${this.state.hotelitem.standard_rates}</label>
+                            </div>
+                          </div>
+
+
+                        </div> 
+                        <div class="modal-footer">
+                          <button type="button" class="searchbtn" data-dismiss="modal" onClick={() =>
+                          {
+
+                              this.handleBooking(this.state.hotelitem)} }>Continue</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
             </div>
           </div>
         </div>
