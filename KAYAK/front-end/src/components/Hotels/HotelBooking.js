@@ -35,7 +35,7 @@ class HotelBooking extends Component {
         {
             return(
                 <h4>
-                    {<this className="props hotelsbooking standard_rates"></this>}
+                    {this.props.hotelsbooking.standard_rates}
                 </h4>
             );
 
@@ -44,12 +44,11 @@ class HotelBooking extends Component {
     render()
     {
         var styles = {
-            'border-size':'1px',
-            'border-style':'solid',
-            'border-color':'black'
+            height: '90vh',
+            background: '#f2f6fc'
         };
         return(
-            <div className="container-fluid">
+            <div className="container-fluid" style={{height:'90vh'}}>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
                 <div className="row">
@@ -58,40 +57,56 @@ class HotelBooking extends Component {
                     </div>
 
                     <div className="col-md-6 col-sm-6 " style={styles}>
-                        <h1 align="center">
-                            Hotel Confirmation!
-                        </h1>
-                            <div className="col-md-6 col-sm-6 ">
-                                <h2>
+                        <div style={{height:50}}>
+                        <img style={{width:160,height:40,paddingTop:12}}
+
+                                                                           src={require('../../public/images/KAYAK_LOGO.png')}
+                                    />
+                        </div>
+                        <h3>
+                            Hotel Detail
+                        </h3>
+                        
+                        <hr/>
+                            <div>
+                                <h3>
                                     {this.props.hotelsbooking.hotel_name}
 
-                                </h2>
+                                </h3>
                             </div>
-                            <div className="col-md-6 col-sm-6 ">
-
-                                <h4>
-                                {this.props.hotelsbooking.hotel_city}
-                                </h4>
-
-                                <h4>
-                                {this.props.hotels.checkin}
-                                </h4>
-                                <h4>
-                                {this.props.hotels.checkout}
-                                </h4>
-
-                                <h4>
-                                {this.props.hotels.roomcount}
-                                </h4>
-
-                                <h4>
-                                {this.props.hotels.roomtype}
-                                </h4>
-                                {this.roomrent()}
+                            <br/>
+                            <div>
+                                <label width='200'>City</label>
+                                <p>
+                                    {this.props.hotelsbooking.hotel_city}
+                                </p>
+                                <label width='200'>Checkin Date</label>
+                                <p>
+                                    {this.props.hotels.checkin}
+                                </p>
+                                <label width='200'>Checkout Date</label>
+                                <p>
+                                    {this.props.hotels.checkout}
+                                </p>
+                                <label width='200'>Number of rooms</label>
+                                <p>
+                                    {this.props.hotels.roomcount}
+                                </p>
+                                <label width='200'>Type of room</label>
+                                <p>
+                                    {this.props.hotels.roomtype}
+                                </p>
+                                <label width='200'>City</label>
+                                <p>
+                                    {this.roomrent()}
+                                </p>
 
                             </div>
-
-                        <button className="searchbtn"
+                            <div className="row">
+                                <div className="col-lg-4 col-md-4">
+                                </div>
+                        <div className="col-lg-4 col-md-4">
+                            <button className="searchbtn"
                                 onClick={() =>{
                                     var payload = {};
                                     // var tracking_object={};
@@ -145,6 +160,10 @@ class HotelBooking extends Component {
                                         });
                                 }
                                 }>Book Now</button>
+                            </div>
+                            <div className="col-lg-4 col-md-4">
+                            </div>
+                        </div>  
                     </div>
 
                     <div className="col-md-3 col-sm-3 ">

@@ -15,66 +15,78 @@ class CarBooking extends Component {
     render()
     {
         var styles = {
-            'border-size':'1px',
-            'border-style':'solid',
-            'border-color':'black'
+            height: '90vh',
+            background: '#f2f6fc'
         };
         return(
-            <div className="container-fluid">
+            <div className="container-fluid" style={{height:'90vh'}}>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"/>
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css"/>
                 <div className="row">
                     <div className="col-md-3 col-sm-3 ">
                     </div>
                     <div className="col-md-6 col-sm-6 " style={styles}>
-                        <h1 align="center">
-                            Order Details
-                        </h1>
-                        <div className="col-md-4 col-sm-4 ">
-                            <h2>
-                                Car/Date
-                            </h2>
-                            <br/>
-                            <h4>
-                                {this.props.carsbooking.car_model}
-                            </h4>
+                        <div style={{height:50}}>
+                            <img style={{width:160,height:40,paddingTop:12}}
 
-                            <h4>
-                                {this.props.carsbooking.car_type}
-                            </h4>
-
-                            <h4>
-                                {this.props.carsbooking.end_date}
-                            </h4>
+                                                                           src={require('../../public/images/KAYAK_LOGO.png')}
+                                    />
                         </div>
-                        <div className="col-md-4 col-sm-4 ">
-                            <h2>
-                                PickUp
-                            </h2>
-                            <br/>
-                            <h4>
-                                {this.props.carsbooking.car_city}
-                            </h4>
+                        <h3>
+                            Order Detail
+                        </h3>
 
+                        <hr/>
+                        <div>
+                        <label width='200'>Model</label>
+                            <p>
+                                {this.props.carsbooking.car_model}
+                            </p>
+                            <label width='200'>Car Type</label>
+                            <p>
+                                {this.props.carsbooking.car_type}
+                            </p>
+                            {/* <label width='200'>Date</label>
+                            <p>
+                                {this.props.carsbooking.end_date}
+                            </p> */}
+                        </div>
+                        <div>
+                        <br/>
                             <h4>
+                                PickUp
+                            </h4>
+                            
+                            <label width='200'>City</label>
+                            <p>
+                                {this.props.carsbooking.car_city}
+                            </p>
+                            <label width='200'>Pickup</label>
+                            <p>
                                 {this.props.carsbooking.Pickup}
 
-                            </h4>
+                            </p>
                         </div>
 
-                        <div className="col-md-4 col-sm-4 ">
-                            <h2>
+                        <div>
+                        <br/>
+                            <h4>
                                 Drop Off
-                            </h2>
-                            <br/>
-                            <h4>
+                            </h4>
+                            
+                            <label width='200'>Dropoff</label>
+                            <p>
                                 {this.props.carsbooking.Dropoff}
-                            </h4>
-
-                            <h4>
+                            </p>
+                            {/* <label width='200'>Date</label>
+                            <p>
                                 {this.props.carsbooking.end_date}
-                            </h4>
+                            </p> */}
                         </div>
+                        <div className="row">
+                                <div className="col-lg-4 col-md-4">
+                                </div>
+                        <div className="col-lg-4 col-md-4">
                         <button className="searchbtn"
                                 onClick={() =>{
                                     var payload = {};
@@ -112,6 +124,10 @@ class CarBooking extends Component {
 
                                 }
                                 }>Book Now</button>
+                                </div>
+                                <div className="col-lg-4 col-md-4">
+                            </div>
+                                </div>
                     </div>
 
                     <div className="col-md-3 col-sm-3 ">
