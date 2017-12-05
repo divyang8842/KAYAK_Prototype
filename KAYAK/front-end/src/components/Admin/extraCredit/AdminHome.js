@@ -4,6 +4,8 @@ import { WidthProvider, Responsive } from 'react-grid-layout';
 import _ from 'lodash';
 import * as chartAPI from './../../../api/Admin/ChartsAPI'
 import Chart from './Chart';
+import Chart2 from './Chart2';
+import * as API from '../../../api/Admin/AdminUserAPI';
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 /**
@@ -12,7 +14,8 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 var graphToShow = "" ;
 class AddRemoveLayout extends React.PureComponent  {
 
-state={flag1:true,flag2:true,flag3:true,flag4:true,flag5:true,flag6:true,flag7:true,flag8:true};
+state={items:[],users:[],cities:[],flag1:true,flag2:true,flag3:true,flag4:true,flag5:true,flag6:true,flag7:true,flag8:true,flag9:true,
+  flag11:true,flag10:true,flag12:true,tracking1:[],tracking2:[],tracking3:[],pageTime:[]};
     static defaultProps = {
         className: "layout",
         cols: {lg: 12, md: 10, sm: 6, xs: 4, xxs: 2},
@@ -32,8 +35,301 @@ state={flag1:true,flag2:true,flag3:true,flag4:true,flag5:true,flag6:true,flag7:t
     }
 
     getChartData(data){
-        //console.log("YEAR: "+data.year);
+      //for user tracking charts
+      if(data.type==='usertracking'){
+        console.log("WITH USERTRACKING all");
+        //userid filter
+        if(data.userid>0){
+          //alert(data.userid);
+          console.log("USER ID: "+data.userid);
+          chartAPI.getChartsData(data)
+            .then((result) => {
+                if (result) {
+  this.setState({userTitles:result.user_tracting.title,userData:result.user_tracting.data});
+                  this.setState({
+                    pageTime:{
+                        labels: result.user_tracting.timeTitle[0],
+                        datasets:[{ label:'Time Per Page',
+                            data:result.user_tracting.timeData[0],
+                            backgroundColor:[
+                                'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                    tracking1:{
+                        labels: result.user_tracting.title[0],
+                        datasets:[{ label:'Tracking',
+                            data:result.user_tracting.data[0],
+                            backgroundColor:[
+                                'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                    tracking2:{
+                      labels: result.user_tracting.title[1],
+                      datasets:[{ label:'Tracking',
+                      data:result.user_tracting.data[1],
+                      backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                        'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                        tracking3:{
+                          labels: result.user_tracting.title[2],
+                          datasets:[{ label:'Tracking',
+                          data:result.user_tracting.data[2],
+                          backgroundColor:[
+                            'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                            'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                    tracking4:{
+                      labels: result.user_tracting.title[3],
+                      datasets:[{ label:'Tracking',
+                      data:result.user_tracting.data[3],
+                      backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                        'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                        tracking5:{
+                          labels: result.user_tracting.title[4],
+                          datasets:[{ label:'Tracking',
+                          data:result.user_tracting.data[4],
+                          backgroundColor:[
+                            'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                            'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                      });
+
+                }
+              })
+            }//userid
+        //city filter
+        else if(data.city){
+          //alert(data.city);
+          console.log("CITY ID: "+data.city);
+          chartAPI.getChartsData(data)
+            .then((result) => {
+                if (result) {
+                  this.setState({userTitles:result.user_tracting.title,userData:result.user_tracting.data});
+                  this.setState({
+                    pageTime:{
+                        labels: result.user_tracting.timeTitle[0],
+                        datasets:[{ label:'Time Per Page',
+                            data:result.user_tracting.timeData[0],
+                            backgroundColor:[
+                                'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                    tracking1:{
+                        labels: result.user_tracting.title[0],
+                        datasets:[{ label:'Tracking',
+                            data:result.user_tracting.data[0],
+                            backgroundColor:[
+                                'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                    tracking2:{
+                      labels: result.user_tracting.title[1],
+                      datasets:[{ label:'Tracking',
+                      data:result.user_tracting.data[1],
+                      backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                        'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                        tracking3:{
+                          labels: result.user_tracting.title[2],
+                          datasets:[{ label:'Tracking',
+                          data:result.user_tracting.data[2],
+                          backgroundColor:[
+                            'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                            'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                    tracking4:{
+                      labels: result.user_tracting.title[3],
+                      datasets:[{ label:'Tracking',
+                      data:result.user_tracting.data[3],
+                      backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                        'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                        tracking5:{
+                          labels: result.user_tracting.title[4],
+                          datasets:[{ label:'Tracking',
+                          data:result.user_tracting.data[4],
+                          backgroundColor:[
+                            'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                            'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                      });
+                }
+              })
+            }//city
+      //no filter
+      else {
         chartAPI.getChartsData(data)
+            .then((result) => {
+                if (result) {
+  this.setState({userTitles:result.user_tracting.title,userData:result.user_tracting.data});
+                  this.setState({
+                    pageTime:{
+                        labels: result.user_tracting.timeTitle[0],
+                        datasets:[{ label:'Time Per Page',
+                            data:result.user_tracting.timeData[0],
+                            backgroundColor:[
+                                'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                    tracking1:{
+                        labels: result.user_tracting.title[0],
+                        datasets:[{ label:'Tracking',
+                            data:result.user_tracting.data[0],
+                            backgroundColor:[
+                                'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                    tracking2:{
+                      labels: result.user_tracting.title[1],
+                      datasets:[{ label:'Tracking',
+                      data:result.user_tracting.data[1],
+                      backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                        'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                        tracking3:{
+                          labels: result.user_tracting.title[2],
+                          datasets:[{ label:'Tracking',
+                          data:result.user_tracting.data[2],
+                          backgroundColor:[
+                            'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                            'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                    tracking4:{
+                      labels: result.user_tracting.title[3],
+                      datasets:[{ label:'Tracking',
+                      data:result.user_tracting.data[3],
+                      backgroundColor:[
+                        'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                        'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                        tracking5:{
+                          labels: result.user_tracting.title[4],
+                          datasets:[{ label:'Tracking',
+                          data:result.user_tracting.data[4],
+                          backgroundColor:[
+                            'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                            'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                      });
+                }
+              })
+      }//else
+    }
+    //for all other charts
+      else{
+      console.log("WITH Other data");
+      chartAPI.getChartsData(data)
+          .then((result) => {
+              if (result) {
+                  this.setState({
+                    pageClicks:{
+                        labels: result.clicks_per_page.title,
+                        datasets:[{ label:'Clicks per page',
+                            data:result.clicks_per_page.data,
+                            backgroundColor:[
+                                'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                    leastSeen:{
+                        labels: result.least_seen_area.title,
+                        datasets:[{ label:'Cars Count',
+                            data:result.least_seen_area.data,
+                            backgroundColor:[
+                                'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                      carCount:{
+                          labels: result.car_count.title,
+                          datasets:[{ label:'Cars Count',
+                              data:result.car_count.data,
+                              backgroundColor:[
+                                  'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                  'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                  'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                      carRevenue:{
+                          labels: result.car_revenue.title,
+                          datasets:[{ label:'Cars Revenue',
+                              data:result.car_revenue.data,
+                              backgroundColor:[
+                                  'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                  'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                  'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                      flightCount:{
+                          labels: result.flight_count.title,
+                          datasets:[{ label:'Flights Count',
+                              data:result.flight_count.data,
+                              backgroundColor:[
+                                  'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                  'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                  'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                      flightRevenue:{
+                          labels: result.flight_revenue.title,
+                          datasets:[{ label:'Flight Revenue',
+                              data:result.flight_revenue.data,
+                              backgroundColor:[
+                                  'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                  'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                  'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                      hotelCount:{
+                        labels: result.hotel_count.title,
+                        datasets:[{ label:'Hotel Count',
+                                    data:result.hotel_count.data,
+                                    backgroundColor:[
+                                              'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                              'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                              'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
+                      hotelRevenue:{
+                        labels: result.hotel_revenue.title,
+                        datasets:[{ label:'Hotel Revenue',
+                                    data:result.hotel_revenue.data,
+                                    backgroundColor:[
+                                              'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                              'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                              'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                      cityCount:{
+                        labels: result.city_count.title,
+                        datasets:[{ label:'City Count',
+                                    data:result.city_count.data,
+                                    backgroundColor:[
+                                              'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                              'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                              'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                      cityRevenue:{
+                        labels: result.city_revenue.title,
+                        datasets:[{ label:'City Revenue',
+                                    data:result.city_revenue.data,
+                                    backgroundColor:[
+                                        'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
+                                        'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
+                                        'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+                  });
+
+              }
+             else {
+                  console.log("Error");
+              }
+          });
+        }// else
+        //console.log("YEAR: "+data.year);
+      /*  chartAPI.getChartsData(data)
             .then((result) => {
                 if (result) {
                     var car_count_len=(result.car_count.data).length;
@@ -163,13 +459,14 @@ state={flag1:true,flag2:true,flag3:true,flag4:true,flag5:true,flag6:true,flag7:t
                                     'rgba(255, 99, 132, 0.6)','rgba(54, 162, 235, 0.6)','rgba(255, 206, 86, 0.6)','rgba(75, 192, 192, 0.6)',
                                     'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)','rgba(125, 99, 112, 0.6)','rgba(0, 0, 250, 0.6)',
                                     'rgba(100, 99, 92, 0.6)','rgba(200, 150, 150, 0.6)']}]},
+
                     });
 
                 }
                 else {
                     console.log("Error");
                 }
-            });
+            });*/
     }
     createElement(el) {
         const removeStyle = {
@@ -178,7 +475,7 @@ state={flag1:true,flag2:true,flag3:true,flag4:true,flag5:true,flag6:true,flag7:t
             top: 0,
             cursor: 'pointer'
         };
-        const i = el.add ? '+' : el.i;
+        const i =  el.i;
         return (
 
 
@@ -187,8 +484,8 @@ state={flag1:true,flag2:true,flag3:true,flag4:true,flag5:true,flag6:true,flag7:t
                     <span className="add text" onClick={this.onAddItem} title="You can add an item by clicking here, too.">Add +</span>
                     : <span className="text">{i}</span>}*/}
 
-                <span className="remove" style={removeStyle} onClick={this.onRemoveItem.bind(i)}>delete</span>
-                {i=='CAR_COUNT'
+                <span className="remove" style={removeStyle} onClick={()=>this.onRemoveItem(i)}>x</span>
+                {i=='1'
                     ? (<Chart chartData={this.state.carCount} chartTitle="Car Count" legendPosition="bottom"/>)
                     : (i=='CAR_REVENUE'
                         ? (<Chart chartData={this.state.carRevenue} chartTitle="Car Revenue" legendPosition="bottom"/>)
@@ -204,7 +501,15 @@ state={flag1:true,flag2:true,flag3:true,flag4:true,flag5:true,flag6:true,flag7:t
                                             ? (<Chart chartData={this.state.cityCount} chartTitle="City Count" legendPosition="bottom"/>)
                                             : (i=='CITY_REVENUE'
                                                 ? (<Chart chartData={this.state.cityRevenue} chartTitle="City Revenue" legendPosition="bottom"/>)
-                                                : null)))))))}
+                                                : (i=='PAGE_CLICKS'
+                                                    ? (<Chart chartData={this.state.pageClicks} chartTitle="Clicks Per Page" legendPosition="bottom"/>)
+                                                    : (i=='LEAST_SEEN'
+                                                        ? (<Chart chartData={this.state.leastSeen} chartTitle="Least Seen Areas" legendPosition="bottom"/>)
+                                                        : ((i=='PAGE_TIME'
+                                                            ? (<Chart chartData={this.state.pageTime} chartTitle="Page Time" legendPosition="bottom"/>)
+                                                            : (i=='USER_TRACK'
+                                                                ? (<Chart2 chartData={this.state.tracking1} chartTitle="User Tracking" legendPosition="bottom"/>)
+                                                                : (null)))))))))))))}
 
 
             </div>
@@ -228,6 +533,14 @@ hideButton(n){
   this.setState({flag7:!this.state.flag7});
   else if(n==8)
   this.setState({flag8:!this.state.flag8});
+  else if(n==9)
+  this.setState({flag9:!this.state.flag9});
+  else if(n==10)
+  this.setState({flag10:!this.state.flag10});
+  else if(n==11)
+  this.setState({flag11:!this.state.flag11});
+  else if(n==12)
+  this.setState({flag12:!this.state.flag12});
 }
 
 
@@ -273,7 +586,27 @@ hideButton(n){
     }
 
     componentWillMount(){
+    /*  var u=[],c=[];
+        this.setState({ users: []});
+          API.listusers()
+              .then((data) => {
+                  if (data) {
+                    //console.log("USERS CHECK: "+data);
+                    for(var i=0;i<data.length;i++){
+                    u = this.state.users.push(data[i]);
+                    if(data[i].city)
+                      c = this.state.cities.push(data[i].city);
+                    this.setState({ users: u,cities:c });
+                  }
+                  const uniqueCities = Array.from(new Set(this.state.cities));
+                  this.setState({cities:c });
+                }
+                 else {
+                      console.log("Error");
+                  }
+              });*/
         this.getChartData({'year':2017});
+          this.getChartData({"type":'usertracking',"userid":0});
     }
 
     render() {
@@ -286,7 +619,8 @@ hideButton(n){
 
 
                             <div className="col-lg-12 col-md-12 col-sm-12">
-                                Year:
+                            <br/>
+                                Select Year:
                                 <select onChange={(event)=>{this.getChartData({"year":event.target.value})}}>
                                     <option value="2017" disabled selected>Select</option>
                                     <option value="2017">2017</option>
@@ -297,51 +631,28 @@ hideButton(n){
                                     <option value="2012">2012</option>
                                 </select>
                             </div>
+
+
+
+
+
+                            <div className="col-lg-12 col-md-12 col-sm-12"><br/></div>
                         <div className="col-lg-12 col-md-12 col-sm-12">
 
 <table>
-    <tr><td><button onClick={function(){ this.onAddItem('CAR_COUNT'); this.hideButton(1); }.bind(this)} disabled={this.state.flag1}>Top 10 Car Count</button></td></tr>
-    <tr><td> <button onClick={function(){ this.onAddItem('CAR_REVENUE'); this.hideButton(2); }.bind(this)} disabled={this.state.flag2}> Top 10 Car Revenue </button></td></tr>
-    <tr><td> <button onClick={function(){ this.onAddItem('FLIGHT_COUNT'); this.hideButton(3); }.bind(this)} disabled={this.state.flag3}> Top 10 Airlines Count</button></td></tr>
-    <tr><td> <button onClick={function(){ this.onAddItem('FLIGHT_REVENUE'); this.hideButton(4); }.bind(this)} disabled={this.state.flag4}> Top 10 Airlines Revenue</button></td></tr>
-    <tr><td><button onClick={function(){ this.onAddItem('HOTEL_COUNT'); this.hideButton(5); }.bind(this)} disabled={this.state.flag5}> Top 10 Hotels Count</button></td></tr>
-    <tr><td><button onClick={function(){ this.onAddItem('HOTEL_REVENUE'); this.hideButton(6); }.bind(this)} disabled={this.state.flag6}> Top 10 Hotels Revenue</button></td></tr>
-    <tr><td> <button onClick={function(){ this.onAddItem('CITY_COUNT'); this.hideButton(7); }.bind(this)} disabled={this.state.flag7}> Top 10 CITY Count</button></td></tr>
-    <tr><td> <button onClick={function(){ this.onAddItem('CITY_REVENUE'); this.hideButton(8); }.bind(this)} disabled={this.state.flag8}> Top 10 City Revenue </button></td></tr>
+    <tr><td><button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem("1"); this.hideButton(1); }.bind(this)} disabled={this.state.flag1}>Top 10 Car Count</button></td></tr>
+    <tr><td> <button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('CAR_REVENUE'); this.hideButton(2); }.bind(this)} disabled={this.state.flag2}> Top 10 Car Revenue </button></td></tr>
+    <tr><td> <button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('FLIGHT_COUNT'); this.hideButton(3); }.bind(this)} disabled={this.state.flag3}> Top 10 Airlines Count</button></td></tr>
+    <tr><td> <button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('FLIGHT_REVENUE'); this.hideButton(4); }.bind(this)} disabled={this.state.flag4}> Top 10 Airlines Revenue</button></td></tr>
+    <tr><td><button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('HOTEL_COUNT'); this.hideButton(5); }.bind(this)} disabled={this.state.flag5}> Top 10 Hotels Count</button></td></tr>
+    <tr><td><button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('HOTEL_REVENUE'); this.hideButton(6); }.bind(this)} disabled={this.state.flag6}> Top 10 Hotels Revenue</button></td></tr>
+    <tr><td> <button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('CITY_COUNT'); this.hideButton(7); }.bind(this)} disabled={this.state.flag7}> Top 10 City Count</button></td></tr>
+    <tr><td> <button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('CITY_REVENUE'); this.hideButton(8); }.bind(this)} disabled={this.state.flag8}> Top 10 City Revenue </button></td></tr>
+    <tr><td> <button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('PAGE_CLICKS'); this.hideButton(9); }.bind(this)} disabled={this.state.flag9}>Clicks per page</button></td></tr>
+    <tr><td> <button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('LEAST_SEEN'); this.hideButton(10); }.bind(this)} disabled={this.state.flag10}>Least seen areas</button></td></tr>
+   <tr><td> <button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('PAGE_TIME'); this.hideButton(11); }.bind(this)} disabled={this.state.flag11}>Time per page</button></td></tr>
+      <tr><td> <button className="w3-button w3-white w3-border w3-border-green w3-round-large" onClick={function(){ this.onAddItem('USER_TRACK'); this.hideButton(12); }.bind(this)} disabled={this.state.flag12}>User tracking</button></td></tr>
 </table>
-
-
-{/*
-<table>
-    <tr>
-        <td><a href="#" onClick={()=>this.onAddItem('CAR_COUNT')}> Top 10 Rental Agencies : Number of cars rented</a></td>
-    </tr>
-<tr>
-    <td> <a href="#" onClick={()=>this.onAddItem('CAR_REVENUE')}> Top 10 Rental Agencies : Revenue </a></td>
-</tr>
-    <tr>
-        <td> <a href="#" onClick={()=>this.onAddItem('FLIGHT_COUNT')}> Top 10 Airlines : Number of tickets sold</a></td>
-    </tr>
-
-    <tr>
-        <td> <a href="#" onClick={()=>this.onAddItem('FLIGHT_REVENUE')}> Top 10 Airlines : Revenue </a></td>
-    </tr>
-
-    <tr>
-        <td> <a href="#" onClick={()=>this.onAddItem('HOTEL_COUNT')}> Top 10 Hotels : Number of room rented </a></td>
-    </tr>
-
-    <tr>
-        <td> <a href="#" onClick={()=>this.onAddItem('HOTEL_REVENUE')}> Top 10 Hotels : Revenue </a></td>
-    </tr>
-
-    <tr>
-        <td> <a href="#" onClick={()=>this.onAddItem('CITY_COUNT')}> Top 10 CITY : Number of bookings </a></td>
-    </tr>
-    <tr>
-        <td> <a href="#" onClick={()=>this.onAddItem('CITY_REVENUE')}> Top 10 City : Revenue </a></td>
-    </tr>
-</table>*/}
                         </div>
                     </div>
                     <div class="col-xs-9">
